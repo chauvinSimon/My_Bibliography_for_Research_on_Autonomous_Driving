@@ -18,7 +18,7 @@ Codevilla, F., Santana, E., Antonio, M. L., & Gaidon, A. [2019].
   <summary>Click to expand</summary>
 
 - Some related concepts:
-  - `distributional shift problem`, `off-policy data collection`, [`CARLA`](http://carla.org/), `conditional imitation learning`, `residual architecture`, `reproducibility issue`, `variance caused by initialization and sampling`.
+  - `distributional shift problem`, `off-policy data collection`, [`CARLA`](http://carla.org/), `conditional imitation learning`, `residual architecture`, `reproducibility issue`, `variance caused by initialization and sampling`
 - One term: **“CILRS”** = **Conditional Imitation Learning** extended with a **ResNet** architecture and **Speed prediction**.
 - One Q&A: _How to include in E2E learning information about the destination, i.e. to disambiguate imitation around multiple types of intersections?_
   - Add an high-level `navigational command` (e.g. _take the next right_, _left_, or _stay in lane_) to the tuple <`observation`, `expert action`> when building the dataset.
@@ -102,7 +102,7 @@ Noh, S. [2018].
   <summary>Click to expand</summary>
 
 - Some related concepts: rule-based probabilistic framework that  
-  - `Probabilistic Threat Assessment`, `Rule-based Decision Making`
+  - `probabilistic threat assessment`, `rule-based decision making`
 - Many ML-based works criticize rule-based approaches (_over-conservative_, _no generalization capability_ and _painful parameter tuning_).
   - True, the presented framework contains **many parameters whose tuning may be tedious**.
   - But this approach just works! At least they **go out of the simulator** and show some experiments on a **real car**.
@@ -147,5 +147,33 @@ Bouton, M., Nakhaei, A., Fujimura, K., & Kochenderfer, M. J. [2019].
 > "Previous works has shown that only relying on deep RL is not sufficient to achieve safety. The deployment of those policies would require the addition of a safety mechanism."
 
 > "Using deep reinforcement learning policies to guide the search of a classical planner (MCTS) may be a promising direction."
+
+</details>
+
+Hu, Y., Nakhaei, A., Tomizuka, M., & Fujimura, K. [2019].
+**"Interaction-aware Decision Making with Adaptive Behaviors under Merging Scenarios"**
+[[pdf](https://arxiv.org/abs/1904.06025)]
+
+<details>
+  <summary>Click to expand</summary>
+
+- Some related concepts:
+  - `multi agent RL`, `interaction-aware decision making`, `curriculum learning`, `action masking`
+
+- One term: **"IDAS"**: interaction-aware decision making with adaptive strategies.
+  - The main goal is to generate maneuvers which are **safe** but **less conservative** than rule-based approaches such as **IDM** and/or FSM.
+  - The idea is to learn how to **negotiate** with other drivers, or at least consider **interactions** in the decision process.
+
+- One idea: use multi-agent RL (**MARL**) to consider **interactions** between the multiple road entities.
+  - In particular, the agent receives rewards for its **personal objective** as well as for **its contribution to the team’s "success"** (_multi-agent credit assignment_).
+
+- One idea: a **masking mechanism** prevents the agent from **exploring states that violate common sense** of human judgment (c.f. [RSS](https://www.mobileye.com/responsibility-sensitive-safety/)) and increase the **learning efficiency**.
+  - This idea of adding **rule-based constraints** to a RL policy has been applied in many works. Recently in [Wang, J. et al.](https://arxiv.org/abs/1904.00231) for instance where prediction is also considered.
+  - Here, masking is not only based on **safety**, but also on considers **vehicle kinematics** and **traffic rules**.
+  - A remaining question is **_where_ to apply the masking**: either _before_ the **action selection** (exposing only a subset of feasible actions), or _after_ (penalizing the agent if it takes a forbidden action).
+
+- One quote (on the way to _transfer_ to the real world):
+
+> "A motion control module will convert the discretized acceleration of the behaviour planner into continuous acceleration by applying algorithms like MPC at a higher frequency (100Hz)".
 
 </details>
