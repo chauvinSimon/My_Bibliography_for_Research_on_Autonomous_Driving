@@ -177,3 +177,40 @@ Hu, Y., Nakhaei, A., Tomizuka, M., & Fujimura, K. [2019].
 > "A motion control module will convert the discretized acceleration of the behaviour planner into continuous acceleration by applying algorithms like MPC at a higher frequency (100Hz)".
 
 </details>
+
+## Monte Carlo Tree Seach
+
+Lee, J., Balakrishnan, A., Gaurav, A., & Feb, L. G. [2019].
+**"WiseMove: A Framework for Safe Deep Reinforcement Learning for Autonomous Driving"**
+[[pdf](https://arxiv.org/abs/1902.04118)] [[code](https://git.uwaterloo.ca/wise-lab/wise-move)]
+
+<details>
+  <summary>Click to expand</summary>
+
+- Some related concepts:
+  - `MCTS`, `options framework`, `LTL`, `hierarchical decision making`, `POMDP`
+
+- One related work: The presented approach reminds me the work of [Paxton, C., Raman, V., Hager, G. D., & Kobilarov, M.](https://arxiv.org/abs/1703.07887).
+
+- One term: **"WiseMove"**: the presented **options**-based **modular** safe DRL framework.
+  - The _modular_, or _hierarchical_, aspect comes from the [**option framework**](http://www-anw.cs.umass.edu/~barto/courses/cs687/Sutton-Precup-Singh-AIJ99.pdf). Sometimes called **macro-actions**.
+  - For more on **Hierarchical RL**, check out [this `thegradient.pub` post](https://thegradient.pub/the-promise-of-hierarchical-reinforcement-learning/).
+  - The idea is to decompose the decision by working with **temporal abstracted actions** (e.g. _slow down_, _turn left_) on a high-level (like a **behaviour planner**).
+  - Each of these so called _options_ rely on **low-level primitive policies** that implement their manoeuvres (similar to a **geometrical trajectory optimizer**).
+
+- One idea: **LTL** formalism is used to check the validity of high-level decisions.
+  - An option is defined by (1) a **underlying primitive policy**, but also by (2) a **initial condition** and (3) a **terminal condition**.
+  - For instance, the option `take-over` is available only if a vehicle is on my lane and a second lane exists. The manoeuvre is finished when I arrive in front of the other vehicle.
+  - _I like to think of it as another sort of_ **_masking mechanism_**.
+  - Here, these conditions are expressed as **hand-crafted rules** in a **LTL**-like syntax.
+  
+- One remark: I think we are currently missing open-source simulators that offers OpenAI `gym`-like APIs for training and testing RL approaches for decision making.
+  - Several interfaces to `SUMO` have been developed.
+  - For instance [@LucasAlegre](https://github.com/LucasAlegre/sumo-rl), [@bstriner](https://github.com/bstriner/gym-traffic/), [@SaloniDash7](https://github.com/SaloniDash7/gym-sumo), [@sycdlcrain](https://github.com/sycdlcrain/gym_sumo) or [flow](https://flow-project.github.io/) which looks promising since it keeps being developed.
+  - Here, the author of `WiseMove` release a `env` python module (together with `verifier`, `options` and `backends`) that should fullfil this function.
+
+- Another remark: Combining learning [RL] and planning [(MC) tree search] is an idea [I find](https://github.com/chauvinSimon/IV19#combining-learning-and-planning) very promising.
+  - Here, the **safest next option** is selected based on the stochastic look-aheads performed by the MCTS (_safety check_).
+  - In return, the options effectively **reduce the number of decisions** needed to reach any depth in the tree (_sampling effiency_).
+
+</details>
