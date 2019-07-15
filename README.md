@@ -178,6 +178,29 @@ Hu, Y., Nakhaei, A., Tomizuka, M., & Fujimura, K. [2019].
 
 </details>
 
+Bacchiani, G., Molinari, D., & Patander, M. [2019].
+**"Microscopic Traffic Simulation by Cooperative Multi-agent Deep Reinforcement Learning"**
+[[pdf](https://arxiv.org/abs/1903.01365)]
+
+<details>
+  <summary>Click to expand</summary>
+
+- Some related concepts:
+  - `multi-agent A3C`, `off-policy learning`
+- One idea: **"parallel actor-learners"**: to **decorrelate** the sequence of experiences used to update the policy network, a common approach is to sample <`s`, `a`, `r`, `s'`> tuples from a memory buffer (**_experience replay_**).
+  - Here, a **multiple-agent** setting is used instead: each agent acts in a different **instance of the environment** (hence diverse experiences) and sends its updates asynchronously to a **central network**.
+- Another idea: **"hybrid state representation"**: coupling some _grid-like_ representation (`path to follow`, `obstacles`, `navigable space`) with a vector of _explicit features_ (e.g. `target speed`, `distance to goal`, `elapsed time ratio`).
+  - This combination offers a **generic scene representation** (i.e. indepedent of the number of vehicles) while allowing for tuning explicit goals (`target speeds`) in the state.
+  - Such _hybrid_ representation seems popular, as [identified at IV19](https://github.com/chauvinSimon/IV19#generic-scene-representation)).
+- Other ideas:
+  - Stacking the `n=4` most recent views to _capture the evolution_ of the scene (e.g. relative speeds).
+  - **_Action repeat_** technique for _temporal abstraction_ to stabilize the learning process.
+- One concept: **"Aggressiveness tuning"**. Together with the `target speed`, the `elapsed time ratio` (ETR) feature is used to tune the aggressiveness of the car:
+
+> "ETR Values close to `1` will induce the agent to drive faster, in order to avoid the predicted negative return for running out of time. Values close to `0` will tell the driver that it still has much time, and it is not a problem to yield to other vehicles."
+
+</details>
+
 ## Monte Carlo Tree Seach
 
 Lee, J., Balakrishnan, A., Gaurav, A., & Feb, L. G. [2019].
