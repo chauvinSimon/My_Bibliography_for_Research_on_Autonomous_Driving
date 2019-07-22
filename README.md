@@ -91,6 +91,31 @@ Liu, S., Zheng, K., Member, S., Zhao, L., & Fan, P. [2019].
 
 </details>
 
+Huang, X., Hong, S., Hofmann, A., & Williams, B. [2019].
+**"Online Risk-Bounded Motion Planning for Autonomous Vehicles in Dynamic Environments"**
+[[pdf](https://arxiv.org/abs/1904.02341)]
+
+<details>
+  <summary>Click to expand</summary>
+
+- Some related concepts:
+  - `intention-aware planning`, `maneuver-based motion prediction`, `POMDP`, `probabilistic safety guarantee`, `CARLA`
+
+- One term: [**"Probabilistic Flow Tubes"**](https://dspace.mit.edu/handle/1721.1/76824) (PFT)
+  - A *motion representation* used in the **"Motion Model Generator"**.
+  - Intead of using **hand-crafted** rules for the transition model, the idea is to **learns human behaviours** from demonstration.
+  - The inferred models are encoded with **PFTs** and are used to generate **probabilistic predictions** for both _manoeuvre_ (long-term reasoning) and _motion_ of the other vehicles.
+  - The advantage of **belief-based probabilistic planning** is that it can avoid **over-conservative** behaviours while offering **probabilistic safety guarantees**.
+- Another term: **"Risk-bounded POMDP Planner"**
+  - The **uncertainty** in the intention estimation is then propagated to the decision module.
+  - Some notion of **risk**, defined as the _probability of collision_, is evaluated and considered when taking action, leading to the introduction of a **"chance-constrained POMDP"** (`CC-POMDP`).
+  - The **online solver** uses a heuristic-search algorithm, [**Risk-Bounded AO\***](https://www.aaai.org/ocs/index.php/AAAI/AAAI16/paper/download/12321/12095) (**RAO\***), takes advantage of the **risk estimation** to prune the over-risky branches that violate the **risk constraints** and eventually outputs a plan with a **guarantee over the probability of success**.
+- One quote (_this could apply to many other works_):
+
+> "One possible future work is to test our work in real systems".
+
+</details>
+
 ## Rule-based Decision Making
 
 Noh, S. [2018].
@@ -101,8 +126,8 @@ Noh, S. [2018].
 <details>
   <summary>Click to expand</summary>
 
-- Some related concepts: rule-based probabilistic framework that  
-  - `probabilistic threat assessment`, `rule-based decision making`
+- Some related concepts:
+  - `probabilistic threat assessment`, `rule-based probabilistic decision making`
 - Many ML-based works criticize rule-based approaches (_over-conservative_, _no generalization capability_ and _painful parameter tuning_).
   - True, the presented framework contains **many parameters whose tuning may be tedious**.
   - But this approach just works! At least they **go out of the simulator** and show some experiments on a **real car**.
@@ -194,7 +219,7 @@ Bacchiani, G., Molinari, D., & Patander, M. [2019].
   - Such _hybrid_ representation seems popular, as [identified at IV19](https://github.com/chauvinSimon/IV19#generic-scene-representation)).
 - Other ideas:
   - Stacking the `n=4` most recent views to _capture the evolution_ of the scene (e.g. relative speeds).
-  - **_Action repeat_** technique for _temporal abstraction_ to stabilize the learning process.
+  - **_Action repeat_** technique for _temporal abstraction_ to stabilize the learning process (c.f. "_frame skip_").
 - One concept: **"Aggressiveness tuning"**. Together with the `target speed`, the `elapsed time ratio` (ETR) feature is used to tune the aggressiveness of the car:
 
 > "ETR Values close to `1` will induce the agent to drive faster, in order to avoid the predicted negative return for running out of time. Values close to `0` will tell the driver that it still has much time, and it is not a problem to yield to other vehicles."
