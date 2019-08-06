@@ -99,7 +99,7 @@ Huang, X., Hong, S., Hofmann, A., & Williams, B. [2019].
   <summary>Click to expand</summary>
 
 - Some related concepts:
-  - `intention-aware planning`, `manoeuvre-based motion prediction`, `POMDP`, `probabilistic safety guarantee`, `CARLA`
+  - `intention-aware planning`, `manoeuvre-based motion prediction`, `POMDP`, `probabilistic risk assessment`, `CARLA`
 
 - One term: [**"Probabilistic Flow Tubes"**](https://dspace.mit.edu/handle/1721.1/76824) (PFT)
   - A *motion representation* used in the **"Motion Model Generator"**.
@@ -127,7 +127,7 @@ Noh, S. [2018].
   <summary>Click to expand</summary>
 
 - Some related concepts:
-  - `probabilistic threat assessment`, `rule-based probabilistic decision making`
+  - `probabilistic risk assessment`, `rule-based probabilistic decision making`
 - Many ML-based works criticize rule-based approaches (_over-conservative_, _no generalization capability_ and _painful parameter tuning_).
   - True, the presented framework contains **many parameters whose tuning may be tedious**.
   - But this approach just works! At least they **go out of the simulator** and show some experiments on a **real car**.
@@ -205,7 +205,7 @@ Hu, Y., Nakhaei, A., Tomizuka, M., & Fujimura, K. [2019].
 
 Bacchiani, G., Molinari, D., & Patander, M. [2019].
 **"Microscopic Traffic Simulation by Cooperative Multi-agent Deep Reinforcement Learning"**
-[[pdf](https://arxiv.org/abs/1903.01365)]
+[[pdf]](https://arxiv.org/abs/1903.01365)]
 
 <details>
   <summary>Click to expand</summary>
@@ -226,7 +226,7 @@ Bacchiani, G., Molinari, D., & Patander, M. [2019].
 
 </details>
 
-## Monte Carlo Tree Seach
+## Planning and Monte Carlo Tree Seach
 
 Lee, J., Balakrishnan, A., Gaurav, A., & Feb, L. G. [2019].
 **"WiseMove: A Framework for Safe Deep Reinforcement Learning for Autonomous Driving"**
@@ -254,11 +254,39 @@ Lee, J., Balakrishnan, A., Gaurav, A., & Feb, L. G. [2019].
   
 - One remark: I think we are currently missing open-source simulators that offers OpenAI `gym`-like APIs for training and testing RL approaches for decision making.
   - Several interfaces to `SUMO` have been developed.
-  - For instance [@LucasAlegre](https://github.com/LucasAlegre/sumo-rl), [@bstriner](https://github.com/bstriner/gym-traffic/), [@SaloniDash7](https://github.com/SaloniDash7/gym-sumo), [@sycdlcrain](https://github.com/sycdlcrain/gym_sumo) or [flow](https://flow-project.github.io/) which looks promising since it keeps being developed.
+  - For instance [@LucasAlegre](https://github.com/LucasAlegre/sumo-rl), [@bstriner](https://github.com/bstriner/gym-traffic/), [@SaloniDash7](https://github.com/SaloniDash7/gym-sumo), [@sycdlcrain](https://github.com/sycdlcrain/gym_sumo) or [FLOW](https://flow-project.github.io/) which looks promising since it keeps being developed.
   - Here, the author of `WiseMove` release an `env` python module (together with `verifier`, `options` and `backends`) that should fulfil this function.
 
 - Another remark: Combining learning [RL] and planning [(MC) tree search] is an idea [I find](https://github.com/chauvinSimon/IV19#combining-learning-and-planning) very promising.
   - Here, the **safest next option** is selected based on the stochastic look-aheads performed by the MCTS (_safety check_).
   - In return, the options effectively **reduce the number of decisions** needed to reach any depth in the tree (_sampling efficiency_).
+
+</details>
+
+Augustin, D., Schucker, J., Tschirner, J., Hofmann, M., & Konigorski, L. [2019].
+**"A Simulation-Based Reinforcement Learning Approach for Long-Term Maneuver Planning in Highway Traffic Scenarios"**
+[[pdf](https://www.researchgate.net/publication/334745733_A_Simulation-Based_Reinforcement_Learning_Approach_for_Long-Term_Maneuver_Planning_in_Highway_Traffic_Scenarios)]
+
+<details>
+  <summary>Click to expand</summary>
+
+- Some related concepts:
+  - `combining learning/planning`, `hierarchical/modular decision making`, `POMDP`, `SUMO`
+
+- One diagram is better than 100 words:
+
+| ![The term `action` comprises a lateral maneuver decision and a set speed request. [Source](https://www.researchgate.net/publication/334745733_A_Simulation-Based_Reinforcement_Learning_Approach_for_Long-Term_Maneuver_Planning_in_Highway_Traffic_Scenarios).](media/pics/iv19.jpg "The term `action` comprises a lateral maneuver decision and a set speed request. [Source](https://www.researchgate.net/publication/334745733_A_Simulation-Based_Reinforcement_Learning_Approach_for_Long-Term_Maneuver_Planning_in_Highway_Traffic_Scenarios).")  |
+|:--:|
+| *The term `action` comprises a lateral maneuver decision and a set speed request. [Source](https://www.researchgate.net/publication/334745733_A_Simulation-Based_Reinforcement_Learning_Approach_for_Long-Term_Maneuver_Planning_in_Highway_Traffic_Scenarios).* |
+
+- One remark: I like the **hierarchy** and **modularity** of the approach.
+  - Especially the fact that the `action` stays high-level (`speed desire` and `high-level manoeuvre`), as opposed to `steering angle` and `throttle` commands that are often used in RL.
+
+- One promising tool: [FLOW](https://flow-project.github.io/)
+  - `FLOW` is a Python library that interfaces the RL libraries [RLlib](https://ray.readthedocs.io/en/latest/rllib.html) and [rllab](https://github.com/rll/rllab) with `SUMO`. It has been developed and is supported by _UC Berkeley_.
+  - It has not been used many times (_because of the lack of Windows support?_). Instead, many research using `SUMO` develop their own interface, which makes comparison and reproduction difficult.
+  - A few recent `FLOW`-based works can be mentionned though:
+    - "Simulation to scaled city: zero-shot policy transfer for traffic control via autonomous vehicles" by [(Jang et al., 2018)](https://arxiv.org/abs/1812.06120)
+    - "Benchmarks for reinforcement learning in mixed-autonomy traffic" by [(Vinitsky et al., 2018)](https://arxiv.org/abs/1812.06120)
 
 </details>
