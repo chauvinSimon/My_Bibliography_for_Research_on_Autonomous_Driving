@@ -290,3 +290,37 @@ Augustin, D., Schucker, J., Tschirner, J., Hofmann, M., & Konigorski, L. [2019].
     - "Benchmarks for reinforcement learning in mixed-autonomy traffic" by [(Vinitsky et al., 2018)](https://arxiv.org/abs/1812.06120)
 
 </details>
+
+Weingertner, P., Autef, A., & Le Cleac’h, S. [2018].
+**"Decision Making Under Uncertainty for Urban Driving"**
+[[pdf](https://web.stanford.edu/class/aa228/reports/2018/final100.pdf)] [[code](https://github.com/PhilippeW83440/ACT)]
+
+<details>
+  <summary>Click to expand</summary>
+
+- Some related concepts:
+  - `POMDP`, `MCTS`, `julia`, `probabilistic risk assessment`, `value iteration`
+- One algorithm: [`POMCP`](https://papers.nips.cc/paper/4031-monte-carlo-planning-in-large-pomdps).
+  - Presented in 2010, `POMCP` is an extension of the traditional **MCTS algorithm to POMDP**.
+  - Together with [`DESPOT`], `POMCP` is a often-used POMDP online solver.
+- One term: **"observation class"**.
+  - Different extensions of `POMCP` and `DESPOT` have been proposed. In the presented approach, the goal is to work with **continuous observations**, while ensuriung safety.
+  - The idea is to **limit the number of observation nodes** in the tree by **grouping observations** based on some **utility function**.
+  - This utility function should not to be confused with the **offline-learn _value function_** representing the probability of collision.
+  - The safe **clusterization of observations** can be based on _smallest `TTC`_ or _smallest distance_ to other participants.
+- One idea: **guide the online graph search** using a **offline methods** to improve safety.
+  - This is based on the work of [(Bouton, Karlsson, et al., 2019)](https://arxiv.org/abs/1904.07189), where **offline `VI`** (value iteration) is used to compute `P_collision`(`s`, `a`).
+  - This **safety criterion** is then used to limit the **set of safe available actions**.
+  - In the presented work, the author reason over the `belief` instead of the `state`.
+- Another idea: Use a **Kalman Filter** (instead of some particle filters) for **belief updater**.
+- One quote:
+
+> "Using an online method based on sparse sampling may lead to safety issues. Rare events with critical consequences may not be sampled leading to sub-optimal and potentially dangerous decisions."
+
+- One promising tool: [POMDPs.jl](https://github.com/JuliaPOMDP/POMDPs.jl)
+  - `POMDPs.jl` is an interface for defining, solving, and simulating `MDPs` and `POMDPs` on discrete and continuous spaces. It has been developed and is supported by a team from _Stanford_.
+- Two ideas for future works:
+  - In their [repo](https://github.com/PhilippeW83440/ACT), the authors suggest **combining learning** (e.g. model-free RL used as an heuristic and/or for rollout) with **planning** (MCTS), mentioning the success of AlphaGo Zero.
+  - Another improvment concerns the **transition model** for the observed vehicles. Instead of `CV` (constant velocity) models, one could assume surrounding vehicles are **following a driver model** (e.g. `IDM`) and the task would be to **infer its hidden parameters**.
+
+</details>
