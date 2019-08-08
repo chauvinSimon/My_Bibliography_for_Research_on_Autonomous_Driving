@@ -226,6 +226,37 @@ Bacchiani, G., Molinari, D., & Patander, M. [2019].
 
 </details>
 
+Huegle, M., Kalweit, G., Mirchevska, B., Werling, M., & Boedecker, J. [2019].
+**"Dynamic Input for Deep Reinforcement Learning in Autonomous Driving"**
+[[pdf]](https://arxiv.org/abs/1907.10994)] [video](https://www.youtube.com/watch?v=mRQgHeAGk2g)
+
+<details>
+  <summary>Click to expand</summary>
+
+- Some related concepts:
+  - `feature engineering`, `off-policy learning`, `DQN`, `SUMO`
+  
+- One diagram is better than 100 words:
+
+| ![By summing all the dynamic terms (one per surrounding vehicle), the input keeps a constant size. [Source](https://arxiv.org/abs/1907.10994).](media/2019_huegle.PNG "By summing all the dynamic terms (one per surrounding vehicle), the input keeps a constant size. [Source](https://arxiv.org/abs/1907.10994).")  |
+|:--:|
+| *By summing all the dynamic terms (one per surrounding vehicle), the input keeps a constant size. [Source](https://arxiv.org/abs/1907.10994).* |
+
+- One goal: find a **flexible** and **permutation-invariant** representation to **deal with variable sized inputs** (_variable number of surrounding vehicles_) in high-level decision making in autonomous lane changes, using model-free RL.
+  - Four representations are considered:
+    - Relational Grid (fixed-size vector)
+    - Occupancy grid (fixed-size grid processed by some `CNN`)
+    - Set2Set-Q (some `RNN` combined with an _attention mechanism_ to create a set representation which is **permutation invariant** w.r.t. the input elements)
+    - DeepSet-Q (proposed approach)
+  - They are used as inputs to train and evaluate DQN agents.
+- One finding:
+  - "`Deep Sets` were able to outperform CNN and **recurrent attention approaches** and demonstrated **better generalization** to unseen scenarios".
+- One quote: about the use of **policy-based** (as opposed to _value-based_), **on-policy** (as opposed to _off-policy_), model-free RL (here `PPO`).
+
+> "Due to the higher demand for training and the non-trivial application to autonomous driving tasks of `on-policy` algorithms, we switched to `off-policy` Q-learning."
+
+</details>
+
 ## Planning and Monte Carlo Tree Seach
 
 Lee, J., Balakrishnan, A., Gaurav, A., & Feb, L. G. [2019].
