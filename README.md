@@ -221,9 +221,9 @@ Hu, Y., Nakhaei, A., Tomizuka, M., & Fujimura, K. [2019].
 
 One figure:
 
-| ![Note: the visibility of each agent is assumed to be `100m` in front and back, with `0.5m`/`cell` resolution, for both its current lane (`obs_cl`) and the other lane (`obs_ol`) [Source](https://arxiv.org/abs/1904.06025).](media/2019_hu.PNG "Note: the visibility of each agent is assumed to be `100m` in front and back, with `0.5m`/`cell` resolution, for both its current lane (`obs_cl`) and the other lane (`obs_ol`) [Source](https://arxiv.org/abs/1904.06025).")  |
+| ![Note: the visibility of each agent is assumed to be `100m` in front and back, with `0.5m`/`cell` resolution, for both its current lane (`obs_cl`) and the other lane (`obs_ol`). [Source](https://arxiv.org/abs/1904.06025).](media/2019_hu.PNG "Note: the visibility of each agent is assumed to be `100m` in front and back, with `0.5m`/`cell` resolution, for both its current lane (`obs_cl`) and the other lane (`obs_ol`). [Source](https://arxiv.org/abs/1904.06025).")  |
 |:--:|
-| *Note: the visibility of each agent is assumed to be `100m` in front and back, with `0.5m`/`cell` resolution, for both its current lane (`obs_cl`) and the other lane (`obs_ol`) [Source](https://arxiv.org/abs/1904.06025).* |
+| *Note: the visibility of each agent is assumed to be `100m` in front and back, with `0.5m`/`cell` resolution, for both its current lane (`obs_cl`) and the other lane (`obs_ol`). [Source](https://arxiv.org/abs/1904.06025).* |
 
 - Some related concepts:
   - `multi agent RL`, `interaction-aware decision making`, `curriculum learning`, `action masking`
@@ -306,6 +306,42 @@ Huegle, M., Kalweit, G., Mirchevska, B., Werling, M., & Boedecker, J. [2019].
 
 </details>
 
+Jaâfra, Y., Laurent, J.-L., Deruyver, A., & Naceur, M. S. [2019].
+**"Seeking for Robustness in Reinforcement Learning : Application on Carla Simulator"**
+[[pdf](https://openreview.net/pdf?id=Bke03G85DN)]
+
+<details>
+  <summary>Click to expand</summary>
+
+- Some background:
+
+| ![`n`-step TD learning. [Source](http://www0.cs.ucl.ac.uk/staff/d.silver/web/Teaching.html).](media/2015_silver.PNG "`n`-step TD learning. [Source](http://www0.cs.ucl.ac.uk/staff/d.silver/web/Teaching.html).")  |
+|:--:|
+| *`n`-step TD learning. [Source](http://www0.cs.ucl.ac.uk/staff/d.silver/web/Teaching.html).* |
+
+- Some related concepts:
+  - `CARLA`, `A2C`
+- One related work: in there conclusion, the organizers of the 2019 [CARLA AD Challenge](https://carlachallenge.org/) note:
+
+> "**Robust** open-source AV stacks are not a commodity yet: **No public AV stack has solved the challenge yet**."
+
+- One idea: use an actor-critic architecture with **multi-step returns** (`n`-step `A2C`) to _"achieve a better robustness"_.
+  - The introduction of a **critic** aims at **reducing the variance** of the **gradient** of _policy-based_ methods.
+  - As illustrated in the above figure, in _value-based_ methods, the **TD-target** of a critic can be computed in several ways:
+    - With boostrapped, using the current estimate for the next state `s'`: `1`-step TD - low variance but biased estimate ...
+    - ... Up to considering all the steps in the trajectory until termination: `Monte Carlo` - high variance but unbiased estimate.
+    - In between are **multi-step returns critics** (`MSRC`). Obviously a trade-off between bias/variance.
+
+- Some limitations:
+  - The `MDP` is not very detailed, making **reproduction and comparison impossible**.
+    - For instance, the `action` space allegedly contains `3` discrete driving instructions [`steering`, `throttle`, and `brake`], but not concrete number is given.
+    - The same applies to the `state` and `reward` function: no quantitative description.
+    - Based on their text, I can assume the authors were participating to the 2019 CARLA AD challenge. Maybe [track `1`](https://carlachallenge.org/challenge/). But again, no - No information about the _town_/_scenario_ is given.
+  - No real comparison is performed: it should be feasible to use the built-it **rule-based agent** present in CARLA as a **baseline**.
+  - _Why not also supplying a video of the resulting agent?_
+
+</details>
+
 ## Planning and Monte Carlo Tree Seach
 
 Lee, J., Balakrishnan, A., Gaurav, A., & Feb, L. G. [2019].
@@ -381,9 +417,9 @@ Weingertner, P., Autef, A., & Le Cleac’h, S. [2018].
 
 One figure:
 
-| ![[Source](https://web.stanford.edu/class/aa228/reports/2018/final100.pdf).](media/2018_weingertner.PNG "[Source](https://web.stanford.edu/class/aa228/reports/2018/final100.pdf).")  |
+| ![Comparing the vanilla POMCP and proposed safe variant of it. [Source](https://web.stanford.edu/class/aa228/reports/2018/final100.pdf).](media/2018_weingertner.PNG "Comparing the vanilla POMCP and proposed safe variant of it. [Source](https://web.stanford.edu/class/aa228/reports/2018/final100.pdf).")  |
 |:--:|
-| *[Source](https://web.stanford.edu/class/aa228/reports/2018/final100.pdf).* |
+| *Comparing the vanilla POMCP and proposed safe variant of it. [Source](https://web.stanford.edu/class/aa228/reports/2018/final100.pdf).* |
 
 
 - Some related concepts:
