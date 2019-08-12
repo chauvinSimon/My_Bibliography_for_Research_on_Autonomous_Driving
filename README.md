@@ -321,24 +321,29 @@ Jaâfra, Y., Laurent, J.-L., Deruyver, A., & Naceur, M. S. [2019].
 
 - Some related concepts:
   - `CARLA`, `A2C`
-- One related work: in there conclusion, the organizers of the 2019 [CARLA AD Challenge](https://carlachallenge.org/) note:
+- One related work: reading this paper reminded me of one conclusion of the 2019 [CARLA AD Challenge](https://carlachallenge.org/):
 
 > "**Robust** open-source AV stacks are not a commodity yet: **No public AV stack has solved the challenge yet**."
 
 - One idea: use an actor-critic architecture with **multi-step returns** (`n`-step `A2C`) to _"achieve a better robustness"_.
   - The introduction of a **critic** aims at **reducing the variance** of the **gradient** of _policy-based_ methods.
   - As illustrated in the above figure, in _value-based_ methods, the **TD-target** of a critic can be computed in several ways:
-    - With boostrapped, using the current estimate for the next state `s'`: `1`-step TD - low variance but biased estimate ...
-    - ... Up to considering all the steps in the trajectory until termination: `Monte Carlo` - high variance but unbiased estimate.
-    - In between are **multi-step returns critics** (`MSRC`). Obviously a trade-off between bias/variance.
-
+    - With boostrapped, using the current estimate for the next state `s'`: `1`-step TD - **low variance** but biased estimate ...
+    - ... Up to considering all the steps in the trajectory until termination: `Monte Carlo` - high variance but **unbiased estimate**.
+    - In between are **multi-step returns critics** (`MSRC`). Obviously a trade-off between **bias**/**variance**.
 - Some limitations:
   - The `MDP` is not very detailed, making **reproduction and comparison impossible**.
     - For instance, the `action` space allegedly contains `3` discrete driving instructions [`steering`, `throttle`, and `brake`], but not concrete number is given.
     - The same applies to the `state` and `reward` function: no quantitative description.
-    - Based on their text, I can assume the authors were participating to the 2019 CARLA AD challenge. Maybe [track `1`](https://carlachallenge.org/challenge/). But again, no - No information about the _town_/_scenario_ is given.
+    - Based on their text, I can assume the authors were participating to the 2019 CARLA AD challenge. Maybe [track `1`](https://carlachallenge.org/challenge/). But again, information about the _town_/_scenario_ is missing.
   - No real comparison is performed: it should be feasible to use the built-it **rule-based agent** present in CARLA as a **baseline**.
   - _Why not also supplying a video of the resulting agent?_
+- One additional work: **_Meta-Reinforcement Learning for Adaptive Autonomous Driving_**, (Jaafra, Luc, Aline, & Mohamed, 2019) [[pdf](https://openreview.net/pdf?id=S1eoN9rsnN)] [[poster](https://www.ds3-datascience-polytechnique.fr/wp-content/uploads/2019/06/DS3-552_2019.pdf)].
+  - This idea is to use **multi-task learning** to improve **generalization** capabilities for a AD controller.
+  - As detailed, _"Meta-learning refers to **learn-to-learn** approaches that aim at **training** a model on a set of different but linked tasks and subsequently **generalize** to new cases using **few additional examples**"_.
+  - In other words, the goal is to find an optimal **initialization of parameters**, to then quickly adapt to a new task through a few standard gradient descents(**few-shot generalization**).
+  - A **gradient-based meta-learner** inspired from **_Model-Agnostic Meta-Learning_** (`MAML` - Finn et al., 2017) is used.
+  - RL performance in **non-stationary** environments and generalisation in AD are interesting topics. But no clear benefit is demonstrated, and the above limitations apply also here.
 
 </details>
 
