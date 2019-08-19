@@ -37,6 +37,44 @@ One figure:
 
 ## Inverse Reinforcement Learning, Inverse Optimal Control
 
+Sierra Gonzalez, D. [2019].
+**"Towards Human-Like Prediction and Decision-Making for Automated Vehicles in Highway Scenarios"**
+[[pdf](https://tel.archives-ouvertes.fr/tel-02184362/document)]
+
+<details>
+  <summary>Click to expand</summary>
+
+- Note:
+  - this **`190`-page thesis** is also referenced in the sections for **prediction** and **planning**.
+  - I really how the author organizes synergies between three modules that are split and made indepedent in most modular architectures:
+    - **`(1)` driver model**
+    - **`(2)` behavior prediction**
+    - **`(3)` decision-making**
+
+- Some related concepts:
+  - `Maximum Entropy IRL`
+
+- Related work: there are close concepts to the approach of `(Kuderer et al., 2015)` referenced below.
+- One idea: **encode the driving preferences** of a human driver with a **reward function** (or **cost function**).
+  - The author mentioned a quote from Abbeel, Ng and Russell:
+
+> “The reward function, rather than the policy or the value function, is the most succinct, robust, and transferable definition of a task”.
+
+- Other ideas:
+  - Use IRL to **avoid the manual tuning** of the parameters of the reward model. Hence learn a cost/reward function from demonstrations
+  - Include **dynamic features**, such as the `time-headway`, in the linear combination of the cost function. To takes the **interactions** between traffic participants into account.
+  - Combine IRL with a trajectory planner based on a **_"conformal spatiotemporal state lattices"_**
+    - The motivation is to deal with _continuous_ state and action spaces or handle the presence of _dynamic obstacles_.
+    - Several advantages: the ability to exploit the structure of the environment, to **consider time as part of the state-space** and respect the non-holonomic motion constraints of the vehicle.
+
+- One term: `planning-based motion prediction`.
+  - The resulting reward function can be used to generate trajectory (for prediction), using optimal control.
+  - Simply put, it can be assumed that each vehicle in the scene behaves in the **"risk-averse"** manner **encoded by the model**, i.e. choosing actions leading to the lowest cost / highest reward.
+  - This method is also called "**model**-based prediction" since it relies on the models of a MDP/reward function.
+  - This prediction tool is not used alone but rather coupled with some **DBN-based maneuver estimation**.
+
+</details>
+
 Kuderer, M., Gulati, S., & Burgard, W. [2015].
 **"Learning driving styles for autonomous vehicles from demonstration"**
 [[pdf](http://ais.informatik.uni-freiburg.de/publications/papers/kuderer15icra.pdf)]
@@ -137,6 +175,48 @@ One figure:
 - One quote (_this could apply to many other works_):
 
 > "One possible future work is to test our work in real systems".
+
+</details>
+
+Sierra Gonzalez, D. [2019].
+**"Towards Human-Like Prediction and Decision-Making for Automated Vehicles in Highway Scenarios"**
+[[pdf](https://tel.archives-ouvertes.fr/tel-02184362/document)]
+
+<details>
+  <summary>Click to expand</summary>
+
+- Some related concepts:
+  - `planning-based motion prediction`, `manoeuvre-based motion prediction`
+
+- Prediction techniques are often classified into three types:
+  - `physics-based`
+  - `manoeuvre-based` (and `goal-based`).
+  - `interaction-aware`
+
+- As I understood, the main idea here is to **combine prediction techniques** from last two groups:
+  - The driver-models (i.e. the reward function previously learnt with IRL) can be used to identify the most likely, risk-aversive, anticipatory maneuver. This is called the `model-based` prediction.
+    - But only relying on a **driver model** to predict the behavior of surrounding traffic might fail to predict dangerous maneuvers.
+    - As stated, "the model-based method is not a reliable alternative for the short-term estimation of behavior, since it cannot predict dangerous actions that deviate from what is encoded in the model".
+    - One solution is to add a term that represents **how the observed movement of the target matches a given maneuver**.
+    - In other words, to **consider the noisy observation of the dynamics of the targets** as well, i.e. to include so-called `dynamic evidence` in the prediction.
+  - The resulting approach is therefore called **"_Model-Based Driver Behavior Prediction_"**.
+    - It is also used in the _probabilistic filtering framework_ to **update the belief** in the POMDP and in its rollout (to bias the **construction of the history tree** towards likely situations given the state and intention estimations of the surrounding vehicles).
+    - It improves the inference of manoeuvers, **reducing rate of false positives** in the detection of lane change maneuvers and enable the exploration of situations in which the surrounding vehicles behave dangerously (not possible if relying on safe generative models such as `IDM`) 
+
+- One quote about this combination:
+
+> "This model mimics the reasoning process of human drivers: they can guess what a given vehicle is likely to do given the situation (the **model-based prediction**), but they closely **monitor its dynamics** to detect deviations from the expected behavior".
+
+- One idea: use this combination for **risk assessment**.
+  - As stated, _"if the intended and expected maneuver of a vehicle do not match, the situation is classified as dangerous and an alert is triggered"_.
+  - This is a important concept of **risk assessement** I could [identify at IV19](https://github.com/chauvinSimon/IV19#risk-assessment-and-safety-checkers): a situation is dangerous if there is a discrepency between _what is expected_ (given the context) and _what is observed_.
+
+- One term: **"_Interacting Multiple Model_"** (`IMM`), used as comparison.
+  - The idea is to consider a **group of motion models** (e.g. `lane keeping with CV`, `lane change with CV`) and continuously estimate which of them captures more accurately the dynamics exhibited by the target.
+  - The final predictions are produced as a **weighted combination** of the **individual predictions of each filter**.
+  - `IMM` belongs to the **_physics-based_** predictions approaches and could be extended for `maneuver inference` (called _dynamics matching_).
+  - But the issue is that IMM completely **disregards the interactions between vehicles**.
+  - Used to maintain the beliefs and guide the observation sampling in POMDP
 
 </details>
 
@@ -426,7 +506,6 @@ One figure:
 |:--:|
 | *Comparing the vanilla POMCP and proposed safe variant of it. [Source](https://web.stanford.edu/class/aa228/reports/2018/final100.pdf).* |
 
-
 - Some related concepts:
   - `POMDP`, `MCTS`, `julia`, `probabilistic risk assessment`, `value iteration`
 - One algorithm: [`POMCP`](https://papers.nips.cc/paper/4031-monte-carlo-planning-in-large-pomdps).
@@ -451,5 +530,56 @@ One figure:
 - Two ideas for future works:
   - In their [repo](https://github.com/PhilippeW83440/ACT), the authors suggest **combining learning** (e.g. model-free RL used as an heuristic and/or for rollout) with **planning** (MCTS), mentioning the success of AlphaGo Zero.
   - Another improvment concerns the **transition model** for the observed vehicles. Instead of `CV` (constant velocity) models, one could assume surrounding vehicles are **following a driver model** (e.g. `IDM`) and the task would be to **infer its hidden parameters**.
+
+</details>
+
+Sierra Gonzalez, D. [2019].
+**"Towards Human-Like Prediction and Decision-Making for Automated Vehicles in Highway Scenarios"**
+[[pdf](https://tel.archives-ouvertes.fr/tel-02184362/document)]
+
+<details>
+  <summary>Click to expand</summary>
+
+- Note: the planning part of this thesis takes advantage of the **prediction approaches** and the **driver models** referenced in previous sections.
+  - In particular, in the POMDP, the predictive model is used for both the **belief update** (instead of often-used _particle filters_ and _IMM filters_) and as a **generative model** (for forward simulations).
+  - The **value estimations** in the tree search are based on the learnt driver model and the long-term prediction methods previously presented.
+
+Some figures:
+
+| ![Comparison of recent POMDP-based planning modules. [Source](https://tel.archives-ouvertes.fr/tel-02184362/document).](media/2019_sierra_gonzalez_1.PNG "Comparison of recent POMDP-based planning modules. [Source](https://tel.archives-ouvertes.fr/tel-02184362/document).")  |
+|:--:|
+| *Comparison of recent POMDP-based planning modules. [Source](https://tel.archives-ouvertes.fr/tel-02184362/document).* |
+
+| ![Construction of the tree search with belief updates and model-based rollouts. [Source](https://tel.archives-ouvertes.fr/tel-02184362/document).](media/2019_sierra_gonzalez_2.PNG "Construction of the tree search with belief updates and model-based rollouts. [Source](https://tel.archives-ouvertes.fr/tel-02184362/document).")  |
+|:--:|
+| *Construction of the tree search with belief updates and model-based rollouts. [Source](https://tel.archives-ouvertes.fr/tel-02184362/document).* |
+
+| ![[Source](https://tel.archives-ouvertes.fr/tel-02184362/document).](media/2019_sierra_gonzalez_4.PNG "[Source](https://tel.archives-ouvertes.fr/tel-02184362/document).")  |
+|:--:|
+| *[Source](https://tel.archives-ouvertes.fr/tel-02184362/document).* |
+
+- Some related concepts:
+  - `MCTS`, `online POMDP`, `POMCP`, `progressive widening`, `SUMO`
+
+- The author targets a **_"human-like tactical planning"_**.
+  - The **POMDP** formulation is ideal since it considers uncertainty in the `controls`, `states`, and the `intentions` of the traffic participants.
+  - The idea is to include **estimation of intentions** for **long-term anticipation**.
+
+- One idea: about the **rollout policy** used for the construction of the search tree.
+  - One option is to use a **random** rollout policy.
+  - Here, the previously-derived models are used to **predict approximately the long-term development** of traffic scenes.
+
+- Another idea: adapt the combination of **_model-based_** and **_manoeuvre-estimation-based_** predictions, depending on **how far** the **rollout looks into the future**.
+
+> "As we go **deeper into the history tree** (that is, into the future), the **observed dynamics** of the targets at the root node become **less relevant** and so we **rely increasingly** in the model to **predict the behavior** of the obstacles."
+
+- Other related works:
+  - The **Hierarchical architecture** of [(Sonu, E., Sunberg, Z., & Kochenderfer, M. J. (2018). _"Exploiting Hierarchy for Scalable Decision Making in Autonomous Driving"_)](https://www.researchgate.net/publication/328455111_Exploiting_Hierarchy_for_Scalable_Decision_Making_in_Autonomous_Driving)
+  - The **`Double Progressive Widening (DPW)`** or `progressive unpruning` of [(Sunberg & Kochenderfer, 2017)](https://arxiv.org/abs/1709.06196) to deal with continuous observations
+  - The general approach of [(Bouton, M., Cosgun, A., & Kochenderfer, M. J. (2017). _"Belief state planning for autonomously navigating urban intersections"_)](https://arxiv.org/abs/1704.04322). The main difference is the substitution of the **Interacting Multiple Model** (`IMM`) with **DBN**-based model to **consider the interactions** between vehicles.
+
+- One quote about the (relative) benefits of POMDP formulation:
+
+> "There have not been significative differences between the decisions taken by the **proposed POMDP planner** and the **reactive SUMO model**. This is due to the fact that neither of those scenes truly required to analyze the **long-term consequences** of a maneuver".
 
 </details>
