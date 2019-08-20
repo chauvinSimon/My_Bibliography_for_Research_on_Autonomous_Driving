@@ -219,6 +219,41 @@ Sierra Gonzalez, D. [2019].
 
 </details>
 
+Li, S., Li, N., Girard, A., & Kolmanovsky, I. [2019].
+**"Decision making in dynamic and interactive environments based on cognitive hierarchy theory: Formulation, solution, and application to autonomous driving"**
+[[pdf](https://arxiv.org/abs/1908.04005)]
+
+<details>
+  <summary>Click to expand</summary>
+
+- Some related concepts:
+  - `game theory`, `cognitive hierarchy theory`, `interaction modelling`, `interaction-aware decision making`
+- One concept: **`cognitive hierarchy`**.
+  - Other drivers are assumed to follow some **"cognitive behavioral models"**, parametrized with a so called **"_cognitive level_"** `σ`.
+  - The goal is to **obtain and maintain belief about `σ`** based on observation in order to **optimally respond** (using a `MPC`).
+  - Three levels are considered:
+    - level-`0`: driver that treats other vehicles on road as **stationary obstacles**.
+    - level-`1`: **cautious/conservative** driver.
+    -	level-`2`: **aggressive** driver.
+
+- One quote about the **"_cognitive level_"** of human drivers:
+
+> "Humans are most commonly level-1 and level-2 reasoners".
+
+Close to the following work:
+
+Ren, Y., Elliott, S., Wang, Y., Yang, Y., & Zhang, W. [2019]. **"How Shall I Drive ? Interaction Modeling and Motion Planning towards Empathetic and Socially-Graceful Driving"** [[pdf](https://arxiv.org/abs/1901.10013)]
+
+| ![[Source](https://arxiv.org/abs/1901.10013).](media/2019_ren_1.PNG "[Source](https://arxiv.org/abs/1901.10013).")  |
+|:--:|
+| *[Source](https://arxiv.org/abs/1901.10013).* |
+
+| ![[Source](https://arxiv.org/abs/1901.10013).](media/2019_ren_2.PNG "[Source](https://arxiv.org/abs/1901.10013).")  |
+|:--:|
+| *[Source](https://arxiv.org/abs/1901.10013).* |
+
+</details>
+
 ## Rule-based Decision Making
 
 Noh, S. [2018].
