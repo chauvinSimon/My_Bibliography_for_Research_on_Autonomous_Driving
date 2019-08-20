@@ -227,22 +227,31 @@ Li, S., Li, N., Girard, A., & Kolmanovsky, I. [2019].
   <summary>Click to expand</summary>
 
 - Some related concepts:
-  - `game theory`, `cognitive hierarchy theory`, `interaction modelling`, `interaction-aware decision making`
+  - `level-k game theory`, `cognitive hierarchy theory`, `interaction modelling`, `interaction-aware decision making`
 - One concept: **`cognitive hierarchy`**.
   - Other drivers are assumed to follow some **"cognitive behavioral models"**, parametrized with a so called **"_cognitive level_"** `σ`.
   - The goal is to **obtain and maintain belief about `σ`** based on observation in order to **optimally respond** (using a `MPC`).
   - Three levels are considered:
     - level-`0`: driver that treats other vehicles on road as **stationary obstacles**.
     - level-`1`: **cautious/conservative** driver.
-    -	level-`2`: **aggressive** driver.
+    - level-`2`: **aggressive** driver.
 
 - One quote about the **"_cognitive level_"** of human drivers:
 
 > "Humans are most commonly level-1 and level-2 reasoners".
 
-Close to the following work:
+Related works:
 
-Ren, Y., Elliott, S., Wang, Y., Yang, Y., & Zhang, W. [2019]. **"How Shall I Drive ? Interaction Modeling and Motion Planning towards Empathetic and Socially-Graceful Driving"** [[pdf](https://arxiv.org/abs/1901.10013)]
+- Li, N., Oyler, D., Zhang, M., Yildiz, Y., Kolmanovsky, I., & Girard, A. [2016]. **"Game-theoretic modeling of driver and vehicle interactions for verification and validation of autonomous vehicle control systems"** [[pdf](https://arxiv.org/abs/1608.08589)]
+  - > "If a driver assumes that the other drivers are level-`1` and **takes an action accordingly**, this driver is a level-`2` driver".
+  - Use RL with **hierarchical assignment** to learn the policy:
+    - First, the `π-0` (for level-`0`) is learnt for the ego-agent.
+    - Then `π-1` with all the other participants following `π-0`.
+    - Then `π-2` ...
+  - **Action masking**: "If a car in the _left lane_ is in a parallel position, the controlled car _cannot change lane to the left_".
+    - _"The use of these_ _**hard constrains**_ _eliminates the clearly undesirable behaviors better than through penalizing them in the reward function, and also_ **_increases the learning speed during training_**_"_
+
+- Ren, Y., Elliott, S., Wang, Y., Yang, Y., & Zhang, W. [2019]. **"How Shall I Drive ? Interaction Modeling and Motion Planning towards Empathetic and Socially-Graceful Driving"** [[pdf](https://arxiv.org/abs/1901.10013)] [[code](https://github.com/scaperoth/carmachinelearning)]
 
 | ![[Source](https://arxiv.org/abs/1901.10013).](media/2019_ren_1.PNG "[Source](https://arxiv.org/abs/1901.10013).")  |
 |:--:|
