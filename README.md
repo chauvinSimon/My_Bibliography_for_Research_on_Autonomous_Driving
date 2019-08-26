@@ -265,6 +265,44 @@ Related works:
 
 ## Rule-based Decision Making
 
+Naumann, M., Königshof, H., & Stiller, C. [2019].
+**"Provably Safe and Smooth Lane Changes in Mixed Traffic"**
+[[pdf](https://www.mrt.kit.edu/z/publ/download/2019/Naumann2019LaneChange.pdf)]
+[[video](https://www.mrt.kit.edu/z/publ/download/2019_LaneChange_Naumann.mp4)]
+[[Code for Simulator](https://github.com/coincar-sim)]
+
+<details>
+  <summary>Click to expand</summary>
+
+Some figures:
+
+| ![The first `safe?` check might lead to conservative behaviours (huge gaps would be needed for safe lane changes). Hence it is relaxed with some `Probably Safe?` condition. [Source](https://www.mrt.kit.edu/z/publ/download/2019/Naumann2019LaneChange.pdf).](media/2019_naumann_1.PNG "The first `safe?` check might lead to conservative behaviours (huge gaps would be needed for safe lane changes). Hence it is relaxed with some `Probably Safe?` condition. [Source](https://www.mrt.kit.edu/z/publ/download/2019/Naumann2019LaneChange.pdf).")  |
+|:--:|
+| *The first `safe?` check might lead to conservative behaviours (huge gaps would be needed for safe lane changes). Hence it is relaxed with some `Probably Safe?` condition. [Source](https://www.mrt.kit.edu/z/publ/download/2019/Naumann2019LaneChange.pdf).* |
+
+| ![[Source](https://www.mrt.kit.edu/z/publ/download/2019/Naumann2019LaneChange.pdf).](media/2019_naumann_2.PNG "[Source](https://www.mrt.kit.edu/z/publ/download/2019/Naumann2019LaneChange.pdf).")  |
+|:--:|
+| *[Source](https://www.mrt.kit.edu/z/publ/download/2019/Naumann2019LaneChange.pdf).* |
+
+| ![Formulation by Pek, Zahn, & Althoff, 2017. [Source](https://mediatum.ub.tum.de/doc/1379669/794156.pdf).](media/2017_pek.PNG "Formulation by Pek, Zahn, & Althoff, 2017. [Source](https://mediatum.ub.tum.de/doc/1379669/794156.pdf).")  |
+|:--:|
+| *Formulation by Pek, Zahn, & Althoff, 2017. [Source](https://mediatum.ub.tum.de/doc/1379669/794156.pdf).* |
+
+- Some related concepts:
+  - `path-velocity decomposition`, `IDM`, `RSS`
+
+- Main ideas:
+  - The notion of **_safety_** is based on the **responsibility sensitive safety** (`RSS`) definition.
+    - As stated by the authors, _"A **`safe`** lane change is guaranteed not to **`cause`** a collision according to the previously defined rules, while a single vehicle cannot ensure that it will never be involved in a collision."_
+  - Use _set-based reachability analysis_ to prove the "RSS-safety" of lane change maneuvers based on **gap evaluation**.
+    - In other words, it is the **responsibility** of the ego vehicle to **maintain safe distances** during the lane change manoeuvre.
+
+- Related works: A couple of safe distances are defined, building on
+  - `RSS` principles (after IV19, I tried to summarize some of the RSS concepts [here](https://github.com/chauvinSimon/IV19#rss)).
+  - [_"Verifying the Safety of Lane Change Maneuvers of Self-driving Vehicles Based on Formalized Traffic Rules"_](https://mediatum.ub.tum.de/doc/1379669/794156.pdf), (Pek, Zahn, & Althoff, 2017)
+
+</details>
+
 Noh, S. [2018].
 **"Decision-Making Framework for Autonomous Driving at Road Intersections: Safeguarding Against Collision, Overly Conservative Behavior, and Violation Vehicles"**
 [[html](https://ieeexplore.ieee.org/document/8370800)]
