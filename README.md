@@ -298,7 +298,7 @@ Some figures:
     - In other words, it is the **responsibility** of the ego vehicle to **maintain safe distances** during the lane change manoeuvre.
 
 - Related works: A couple of safe distances are defined, building on
-  - `RSS` principles (after IV19, I tried to summarize some of the RSS concepts [here](https://github.com/chauvinSimon/IV19#rss)).
+  - **`RSS`** principles (_after IV19, I tried to summarize some of the RSS concepts [here](https://github.com/chauvinSimon/IV19#rss)_).
   - [_"Verifying the Safety of Lane Change Maneuvers of Self-driving Vehicles Based on Formalized Traffic Rules"_](https://mediatum.ub.tum.de/doc/1379669/794156.pdf), (Pek, Zahn, & Althoff, 2017)
 
 </details>
@@ -337,6 +337,58 @@ One figure:
 </details>
 
 ## Model Free Reinforcement Learning
+
+Tram, T., Batkovic, I., Ali, M., & Sjöberg, J. [2019].
+**"Learning When to Drive in Intersections by Combining Reinforcement Learning and Model Predictive Control"**
+[[pdf](https://arxiv.org/abs/1908.00177)]
+
+<details>
+  <summary>Click to expand</summary>
+
+Two figures:
+
+| ![[Source Left](https://arxiv.org/abs/1908.00177) [Source Right](https://pdfs.semanticscholar.org/fba5/6bac9a41b7baa2671355aa113462d2044fb7.pdf).](media/2019_tram_3.PNG "[Source Left](https://arxiv.org/abs/1908.00177) [Source Right](https://pdfs.semanticscholar.org/fba5/6bac9a41b7baa2671355aa113462d2044fb7.pdf).")  |
+|:--:|
+| *[Source Left](https://arxiv.org/abs/1908.00177) [Source Right](https://pdfs.semanticscholar.org/fba5/6bac9a41b7baa2671355aa113462d2044fb7.pdf).* |
+
+| ![This work applies the **path-velocity decomposition** and focuses on the longitudinal control. **Three intentions** are considered: aggressive `take-way`, `cautious` (slows down without stopping), and passive `give-way`. [Source](https://arxiv.org/abs/1908.00177).](media/2019_tram_2.PNG "This work applies the **path-velocity decomposition** and focuses on the longitudinal control. **Three intentions** are considered: aggressive `take-way`, `cautious` (slows down without stopping), and passive `give-way`. [Source](https://arxiv.org/abs/1908.00177).")  |
+|:--:|
+| *This work applies the **path-velocity decomposition** and focuses on the longitudinal control. **Three intentions** are considered: aggressive `take-way`, `cautious` (slows down without stopping), and passive `give-way`. [Source](https://arxiv.org/abs/1908.00177).* |
+
+Since the constraints from the surrounding obstacles become non-convex, we rely on the high-level policy maker to decide
+
+- Some related concepts:
+  - `model-free RL`, `MPC`, `Q-Masking`, `POMDP`
+- Main idea: **hierarchy** in _learnt_/_optimized_ decision-making.
+  - A **high-level decision module** based on RL uses the **feedback from the MPC controller** in the reward function.
+  - The MPC controller is also responsible for **handling the comfort** of passengers in the car by **generating a smooth acceleration profile**.
+- Previous works:
+  - [_"Learning Negotiating Behavior Between Cars in Intersections using Deep Q-Learning"_](http://arxiv.org/abs/1810.10469) - (Tram, Batkovic, Ali, & Sjöberg, 2019)
+  - [_"Autonomous Driving in Crossings using Reinforcement Learning"_](https://pdfs.semanticscholar.org/fba5/6bac9a41b7baa2671355aa113462d2044fb7.pdf) - (Jansson & Grönberg, 2017)
+  - In particular they reused the concept of **_"actions as Short Term Goals (`STG`)"_**. e.g. _keep set speed or yield for crossing car_ instead of some numerical acceleration outputs.
+    - This allows for **comfort** on actuation and **safety** to be **tuned separately**, reducing the policy selection to a classification problem.
+    - The use of such abstracted / high-level decisions could be a first step toward **hierarchical RL** techniques (`macro-action` and `option` framework).
+  - Another contribution consists in remplacing the **Sliding Mode** (**`SM`**) controller used previously by a `MPC`, allegedly to _"achieve safer actuation by using constraints"_.
+    - The **intention of all agents** is implemented with a `SM` controller with **various target values**.
+- I find it valuable to have details about the **training phase** (no all papers do that). In particular:
+  - The **normalization** of the input features in [`-1`, `1`].
+  - The **normalization** of the reward term in [`-2`, `1`].
+  - The use of **equal weights** for inputs that describe the state of **interchangeable objects**.
+  - Use of a **`LSTM`**, as an alternative to a **DQN with stacked observations**. (Findings from _(Jansson & Grönberg, 2017)_).
+- Additional notes:
+  - The main benefits of the combination seems to be about **avoiding over conservative behaviours** while improving the **"sampling-efficient"** of the model-free RL approach.
+    - Such approachs looks to be particularly relevant (in term of _success rate_ and _collision-to-timeout ratio_ [`CTR`]) for complex scenarios, e.g. `2`-crossing scenarios.
+    - For simple cases, the performance stays close to the baseline.
+  - The reliance (_and the burden_) on an appropriate **parametrisation** inherent to rule-based has not disappeared and the **generalisation seems limited**:
+    - _"Since MPC uses_ **_predefined models_** _, e.g. vehicle models and other obstacle prediction models, the_ **_performance relies on their accuracy and assumptions_** _."_
+  - The problem is formulated as a `POMDP`.
+    - _Honestly, from a first read, I did not find how `belief tracking` is performed. Maybe something related to the internal memory state of the LSTM cells?_
+  - Sadly the **simulator** seems to be **home-made**, which makes reproducibility tricky.
+- One quote about **`Q-masking`**, i.e. the technique of not exposing to the agent dangerous or non-applicable actions during the action selection.
+  - > "**Q-masking helps the learning process** by **reducing the exploration** space by disabling actions the agent does not need to explore."
+  - Hence the agent **does not have to explore** these options, while ensuring a certain level of safety (but this requires another **rule-based module** ;) ).
+
+</details>
 
 Bouton, M., Nakhaei, A., Fujimura, K., & Kochenderfer, M. J. [2019].
 **"Cooperation-Aware Reinforcement Learning for Merging in Dense Traffic"**
