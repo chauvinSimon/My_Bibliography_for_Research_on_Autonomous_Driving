@@ -19,47 +19,46 @@ Ilievski, M., Sedwards, S., Gaurav, A., Balakrishnan, A., Sarkar, A., Lee, J., B
 
 Some figures:
 
-| ![The focus is on the `BP` module, together with it precessessor (`environment`) and successor (`LP`). [Source](https://arxiv.org/abs/1908.07931).](media/2019_ilievski_5.PNG "The focus is on the `BP` module, together with it precessessor (`environment`) and successor (`LP`). [Source](https://arxiv.org/abs/1908.07931).")  |
+| ![The focus is on the `BP` module, together with it precessessor (`environment`) and its successor (`LP`) in a modular architecture. [Source](https://arxiv.org/abs/1908.07931).](media/2019_ilievski_5.PNG "The focus is on the `BP` module, together with it precessessor (`environment`) and its successor (`LP`) in a modular architecture. [Source](https://arxiv.org/abs/1908.07931).")  |
 |:--:|
-| *The focus is on the `BP` module, together with it precessessor (`environment`) and successor (`LP`). [Source](https://arxiv.org/abs/1908.07931).* |
+| *The focus is on the `BP` module, together with its precessessor (`environment`) and its successor (`LP`) in a modular architecture. [Source](https://arxiv.org/abs/1908.07931).* |
 
-| ![Classification for question 1 - environment representation. A combination is possible. In black, my notes giving examples. [Source](https://arxiv.org/abs/1908.07931).](media/2019_ilievski_6.PNG "Classification for question 2 - environment representation. A combination is possible. In black, my notes giving examples. [Source](https://arxiv.org/abs/1908.07931).")  |
+| ![Classification for question `1` - environment representation. A combination is possible. In black, my notes giving examples. [Source](https://arxiv.org/abs/1908.07931).](media/2019_ilievski_6.PNG "Classification for question `1` - environment representation. A combination is possible. In black, my notes giving examples. [Source](https://arxiv.org/abs/1908.07931).")  |
 |:--:|
-| *Classification for question 1 - environment representation. A combination is possible. In black, my notes giving examples. [Source](https://arxiv.org/abs/1908.07931).* |
+| *Classification for question `1` - environment representation. A combination is possible. In black, my notes giving examples. [Source](https://arxiv.org/abs/1908.07931).* |
 
-| ![Classification for question 2 - on the architecture. [Source](https://arxiv.org/abs/1908.07931).](media/2019_ilievski_2.PNG "Classification for question 2 - on the architecture. [Source](https://arxiv.org/abs/1908.07931).")  |
+| ![Classification for question `2` - on the architecture. [Source](https://arxiv.org/abs/1908.07931).](media/2019_ilievski_2.PNG "Classification for question `2` - on the architecture. [Source](https://arxiv.org/abs/1908.07931).")  |
 |:--:|
-| *Classification for question 2 - on the architecture. [Source](https://arxiv.org/abs/1908.07931).* |
+| *Classification for question `2` - on the architecture. [Source](https://arxiv.org/abs/1908.07931).* |
 
-| ![Classification for question 3 - on the decision logic representation. [Source](https://arxiv.org/abs/1908.07931).](media/2019_ilievski_1.PNG "Classification for question 3 - on the decision logic representation. [Source](https://arxiv.org/abs/1908.07931).")  |
+| ![Classification for question `3` - on the decision logic representation. [Source](https://arxiv.org/abs/1908.07931).](media/2019_ilievski_1.PNG "Classification for question `3` - on the decision logic representation. [Source](https://arxiv.org/abs/1908.07931).")  |
 |:--:|
-| *Classification for question 3 - on the decision logic representation. [Source](https://arxiv.org/abs/1908.07931).* |
+| *Classification for question `3` - on the decision logic representation. [Source](https://arxiv.org/abs/1908.07931).* |
 
 The authors divide their review into three sections:
 
-- Question 1: **_How to represent the envrionment?_** (relation with predecessor module)
-  - Four representations are compared: _raw data_, _feature-based_, _grid-based_, _latent representation_
-- Question 2: **_How to communicated with other modules, especially the local planner (`LP`)?_** (relation with successor module (`LP`))
-  - A first sub-question is the relevance of separation `BP` / `LP`.
-    - A complete separation (_top-down_) can lead to computational redundancy (both have a collision checker).
-    - One idea, close to **sampling techniques**, could be to **invert the traditional architecture** for planning, i.e. **generate multiple possible local paths** (`~LP`) then selects the best manoeuvre according to a given cost function (`~BP`).
-  - A second sub-question concerns _prediction_: _should the `BP` module have its own dedicated prediction module?_
+- Question `1`: **_How to represent the envrionment?_** (relation with _predecessor_ of `BP`)
+  - Four representations are compared: `raw data`, `feature-based`, `grid-based` and `latent representation`.
+- Question `2`: **_How to communicated with other modules, especially the local planner (`LP`)?_** (relation with _successor_ (`LP`) of `BP`)
+  - A first sub-question is the relevance of **separation** `BP` / `LP`.
+    - A complete separation (_top-down_) can lead to **computational redundancy** (both have a _collision checker_).
+    - One idea, close to **sampling techniques**, could be to **invert the traditional architecture** for planning, i.e. **generate multiple possible local paths** (`~LP`) then selects the best manoeuvre according to a given cost function (`~BP`). But this exasperates the previous point.
+  - A second sub-question concerns _prediction_: **_Should the `BP` module have its own dedicated prediction module?_**
     - First, three kind of prediction are listed, depending on what should be predicted (marked with `->`):
-      - _Physics-based_ (`->` trajectory).
-      - _Manoeuvre-based_ (`->` low-level motion primitives).
-      - _Interaction-aware_ (`->` intent).
+      - _Physics_-based (`->` trajectory).
+      - _Manoeuvre_-based (`->` low-level motion primitives).
+      - _Interaction_-aware (`->` intent).
     - Then, the authors distinghuish between **_explicitly-defined_** and **_implicitly-defined_** prediction models:
       - **_Explicitly-defined_** can be:
         - _Integrated_ with the motion planning process (called **_Internal prediction models_**) such as **belief-based** decision making (e.g. `POMDP`). Ideal for **planning under uncertainty**.
         - _Decoupled_ from the planning process (called **_External prediction models_**). There is a **clear interface** between prediction and planning, which aids **modularity**.
       - **_Implicitly-defined_**, such as `RL` techniques.
-    - After listing the kind of prediction (__, __, _interaction-aware_ [intent]), the authors distinghuish between _explicitly-defined_ and _implicitly-defined_ prediction models:
-- Question 3: **_How to make `BP` decisions?_** (`BP` module itself)
-  - A first distinction in _representation of decision logic_ is made depending based on _learnt_ / _non-learnt_:
-    - Using a set of **explicitly programmed** production rules can be divided into
+- Question `3`: **_How to make `BP` decisions?_** (`BP` itself)
+  - A first distinction in _representation of decision logic_ is made depending based on _non-learnt_ / _learnt_:
+    - Using a set of **explicitly programmed** production rules can be divided into:
       - `Imperative` approaches, e.g. _state machines_.
       - `Declarative` approaches often based on some **probabilistic system**.
-        - The decision-tree structure and the (`PO`)`MDP` formulation makes **more robust to uncertainty**.
+        - The **decision-tree** structure and the (`PO`)`MDP` formulation makes it **more robust to uncertainty**.
         - Examples include **MCTS** and **online POMDP solvers**.
     - Logic representation can also rely on mathematical models with **parameters learned** a priori.
       - A distinction is made depending on _"where does the training data come from and when is it created?"_.
@@ -67,13 +66,13 @@ The authors divide their review into three sections:
       - The combination of both seems benefitial:
         - An initial behaviour is obtained through **imitation learning** (_learning from example_). Also possible with `IRL`.
         - But **improvements are made through interaction** with a simulated environment (_learning from interaction_).
-        - The _learning from interaction_ techniques raise the question of the **origin of the experience** (e.g. fidelity of the simulator) and its **sampling efficiency**.
+          - By the way, the _learning from interaction_ techniques raise the question of the **origin of the experience** (e.g. realism of the simulator) and its **sampling efficiency**.
       - Another promising direction is **hierarchical RL** where the MDP is divided into sub-problems (the **lower for `LP`** and the **higher for `BP`**)
         - The _lowest level_ implementation of the hierarchy approximates a solution to the **control and LP problem** ...
         - ... while the _higher level_ **selects a maneuver** to be executed by the lower level implementations.
   - As mentioned my the section on [Scenarios and Datasets](https://github.com/chauvinSimon/IV19#scenarios-and-datasets), the authors mention the **lack of benchmark** to compare and **evaluate** the performance of BP technologies.
 
-One quote:
+One quote about the _representation of decision logic_:
 
 - As identified in [my notes about IV19](https://github.com/chauvinSimon/IV19), the **combination** of _learnt_ and _non-learnt_ approaches looks the most promising.
 - > "Without learning, traditional robotic solutions cannot adequately handle **complex, dynamic human environments**, but **ensuring the safety** of learned systems remains a significant challenge."
