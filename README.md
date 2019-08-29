@@ -23,17 +23,17 @@ Some figures:
 |:--:|
 | *The focus is on the `BP` module, together with its precessessor (`environment`) and its successor (`LP`) in a modular architecture. [Source](https://arxiv.org/abs/1908.07931).* |
 
-| ![Classification for question `1` - environment representation. A combination is possible. In black, my notes giving examples. [Source](https://arxiv.org/abs/1908.07931).](media/2019_ilievski_6.PNG "Classification for question `1` - environment representation. A combination is possible. In black, my notes giving examples. [Source](https://arxiv.org/abs/1908.07931).")  |
+| ![Classification for Question `1` - environment representation. A combination is possible. In black, my notes giving examples. [Source](https://arxiv.org/abs/1908.07931).](media/2019_ilievski_6.PNG "Classification for Question `1` - environment representation. A combination is possible. In black, my notes giving examples. [Source](https://arxiv.org/abs/1908.07931).")  |
 |:--:|
-| *Classification for question `1` - environment representation. A combination is possible. In black, my notes giving examples. [Source](https://arxiv.org/abs/1908.07931).* |
+| *Classification for Question `1` - environment representation. A combination is possible. In black, my notes giving examples. [Source](https://arxiv.org/abs/1908.07931).* |
 
-| ![Classification for question `2` - on the architecture. [Source](https://arxiv.org/abs/1908.07931).](media/2019_ilievski_2.PNG "Classification for question `2` - on the architecture. [Source](https://arxiv.org/abs/1908.07931).")  |
+| ![Classification for Question `2` - on the architecture. [Source](https://arxiv.org/abs/1908.07931).](media/2019_ilievski_2.PNG "Classification for Question `2` - on the architecture. [Source](https://arxiv.org/abs/1908.07931).")  |
 |:--:|
-| *Classification for question `2` - on the architecture. [Source](https://arxiv.org/abs/1908.07931).* |
+| *Classification for Question `2` - on the architecture. [Source](https://arxiv.org/abs/1908.07931).* |
 
-| ![Classification for question `3` - on the decision logic representation. [Source](https://arxiv.org/abs/1908.07931).](media/2019_ilievski_1.PNG "Classification for question `3` - on the decision logic representation. [Source](https://arxiv.org/abs/1908.07931).")  |
+| ![Classification for Question `3` - on the decision logic representation. [Source](https://arxiv.org/abs/1908.07931).](media/2019_ilievski_1.PNG "Classification for Question `3` - on the decision logic representation. [Source](https://arxiv.org/abs/1908.07931).")  |
 |:--:|
-| *Classification for question `3` - on the decision logic representation. [Source](https://arxiv.org/abs/1908.07931).* |
+| *Classification for Question `3` - on the decision logic representation. [Source](https://arxiv.org/abs/1908.07931).* |
 
 The authors divide their review into three sections:
 
@@ -117,6 +117,8 @@ One figure:
 Sierra Gonzalez, D. [2019].
 **"Towards Human-Like Prediction and Decision-Making for Automated Vehicles in Highway Scenarios"**
 [[pdf](https://tel.archives-ouvertes.fr/tel-02184362/document)]
+[[video - simulator](https://www.youtube.com/watch?v=Xx5OmV86CsM)]
+[[code - simulator](https://github.com/marioney/hybrid_simulation/tree/decision-making)]
 
 <details>
   <summary>Click to expand</summary>
@@ -268,6 +270,8 @@ One figure:
 Sierra Gonzalez, D. [2019].
 **"Towards Human-Like Prediction and Decision-Making for Automated Vehicles in Highway Scenarios"**
 [[pdf](https://tel.archives-ouvertes.fr/tel-02184362/document)]
+[[video - simulator](https://www.youtube.com/watch?v=Xx5OmV86CsM)]
+[[code - simulator](https://github.com/marioney/hybrid_simulation/tree/decision-making)]
 
 <details>
   <summary>Click to expand</summary>
@@ -666,6 +670,46 @@ Jaâfra, Y., Laurent, J.-L., Deruyver, A., & Naceur, M. S. [2019].
 
 </details>
 
+Plessen, M. G. [2017].
+**"Automating Vehicles by Deep Reinforcement Learning Using Task Separation with Hill Climbing."**
+[[pdf](https://arxiv.org/abs/1711.10785)]
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://arxiv.org/abs/1711.10785).](media/2017_plessen_1.PNG "[Source](https://arxiv.org/abs/1711.10785).")  |
+|:--:|
+| *[Source](https://arxiv.org/abs/1711.10785).* |
+
+- Some related concepts:
+  - `gradient-free RL`, `policy-gradient RL`, `reward shaping`
+- One remark: to be honnest, I find this publication _not very easy_ to understand. But **it raises important questions**. Here are some take-aways.
+
+- One term: `(TSHC)` = **_Task Separation with Hill Climbing_**
+  - _Hill Climbing_ has nothing to do with the [gym _MountainCar_ env](https://github.com/openai/gym/wiki/MountainCar-v0).
+    - It rather refers to as a **gradient-free** optimization method: the parameters are updated based on **greedy local search**.
+    - For several reasons, the author claims gradient-free methods are simpler and more appropriate for his problem, compared to **policy-gradient RL** optimization methods such as `PPO` and `DDPG` where tuned-parameters are numerous and sparse rewards are propagating very slowly.
+  - The idea of _Task Separation_ concerns the main objective of the training phase: "encode many desired **motion primitives** (_training tasks_) in a neural network", hoping for **generalisation** when exposed to new tasks.
+    - It is said to serve for **exploration** in optimization: each task leads to a possible region with locally optimal solution, and the best solution among all identified locally optimal solutions is selected.
+- One concept: `sparse reward`.
+  - **Reward shaping** is an important problem when formulation the decision-making problem for autonomous driving using a (PO)MDP.
+  - The reward signal is the main signal used for the agent to update its policy. But if it **only receives positive reward** when **reaching the goal state** (i.e. **_sparse reward_**), two issues appear:
+    - First, it will take random actions until, by chance, it gets some non-zero reward. Depending on how long it takes to get these non-zero rewards, it might **take the agent extremely long to learn anything**.
+    - Secondly, because nonzero rewards are seen so rarely, the sequence of actions that resulted in the reward might be very long, and it is **not clear which of those actions were really useful** in getting the reward. This problem is known as **credit assignment** in RL. (Explanations are from [here](https://www.quora.com/Why-are-sparse-rewards-problematic-in-Reinforcement-Learning-RL-difficult)).
+  - Two options are considered in this work:
+    - **_"Rich reward signals"_**, where a feedback is provided at **every time step** (`r` becomes function of `t`).
+    - **_"Curriculum learning"_**, where the leanring agent is first provided with **simpler examples** before gradually increasing complexity.
+  - After trials, the author claims that no consistent improvement could be observed with these two techniques, adding that the **design** of both rich reward signals and "simple examples" for curriculum learning are problematic.
+    - He rather kept working with sparse rewards (**_maximal sparse rewards_**), but introduced some _"virtual velocity constraints"_ to speed up the training.
+- I like the points he made concerning **feature selection** for the state, i.e. how to design the state `s(t)` of the MDP.
+  - He notes that `s(t)` must always relate the current vehicle state with **reference to a goal state**.
+    - In other words, one should use **relative features** for the description of the position and velocity, relative to their targets.
+  - In addition, `s(t)` should also **consider the past** and embed a collection of multiple past time measurements.
+    - It seems sounds. But this would indicated that the **"Markov property"** in the MDP formulation does not hold.
+
+---
+
+</details>
 
 ## Planning and Monte Carlo Tree Seach
 
@@ -740,6 +784,8 @@ Augustin, D., Schucker, J., Tschirner, J., Hofmann, M., & Konigorski, L. [2019].
 Sierra Gonzalez, D. [2019].
 **"Towards Human-Like Prediction and Decision-Making for Automated Vehicles in Highway Scenarios"**
 [[pdf](https://tel.archives-ouvertes.fr/tel-02184362/document)]
+[[video - simulator](https://www.youtube.com/watch?v=Xx5OmV86CsM)]
+[[code - simulator](https://github.com/marioney/hybrid_simulation/tree/decision-making)]
 
 <details>
   <summary>Click to expand</summary>
