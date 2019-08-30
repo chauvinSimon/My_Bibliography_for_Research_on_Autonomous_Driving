@@ -82,6 +82,70 @@ One quote about the _representation of decision logic_:
 
 </details>
 
+Wei, J., Snider, J. M., & Dolan, J. M. [2014].
+**"A Behavioral Planning Framework for Autonomous Driving A Behavioral Planning Framework for Autonomous Driving"**
+[[pdf](https://ri.cmu.edu/pub_files/2014/6/IV2014-Junqing-Final.pdf)]
+
+<details>
+  <summary>Click to expand</summary>
+
+Some figures:
+
+| ![Comparison and fusion of the **hierarchical** and **parallel** architectures. [Source](https://ri.cmu.edu/pub_files/2014/6/IV2014-Junqing-Final.pdf).](media/2014_wei_1.PNG "Comparison and fusion of the **hierarchical** and **parallel** architectures. [Source](https://ri.cmu.edu/pub_files/2014/6/IV2014-Junqing-Final.pdf).")  |
+|:--:|
+| *Comparison and fusion of the **hierarchical** and **parallel** architectures. [Source](https://ri.cmu.edu/pub_files/2014/6/IV2014-Junqing-Final.pdf).* |
+
+| ![The `PCB` algorithm implemented in the `BP` module. [Source](https://ri.cmu.edu/pub_files/2014/6/IV2014-Junqing-Final.pdf).](media/2014_wei_2.PNG "The `PCB` algorithm implemented in the `BP` module. [Source](https://ri.cmu.edu/pub_files/2014/6/IV2014-Junqing-Final.pdf).")  |
+|:--:|
+| *The `PCB` algorithm implemented in the `BP` module. [Source](https://ri.cmu.edu/pub_files/2014/6/IV2014-Junqing-Final.pdf).* |
+
+| ![Related work by (Xu, Pan, Wei, & Dolan, 2014) - Grey ellipses indicate the magnitude of the uncertainty of state. [Source](https://ri.cmu.edu/pub_files/2014/6/ICRA14_0863_Final.pdf).](media/2014_xu_1.PNG "Related work by (Xu, Pan, Wei, & Dolan, 2014) - Grey ellipses indicate the magnitude of the uncertainty of state. [Source](https://ri.cmu.edu/pub_files/2014/6/ICRA14_0863_Final.pdf).")  |
+|:--:|
+| *Related work by (Xu, Pan, Wei, & Dolan, 2014) - Grey ellipses indicate the magnitude of the uncertainty of state. [Source](https://ri.cmu.edu/pub_files/2014/6/ICRA14_0863_Final.pdf).* |
+
+- Some related concepts:
+  - `behavioural planning`, `sampling-based planner`, `decision under uncertainty`, [`TORCS`](https://en.wikipedia.org/wiki/TORCS)
+
+Note: I find very valuable to get insights from the **CMU** (Carnegie Mellon University) Team, based on their **experience of the DARPA Urban Challenges**.
+
+- Related works:
+  - [_A prediction- and cost function-based algorithm for robust autonomous freeway driving_. 2010](https://ri.cmu.edu/pub_files/2010/6/2010_IV.pdf) by (Wei, Dolan, & Litkouhi, 2010).
+    - They introduced the **_"Prediction- and Cost-function Based (`PCB`) algorithm"_** used.
+    - The idea is to `generate`-`forward_simulate`-`evaluate` a set of manoeuvres.
+    - The planner can therefore take **surrounding vehicles’ reactions** into account **in the cost function** when it searches for the best strategy.
+    - At the time, the authors rejected the option of a `POMDP` forumlation (_computing the control policy over the space of the belief state, which is a probability distribution over all the possible states_) deemed as computationally expensive. Improvements in hardware and algorithmic have been made since 2014.
+  - [_Motion planning under uncertainty for on-road autonomous driving_. 2014](https://ri.cmu.edu/pub_files/2014/6/ICRA14_0863_Final.pdf) by (Xu, Pan, Wei, & Dolan, 2014).
+    - An extension of the framework to **consider uncertainty** (both for _environment_ and the _others participants_) in the decision-making.
+    - The prediction module is using a **Kalman Filter** (assuming constant velocity).
+    - For each candidate trajectory, the **uncertainty** can be estimated using a **_Linear-Quadratic Gaussian_** (`LQG`) framework (based on the the noise characteristics of the localization and control).
+    - Their Gaussian-based method gives some **probabilistic safety guaranty** (e.g. likelihood `2%` of collision to occur).
+- Proposed architecture for _decision-making_:
+  - First ingredient: **Hierarchical** architecture.
+    - The hierachy `mission` `->` `manoeuver` `->` `motion` [`3M` concept](https://github.com/chauvinSimon/Hierarchical-Decision-Making-for-Autonomous-Driving) makes it very modular but can raise limitations:
+    - > "the higher-level decision making module usually **does not have enough detailed information**, and the lower-level layer **does not have authority** to **reevaluate the decision**."
+  - Second ingredient: **Parallel** architecture.
+    - This is inspired from **ADAS** engineering.
+    - The control modules (`ACC`, `Merge Assist`, `Lane Centering`) are relatively **independent** and **work in parallel**.
+    - In some **complicated cases** needing cooperation, this framework may not perform well.
+      - _This probably shows that just_ **_extending the common ADAS architectures_** _cannot be enough to reach the_ **_level-`5` of autonomy_**.
+  - Idea of the proposed framework: **combine the strengths** of the **_hierarchical_** and **_parallel_** architectures.
+    - This relieves the path planner and the control module (the search space is reduced).
+    - Hence the **computational cost** shrinks (by over 90% compared to a **_sample-based planner_** in the **spatio-temporal space**).
+- One module worth mentioning: **_Traffic-free Reference Planner_**.
+  - Its input: lane-level **sub-missions** from the _Mission Planning_.
+  - Its output: kinematically and dynamically feasible **paths** and a **speed profiles** for the **_Behavioural Planner_** (`BP`).
+    - It assumes there is **no traffic** on the road, i.e. **ignores dynamic obstacles**.
+    - It also applies **traffic rules** such as _speed limits_.
+  - This **guides** the `BP` layer which considers both static and dynamic obstacles to generate so-called **_"controller directives"_** such as:
+    - The **lateral driving bias**.
+    - The **desired leading vehicle** to follow.
+    - The **aggressiveness** of distance keeping.
+    - The **maximum speed**.
+
+---
+
+</details>
+
 ## Behavior Cloning, End-To-End (E2E), Imitation Learning
 
 Codevilla, F., Santana, E., Antonio, M. L., & Gaidon, A. [2019].
