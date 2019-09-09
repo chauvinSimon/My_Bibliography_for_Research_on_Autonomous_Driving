@@ -83,7 +83,7 @@ One quote about the _representation of decision logic_:
 </details>
 
 Wei, J., Snider, J. M., & Dolan, J. M. [2014].
-**"A Behavioral Planning Framework for Autonomous Driving A Behavioral Planning Framework for Autonomous Driving"**
+**"A Behavioral Planning Framework for Autonomous Driving"**
 [[pdf](https://ri.cmu.edu/pub_files/2014/6/IV2014-Junqing-Final.pdf)]
 
 <details>
@@ -941,5 +941,88 @@ One figure:
   - Another improvment concerns the **transition model** for the observed vehicles. Instead of `CV` (constant velocity) models, one could assume surrounding vehicles are **following a driver model** (e.g. `IDM`) and the task would be to **infer its hidden parameters**.
 
 ---
+
+</details>
+
+Vodopivec, T., Samothrakis, S., & Ster, B. [2017].
+**"On Monte Carlo Tree Search and Reinforcement Learning"**
+[[pdf](https://pdfs.semanticscholar.org/3d78/317f8aaccaeb7851507f5256fdbc5d7a6b91.pdf)]
+
+<details>
+  <summary>Click to expand</summary>
+
+One figure:
+
+| ![Four parameters introduced in a TD-Tree Search (`TDTS`) algorithm related to `forgetting`, `first-visit updating`, `discounting` and `initial bias`. [Source](https://pdfs.semanticscholar.org/3d78/317f8aaccaeb7851507f5256fdbc5d7a6b91.pdf).](media/2018_weingertner.PNG "Four parameters introduced in a TD-Tree Search (`TDTS`) algorithm related to `forgetting`, `first-visit updating`, `discounting` and `initial bias`. [Source](https://pdfs.semanticscholar.org/3d78/317f8aaccaeb7851507f5256fdbc5d7a6b91.pdf).")  |
+|:--:|
+| *Four parameters introduced in a TD-Tree Search (`TDTS`) algorithm related to `forgetting`, `first-visit updating`, `discounting` and `initial bias`. [Source](https://pdfs.semanticscholar.org/3d78/317f8aaccaeb7851507f5256fdbc5d7a6b91.pdf).* |
+
+- Some related concepts:
+  - `RL`, `MCTS`, `learning`, `planning`
+- Goal: The authors aim at promoting an _"unified view of `learning`, `planning`, and `search`"_.
+  - First, the difference `planning` / `learning` is discussed.
+    - It depends on the **source of experience**: _simulated_ / _real_ **interaction**.
+  - Then, **sample-based** (RL and MCTS) **search** algorithms can all be described as a combination of:
+    - 1- A **learning** algorithm, _= how the estimates get_ **_updated_** _from gathered_ **_experience_**.
+    - 2- A **control** policy, _= how actions get_ **_selected_**.
+    - 3- And a **representation policy** _= how is the underlying representation model adapted_.
+
+- Some `RL`/`MCTS` similarities:
+  - They are somehow connected to **MDP** formulations.
+  - Both cope with the **_exploration-exploitation_** dilemma.
+  - Both are **value-based** and share the concepts of
+    - **_Policy evaluation_**: `backpropagation` phase
+    - **_Policy improvement_**: `selection` phase.
+  - Both exhibit **anytime** behaviours.
+
+- Two major `RL`/`MCTS` differences:
+  - RL methods do not recognize the **playout phase**, i.e. a **separate policy for non-memorized** (i.e., non-represented) parts of space.
+    - In MCTS it is often called the **_"default policy"_**.
+    - It would be beneficial to have a **more complex** default policy (where **expert knowledge** could be included).
+  - They present two different **memorization** approaches and two different **approximation accuracies**:
+    - `RL` methods based on value function approximation (e.g. NN) can **weakly describe the whole state space**.
+      - The `RL` theory should **acknowledge a non-represented** (i.e., non-memorized) part of the state space, i.e. the part that is **not described (estimated) by the representation model** at a given moment.
+    - `MCTS` algorithms initially **approximate only a part of the state space** (with high accuracy).
+      - Therefore `MCTS` maintains the distinction between a **_memorized_** and **_non-memorized_** part of the **state space**.
+      - The state-space representation is changed online: it is a **_"adaptive (incremental) representation method"_**.
+      - Indeed **“incomplete” representations** can be beneficial: it might be better to accurately approximate the **relevant part** of the space and less accurately (or not at all) the remaining part.
+
+- Contribution: Based on this comparison, the authors introduce a framework called **_"temporal-difference tree search"_** (`TDTS`) which aims at **combining the advantages** of both RL and MCTS methods.
+  - How it extends classic MCTS methods:
+    - Replace MC backups with **bootstrapping backups**.
+      - This is the idea of `TD search`: do not wait for the end of the trajectory to backup but instead update state value estimates **based on previous estimates**.
+        - `TD` errors are decayed (`γ`) and accumulated (`λ`). It boils down to standard `UCT` if `λ` `=` `γ` `=` `1`.
+      - The motivation is to **reduce the variance of the estimates**, I guess similarly to the introduction of a `TD`-based Critic in **Actor-Critic** methods.
+      - This is done using **_"Eligibility Traces"_** (_"traces"_ because it tracks which states were previously visited and gives them _credit_, i.e. _"eligibility"_), as in `n`-step SARSA.
+        - The authors note that the eligibility trace **decay rate** `λ` can be hard to tune.
+  - How it extends classic RL methods:
+    - Contrary to `TD search` methods, `TDTS` uses:
+      - Some `playout` and `expansion` phases.
+        - It has some representation policy for **incremental or adaptive** representation of the **non-memorized part** of the state space.
+      - A **`playout` policy** and **`playout` values** (as opposed to the already existing `control` policy).
+        - The idea is to **replace the missing value estimates** in the **non-memorized part** of the state space with **_"playout values"_**.
+        - These values can be regarded as a **placeholder** (entry point) **for expert knowledge**.
+  - All in all: recreate the four MCTS iteration phases:
+    - (1) Selection – control in the **_memorized part_** of the search space.
+    - (2) Expansion – changing the **representation** (_adaptive incremental_ model).
+    - (3) Playout – control in the **_non-memorized_** part of the search space.
+    - (4) Backpropagation – updating the value estimates with **bootstrap**.
+  - `TDTS` is applied to `UCT` (`UCB` selection policy in Tree search), leading to `Sarsa`-`UCT`(`λ`).
+
+- One takeaway: as identifies in previous summaries, one idea (e.g. in **_AlphaGo_**) is to **combine:**
+  - **Prior knowledge** (value estimates from the RL-pre-trained network),
+  - And **online feedback** (`MC` evaluations based on _playouts_).
+
+- Two terms I learnt:
+  - **_"Transposition tables"_**:
+    - As I understand, it plays the role of **generalisation** in function approximation: _two similar states should have similar values_.
+    - It originates from **search** of the **game tree**, where it is possible to reach a given position in more than one way. These are called `transpositions`.
+    - The **transposition table** is a **kind of cache**: on encountering a new position, the program checks the table to see whether the **state has already been analyzed**. If yes, the value (stored) can be used instead of calculating it (which would require expending a subtree).
+  - **_"afterstates"_**:
+    - I understand it as a third metric to quantify the "value":
+      - V(`s`): **state value** of **being** in state `s` and following policy `π`.
+      - V(`s'`): **afterstate value** of **arriving** at state `s'` and thereafter following policy `π`.
+      - Q(`s`, `a`): **action value** of **being** in state `s`, taking action `a` and thereafter following policy `π`.
+    - This is used in the presented Sarsa-UCT(λ) algorithm.
 
 </details>
