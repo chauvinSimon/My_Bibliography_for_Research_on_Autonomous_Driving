@@ -272,6 +272,40 @@ Kuderer, M., Gulati, S., & Burgard, W. [2015].
 
 ## Prediction and Manoeuvre Recognition
 
+Han, T., Filev, D., & Ozguner, U. [2019].
+**"An Online Evolving Framework for Modeling the Safe Autonomous Vehicle Control System via Online Recognition of Latent Risks"**
+[[pdf](https://arxiv.org/abs/1908.10823)]
+
+<details>
+  <summary>Click to expand</summary>
+
+One figure:
+
+| ![Both the **state space** and the **transition model** are adapted online, offering two features: **prediction** about the next state and **detection of unknown (i.e. `risky`) situations**. [Source](https://arxiv.org/abs/1908.10823).](media/2019_han_1.PNG "Both the **state space** and the **transition model** are adapted online, offering two features: **prediction** about the next state and **detection of unknown (i.e. `risky`) situations**. [Source](https://arxiv.org/abs/1908.10823).")  |
+|:--:|
+| *Both the **state space** and the **transition model** are adapted online, offering two features: **prediction** about the next state and **detection of unknown (i.e. `risky`) situations**. [Source](https://arxiv.org/abs/1908.10823).* |
+
+- Some related concepts:
+  - `MDP`, `action-state transitions matrix`, `SUMO`, `risk assessment`
+- Motivation
+  - _"_**_Rule-based_** and **_supervised-learning_** _methods cannot_ **_recognize unexpected situations_** _so that the AV controller cannot react appropriately under_ **_unknown circumstances_**_."_
+  - Based on their previous work on RL [“Highway Traffic Modeling and Decision Making for Autonomous Vehicle Using Reinforcement Learning”](http://dcsl.gatech.edu/papers/iv2018.pdf) by (You, Lu, Filev, & Tsiotras, 2018).
+- Main ideas: Both the **state space** and the the **transition model** (here discrete state space so transition matricies) of a MDP are **adapted online**.
+  - I understand it as trying to **learn the transition model** (experience is generated using `SUMO`), hence to some extent going toward **_model-based RL_**.
+  - The motivation is to assist any AV **control framework** with a so-called **_"evolving Finite State Machine"_** (**`e`-`FSM`**).
+    - By **identifing state-transitions** precisely, the **future states** can be **predicted**.
+    - By determining states uniquely (using **online-clustering** methods) and recognizing the state consistently (expressed by a probability distribution), initially **unexpected dangerous situations** can be detected.
+    - It reminds some [ideas about risk assessment](https://github.com/chauvinSimon/IV19#risk-assessment-and-safety-checkers) discussed during IV19: the **discrepency between expected outcome and observed outcome** is use to **quantify risk**, i.e. the _surprise_ or _misinterpretation_ of the current situation).
+- Some concerns:
+  - _"The_ **_dimension_** _of transition matrices should_ **_be expanded_** _to represent state-transitions between all existing states"_
+    - What when the scenario gets more complex than the presented _"simple car-following"_ and that the **state space** (treated as **_discrete_**) becomes huge?
+  - In addition, _"the total **_number of transition matrices_** _is identical to the total_ **_number of actions_**"_.
+    - Alone for the simple example, the acceleration command was sampled into `17` bins. **Continuous action spaces** are not an option.
+
+---
+
+</details>
+
 Liu, S., Zheng, K., Member, S., Zhao, L., & Fan, P. [2019].
 **"A Driving Intention Prediction Method Based on Hidden Markov Model for Autonomous Driving"**
 [[pdf](https://arxiv.org/abs/1902.09068)]
