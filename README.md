@@ -250,6 +250,59 @@ One figure:
 
 </details>
 
+Bansal, M., Krizhevsky, A., & Ogale, A. [2018].
+**"ChauffeurNet: Learning to Drive by Imitating the Best and Synthesizing the Worst"**
+[[pdf](https://arxiv.org/abs/1812.03079)]
+[[videos](https://sites.google.com/view/waymo-learn-to-drive)]
+[[presentation](https://www.youtube.com/watch?v=mxqdVO462HU)]
+
+<details>
+  <summary>Click to expand</summary>
+
+Two figures:
+
+| ![Different layers composing the **_mid-level representation"_**. [Source](https://arxiv.org/abs/1812.03079).](media/2018_bansal_1.PNG "Different layers composing the **_mid-level representation"_**. [Source](https://arxiv.org/abs/1812.03079).")  |
+|:--:|
+| *Different layers composing the **_mid-level representation"_**. [Source](https://arxiv.org/abs/1812.03079).* |
+
+| ![Training architecture around `ChauffeurNet` with the different losses terms, that can be grouped into `environment` and `imitation` losses. [Source](https://arxiv.org/abs/1812.03079).](media/2018_bansal_1.PNG "Training architecture around `ChauffeurNet` with the different losses terms, that can be grouped into `environment` and `imitation` losses. [Source](https://arxiv.org/abs/1812.03079).")  |
+|:--:|
+| *Training architecture around `ChauffeurNet` with the different losses terms, that can be grouped into `environment` and `imitation` losses. [Source](https://arxiv.org/abs/1812.03079).* |
+
+- Some related concepts:
+  - `imitation learning`, `distributional shift problem`
+- One term: **_"mid-level representation"_**
+  - The decision-making task (between `perception` and `control`) is packed into one single "learnable" module.
+    - Input: the representation divided into **several image-like layers**:
+      - `Map features` such as _lanes_, _stop signs_, _cross-walks_...; `Traffic lights`; `Speed Limit`; `Intended route`; `Current agent box`; `Dynamic objects`; `Past agent poses`.
+      - Such a representation is **generic**, i.e. independant of the **number of dynamic objects** and independant of the **road geometry/topology**.
+      - I discuss some [equivalent representations](https://github.com/chauvinSimon/IV19#generic-scene-representation) seen at IV19.
+    - Output: **intended route**, i.e. the future poses recurrently predicted by the introduced **`ChauffeurNet`** model.
+  - This architecture lays between **E2E** (from `pixels` directly to `control`) and **fully decomposed modular pipelines** (decomposing `planning` in multiple modules).
+  - Two notable advantages over **E2E**:
+    - It alleviates the **burdens of learning perception** and **control**:
+      - The desired trajectory is passed to a **controls optimizer** that takes care of creating the low-level control signals.
+      - Not to mention that **different types of vehicles** may possibly utilize different control outputs to achieve the **same driving trajectory**.
+    - **Perturbations** and input data from simulation are easier to generate.
+- One key finding: **_"pure imitation learning is not sufficient"_**, despite the `60` days of continual driving (`30 million` examples).
+  - One quote about the "famous" **_distribution shift_** (deviation from the training distribution) in **imitation learning**:
+  > "The key challenge is that we need to run the system closed-loop, where errors accumulate and induce a shift from the training distribution."
+  - The **training data** does not have any **real collisions**. _How can the agent efficiently learn to avoid them if it has never been exposed during training?_
+  - One solution consists in **exposing the model to non-expert behaviours**, such as collisions and off-road driving, and in **adding extra loss functions**.
+    - Going **beyond vanilla cloning**.
+      - **_Trajectory perturbation_**: Expose the learner to synthesized data in the form of **perturbations to the expert’s driving** (e.g. jitter the midpoint pose and heading)
+        - One idea for future works is to use **more complex augmentations**, e.g. with RL, especially for highly interactive scenarios.
+      - **_Past dropout_**: to prevent **using the history to cheat** by **just extrapolating** from the past rather than finding the **underlying causes** of the behavior.
+      - Hence the concept of tweaking the training data in order to **_“simulate the bad rather than just imitate the good”._**
+    - Going **beyond the vanially imitation loss**.
+      - Extend imitation losses.
+      - Add **_environment losses_** to discourage undesirable behavior, e.g. measuring the overlap of predicted agent positions with the _non-road_ regions.
+      - Use **_imitation dropout_**, i.e. sometimes favor the _environment loss_ over the _imitation loss_.
+
+---
+
+</details>
+
 Kuderer, M., Gulati, S., & Burgard, W. [2015].
 **"Learning driving styles for autonomous vehicles from demonstration"**
 [[pdf](http://ais.informatik.uni-freiburg.de/publications/papers/kuderer15icra.pdf)]
@@ -849,7 +902,6 @@ One figure:
 ---
 
 </details>
-
 
 Augustin, D., Schucker, J., Tschirner, J., Hofmann, M., & Konigorski, L. [2019].
 **"A Simulation-Based Reinforcement Learning Approach for Long-Term Maneuver Planning in Highway Traffic Scenarios"**
