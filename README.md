@@ -229,7 +229,48 @@ Two figures:
 
 </details>
 
-## Inverse Reinforcement Learning, Inverse Optimal Control
+## Inverse Reinforcement Learning, Inverse Optimal Control, Game Theory
+
+Sankar, G. S., & Han, K. [2019].
+**"Adaptive Robust Game-Theoretic Decision Making for Autonomous Vehicles"**
+[[pdf](https://arxiv.org/abs/1909.02586)]
+[[code - simulator](https://github.com/gokulsivasankar/RobustDecisionMaking)]
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![The agent maintain belief on the `k` parameter for other vehicles and updates it at each step. [Source](https://arxiv.org/abs/1902.09068).](media/2019_sankar.PNG "The agent maintain belief on the `k` parameter for other vehicles and updates it at each step. [Source](https://arxiv.org/abs/1902.09068).")  |
+|:--:|
+| *The agent maintain belief on the `k` parameter for other vehicles and updates it at each step. [Source](https://arxiv.org/abs/1902.09068).* |
+
+- Some related concepts:
+  - `k-level strategy`, `MPC`, `interaction-aware prediction`
+- One framework: **"_level-`k` game-theoretic framework_"**.
+  - It is used to **model the interactions** between vehicles, taking into account the **rationality** of the other agents.
+  - The agents are categorized into hierarchical structure of their **cognitive abilities**, parametrized with a **reasoning depth** `k` in [`0`, `1`, `2`].
+    - A level-`0` vehicle considers the other vehicles in the traffic scenario as **stationary obstacles**, hence being **"aggressive"**.
+    - A level-`1` agent assumes other agents are at level-`0`. ...
+  - This parameter `k` is what the agent **must estimate** to **model the interaction** with the other vehicles.
+- One term: **"_disturbance set_"**.
+  - This set, denoted `W`, describe the uncertainty in the position estimate of other vehicle (with some `delta`, similar to the variance in Kalman filters).
+  - It should capture both the uncertainty about the **transition model** and the uncertainty about the **driver models**.
+  - This set is considered when taking action using a **"_feedback min-max strategy_"**.
+    - I must admit I did not fully understand the concept. Here is a quote:
+    - > "The min-max strategy considers the **worst-case disturbance** affecting the behavior/performance of the system and provides control actions to mitigate the effect of the worst-case disturbance."
+  - The important idea is to **adapt the size of this `W` set** in order to **avoid over-conservative behaviours** (compared to _reachable-set_ methods).
+    - This is done based on the **confidence** in the **estimated driver model** (_probability distribution of the estimated `k`_) for the other vehicles.
+      - If the agent is sure that the other car follows model `0`, then it should be **"fully" conservative**.
+      - If the agent is sure it follows level `1`, then it could **relax its conservatism** (i.e. reduce the size of the **disturbance set**) since it is taken into consideration.
+- I would like to draw some parallels:
+  - With **`(PO)MDP`** formulation: for the use of a **_transition model_** (or _transition function_) that is hard to define.
+  - With **`POMDP`** formulation: for the **tracking of believes about the driver model** (or intention) of other vehicles.
+    - The estimate of the probability distribution (for `k`) is updated at every step.
+  - With **`IRL`**: where the agent can **predict the reaction** of other vehicles assuming they act optimally w.r.t a **reward function it is estimating**.
+  - With **`MPC`**: the choice of the optimal control following a **receding horizon** strategy.
+
+---
+
+</details>
 
 Sierra Gonzalez, D. [2019].
 **"Towards Human-Like Prediction and Decision-Making for Automated Vehicles in Highway Scenarios"**
