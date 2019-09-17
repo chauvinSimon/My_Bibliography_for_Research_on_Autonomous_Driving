@@ -245,6 +245,7 @@ Sankar, G. S., & Han, K. [2019].
 
 - Some related concepts:
   - `k-level strategy`, `MPC`, `interaction-aware prediction`
+- One related work (described further below): [_Decision making in dynamic and interactive environments based on cognitive hierarchy theory: Formulation, solution, and application to autonomous driving_](https://arxiv.org/abs/1908.04005) by (Li, S., Li, N., Girard, A., & Kolmanovsky, I. 2019).
 - One framework: **"_level-`k` game-theoretic framework_"**.
   - It is used to **model the interactions** between vehicles, taking into account the **rationality** of the other agents.
   - The agents are categorized into hierarchical structure of their **cognitive abilities**, parametrized with a **reasoning depth** `k` in [`0`, `1`, `2`].
@@ -365,6 +366,42 @@ Kuderer, M., Gulati, S., & Burgard, W. [2015].
 </details>
 
 ## Prediction and Manoeuvre Recognition
+
+Cho, K., Ha, T., Lee, G., & Oh, S. [2019].
+**"Deep Predictive Autonomous Driving Using Multi-Agent Joint Trajectory Prediction and Traffic Rules"**
+[[pdf](http://cpslab.snu.ac.kr/publications/papers/2019_iros_predstl.pdf)]
+
+<details>
+  <summary>Click to expand</summary>
+
+One figure:
+
+| ![The framework consists of four modules: _encoder module_, _interaction module_, _prediction module_ and _control module_. [Source](http://cpslab.snu.ac.kr/publications/papers/2019_iros_predstl.pdf).](media/2019_cho_1.PNG "The framework consists of four modules: _encoder module_, _interaction module_, _prediction module_ and _control module_. [Source](http://cpslab.snu.ac.kr/publications/papers/2019_iros_predstl.pdf).")  |
+|:--:|
+| *The framework consists of four modules: _encoder module_, _interaction module_, _prediction module_ and _control module_. [Source](http://cpslab.snu.ac.kr/publications/papers/2019_iros_predstl.pdf).* |
+
+- Some related concepts:
+  - `LTL`, `STL`, `CVAE for prediction`, `MPC`, `NGSIM`
+- One term: **_"robustness slackness"_** for `STL`-formula.
+
+  - The motivation is to solve _dilemma situations_ (inherent to **strict compliance** when all rules cannot be satisfied) by **disobeying certain rules** based on their **predicted degree of satisfaction**.
+  - The idea is to **filter out** non-plausible trajectories in the prediction step to only consider **valid prediction candidates** during planning.
+  - The filter considers some **"rules"** such as `Lane keeping` and `Collision avoidance of front vehicle` or `Speed limit` (_I did not understand why they are equally considered_).
+  - These rules are represented by **Signal Temporal Logic** (`STL`) formulas.
+    - Note: `STL` is an extension of _Linear Temporal Logic_ (with _boolean predicates_ and _discrete-time_) with _real-time_ and _real-valued_ constraints.
+  - A metric can be introduced to measure how well a given signal (_here, a trajectory candidate_) satisfies a `STL` formula.
+    - This is called **_"robustness slackness"_** and acts as a **margin to satisfaction** of `STL`-formula.
+  - This enables a **"control under temporal logic specification"** as mentioned by the authors.
+- Architecture
+  - **Encoder** module: The observed trajectories are fed to some `LSTM` whose internal state is used by the two subsequent modules.
+  - **Interaction** module: To consider interaction, all `LSTM` states are **concatenated** (**_joint_** state) together with a feature vector of **relative distances**. In addition, a **CVAE** is used for multi-modality (several possible trajectories are **generated**) and **capture interactions** (_I did not fully understand that point_), as stated by the authors:
+    - > "The latent variable `z` models inherent structure in the interaction of multiple vehicles, and it also helps to describe underlying ambiguity of future behaviors of other vehicles."
+  - **Prediction** module: Based on the `LSTM` states, the **concatenated vector** and the **latent variable**, both **future trajectories** and **margins to the satisfaction** of each rule are predicted.
+  - **Control** module: A `MPC` optimizes the control of the ego car, deciding **which rules should be prioritized** based on the two predicted objects (_trajectories_ and _robustness slackness_).
+
+---
+
+</details>
 
 Han, T., Filev, D., & Ozguner, U. [2019].
 **"An Online Evolving Framework for Modeling the Safe Autonomous Vehicle Control System via Online Recognition of Latent Risks"**
