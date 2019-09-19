@@ -382,8 +382,8 @@ One figure:
 
 - Some related concepts:
   - `LTL`, `STL`, `CVAE for prediction`, `MPC`, `NGSIM`
+- One previous work: [_"Learning-Based Model Predictive Control under Signal Temporal Logic Specifications"_](http://cpslab.snu.ac.kr/publications/papers/2018_icra_mpcstl.pdf) by (Cho & Ho, 2018).
 - One term: **_"robustness slackness"_** for `STL`-formula.
-
   - The motivation is to solve _dilemma situations_ (inherent to **strict compliance** when all rules cannot be satisfied) by **disobeying certain rules** based on their **predicted degree of satisfaction**.
   - The idea is to **filter out** non-plausible trajectories in the prediction step to only consider **valid prediction candidates** during planning.
   - The filter considers some **"rules"** such as `Lane keeping` and `Collision avoidance of front vehicle` or `Speed limit` (_I did not understand why they are equally considered_).
@@ -666,6 +666,84 @@ One figure:
 </details>
 
 ## Model Free Reinforcement Learning
+
+Khurana, A. [2019].
+**"Behavior Planning at Roundabouts"**.
+[[pdf](https://www.ri.cmu.edu/wp-content/uploads/2019/08/ri_report_20190810.pdf)]
+
+<details>
+  <summary>Click to expand</summary>
+
+Some figures:
+
+| ![Using recurrent units in a `DQN` and considering the action history. [Source](https://www.ri.cmu.edu/wp-content/uploads/2019/08/ri_report_20190810.pdf).](media/2019_khurana_2.PNG "Using recurrent units in a `DQN` and considering the action history. [Source](https://www.ri.cmu.edu/wp-content/uploads/2019/08/ri_report_20190810.pdf).")  |
+|:--:|
+| *Using recurrent units in a `DQN` and considering the action history. [Source](https://www.ri.cmu.edu/wp-content/uploads/2019/08/ri_report_20190810.pdf).* |
+
+| ![`Hidden modes`: decomposing the __non-stationary__ environment into __multiple stationary environments__, where each `mode` is an `MDP` with __distinct dynamics__. [Source](https://www.ri.cmu.edu/wp-content/uploads/2019/08/ri_report_20190810.pdf).](media/2019_khurana_3.PNG "`Hidden modes`: decomposing the __non-stationary__ environment into __multiple stationary environments__, where each `mode` is an `MDP` with __distinct dynamics__. [Source](https://www.ri.cmu.edu/wp-content/uploads/2019/08/ri_report_20190810.pdf).")  |
+|:--:|
+| *`Hidden modes` framework: decomposing the __non-stationary__ environment into __multiple stationary environments__, where each `mode` is an `MDP` with __distinct dynamics__. [Source](https://www.ri.cmu.edu/wp-content/uploads/2019/08/ri_report_20190810.pdf).* |
+
+- Some related concepts:
+  - `POMDP`, `SUMO`, `generalization`
+- One idea: using **reccurent nets** (hence `D`**`R`**`DQN`) to integrate **history** in order to cope with **partial observability**.
+  - Two `LSTM` layers, (considering `15` past observations) was added after `DQN` layers.
+  - They also try to include the **action history** of the agent, leading to **`A`**`DRQN`. But this does not modify the score.
+- Another idea: **several** context-based **action spaces**:
+  - Decision in **roundabouts** consists in:
+    - **Merging** - `action_space` = {`go`, `no go`}
+    - **Traversal** - `action_space` = {`acc`, `decelerate`, `change-left`, `change-right` , `cv`}
+    - **Exit** - `action_space` = {`acc`, `decelerate`, `change-left`, `change-right` , `cv`}
+  - Justification for using **discrete** action space: behavioral planning happens on a **slower time scale** than motion planning or trajectory control.
+  - This reminds me some works on **hierarchical RL** (e.g. `Options` framework).
+- Another idea: **Curriculum learning**
+  - > "Each model is **first trained without any other interacting vehicle** so that it learns the most optimal policy and **later with other vehicles** with random initialization. In later stages, an **additional bonus reward** is given to merging and traversal if they lead to successful exit to **enable long-term** consistent behaviors."
+- One note about the `POMDP` formulation:
+  - > "This also enables us to **integrate planning** and **prediction** into a single problem, as the agent learns to reason about its future."
+  - I am a little bit confused by their formulation of the **`PO`**`MDP`.
+    - I would have expected some **hidden parameters** to be defined and some **belief** on them to be tracked, as often done for AD, _e.g. the intention of other participants_.
+    - Instead, the `partial observability` refers here to the **uncertainty in perception**: _"there is a `0.2` probability that a car present in the agent’s perception field is **dropped** in the observation"_.
+    - This **imperfect state estimation** encourages the **robustness**.
+- One note about **model-free** RL:
+  - Using RL seems relevant to offer **generalization** in **complex scenarios**.
+  - But as noted by the authors: _"the rule-based planner outperforms others in the case of a_ **_single-lane roundabout_** as there’s no scope for lane change."_
+- One addressed problem: **_"non-stationary"_** environments.
+  - A **single policy** learned on a **specific traffic density** may perform badly on another density (the _dynamic_ of the world modelled by the `MDP` changes over time).
+  - The goal is to **generalize across different traffic scenarios**, especially accross different **traffic densities**.
+  - One idea is to decompose the **non-stationary** environment into **multiple stationary environments**, where each _mode_ is an MDP with **distinct dynamics**: this method is called `Hidden modes`.
+    - _How to then switch between modes?_ The authors proposed to use **external information** (_Google Maps_ could for instance tell ahead if traffic jams occur on your planned route).
+    - But as the number of **discrete modes** increases, the `hidden-mode` method suffers from oscillations at the **boundaries of the mode transitions**.
+  - Thus the second idea is to consider one **single model**: this method is called `Traffic-Conditioned`.
+    - Some continuously varying feature (ratio of `velocity of other vehicles` to `target speed`) is used. It should be representative of the non-stationary environment.
+  - One quote about the relation of **hidden-mode formulation** to **hierarchical RL**:
+    - > "For generalization, the hidden-mode formulation can also be viewed as a **hierarchical learning** problem where one `MDP`/`POMDP` framework **selects the mode** while the other learns the driving behavior **given the mode**".
+
+---
+
+</details>
+
+Hu, B., Li, J., Yang, J., Bai, H., Li, S., & Sun, Y. [2019].
+**"Reinforcement Learning Approach to Design Practical Adaptive Control for a Small-Scale Intelligent Vehicle"**
+[[pdf](https://www.researchgate.net/publication/335693770_Reinforcement_Learning_Approach_to_Design_Practical_Adaptive_Control_for_a_Small-Scale_Intelligent_Vehicle)]
+
+<details>
+  <summary>Click to expand</summary>
+
+- Some related concepts:
+  - `non-deep RL`, `online learning`, `model-based RL`
+
+- What I like in this paper:
+  - The authors make sure they understand **tabular RL** methods, e.g. the difference between on-policy `SARSA(1)`, `SARSA(λ)` and off-policy `Q-learning`, before going to deep RL.
+    - > "Compared with `Q-learning`, which can be described as _greedy_, _bold_, and _brave_, `SARSA(1)` is a _conservative_ algorithm that is sensitive to control errors."
+  - They include a **model-based** algorithm (`Dyna-Q`) in their study. This seems promising when training directly in real world, where the **sampling efficiency** is crucial.
+  - They claim RL methods bring advantages compared to **PID controllers** in term of **adaptability** (_generalization_ - i.e. some PID parameters appropriate for driving on a _straight road_ may cause issues in _sharp turns_) and burden of **parameter tuning**.
+  - They consider the **sampling efficiency** (better for _model-based_) and **computational time per step** (better for _`1`-step `TD` methods_ than for _`SARSA(λ)`_).
+    - > "`Q-learning` algorithm has a _poorer converging speed_ than the `SARSA(λ)` and `Dyna-Q` algorithm, it balances the performance between the _converging speed_, the _final control behavior_, and the _computational complexity_."
+  - Obviously, this remains far from real and serious AD. But this paper gives a good example of application of basic RL methods.
+
+---
+
+</details>
 
 Tram, T., Batkovic, I., Ali, M., & Sjöberg, J. [2019].
 **"Learning When to Drive in Intersections by Combining Reinforcement Learning and Model Predictive Control"**
