@@ -590,6 +590,113 @@ Related works:
 
 ## Rule-based Decision Making
 
+Censi, A., Slutsky, K., Wongpiromsarn, T., Yershov, D., Pendleton, S., Fu, J., & Frazzoli, E. [2019].
+**"Liability, Ethics, and Culture-Aware Behavior Specification using Rulebooks"**
+[[pdf](https://arxiv.org/abs/1902.09355)]
+[[videos and additional content](http://rulebooks.tech/)]
+
+<details>
+  <summary>Click to expand</summary>
+
+Some figures:
+
+| ![Defining the `rulebook`. [Source](https://arxiv.org/abs/1902.09355).](media/2019_censi_1.PNG "Defining the `rulebook`. [Source](https://arxiv.org/abs/1902.09355).")  |
+|:--:|
+| *Defining the `rulebook`. [Source](https://arxiv.org/abs/1902.09355).* |
+
+| ![The `rulebook` is associated to an operator `=<` to prioritize between rules. [Source](https://arxiv.org/abs/1902.09355).](media/2019_censi_2.PNG "The `rulebook` is associated to an operator `=<` to prioritize between rules. [Source](https://arxiv.org/abs/1902.09355).")  |
+|:--:|
+| *The `rulebook` is associated to an operator `=<` to prioritize between rules. [Source](https://arxiv.org/abs/1902.09355).* |
+
+| ![The `rulebook` serves for __deciding which trajectory to take__ and can be __adapted__ using a series of operations. [Source](https://arxiv.org/abs/1902.09355).](media/2019_censi_3.PNG "The `rulebook` serves for __deciding which trajectory to take__ and can be __adapted__ using a series of operations. [Source](https://arxiv.org/abs/1902.09355).")  |
+|:--:|
+| *The `rulebook` serves for __deciding which trajectory to take__ and can be __adapted__ using a series of operations. [Source](https://arxiv.org/abs/1902.09355).* |
+
+- Some related concepts:
+  - `sampling-based planning`, `safety validation`, `reward function`, `RSS`
+- Allegedly how **nuTonomy** (an [**Aptiv**](https://www.aptiv.com/autonomous-mobility) company) cars work.
+
+- One main concept: **_"rulebook"_**.
+  - It contains multiple **`rules`**, that specify the **desired behavior** of the self-driving cars.
+  - A rule is simply a **scoring function**, or **“violation metric”**, on the _realizations_ (= trajectories).
+  - The **degree of violation** acts like some **penalty term**: here some examples of evalution of a realization `x` evaluated by a rule `r`:
+    - For speed limit: `r`(`x`) = interval for which the car was above `45 km/h`.
+    - For minimizing harm: `r`(`x`) = kinetic energy transferred to human bodies.
+  - Based on Use as a comparison operator to rank candidate trajectories.
+- One idea: **Hierarchy of rules**.
+  - With many rules being defined, it may be impossible to find a realization (e.g. trajectory) that satisfies all.
+  - But even in critical situation, the algorithm must make a choice - the least catastrophic option (hence no concept of _infeasibility_.)
+  - To deal with this concept of **_"Unfeasibility"_**, priorities between conflicting rules which are therefore hierarchically ordered.
+  - Hence a rulebook `R` comes with some operator `<`: <**`R`**, **`<`**>.
+  - This leads to some concepts:
+  - **Safety** vs. **infractions**.
+    - Ex.: a rule _"not to collide with other objects"_ will have a **higher priority** than the rule _"not crossing the double line"_.
+  - **Liability-aware** specification.
+    - Ex.: (_edge-case_): Instruct the agent to _collide with the object on its lane_, rather than _collide with the object on the opposite lane_, since _changing lane_ will **provoke** an accident for which **it would be at fault**.
+    - This is close to the [RSS](https://github.com/chauvinSimon/IV19#rss) ("responsibility-sensitive safety" model) of Mobileye.
+  - **Hierarchy** between rules:
+    - **Top**: Guarante **safety** of humans.
+      - This is written **analytically** (e.g. a precise expression for the kinetic energy to minimize harm to people).
+    - **Bottom**: _Comfort_ constraints and _progress_ goals.
+      - Can be **learnt** based on observed behavior (and also tend to be platform- and implementation- specific).
+    - **Middle**: All the other priorities among rule groups
+      - There are somehow **open for discussion**.
+- How to build a rulebook:
+  - Rules can be defined **analytically** (e.g. `LTL` formalism) or **learnt** from data (for non-safety-critical rules).
+  - **Violation functions** can be **learned from data** (e.g. `IRL`).
+  - **Priorities** between rules can also be learnt.
+- One idea: **manipulation** of rulebooks.
+  - **Regulations** and cultures differ depending on the country and the state.
+  - A rulebook <**`R`**, **`<`**> can easily be **adapted** using three operations (`priority refinement`, `rule augmentation`, `rule aggregation`).
+
+- Related work: Several topics raised in this papers reminds me subjects addressed in [Emilio Frazzoli, CTO, nuTonomy - 09.03.2018](https://www.youtube.com/watch?v=dWSbItd0HEA)
+  - 1- Decision making with **FSM**:
+    - Too **complex** to code. Easy to make mistake. Difficult to adjust. Impossible to **debug** (:cry:).
+  - 2- Decision making with **E2E learning**:
+    - Appealing since there are too many possible scenarios.
+    - But _how to prove that and justify it to the authorities?_
+      - One solution is to **revert** such **imitation** strategy: **start by defining the rules**.
+  - 3- Decision making **"cost-function-based"** methods
+    - 3-1- **`RL`** / **`MCTS`**: not addressed here.
+    - 3-2- **Rule**-based (not the `if`-`else`-`then` logic but rather **traffic/behaviour** rules).
+  - First note:
+    - Number of **rules**: small (`15` are enough for level-`4`).
+    - Number of **possible scenarios**: huge (combinational).
+  - Second note:
+    - Driving bahaviours are **hard to code**.
+    - Driving bahaviours are **hard to learn**.
+    - But driving bahaviours are **easy to assess**.
+  - Strategy:
+    - 1- **Generate candidate** trajectories
+      - Not only in _time_ and _space_.
+      - Also in term of **semantic** (_logical trajectories in Kripke structure_).
+    - 2- **Check** if they satisfy the constraints and **pick the best**.
+      - This involves _linear_ operations.
+  - Conclusion:
+    - > "Rules and rules priorities, especially those that concern safety and liability, must be part of nation-wide regulations to be developed after an informed public discourse; it should not be up to engineers to choose these important aspects."
+    - This reminds me [the discussion about social-acceptance](https://github.com/chauvinSimon/IV19#social-acceptance) I had at IV19.^
+    - As E. Frazzoli concluded during his talk, the remaining question is:
+      - _"We do not know how we want human-driven vehicle to behave?"_
+      - **Once we have the answer, that is easy**.
+
+Some figures from this related presentation:
+
+| ![Candidate trajectories are not just __spatio-temporal__ but also __semantic__. [Source](https://www.youtube.com/watch?v=dWSbItd0HEA).](media/2018_frazzoli_1.PNG "Candidate trajectories are not just __spatio-temporal__ but also __semantic__. [Source](https://www.youtube.com/watch?v=dWSbItd0HEA).")  |
+|:--:|
+| *Candidate trajectories are not just __spatio-temporal__ but also __semantic__. [Source](https://www.youtube.com/watch?v=dWSbItd0HEA).* |
+
+| ![Define __priorities__ between rules, as Asimov did for his laws. [Source](https://www.youtube.com/watch?v=dWSbItd0HEA).](media/2018_frazzoli_2.PNG "Define __priorities__ between rules, as Asimov did for his laws. [Source](https://www.youtube.com/watch?v=dWSbItd0HEA).")  |
+|:--:|
+| *Define __priorities__ between rules, as Asimov did for his laws. [Source](https://www.youtube.com/watch?v=dWSbItd0HEA).* |
+
+| ![As raised here by the main author of the paper, I am still wondering how the presented framework deals with the different __sources of uncertainties__. [Source](https://www.youtube.com/watch?v=dWSbItd0HEA).](media/2018_censi_1.PNG "As raised here by the main author of the paper, I am still wondering how the presented framework deals with the different __sources of uncertainties__. [Source](https://www.youtube.com/watch?v=dWSbItd0HEA).")  |
+|:--:|
+| *As raised here by the main author of the paper, I am still wondering how the presented framework deals with the different __sources of uncertainties__. [Source](https://www.youtube.com/watch?v=dWSbItd0HEA).* |
+
+---
+
+</details>
+
 Naumann, M., Königshof, H., & Stiller, C. [2019].
 **"Provably Safe and Smooth Lane Changes in Mixed Traffic"**
 [[pdf](https://www.mrt.kit.edu/z/publ/download/2019/Naumann2019LaneChange.pdf)]
