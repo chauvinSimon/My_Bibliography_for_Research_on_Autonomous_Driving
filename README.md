@@ -367,6 +367,34 @@ Kuderer, M., Gulati, S., & Burgard, W. [2015].
 
 ## Prediction and Manoeuvre Recognition
 
+Leon, F., & Gavrilescu, M. [2019].
+**"A Review of Tracking, Prediction and Decision Making Methods for Autonomous Driving"**
+[[pdf](https://arxiv.org/abs/1909.07707)]
+
+<details>
+  <summary>Click to expand</summary>
+
+One figure:
+
+| ![Classification of motion models based on three increasingly abstract levels - adapted from (Lefèvre, S., Vasquez. D. & Laugier C. - 2014). [Source](https://arxiv.org/abs/1909.07707).](media/2019_leon_1.PNG " Classification of motion models based on three increasingly abstract levels - adapted from (Lefèvre, S., Vasquez. D. & Laugier C. - 2014). [Source](https://arxiv.org/abs/1909.07707).")  |
+|:--:|
+| *Classification of motion models based on three increasingly abstract levels - adapted from [(Lefèvre, S., Vasquez. D. & Laugier C. - 2014)](https://robomechjournal.springeropen.com/track/pdf/10.1186/s40648-014-0001-z). [Source](https://arxiv.org/abs/1909.07707).* |
+
+- A reference to one white paper: ["Safety first for automated driving"](https://www.aptiv.com/docs/default-source/white-papers/safety-first-for-automated-driving-aptiv-white-paper.pdf) 2019 - from Aptiv, Audi, Baidu, BMW, Continental, Daimler, Fiat Chrysler Automobiles, HERE, Infineon, Intel and Volkswagen (alphabetical order). The authors quotes some of the good practices about **_Interpretation  and  Prediction_**:
+  - Predict only a **short time** into the future (_the further the predicted state is in the future, the less likely it is that the prediction is correct_).
+  - Rely on **physics** where possible (_a vehicle driving in front of the automated vehicle will not stop in zero time on its own_).
+  - Consider the **compliance** of other road users with traffic rules.
+- Miscellaneous notes about prediction:
+  - The authors point the need of **high-level reasoning** (the more **abstract** the feature, the more reliable it is **long term**), mentioning both _"affinity"_ and _"attention"_ mechanisms.
+  - They also call for **jointly** addressing vehicle **motion modeling** and **risk estimation** (_criticality assessment_).
+  - **Gaussian Processed** is found to be a flexible tool for **modeling motion patterns** and is compared to Markov Models for prediction.
+    - In particular, GP regressions have the ability to **quantify uncertainty**.
+  - **CNNs** can be **superior to LSTMs** for **temporal modeling** since trajectories are continuous in nature, do not have complicated "state", and have high spatial and temporal correlations.
+
+---
+
+</details>
+
 Cho, K., Ha, T., Lee, G., & Oh, S. [2019].
 **"Deep Predictive Autonomous Driving Using Multi-Agent Joint Trajectory Prediction and Traffic Rules"**
 [[pdf](http://cpslab.snu.ac.kr/publications/papers/2019_iros_predstl.pdf)]
