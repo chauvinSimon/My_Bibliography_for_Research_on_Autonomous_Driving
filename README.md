@@ -1155,6 +1155,65 @@ Plessen, M. G. [2017].
 
 ## Planning and Monte Carlo Tree Seach
 
+Hoel, C.-J. [2019].
+**"Tactical decision-making for autonomous driving: A reinforcement learning approach"**
+[[pdf](https://research.chalmers.se/publication/511929/file/511929_Fulltext.pdf)]
+
+<details>
+  <summary>Click to expand</summary>
+
+Some figure:
+
+| ![ `MCTS` is especially benefitial when it is necessary to plan relatively __far into the future__. [Source](https://research.chalmers.se/publication/511929/file/511929_Fulltext.pdf).](media/2019_hoel_3.PNG "`MCTS` is especially benefitial when it is necessary to plan relatively __far into the future__. [Source](https://research.chalmers.se/publication/511929/file/511929_Fulltext.pdf).")  |
+|:--:|
+| *`MCTS` is especially benefitial when it is necessary to plan relatively __far into the future__. [Source](https://research.chalmers.se/publication/511929/file/511929_Fulltext.pdf).* |
+
+| ![ The `RL`-learnt neural network predicts two values used to __guide the search__. [Source](https://research.chalmers.se/publication/511929/file/511929_Fulltext.pdf).](media/2019_hoel_2.PNG "The `RL`-learnt neural network predicts two values used to __guide the search__. [Source](https://research.chalmers.se/publication/511929/file/511929_Fulltext.pdf).")  |
+|:--:|
+| *The `RL`-learnt neural network predicts two values used to __guide the search__. [Source](https://research.chalmers.se/publication/511929/file/511929_Fulltext.pdf).* |
+
+| ![ Treate surrounding vehicles as __interchangeable objects__ using __`CNN`__ layers. [Source](https://research.chalmers.se/publication/511929/file/511929_Fulltext.pdf).](media/2019_hoel_1.PNG "Treate surrounding vehicles as __interchangeable objects__ using __`CNN`__ layers. [Source](https://research.chalmers.se/publication/511929/file/511929_Fulltext.pdf).")  |
+|:--:|
+| *Treate surrounding vehicles as __interchangeable objects__ using __`CNN`__ layers. [Source](https://research.chalmers.se/publication/511929/file/511929_Fulltext.pdf).* |
+
+| ![ Comparison of __sampling efficiency__ - need for `domain knowledge` and `computational speed` should also be considered. [Source](https://research.chalmers.se/publication/511929/file/511929_Fulltext.pdf).](media/2019_hoel_4.PNG "Comparison of __sampling efficiency__ - need for `domain knowledge` and `computational speed` should also be considered. [Source](https://research.chalmers.se/publication/511929/file/511929_Fulltext.pdf).")  |
+|:--:|
+| *Comparison of __sampling efficiency__ - need for `domain knowledge` and `computational speed` should also be considered. [Source](https://research.chalmers.se/publication/511929/file/511929_Fulltext.pdf).* |
+
+- Some related concepts:
+  - `POMDP`, `MCTS`
+- Three related works corresponding to three proposed approaches (all `RL`-related):
+  - 1- **Genetic algorithm** (_policy based RL_) to train a **rule-based** driver model (each chromosome encodes a rule-based **driver model** via a set of instructions).
+    - ["An evolutionary approach to general-purpose automated speed and lane change behavior"](https://arxiv.org/abs/1803.10056v2) - (Hoel et al. 2018).
+  - 2- **DQN**.
+    - ["Automated Speed and Lane Change Decision Making using Deep Reinforcement Learning"](https://arxiv.org/abs/1803.10056) - (Hoel et al. 2018).
+  - 3- Combining **planning** (**`MCTS`**) and **learning** (**`model-free RL`**).
+    - The neural network predicts two values used to **guide the search**:
+      - The **value function** `V`(`state`).
+      - The **policy** `p`(`state`, `action`) for each possible `action`.
+    - This time, a **transition function** (or **_generative model_**) `G`(`s`, `a`) is considered and used during the **`SIMULATION`** phase of the search.
+    - ["Combining Planning and Deep Reinforcement Learning in Tactical Decision Making for Autonomous Driving"](https://arxiv.org/abs/1905.02680) - (Hoel et al. 2019).
+      - I have analysed this paper in [this section](https://github.com/chauvinSimon/IV19#combining-learning-and-planning) of my summary of `IV19`.
+- One remark about the `POMDP` formulation:
+  - Only the **physical parts** of the state (`position` and `speed`) are **observed**.
+  - The **parameters** of the surrounding drivers, which are assumed to behave according to the `IDM`/`MOBIL` models, is not directly accessible by the ego-agent.
+  - A **particle filter** is used to estimate them (**_belief state estimation_**).
+- One idea: Treate surrounding vehicles as **interchangeable objects** using **`CNN`** layers.
+  - Using CNN layers with `max-pooling` creates a **translational invariance** between the vehicles.
+  - > "The output is independent on the ordering of the vehicles in the input vector, and it also removes the problem of specifying a fixed input vector size, which instead can be made larger than necessary and padded with dummy values for the extra slots"
+- About **_"sampling efficiency_"**, **_"domain knowledge_"** and trade-off of `speed` vs. `generality`:
+  - The **`GA`** agent requires much **domain knowledge** in the form of **handcrafted features** (form of the instructions).
+  - The `DQN` agent requires between `2` and `3` **orders of magnitude** **less driving time** than the `GA` agent.
+  - > "The `MCTS`/`NN` agent requires the **most domain knowledge**, since it needs a **generative model `G`** of the environment, a **belief state estimator**, and possibly knowledge on how to prune actions that lead to collisions."
+- Results:
+  - The baseline is a **rule-based** approach built with **`IDM`** and **`MOBIL`** driver models (also used in the _generative model_ and to _simulate other vehicles_).
+  - > "All methods outperform the baseline `IDM`/`MOBIL` model by taking decisions that allows the vehicle to navigate through traffic between `5%` and `10%` faster."
+  - `MCTS` is especially benefitial when it is necessary to **plan relatively far into the future** (e.g. _highway exit case_).
+
+---
+
+</details>
+
 Lee, J., Balakrishnan, A., Gaurav, A., & Feb, L. G. [2019].
 **"WiseMove: A Framework for Safe Deep Reinforcement Learning for Autonomous Driving"**
 [[pdf](https://arxiv.org/abs/1902.04118)]
