@@ -148,6 +148,73 @@ Note: I find very valuable to get insights from the **CMU** (Carnegie Mellon Uni
 
 ## Behavior Cloning, End-To-End (E2E), Imitation Learning
 
+Michelmore, R., Wicker, M., Laurenti, L., Cardelli, L., Gal, Y., & Kwiatkowska, M. [2019].
+**"Uncertainty Quantification with Statistical Guarantees in End-to-End Autonomous Driving Control"**
+[[pdf](https://arxiv.org/abs/1909.09884)]
+
+<details>
+  <summary>Click to expand</summary>
+
+One figure:
+
+| ![The __trust__ or __uncertainty__ in one decision can be measured based on the `probability mass function` around its mode. [Source](https://arxiv.org/abs/1904.08980).](media/2019_michelmore_1.PNG "The __trust__ or __uncertainty__ in one decision can be measured based on the `probability mass function` around its mode. [Source](https://arxiv.org/abs/1909.09884).")  |
+|:--:|
+| *The __trust__ or __uncertainty__ in one decision can be measured based on the `probability mass function` around its mode. [Source](https://arxiv.org/abs/1904.08980).* |
+
+| ![The measures of uncertainty based on __"mutual information"__ can be used to issue warnings to the driver and perform safety / emergency manoeuvres. [Source](https://arxiv.org/abs/1904.08980).](media/2019_michelmore_2.PNG "The measures of uncertainty based on __"mutual information"__ can be used to issue warnings to the driver and perform safety / emergency manoeuvres. [Source](https://arxiv.org/abs/1909.09884).")  |
+|:--:|
+| *The measures of uncertainty based on __"mutual information"__ can be used to issue warnings to the driver and perform safety / emergency manoeuvres. [Source](https://arxiv.org/abs/1904.08980).* |
+
+| ![As noted by the authors: while the `variance` can be useful in __collision avoidance__, the wide variance of `HMC` causes a larger proportion of trajectories to fall __outside of the safety boundary__ when a _new weather_ is applied. [Source](https://arxiv.org/abs/1904.08980).](media/2019_michelmore_3.PNG "As noted by the authors: while the `variance` can be useful in __collision avoidance__, the wide variance of `HMC` causes a larger proportion of trajectories to fall __outside of the safety boundary__ when a _new weather_ is applied. [Source](https://arxiv.org/abs/1909.09884).")  |
+|:--:|
+| *As noted by the authors: while the `variance` can be useful in __collision avoidance__, the wide variance of `HMC` causes a larger proportion of trajectories to fall __outside of the safety boundary__ when a _new weather_ is applied. [Source](https://arxiv.org/abs/1904.08980).* |
+
+
+
+- Some related concepts:
+  - `uncertainty-aware decision`, `bayesian inference`, [`CARLA`](http://carla.org/)
+- One related work:
+  - NVIDIA’s [**`PilotNet`**](https://arxiv.org/abs/1704.07911) [`DAVE-2`] where **expert demonstrations** are used together with **supervised learning** to map from **images** (front camera) to **steering command**.
+  - Here, human demonstrations are collected in the **CARLA** simulator.
+- One idea: use **distribution** in weights.
+  - The difference with `PilotNet` is that the neural network applies **_"Baysesian"_** paradigm, i.e. each **weight is described by a distribution** (not just a single value).
+  - The author illustrate the benefits of that paradigm, imaginating an **obstacle in the middle** of the road.
+    - The bayesian controller may be **uncertain on the steering angle** to apply (e.g. a `2`-tail or `M`-shape distribution).
+    - A first option is to **sample** angles, which turns the car either _right_ or _left_, with **equal probability**.
+    - Another option would be to simply select the **mean value** of the distribution, which **aims straight** at the obstacle.
+    - The motivation of this work is based on that example: *"derive some __precise quantitative measures__ of the BNN uncertainty to facilitate the __detection of such ambiguous situation__"*.
+- One definition: **"real-time decision confidence"**.
+  - This is the **probability** that the BNN controller is **certain of its decision** at the current time.
+  - The notion of **trust** can therefore be introduced: the idea it to compute the probability mass in a `ε`−ball around the decision `π`(`observation`) and classify it as _certain_ if the resulting probability is greater than a **threshold**.
+    - _It reminds me the concept of `trust-region` optimisation in RL_.
+    - In extreme cases, all actions are _equally distributed_, `π`(`observation`) has a very **high variance**, the agent does not know what to do (_no trust_) and will **randomly sample** an action.
+- _How to get these estimates?_ Three bayesian inference methods are compared:
+  - **Monte Carlo dropout** (`MCD`).
+  - **Mean-field variational inference** (`VI`).
+  - **Hamiltonian Monte Carlo** (`HMC`).
+- _What to do with this information?_
+  - > "This measure of uncertainty can be employed together with commonly employed _measures of uncertainty_, such as __mutual information__, to __quantify__ in __real time__ the degree that the model is __confident in its predictions__ and can offer a notion of __trust__ in its predictions."
+    - I did not know about **"mutual information"** and liked the explanation of [wikipedia](https://en.wikipedia.org/wiki/Mutual_information) about the link of `MI` to `entropy` and `KL-div`.
+      - *I am a little bit confused: in what I read, the `MI` is function of **two random variables**. What are they here? The authors rather speak about the __predictive distribution__ exhibited by the predictive distribution*.
+  - Depending on the **uncertainty level**, several actions are taken:
+    - `mutual information warnings` **slow down** the vehicle.
+    - `standard warnings` **slow down** the vehicle and **alert** the operator of potential hazard.
+    - `severe warnings` cause the car to **safely brake** and ask the operator to **take control back**.
+- Another definition: **_"probabilistic safety"_**, i.e. the probability that a BNN controller will keep the car _"safe"_.
+  - _Nice, but what is "safe"?_
+  - It all relies on the assumption that **expert demonstrations** were all _"safe"_, and measures the how much of the trajectory belongs to this **_"safe set"_**.
+  - I must admit I did not fully understand the measure on _"safety"_ for some _continuous_ trajectory and _discrete_ demonstration set:
+    - A car can drive with a large lateral offset from the demonstration on a wide road while being _"safe"_, while a thin lateral shift in a narrow street can lead to a _"unsafe"_ situation.
+    - Not to mention that the scenario (e.g. _configuration of obstacles_) has probably changed inbetween.
+    - This leads to the following point with an interesting application for _scenario coverage_.
+- One idea: apply **changes in scenery and weather conditions** to evaluate **model robustness**.
+  - To check the **generalization** ability of a model, the _safety analysis_ is re-run (_offline_) with **other weather conditions**.
+  - As noted in conclusion, this _offline safety probability_ can be use as a **guide for active learning** in order to increase **data coverage** and **scenario representation** in training data.
+
+---
+
+</details>
+
 Codevilla, F., Santana, E., Antonio, M. L., & Gaidon, A. [2019].
 **"Exploring the Limitations of Behavior Cloning for Autonomous Driving"**
 [[pdf](https://arxiv.org/abs/1904.08980)]
