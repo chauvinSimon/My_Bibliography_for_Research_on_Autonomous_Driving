@@ -1179,6 +1179,50 @@ Jaâfra, Y., Laurent, J.-L., Deruyver, A., & Naceur, M. S. [2019].
 
 </details>
 
+Isele, D., Nakhaei, A., Fujimura, K., [2018].
+**"Safe Reinforcement Learning on Autonomous Vehicles."**
+[[html](https://www.researchgate.net/publication/330595797_Safe_Reinforcement_Learning_on_Autonomous_Vehicles)]
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![ The `prediction` module **masks** undesired actions at each time step. [Source](https://www.researchgate.net/publication/330595797_Safe_Reinforcement_Learning_on_Autonomous_Vehicles).](media/2018_isele_1.PNG "The `prediction` module **masks** undesired actions at each time step. [Source](https://www.researchgate.net/publication/330595797_Safe_Reinforcement_Learning_on_Autonomous_Vehicles).")  |
+|:--:|
+| *The `prediction` module **masks** undesired actions at each time step. [Source](https://www.researchgate.net/publication/330595797_Safe_Reinforcement_Learning_on_Autonomous_Vehicles).* |
+
+- Some related concepts:
+  - `action masking`, `risk assessment`, `reachability set`, `SUMO`
+- Previous works about **learning control with `DQN`s** at diverse intersections:
+  - ["Navigating occluded intersections with autonomous vehicles using deep reinforcement learning"](https://arxiv.org/abs/1705.01196) - (Isele et al., 2017)
+  - ["Transferring Autonomous Driving Knowledge on Simulated and Real Intersections"](https://arxiv.org/abs/1712.01106) - (Isele et al., 2017)
+- _How to make model-free RL_ **_"safe"_**? Two options are mentioned (both required expert knowledge):
+  - 1- Modifying the **reward function** (requires careful tuning).
+  - 2- **Constraining exploration** (e.g. `action masking`, `action shielding`).
+    - > "The methods can completely **forbid undesirable states** and are usually accompanied by **formal guarantees**".
+    - In addtion, the **learning efficiency** can be increased (fewer states to explore).
+- Here: The `DQN` is augmented with some **action-masking mechanism**.
+  - More precisely, a **prediction model** is used:
+    - The **predicted position** of the **ego car** is compared against the predicted position of **all other traffic cars** (called `forward predictions`).
+    - If an **overlap** of the regions is detected, the action is marked as **unsafe**.
+    - Else, the agent is allowed to **freely explore the _safe_ state space**, using traditional model-free RL techniques.
+  - Note: this illustrates the strong relation between `prediction` and `risk assessment`.
+- One challenge: Ensuring "safety" not just for the next step, but for the **whole trajectory**.
+  - > "To ensure that the agent never takes an unsafe action, we must check not only that a given action will not cause the agent to **transition to an unsafe state** in the **next time step**, but also that the action will not force the agent into an **unsafe state** **at some point in the future**."
+  - > "Note that this is closely related to the **_credit assignment problem_**, but the **risk must be assigned prior to acting**".
+  - _This made me think of tree search techniques, where a path is explored until its terminal node_.
+  - To cope with the **exponential complexity**, the authors proposed some approximation to **restrict the exploration space**.
+    - One of them being the `temporal abstraction` for actions (see [this video series](https://www.youtube.com/watch?v=jTcCyDJYK-Q) for a quick introduction).
+    - The idea of this so-called **`option`** or `intentions` framework, is to distinguish between `low-level` and `high-level` actions
+      - > "This can be thought of as selecting an **open-loop high-level** decision followed by subsequent **bounded** **closed-loop low-level** corrections."
+      - For a given time horizon, the trajectories described with these options are way shorter, hence **reducing the size of the state set** that is to be checked.
+    - This leads to the definition of a _functional local-state_ _(I did not understand all the details)_ including some **variance** term:
+      - > "The variance acts as a bound that **encompasses the variety of low-level actions** that produce similar high-level actions. Additionally, we will use the variance to **create safety bounds**".
+- One remark: similar to the **"collision checker"** for _path planning_, I can imagine that this **prediction module** becomes the **computational bottleneck** of the framework.
+
+---
+
+</details>
+
 Plessen, M. G. [2017].
 **"Automating Vehicles by Deep Reinforcement Learning Using Task Separation with Hill Climbing."**
 [[pdf](https://arxiv.org/abs/1711.10785)]
