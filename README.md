@@ -1200,6 +1200,7 @@ Isele, D., Nakhaei, A., Fujimura, K., [2018].
   - 2- **Constraining exploration** (e.g. `action masking`, `action shielding`).
     - > "The methods can completely **forbid undesirable states** and are usually accompanied by **formal guarantees**".
     - In addtion, the **learning efficiency** can be increased (fewer states to explore).
+  - For additional contents on _"Safe-RL in the context of autonomous vehicles"_, one could read [this github project](https://github.com/AliBaheri/Safe-Reinforcement-Learning) by @AliBaheri.
 - Here: The `DQN` is augmented with some **action-masking mechanism**.
   - More precisely, a **prediction model** is used:
     - The **predicted position** of the **ego car** is compared against the predicted position of **all other traffic cars** (called `forward predictions`).
@@ -1264,6 +1265,70 @@ Plessen, M. G. [2017].
 
 </details>
 
+## Model Based Reinforcement Learning
+
+Zhu, Y., & Zhao, D. [2019].
+**"Vision ‑ based control in the open racing car simulator with deep and reinforcement learning"**
+[[html](https://link.springer.com/article/10.1007/s12652-019-01503-y)]
+
+<details>
+  <summary>Click to expand</summary>
+
+Some figures:
+
+| ![ First __extract__ some variables - e.g. `curvature`, `desired speed`, `lateral offset`, `offset in heading` - from images using __supervised learning__ and then apply control learnt with __model-based `RL`__. [Source](https://link.springer.com/article/10.1007/s12652-019-01503-y).](media/2019_zhu_2.PNG "First __extract__ some variables - e.g. `curvature`, `desired speed`, `lateral offset`, `offset in heading` - from images using __supervised learning__ and then apply control learnt with __model-based `RL`__. [Source](https://link.springer.com/article/10.1007/s12652-019-01503-y).")  |
+|:--:|
+| *First __extract__ some variables - e.g. `curvature`, `desired speed`, `lateral offset`, `offset in heading` - from images using __supervised learning__ and then apply control learnt with __model-based `RL`__. [Source](https://link.springer.com/article/10.1007/s12652-019-01503-y).* |
+
+| ![ The __model-based__ `PILCO` algorithm is used to quickly learn to predict the __desired speed__.. [Source](https://link.springer.com/article/10.1007/s12652-019-01503-y).](media/2019_zhu_1.PNG "The __model-based__ `PILCO` algorithm is used to quickly learn to predict the __desired speed__.. [Source](https://link.springer.com/article/10.1007/s12652-019-01503-y).")  |
+|:--:|
+| *The __model-based__ `PILCO` algorithm is used to quickly learn to predict the __desired speed__.. [Source](https://link.springer.com/article/10.1007/s12652-019-01503-y).* |
+
+- Some related concepts:
+  - `PILCO`, `TORCS`
+- Definitions:
+  - **State** variables: `x` = [`lateral deviation`, `angle deviation`, `desired speed`].
+  - **Dynamical** variables: `y` = [`x`, `curvature`].
+  - **Cost** variables `z` = [`y`, `current speed`].
+  - **Control** variables: `u` = [`steering`, `throttle or brake`].
+  - The variable `current speed` is always known: either given by `TORCS` or read from `CAN bus`.
+- One idea: contrary to `E2E`, the authors want to separare `perception` and `control`. Hence the training is divided into **two steps**:
+  - 1- Extract _dynamical variables_ `y` from the simulator (assume _full observation_) and **learn a driving controller**. -> Using **model-based RL**.
+  - 2- Try to extract `y` from images. -> Using **supervised learning**.
+  - This step-by-step method brings advantages such as the possibility for **intermediate checks** and **uncertainty propagation**.
+    - But both learning processes are **isolated**. And one defective block can cause the whole chain to fail.
+    - In particular, the authors note that the `CNN` fails at predicting _`0`-lateral-offset_, i.e. when the car is **close to the center**, causing the full system to **_"vibrate"_**.
+    - This could be addressed on the **controler side** (_damping factor_ or adding _action consistency_ in the cost function), but it would be better to back-propagate these errors directly to the perception, as in _pixel-to-control_ approaches.
+- _What is learnt by the controller?_
+  - One option would be to learn the **transition function** leading to the new state: **`x[t+1]`** = `f`(`y`, `u`, `x`). This is what the simulator applies internally.
+  - Instead, here, the **_change_** in **state** is learnt: **`delta`(`x`)** = `x[t+1]` - `x[t]` = `f`(`y`, `u`, `x`).
+    - Training **inputs** are formed by some recorded `Y` = [`y`, `u`].
+    - Training **targets** are built with some recorded `ΔX` = [`delta`(`x`)].
+- Another idea: the car is expected to **run at different velocities**.
+  - Hence vary the **desired speed** depending on the **curvature** and the deviation in `heading`.
+  - This is what the agent must learn to predict.
+  - In the reward function of `PILCO`, the term about desired velocity play the **largest role** (_if you do not learn to decelerate before a turn, your experiences will always be limited since you will get off-road at each sharp turn_).
+- One algorithm: `PILCO` = **`P`robabilistic `I`nference for `L`earning `CO`ntrol**.
+  - In short, this is a **model-based** `RL` algorithm using **Gaussian process** (`GP`).
+  - The `GP` **predicts outcome distribution** of `delta`(`x`) with probabilities. _Hence first letter `P`_.
+    - In particular, the job is to predict the **mean** and the **standard deviation** of this distribution which is **assumed to be Gaussian**.
+    - This _probabilitic_ nature is important since **model-based** `RL` usually suffers from **_model bias_**.
+  - The _cost variables_ are also predicted and based on this `z` distribution, the optimal control `u` is derived using **_policy gradient search_** (`PGS`).
+    - More precisely, the _control variables_ `u` is assumed to be function of `z` via an affine transformation followed by some saturation: `u` = `sat`(`w`*`z` + `b`).
+    - Hence `PGS` aims at finding {`w`, `b`}: the predicted return and its derivatives are used to **optimize the controller parameters**.
+    - The new controller is again used in `TORCS` to **generated data** and the learning process is repeated.
+- _Why and how is the vanilla `PILCO` modified?_
+  - The computational complexity of `PILCO` is linear in the **size of training set**.
+    - Instead of using _sparse_ GP method (e.g. `FITC`), the authors decide to **prune the dataset** instead.
+    - In particular, observation data are **sparsely collected** and **renewed at each iteration**.
+  - Other modifications relate to the difference between input output/variable types. And the use of **different scenarios** to calculate the expected returns.
+- One quote about the difference between `PILCO` and `MPC`:
+  - > "The concept of PILCO is quite similar to explicit MPC algorithms, but MPC controllers are usually defined **piecewise affine**. For PILCO, control law can be represented in **any differentiable form**."
+
+---
+
+</details>
+
 ## Planning and Monte Carlo Tree Seach
 
 Hoel, C.-J. [2019].
@@ -1273,7 +1338,7 @@ Hoel, C.-J. [2019].
 <details>
   <summary>Click to expand</summary>
 
-Some figure:
+Some figures:
 
 | ![ `MCTS` is especially benefitial when it is necessary to plan relatively __far into the future__. [Source](https://research.chalmers.se/publication/511929/file/511929_Fulltext.pdf).](media/2019_hoel_3.PNG "`MCTS` is especially benefitial when it is necessary to plan relatively __far into the future__. [Source](https://research.chalmers.se/publication/511929/file/511929_Fulltext.pdf).")  |
 |:--:|
