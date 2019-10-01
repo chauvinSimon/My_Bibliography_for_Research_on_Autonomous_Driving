@@ -869,6 +869,43 @@ One figure:
 
 ## Model Free Reinforcement Learning
 
+Saxena, D. M., Bae, S., Nakhaei, A., Fujimura, K., & Likhachev, M. [2019].
+**"Driving in Dense Traffic with Model-Free Reinforcement Learning"**.
+[[pdf](https://arxiv.org/abs/1909.06710)]
+[[simulator](https://github.com/sisl/AutomotiveDrivingModels.jl)]
+[[code](https://github.com/honda-research-institute/DRLDriving)]
+
+<details>
+  <summary>Click to expand</summary>
+
+Some figures:
+
+| ![[Source](https://arxiv.org/abs/1909.06710).](media/2019_saxena_5.PNG "[Source](https://arxiv.org/abs/1909.06710).")  |
+|:--:|
+| *[Source](https://arxiv.org/abs/1909.06710).* |
+
+| ![The __occupancy-grid-like observation space__ is divided into `4` channels, each containing `3` lanes. A _ego-vehicle_ specific __feature vector__ is also considered. The authors use **policy-gradient** Proximal Policy Optimisation - `PPO` - method and decided not to share parameters between the _actor_ and the _critic_. [Source](https://arxiv.org/abs/1909.06710).](media/2019_saxena_3.PNG "The __occupancy-grid-like observation space__ is divided into `4` channels, each containing `3` lanes. A _ego-vehicle_ specific __feature vector__ is also considered. The authors use **policy-gradient** Proximal Policy Optimisation - `PPO` - method and decided not to share parameters between the _actor_ and the _critic_. [Source](https://arxiv.org/abs/1909.06710).")  |
+|:--:|
+| *The __occupancy-grid-like observation space__ is divided into `4` channels, each containing `3` lanes. A _ego-vehicle_ specific __feature vector__ is also considered. The authors use **policy-gradient** Proximal Policy Optimisation - `PPO` - method and decided not to share parameters between the _actor_ and the _critic_. [Source](https://arxiv.org/abs/1909.06710).* |
+
+- Some related concepts:
+  - `SISL`, `PPO`, `MPC`, `merging scenarios`
+- One motivation: learn to perform comfortable merge into **dense traffic** using **model-free** RL.
+  - _Dense traffic_ situations are difficult: traditional **rule-based** models **fail entirely**.
+  - _Model-free_ means it **does not rely on driver models** of other vehicles, or even on **predictions about their motions**. No explicit model of **inter-vehicle interactions** is therefore needed.
+  - _Model-free_ also means that natively, **safety cannot guaranteed**. Some _masking_ mechanisms (called **_"overseer"_**) are contemplated for future work.
+- One idea for _merging_ scenarios:
+  - > Many other works "only accommodate a **fixed merge point** as opposed to the more realistic case of a **finite distance** for the task (lane change or merge) as in our work."
+- One idea to adapt `IDM` to dense scenarios:
+  - > "`IDM` is modified to include a **`stop-and-go`** behaviour that cycles between a *non-zero* and *zero* desired velocity in regular time intervals. This behaviour is intended to simulate real-world driving behaviours seen in heavy-traffic during rush-hour."
+- One idea about **action space**:
+  - > "Learning a policy over the acceleration and steering angle of a vehicle might lead to _jerky or oscillatory_ behaviour which is undesirable. Instead, we train our network to **predict the time derivatives** of these quantities, i.e. **jerk** `j` and **steering rate** `δ˙`. This helps us maintain a smooth signal over the true low-level control variables."
+  - The policy for jerk and steering rate is parameterised as **Beta distributions** (allegedly _"this makes training more stable as the policy gradients are unbiased with respect to the finite support of `β`-distributions"_).
+
+---
+
+</details>
+
 Khurana, A. [2019].
 **"Behavior Planning at Roundabouts"**.
 [[pdf](https://www.ri.cmu.edu/wp-content/uploads/2019/08/ri_report_20190810.pdf)]
