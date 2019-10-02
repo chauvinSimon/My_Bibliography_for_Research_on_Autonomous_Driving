@@ -1316,9 +1316,9 @@ Baheri, A., Kolmanovsky, I., Girard, A., Tseng, E., & Filev, D. [2019].
 
 One figure:
 
-| ![ The `perception` module, the `memory` or `prediction` module. And the `control` module. [Source](https://www.researchgate.net/publication/332912542_Vision-Based_Autonomous_Driving_A_Model_Learning_Approach).](media/2019_baheri_1.PNG "The `perception` module, the `memory` or `prediction` module. And the `control` module. [Source](https://www.researchgate.net/publication/332912542_Vision-Based_Autonomous_Driving_A_Model_Learning_Approach).")  |
+| ![ The `perception` module, the `memory` or `prediction` module, and the `control` module. [Source](https://www.researchgate.net/publication/332912542_Vision-Based_Autonomous_Driving_A_Model_Learning_Approach).](media/2019_baheri_1.PNG "The `perception` module, the `memory` or `prediction` module, and the `control` module. [Source](https://www.researchgate.net/publication/332912542_Vision-Based_Autonomous_Driving_A_Model_Learning_Approach).")  |
 |:--:|
-| *The `perception` module, the `memory` or `prediction` module. And the `control` module. [Source](https://www.researchgate.net/publication/332912542_Vision-Based_Autonomous_Driving_A_Model_Learning_Approach).* |
+| *The `perception` module, the `memory` or `prediction` module, and the `control` module. [Source](https://www.researchgate.net/publication/332912542_Vision-Based_Autonomous_Driving_A_Model_Learning_Approach).* |
 
 - Some related concepts:
   - `VAE`, `stochastic policy search`, `CARLA`
@@ -1329,27 +1329,29 @@ One figure:
   - 3- A `CMA-ES` is trained to **take actions** (`steering`, `acceleration`, and `brake`) based on the `LSTM` hidden state (capturing history information) and the current state representation (predicted). The problem is formulated as a `MDP`.
 - One idea about the **continuous** action space:
   - > "We combine the acceleration and brake commands into a **single value** between `−1` to `+1`, where the values between `−1` and `0` correspond to the brake command and the values between `0` and `1` correspond to the acceleration command".
-  - The author use the term _"acceleration command"_ for one of the actions. CARLA works with `throttle`, as human use the gas-pedal.
-  - I have realized that the mapping `acceleration` `->` `thottle` is very complex. Therefore I think the agent is leaning the `throttle` and considering the **single NN layer** used for the controller, this may be quite challenging.
+  - The authors use the term _"acceleration command"_ for one of the actions. CARLA works with `throttle`, as human use the gas-pedal.
+  - I have realized that the mapping `acceleration` `->` `throttle` is very complex. Therefore I think the agent is leaning the `throttle` and considering the **single NN layer** used for the controller, this may be quite challenging.
 - About the [`CMA-ES`](https://en.wikipedia.org/wiki/CMA-ES):
   - `ES` means "Evolution Strategy", i.e. an optimization technique based on ideas of evolution, iterating between of `variation` (via `recombination` and `mutation`) and `selection`.
     - `ES` is easy to **implement**, easy to **scale**, very fast if **parallelized** and extremely **simple**.
   - `CMA` means "Covariance Matrix Adaptation".
     - This means that in the `variation` phase, not only the `mean` but also the `covariance matrix` of the population is updated to increase the probability of previously successful steps.
-    - Therefore it can been seen as _Cross-Entropy Methods_ (`CEM`) with momentum.
+    - Therefore, it can been seen as _Cross-Entropy Methods_ (`CEM`) with momentum.
 - About **sampling efficiency**:
   - The authors note that `IL` and `model-free RL` baselines were taking resp. `14` hours and `12` days of driving for training and were both outperformed by the presented `model-based RL` approach which required `5` hours of human driving.
     - This only considers the **time to interact** with the environment, i.e. to record images.
     - It would be interesting to consider the time needed to **learn the policy** afterward.
   - `CMA-ES`, as a **derivative-free method**, is one of the least sample efficient approach.
-    - I find interesting that an _evolutionary algorithm_ was chosen given the motivation of _increading sampling efficiency_.
+    - I find interesting that an _evolutionary algorithm_ was chosen given the motivation of _increasing sampling efficiency_.
 - About `model-based` RL:
   - The performance really depends on the **ability to learn a reliable model** of the environment.
-    - The **low-level** representation of the `VAE` (size `128`) may not capture the most difficult sitations.
+    - The **low-level** representation of the `VAE` (size `128`) may not capture the most difficult situations.
     - The authors suggests looking at **mid-level** representations such as the [**affordance** representation](http://deepdriving.cs.princeton.edu/paper.pdf) of [DeepDriving](http://deepdriving.cs.princeton.edu/) instead.
-  - Here, the authors **stricly splited** the two tasks: First learn a model. Then do planning.
+  - Here, the authors **strictly split** the two tasks: First learn a model. Then do planning.
   - Why not ***keeping interacting from time to time with the `env`**, in order to vary the **sources of experience**?
     - This should still be more **sample efficient** than model-free approaches while making sure the agent keep seeing **"correct" transitions**.
+
+---
 
 </details>
 
