@@ -148,6 +148,84 @@ Note: I find very valuable to get insights from the **CMU** (Carnegie Mellon Uni
 
 ## Behavior Cloning, End-To-End (E2E), Imitation Learning
 
+Buhet, T., Wirbel, E., & Perrotton, X. [2019].
+**"Conditional Vehicle Trajectories Prediction in CARLA Urban Environment"**
+[[pdf](https://arxiv.org/abs/1909.00792)]
+
+<details>
+  <summary>Click to expand</summary>
+
+Some figures:
+
+| ![`End-to-Mid` approach: `3` inputs with **different levels of abstraction** are used to predict the future positions on a fixed `2s` horizon of the ego vehicle and the neighbors. The ego trajectory is be **implemented by an external** `PID` controller. [Source](https://arxiv.org/abs/1909.00792).](media/2019_buhet_1.PNG "`End-to-Mid` approach: `3` inputs with **different levels of abstraction** are used to predict the future positions on a fixed `2s` horizon of the ego vehicle and the neighbors. The ego trajectory is be **implemented by an external** `PID` controller. [Source](https://arxiv.org/abs/1909.00792).")  |
+|:--:|
+| *`End-to-Mid` approach: `3` inputs with **different levels of abstraction** are used to predict the future positions on a fixed `2s` horizon of the ego vehicle and the neighbors. The ego trajectory is be **implemented by an external** `PID` controller. [Source](https://arxiv.org/abs/1909.00792).* |
+
+| ![The past **3D-bounding boxes** of the road users in the current reference are **projected back in the current camera space**. The **past positions** of ego and other vehicles are projected into some grid-map called **"proximity map"**. The image and the **proximity map** are concatenated to form context feature vector `C`. This **context encoding** is concatenated with the **ego encoding**, then fed into **branches** corresponding to the different high level goals - `conditional navigation goal`. [Source](https://arxiv.org/abs/1909.00792).](media/2019_buhet_2.PNG "The past **3D-bounding boxes** of the road users in the current reference are **projected back in the current camera space**. The **past positions** of ego and other vehicles are projected into some grid-map called **"proximity map"**. The image and the **proximity map** are concatenated to form context feature vector `C`. This **context encoding** is concatenated with the **ego encoding**, then fed into **branches** corresponding to the different high level goals - `conditional navigation goal`. [Source](https://arxiv.org/abs/1909.00792).")  |
+|:--:|
+| *The past **3D-bounding boxes** of the road users in the current reference are **projected back in the current camera space**. The **past positions** of ego and other vehicles are projected into some grid-map called **"proximity map"**. The image and the **proximity map** are concatenated to form context feature vector `C`. This **context encoding** is concatenated with the **ego encoding**, then fed into **branches** corresponding to the different high level goals - `conditional navigation goal`. [Source](https://arxiv.org/abs/1909.00792).* |
+
+| ![Illustration of the **distribution shift** in **imitation learning** `IL`. [Source](https://arxiv.org/abs/1909.00792).](media/2019_buhet_3.PNG "Illustration of the **distribution shift** in **imitation learning** `IL`. [Source](https://arxiv.org/abs/1909.00792).")  |
+|:--:|
+| *Illustration of the **distribution shift** in **imitation learning** `IL`. [Source](https://arxiv.org/abs/1909.00792).* |
+
+| ![[`VisualBackProp`](https://arxiv.org/abs/1611.05418) highlights the **image pixels which contributed the most** to the final results - **Traffic lights** and their colors are important, together with with highlights lane markings and curbs when there is a significant lateral deviation. [Source](https://arxiv.org/abs/1909.00792).](media/2019_buhet_4.PNG "[`VisualBackProp`](https://arxiv.org/abs/1611.05418) highlights the **image pixels which contributed the most** to the final results - **Traffic lights** and their colors are important, together with with highlights lane markings and curbs when there is a significant lateral deviation. [Source](https://arxiv.org/abs/1909.00792).")  |
+|:--:|
+| *[`VisualBackProp`](https://arxiv.org/abs/1611.05418) highlights the **image pixels which contributed the most** to the final results - **Traffic lights** and their colors are important, together with with highlights lane markings and curbs when there is a significant lateral deviation. [Source](https://arxiv.org/abs/1909.00792).* |
+
+- Some related concepts:
+  - `conditional IL`, [`CARLA`](http://carla.org/), `distributional shift problem`
+- Previous works:
+  - ["Imitation Learning for End to End Vehicle Longitudinal Control with Forward Camera"](https://arxiv.org/abs/1812.05841) - (George, Buhet, Wirbel, Le-Gall, & Perrotton, 2018).
+- One term: **_"Conditional navigation goal"_**.
+  - Together with the RGB images and the **past positions**, the network takes as input a **navigation command** to describe the **desired behavior** of the ego vehicle at intersections.
+  - Hence, the future trajectory of the ego vehicle is **conditionned** by a **navigation command**.
+    - If the ego-car is approaching an intersection, the **goal** can be `left`, `right` or `cross`, else the goal is `keep lane`.
+    - That means `lane-change` is not an option.
+  - > "The last layers of the network are **split into branches** which are **masked with the current navigation command**, thus allowing the network to learn specific behaviors for each goal".
+- Ingredients to improve vanilla end-to-end imitation learning (`IL`):
+  - Mix of `high` and `low`-level data (i.e. _hybrid_ input):
+    - Both **raw signal** (_images_) and **partial environment abstraction** (_navigation commands_) are used.
+  - **Auxiliary tasks**:
+    - One head of the network predicts the future trajectories of the **surrounding vehicles**.
+      - **It differs from the primary task** which should decide the `2s`-ahead trajectory for the ego car.
+      - Nevertheless, this **secondary task helps**: _"Adding the neighbors prediction makes the ego prediction more compliant to traffic rules."_
+    - This refers to the concept of **_"Priviledged learning"_**:
+      - > "The network is **partly trained with an auxiliary task** on a ground truth which is **useful to driving**, and on the rest is only trained for IL".
+  - **Label augmentation**:
+    - The main challenge of `IL` is the difference between **train** and **online test** distributions. This is due to the difference between
+      - **`Open-loop`** control: decisions are not implemented.
+      - **`Close-loop`** control: decisions are implemented and the vehicle can end in a state absent from the _train distribution_, potentially causing _"error accumulation"_.
+    - **Data augmentation** is used to reduce the gap between _train_ and _test_ distributions.
+      - Classical randomization is combined with **`label augmentation`**: data similar to **failure cases** is generated a posteriori.
+    - Three findings:
+    - > "There is a **significant gap** in performance when introducing the **augmentation**."
+    - > "The effect is much more noticeable on **complex navigation tasks**." _(Errors accumulate quicker)_.
+    - > "**Online test** is the real significant indicator for `IL` when it is used for active control." _(The common offline evaluation metrics may not be correlated to the online performance)_.
+- Baselines:
+  - **Conditional Imitation** learning (`CIL`).
+    - `CIL` produces **instantaneous commands**.
+  - **Conditional Affordance** Learning (`CAL`).
+    - `CAL` produces **_"affordances"_** which are then given to a controller.
+- One word about the choice of the simulator.
+  - A possible alternative to [CARLA](http://carla.org/) could be the promising [**`LGSVL`** simulator](https://www.lgsvlsimulator.com) developed by the Advanced Platform Lab at the **LG Electronics** America R&D Center.
+- One term: **_"End-To-Middle"_**.
+  - It is opposed to **_"End-To-End"_**, i.e. it **does not output "end" control signals** such as throttle or steering but rather some **desired trajectory**, i.e. a mid-level representation.
+    - Each trajectory is described by **two polynomial functions** (one for `x`, the other for `y`), therefore the network has to **predict a vector** (`x0`, ..., `x4`, `y0`, ..., `y4`) for each vehicle.
+    - The desired ego-trajectory is then implemented by an **external controller** (`PID`). Therefore not `end-to-end`.
+  - Advantages of `end-to-mid`: **interpretability** for the control part + less to be learnt by the net.
+  - This approach is also an instance of **"Direct perception"**:
+    - > "Instead of commands, the network predicts hand-picked parameters relevant to the driving (distance to the lines, to other vehicles), which are then fed to an independent controller".
+  - Small digression: if the raw perception measurements were first processed to form a **mid-level** input representation, the approach would be said `mid-to-mid`. An example is [ChauffeurNet](https://arxiv.org/abs/1812.03079), detailed on this page as well.
+- About Ground truth:
+  - The expert demonstrations do not come from human recordings but rather from CARLA autopilot.
+  - `15` hours of driving in `Town01` were collected.
+  - As for human demonstrations, **no annotation is needed**.
+
+---
+
+</details>
+
 Michelmore, R., Wicker, M., Laurenti, L., Cardelli, L., Gal, Y., & Kwiatkowska, M. [2019].
 **"Uncertainty Quantification with Statistical Guarantees in End-to-End Autonomous Driving Control"**
 [[pdf](https://arxiv.org/abs/1909.09884)]
@@ -168,8 +246,6 @@ One figure:
 | ![As noted by the authors: while the `variance` can be useful in __collision avoidance__, the wide variance of `HMC` causes a larger proportion of trajectories to fall __outside of the safety boundary__ when a _new weather_ is applied. [Source](https://arxiv.org/abs/1904.08980).](media/2019_michelmore_3.PNG "As noted by the authors: while the `variance` can be useful in __collision avoidance__, the wide variance of `HMC` causes a larger proportion of trajectories to fall __outside of the safety boundary__ when a _new weather_ is applied. [Source](https://arxiv.org/abs/1909.09884).")  |
 |:--:|
 | *As noted by the authors: while the `variance` can be useful in __collision avoidance__, the wide variance of `HMC` causes a larger proportion of trajectories to fall __outside of the safety boundary__ when a _new weather_ is applied. [Source](https://arxiv.org/abs/1904.08980).* |
-
-
 
 - Some related concepts:
   - `uncertainty-aware decision`, `Bayesian inference`, [`CARLA`](http://carla.org/)
