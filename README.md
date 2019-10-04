@@ -157,17 +157,17 @@ Buhet, T., Wirbel, E., & Perrotton, X. [2019].
 
 Some figures:
 
-| ![`End-to-Mid` approach: `3` inputs with **different levels of abstraction** are used to predict the future positions on a fixed `2s` horizon of the ego vehicle and the neighbours. The ego trajectory is be **implemented by an external** `PID` controller. [Source](https://arxiv.org/abs/1909.00792).](media/2019_buhet_1.PNG "`End-to-Mid` approach: `3` inputs with **different levels of abstraction** are used to predict the future positions on a fixed `2s` horizon of the ego vehicle and the neighbours. The ego trajectory is be **implemented by an external** `PID` controller. [Source](https://arxiv.org/abs/1909.00792).")  |
+| ![`End-to-`**`Mid`** approach: `3` inputs with **different levels of abstraction** are used to predict the future positions on a fixed `2s`-horizon of the ego vehicle and the neighbours. The ego trajectory is be **implemented by an external** `PID` controller - Therefore, **not** `end-to-`**`end`**. [Source](https://arxiv.org/abs/1909.00792).](media/2019_buhet_1.PNG "`End-to-`**`Mid`** approach: `3` inputs with **different levels of abstraction** are used to predict the future positions on a fixed `2s`-horizon of the ego vehicle and the neighbours. The ego trajectory is be **implemented by an external** `PID` controller - Therefore, **not** `end-to-`**`end`**. [Source](https://arxiv.org/abs/1909.00792).")  |
 |:--:|
-| *`End-to-Mid` approach: `3` inputs with **different levels of abstraction** are used to predict the future positions on a fixed `2s` horizon of the ego vehicle and the neighbours. The ego trajectory is be **implemented by an external** `PID` controller. [Source](https://arxiv.org/abs/1909.00792).* |
+| *`End-to-`**`Mid`** approach: `3` inputs with **different levels of abstraction** are used to predict the future positions on a fixed `2s`-horizon of the ego vehicle and the neighbours. The ego trajectory is be **implemented by an external** `PID` controller - Therefore, **not** `end-to-`**`end`**. [Source](https://arxiv.org/abs/1909.00792).* |
 
 | ![The past **3D-bounding boxes** of the road users in the current reference are **projected back in the current camera space**. The **past positions** of ego and other vehicles are projected into some grid-map called **`proximity map`**. The image and the **proximity map** are concatenated to form context feature vector `C`. This **context encoding** is concatenated with the **ego encoding**, then fed into **branches** corresponding to the different high-level goals - `conditional navigation goal`. [Source](https://arxiv.org/abs/1909.00792).](media/2019_buhet_2.PNG "The past **3D-bounding boxes** of the road users in the current reference are **projected back in the current camera space**. The **past positions** of ego and other vehicles are projected into some grid-map called **`proximity map`**. The image and the **proximity map** are concatenated to form context feature vector `C`. This **context encoding** is concatenated with the **ego encoding**, then fed into **branches** corresponding to the different high-level goals - `conditional navigation goal`. [Source](https://arxiv.org/abs/1909.00792).")  |
 |:--:|
 | *The past **3D-bounding boxes** of the road users in the current reference are **projected back in the current camera space**. The **past positions** of ego and other vehicles are projected into some grid-map called **`proximity map`**. The image and the **proximity map** are concatenated to form context feature vector `C`. This **context encoding** is concatenated with the **ego encoding**, then fed into **branches** corresponding to the different high-level goals - `conditional navigation goal`. [Source](https://arxiv.org/abs/1909.00792).* |
 
-| ![Illustration of the **distribution shift** in **imitation learning** `IL`. [Source](https://arxiv.org/abs/1909.00792).](media/2019_buhet_3.PNG "Illustration of the **distribution shift** in **imitation learning** `IL`. [Source](https://arxiv.org/abs/1909.00792).")  |
+| ![Illustration of the **distribution shift** in **imitation learning**. [Source](https://arxiv.org/abs/1909.00792).](media/2019_buhet_3.PNG "Illustration of the **distribution shift** in **imitation learning**. [Source](https://arxiv.org/abs/1909.00792).")  |
 |:--:|
-| *Illustration of the **distribution shift** in **imitation learning** `IL`. [Source](https://arxiv.org/abs/1909.00792).* |
+| *Illustration of the **distribution shift** in **imitation learning**. [Source](https://arxiv.org/abs/1909.00792).* |
 
 | ![[`VisualBackProp`](https://arxiv.org/abs/1611.05418) highlights the **image pixels which contributed the most** to the final results - **Traffic lights** and their colours are important, together with highlights lane markings and curbs when there is a significant lateral deviation. [Source](https://arxiv.org/abs/1909.00792).](media/2019_buhet_4.PNG "[`VisualBackProp`](https://arxiv.org/abs/1611.05418) highlights the **image pixels which contributed the most** to the final results - **Traffic lights** and their colours are important, together with highlights lane markings and curbs when there is a significant lateral deviation. [Source](https://arxiv.org/abs/1909.00792).")  |
 |:--:|
@@ -177,22 +177,34 @@ Some figures:
   - `conditional IL`, [`CARLA`](http://carla.org/), `distributional shift problem`
 - Previous works:
   - ["Imitation Learning for End to End Vehicle Longitudinal Control with Forward Camera"](https://arxiv.org/abs/1812.05841) - (George, Buhet, Wirbel, Le-Gall, & Perrotton, 2018).
+- One term: **_"End-To-Middle"_**.
+  - It is opposed to **_"End-To-End"_**, i.e. it **does not output "end" control signals** such as throttle or steering but rather some **desired trajectory**, i.e. a mid-level representation.
+    - Each trajectory is described by **two polynomial functions** (one for `x`, the other for `y`), therefore the network has to **predict a vector** (`x0`, ..., `x4`, `y0`, ..., `y4`) for each vehicle.
+    - The desired ego-trajectory is then implemented by an **external controller** (`PID`). Therefore, **not `end-to-end`**.
+  - Advantages of `end-to-mid`: **interpretability** for the control part + less to be learnt by the net.
+  - This approach is also an instance of **"Direct perception"**:
+    - > "Instead of commands, the network predicts hand-picked parameters relevant to the driving (distance to the lines, to other vehicles), which are then fed to an independent controller".
+  - Small digression: if the raw perception measurements were first processed to form a **mid-level** input representation, the approach would be said `mid-to-mid`. An example is [ChauffeurNet](https://arxiv.org/abs/1812.03079), detailed on this page as well.
+- About Ground truth:
+  - The expert demonstrations do not come from human recordings but rather from **`CARLA` autopilot**.
+  - `15` hours of driving in `Town01` were collected.
+  - As for human demonstrations, **no annotation is needed**.
 - One term: **_"Conditional navigation goal"_**.
   - Together with the RGB images and the **past positions**, the network takes as input a **navigation command** to describe the **desired behaviour** of the ego vehicle at intersections.
   - Hence, the future trajectory of the ego vehicle is **conditioned** by a **navigation command**.
     - If the ego-car is approaching an intersection, the **goal** can be `left`, `right` or `cross`, else the goal is to `keep lane`.
     - That means `lane-change` is not an option.
   - > "The last layers of the network are **split into branches** which are **masked with the current navigation command**, thus allowing the network to learn specific behaviours for each goal".
-- Ingredients to improve vanilla end-to-end imitation learning (`IL`):
-  - Mix of `high` and `low`-level data (i.e. _hybrid_ input):
+- Three ingredients to improve vanilla end-to-end imitation learning (`IL`):
+  - `1`- **Mix of `high` and `low`-level input** (i.e. _hybrid_ input):
     - Both **raw signal** (_images_) and **partial environment abstraction** (_navigation commands_) are used.
-  - **Auxiliary tasks**:
+  - `2`- **Auxiliary tasks**:
     - One head of the network predicts the future trajectories of the **surrounding vehicles**.
       - **It differs from the primary task** which should decide the `2s`-ahead trajectory for the ego car.
       - Nevertheless, this **secondary task helps**: _"Adding the neighbours prediction makes the ego prediction more compliant to traffic rules."_
     - This refers to the concept of **_"Privileged learning"_**:
       - > "The network is **partly trained with an auxiliary task** on a ground truth which is **useful to driving**, and on the rest is only trained for IL".
-  - **Label augmentation**:
+  - `3`- **Label augmentation**:
     - The main challenge of `IL` is the difference between **train** and **online test** distributions. This is due to the difference between
       - **`Open-loop`** control: decisions are not implemented.
       - **`Close-loop`** control: decisions are implemented, and the vehicle can end in a state absent from the _train distribution_, potentially causing _"error accumulation"_.
@@ -208,19 +220,7 @@ Some figures:
   - **Conditional Affordance** Learning (`CAL`).
     - `CAL` produces **_"affordances"_** which are then given to a controller.
 - One word about the choice of the simulator.
-  - A possible alternative to [CARLA](http://carla.org/) could be the promising [**`LGSVL`** simulator](https://www.lgsvlsimulator.com) developed by the Advanced Platform Lab at the **LG Electronics** America R&D Centre.
-- One term: **_"End-To-Middle"_**.
-  - It is opposed to **_"End-To-End"_**, i.e. it **does not output "end" control signals** such as throttle or steering but rather some **desired trajectory**, i.e. a mid-level representation.
-    - Each trajectory is described by **two polynomial functions** (one for `x`, the other for `y`), therefore the network has to **predict a vector** (`x0`, ..., `x4`, `y0`, ..., `y4`) for each vehicle.
-    - The desired ego-trajectory is then implemented by an **external controller** (`PID`). Therefore, **not `end-to-end`**.
-  - Advantages of `end-to-mid`: **interpretability** for the control part + less to be learnt by the net.
-  - This approach is also an instance of **"Direct perception"**:
-    - > "Instead of commands, the network predicts hand-picked parameters relevant to the driving (distance to the lines, to other vehicles), which are then fed to an independent controller".
-  - Small digression: if the raw perception measurements were first processed to form a **mid-level** input representation, the approach would be said `mid-to-mid`. An example is [ChauffeurNet](https://arxiv.org/abs/1812.03079), detailed on this page as well.
-- About Ground truth:
-  - The expert demonstrations do not come from human recordings but rather from **`CARLA` autopilot**.
-  - `15` hours of driving in `Town01` were collected.
-  - As for human demonstrations, **no annotation is needed**.
+  - A possible alternative to [CARLA](http://carla.org/) could be the [**`LGSVL`** simulator](https://www.lgsvlsimulator.com) developed by the Advanced Platform Lab at the **LG Electronics** America R&D Centre. _This looks promising_.
 
 ---
 
