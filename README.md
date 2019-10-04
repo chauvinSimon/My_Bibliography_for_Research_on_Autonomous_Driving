@@ -151,6 +151,7 @@ Note: I find very valuable to get insights from the **CMU** (Carnegie Mellon Uni
 Buhet, T., Wirbel, E., & Perrotton, X. [2019].
 **"Conditional Vehicle Trajectories Prediction in CARLA Urban Environment"**
 [[pdf](https://arxiv.org/abs/1909.00792)]
+[[video](https://www.youtube.com/watch?v=J_2HtNMV6qA)]
 
 <details>
   <summary>Click to expand</summary>
