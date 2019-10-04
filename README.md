@@ -157,45 +157,45 @@ Buhet, T., Wirbel, E., & Perrotton, X. [2019].
 
 Some figures:
 
-| ![`End-to-Mid` approach: `3` inputs with **different levels of abstraction** are used to predict the future positions on a fixed `2s` horizon of the ego vehicle and the neighbors. The ego trajectory is be **implemented by an external** `PID` controller. [Source](https://arxiv.org/abs/1909.00792).](media/2019_buhet_1.PNG "`End-to-Mid` approach: `3` inputs with **different levels of abstraction** are used to predict the future positions on a fixed `2s` horizon of the ego vehicle and the neighbors. The ego trajectory is be **implemented by an external** `PID` controller. [Source](https://arxiv.org/abs/1909.00792).")  |
+| ![`End-to-Mid` approach: `3` inputs with **different levels of abstraction** are used to predict the future positions on a fixed `2s` horizon of the ego vehicle and the neighbours. The ego trajectory is be **implemented by an external** `PID` controller. [Source](https://arxiv.org/abs/1909.00792).](media/2019_buhet_1.PNG "`End-to-Mid` approach: `3` inputs with **different levels of abstraction** are used to predict the future positions on a fixed `2s` horizon of the ego vehicle and the neighbours. The ego trajectory is be **implemented by an external** `PID` controller. [Source](https://arxiv.org/abs/1909.00792).")  |
 |:--:|
-| *`End-to-Mid` approach: `3` inputs with **different levels of abstraction** are used to predict the future positions on a fixed `2s` horizon of the ego vehicle and the neighbors. The ego trajectory is be **implemented by an external** `PID` controller. [Source](https://arxiv.org/abs/1909.00792).* |
+| *`End-to-Mid` approach: `3` inputs with **different levels of abstraction** are used to predict the future positions on a fixed `2s` horizon of the ego vehicle and the neighbours. The ego trajectory is be **implemented by an external** `PID` controller. [Source](https://arxiv.org/abs/1909.00792).* |
 
-| ![The past **3D-bounding boxes** of the road users in the current reference are **projected back in the current camera space**. The **past positions** of ego and other vehicles are projected into some grid-map called **"proximity map"**. The image and the **proximity map** are concatenated to form context feature vector `C`. This **context encoding** is concatenated with the **ego encoding**, then fed into **branches** corresponding to the different high level goals - `conditional navigation goal`. [Source](https://arxiv.org/abs/1909.00792).](media/2019_buhet_2.PNG "The past **3D-bounding boxes** of the road users in the current reference are **projected back in the current camera space**. The **past positions** of ego and other vehicles are projected into some grid-map called **"proximity map"**. The image and the **proximity map** are concatenated to form context feature vector `C`. This **context encoding** is concatenated with the **ego encoding**, then fed into **branches** corresponding to the different high level goals - `conditional navigation goal`. [Source](https://arxiv.org/abs/1909.00792).")  |
+| ![The past **3D-bounding boxes** of the road users in the current reference are **projected back in the current camera space**. The **past positions** of ego and other vehicles are projected into some grid-map called **`proximity map`**. The image and the **proximity map** are concatenated to form context feature vector `C`. This **context encoding** is concatenated with the **ego encoding**, then fed into **branches** corresponding to the different high-level goals - `conditional navigation goal`. [Source](https://arxiv.org/abs/1909.00792).](media/2019_buhet_2.PNG "The past **3D-bounding boxes** of the road users in the current reference are **projected back in the current camera space**. The **past positions** of ego and other vehicles are projected into some grid-map called **`proximity map`**. The image and the **proximity map** are concatenated to form context feature vector `C`. This **context encoding** is concatenated with the **ego encoding**, then fed into **branches** corresponding to the different high-level goals - `conditional navigation goal`. [Source](https://arxiv.org/abs/1909.00792).")  |
 |:--:|
-| *The past **3D-bounding boxes** of the road users in the current reference are **projected back in the current camera space**. The **past positions** of ego and other vehicles are projected into some grid-map called **"proximity map"**. The image and the **proximity map** are concatenated to form context feature vector `C`. This **context encoding** is concatenated with the **ego encoding**, then fed into **branches** corresponding to the different high level goals - `conditional navigation goal`. [Source](https://arxiv.org/abs/1909.00792).* |
+| *The past **3D-bounding boxes** of the road users in the current reference are **projected back in the current camera space**. The **past positions** of ego and other vehicles are projected into some grid-map called **`proximity map`**. The image and the **proximity map** are concatenated to form context feature vector `C`. This **context encoding** is concatenated with the **ego encoding**, then fed into **branches** corresponding to the different high-level goals - `conditional navigation goal`. [Source](https://arxiv.org/abs/1909.00792).* |
 
 | ![Illustration of the **distribution shift** in **imitation learning** `IL`. [Source](https://arxiv.org/abs/1909.00792).](media/2019_buhet_3.PNG "Illustration of the **distribution shift** in **imitation learning** `IL`. [Source](https://arxiv.org/abs/1909.00792).")  |
 |:--:|
 | *Illustration of the **distribution shift** in **imitation learning** `IL`. [Source](https://arxiv.org/abs/1909.00792).* |
 
-| ![[`VisualBackProp`](https://arxiv.org/abs/1611.05418) highlights the **image pixels which contributed the most** to the final results - **Traffic lights** and their colors are important, together with with highlights lane markings and curbs when there is a significant lateral deviation. [Source](https://arxiv.org/abs/1909.00792).](media/2019_buhet_4.PNG "[`VisualBackProp`](https://arxiv.org/abs/1611.05418) highlights the **image pixels which contributed the most** to the final results - **Traffic lights** and their colors are important, together with with highlights lane markings and curbs when there is a significant lateral deviation. [Source](https://arxiv.org/abs/1909.00792).")  |
+| ![[`VisualBackProp`](https://arxiv.org/abs/1611.05418) highlights the **image pixels which contributed the most** to the final results - **Traffic lights** and their colours are important, together with highlights lane markings and curbs when there is a significant lateral deviation. [Source](https://arxiv.org/abs/1909.00792).](media/2019_buhet_4.PNG "[`VisualBackProp`](https://arxiv.org/abs/1611.05418) highlights the **image pixels which contributed the most** to the final results - **Traffic lights** and their colours are important, together with highlights lane markings and curbs when there is a significant lateral deviation. [Source](https://arxiv.org/abs/1909.00792).")  |
 |:--:|
-| *[`VisualBackProp`](https://arxiv.org/abs/1611.05418) highlights the **image pixels which contributed the most** to the final results - **Traffic lights** and their colors are important, together with with highlights lane markings and curbs when there is a significant lateral deviation. [Source](https://arxiv.org/abs/1909.00792).* |
+| *[`VisualBackProp`](https://arxiv.org/abs/1611.05418) highlights the **image pixels which contributed the most** to the final results - **Traffic lights** and their colours are important, together with highlights lane markings and curbs when there is a significant lateral deviation. [Source](https://arxiv.org/abs/1909.00792).* |
 
 - Some related concepts:
   - `conditional IL`, [`CARLA`](http://carla.org/), `distributional shift problem`
 - Previous works:
   - ["Imitation Learning for End to End Vehicle Longitudinal Control with Forward Camera"](https://arxiv.org/abs/1812.05841) - (George, Buhet, Wirbel, Le-Gall, & Perrotton, 2018).
 - One term: **_"Conditional navigation goal"_**.
-  - Together with the RGB images and the **past positions**, the network takes as input a **navigation command** to describe the **desired behavior** of the ego vehicle at intersections.
-  - Hence, the future trajectory of the ego vehicle is **conditionned** by a **navigation command**.
-    - If the ego-car is approaching an intersection, the **goal** can be `left`, `right` or `cross`, else the goal is `keep lane`.
+  - Together with the RGB images and the **past positions**, the network takes as input a **navigation command** to describe the **desired behaviour** of the ego vehicle at intersections.
+  - Hence, the future trajectory of the ego vehicle is **conditioned** by a **navigation command**.
+    - If the ego-car is approaching an intersection, the **goal** can be `left`, `right` or `cross`, else the goal is to `keep lane`.
     - That means `lane-change` is not an option.
-  - > "The last layers of the network are **split into branches** which are **masked with the current navigation command**, thus allowing the network to learn specific behaviors for each goal".
+  - > "The last layers of the network are **split into branches** which are **masked with the current navigation command**, thus allowing the network to learn specific behaviours for each goal".
 - Ingredients to improve vanilla end-to-end imitation learning (`IL`):
   - Mix of `high` and `low`-level data (i.e. _hybrid_ input):
     - Both **raw signal** (_images_) and **partial environment abstraction** (_navigation commands_) are used.
   - **Auxiliary tasks**:
     - One head of the network predicts the future trajectories of the **surrounding vehicles**.
       - **It differs from the primary task** which should decide the `2s`-ahead trajectory for the ego car.
-      - Nevertheless, this **secondary task helps**: _"Adding the neighbors prediction makes the ego prediction more compliant to traffic rules."_
-    - This refers to the concept of **_"Priviledged learning"_**:
+      - Nevertheless, this **secondary task helps**: _"Adding the neighbours prediction makes the ego prediction more compliant to traffic rules."_
+    - This refers to the concept of **_"Privileged learning"_**:
       - > "The network is **partly trained with an auxiliary task** on a ground truth which is **useful to driving**, and on the rest is only trained for IL".
   - **Label augmentation**:
     - The main challenge of `IL` is the difference between **train** and **online test** distributions. This is due to the difference between
       - **`Open-loop`** control: decisions are not implemented.
-      - **`Close-loop`** control: decisions are implemented and the vehicle can end in a state absent from the _train distribution_, potentially causing _"error accumulation"_.
+      - **`Close-loop`** control: decisions are implemented, and the vehicle can end in a state absent from the _train distribution_, potentially causing _"error accumulation"_.
     - **Data augmentation** is used to reduce the gap between _train_ and _test_ distributions.
       - Classical randomization is combined with **`label augmentation`**: data similar to **failure cases** is generated a posteriori.
     - Three findings:
@@ -208,17 +208,17 @@ Some figures:
   - **Conditional Affordance** Learning (`CAL`).
     - `CAL` produces **_"affordances"_** which are then given to a controller.
 - One word about the choice of the simulator.
-  - A possible alternative to [CARLA](http://carla.org/) could be the promising [**`LGSVL`** simulator](https://www.lgsvlsimulator.com) developed by the Advanced Platform Lab at the **LG Electronics** America R&D Center.
+  - A possible alternative to [CARLA](http://carla.org/) could be the promising [**`LGSVL`** simulator](https://www.lgsvlsimulator.com) developed by the Advanced Platform Lab at the **LG Electronics** America R&D Centre.
 - One term: **_"End-To-Middle"_**.
   - It is opposed to **_"End-To-End"_**, i.e. it **does not output "end" control signals** such as throttle or steering but rather some **desired trajectory**, i.e. a mid-level representation.
     - Each trajectory is described by **two polynomial functions** (one for `x`, the other for `y`), therefore the network has to **predict a vector** (`x0`, ..., `x4`, `y0`, ..., `y4`) for each vehicle.
-    - The desired ego-trajectory is then implemented by an **external controller** (`PID`). Therefore not `end-to-end`.
+    - The desired ego-trajectory is then implemented by an **external controller** (`PID`). Therefore, **not `end-to-end`**.
   - Advantages of `end-to-mid`: **interpretability** for the control part + less to be learnt by the net.
   - This approach is also an instance of **"Direct perception"**:
     - > "Instead of commands, the network predicts hand-picked parameters relevant to the driving (distance to the lines, to other vehicles), which are then fed to an independent controller".
   - Small digression: if the raw perception measurements were first processed to form a **mid-level** input representation, the approach would be said `mid-to-mid`. An example is [ChauffeurNet](https://arxiv.org/abs/1812.03079), detailed on this page as well.
 - About Ground truth:
-  - The expert demonstrations do not come from human recordings but rather from CARLA autopilot.
+  - The expert demonstrations do not come from human recordings but rather from **`CARLA` autopilot**.
   - `15` hours of driving in `Town01` were collected.
   - As for human demonstrations, **no annotation is needed**.
 
@@ -361,11 +361,11 @@ Two figures:
     - Going **beyond vanilla cloning**.
       - **_Trajectory perturbation_**: Expose the learner to synthesized data in the form of **perturbations to the expert’s driving** (e.g. jitter the midpoint pose and heading)
         - One idea for future works is to use **more complex augmentations**, e.g. with RL, especially for highly interactive scenarios.
-      - **_Past dropout_**: to prevent **using the history to cheat** by **just extrapolating** from the past rather than finding the **underlying causes** of the behavior.
+      - **_Past dropout_**: to prevent **using the history to cheat** by **just extrapolating** from the past rather than finding the **underlying causes** of the behaviour.
       - Hence the concept of tweaking the training data in order to **_“simulate the bad rather than just imitate the good”._**
     - Going **beyond the vanially imitation loss**.
       - Extend imitation losses.
-      - Add **_environment losses_** to discourage undesirable behavior, e.g. measuring the overlap of predicted agent positions with the _non-road_ regions.
+      - Add **_environment losses_** to discourage undesirable behaviour, e.g. measuring the overlap of predicted agent positions with the _non-road_ regions.
       - Use **_imitation dropout_**, i.e. sometimes favor the _environment loss_ over the _imitation loss_.
 
 ---
@@ -400,7 +400,7 @@ Sankar, G. S., & Han, K. [2019].
   - It should capture both the uncertainty about the **transition model** and the uncertainty about the **driver models**.
   - This set is considered when taking action using a **"_feedback min-max strategy_"**.
     - I must admit I did not fully understand the concept. Here is a quote:
-    - > "The min-max strategy considers the **worst-case disturbance** affecting the behavior/performance of the system and provides control actions to mitigate the effect of the worst-case disturbance."
+    - > "The min-max strategy considers the **worst-case disturbance** affecting the behaviour/performance of the system and provides control actions to mitigate the effect of the worst-case disturbance."
   - The important idea is to **adapt the size of this `W` set** in order to **avoid over-conservative behaviours** (compared to _reachable-set_ methods).
     - This is done based on the **confidence** in the **estimated driver model** (_probability distribution of the estimated `k`_) for the other vehicles.
       - If the agent is sure that the other car follows model `0`, then it should be **"fully" conservative**.
@@ -429,7 +429,7 @@ Sierra Gonzalez, D. [2019].
   - this **`190`-page thesis** is also referenced in the sections for **prediction** and **planning**.
   - I really like how the author organizes synergies between three modules that are split and made indepedent in most modular architectures:
     - **`(1)` driver model**
-    - **`(2)` behavior prediction**
+    - **`(2)` behaviour prediction**
     - **`(3)` decision-making**
 
 - Some related concepts:
@@ -566,7 +566,7 @@ One figure:
 - Architecture
   - **Encoder** module: The observed trajectories are fed to some `LSTM` whose internal state is used by the two subsequent modules.
   - **Interaction** module: To consider interaction, all `LSTM` states are **concatenated** (**_joint_** state) together with a feature vector of **relative distances**. In addition, a **CVAE** is used for multi-modality (several possible trajectories are **generated**) and **capture interactions** (_I did not fully understand that point_), as stated by the authors:
-    - > "The latent variable `z` models inherent structure in the interaction of multiple vehicles, and it also helps to describe underlying ambiguity of future behaviors of other vehicles."
+    - > "The latent variable `z` models inherent structure in the interaction of multiple vehicles, and it also helps to describe underlying ambiguity of future behaviours of other vehicles."
   - **Prediction** module: Based on the `LSTM` states, the **concatenated vector** and the **latent variable**, both **future trajectories** and **margins to the satisfaction** of each rule are predicted.
   - **Control** module: A `MPC` optimizes the control of the ego car, deciding **which rules should be prioritized** based on the two predicted objects (_trajectories_ and _robustness slackness_).
 
@@ -686,8 +686,8 @@ Sierra Gonzalez, D. [2019].
 
 - As I understood, the main idea here is to **combine prediction techniques** (and their advantages).
   - The **driver-models** (i.e. the reward functions previously learnt with IRL) can be used to identify the most likely, risk-aversive, anticipatory maneuvers. This is called the `model-based` prediction by the author since it relies on one _model_.
-    - But relying only on **driver models** to predict the behavior of surrounding traffic might fail to predict dangerous maneuvers.
-    - As stated, _"the model-based method is not a reliable alternative for the_ **_short-term_** estimation of behavior, since it cannot predict_ **_dangerous actions that deviate_** _from_ **_what is encoded in the model_**_"_.
+    - But relying only on **driver models** to predict the behaviour of surrounding traffic might fail to predict dangerous maneuvers.
+    - As stated, _"the model-based method is not a reliable alternative for the_ **_short-term_** estimation of behaviour, since it cannot predict_ **_dangerous actions that deviate_** _from_ **_what is encoded in the model_**_"_.
     - One solution is to add a term that represents **how the observed movement of the target _matches_ a given maneuver**.
     - In other words, to **consider the noisy observation of the dynamics of the targets** and include theses so-called `dynamic evidence` into the prediction.
 
@@ -697,7 +697,7 @@ Sierra Gonzalez, D. [2019].
 
 - One quote about this combination:
 
-> "This model mimics the reasoning process of human drivers: they can guess what a given vehicle is likely to do given the situation (the **model-based prediction**), but they closely **monitor its dynamics** to detect deviations from the expected behavior".
+> "This model mimics the reasoning process of human drivers: they can guess what a given vehicle is likely to do given the situation (the **model-based prediction**), but they closely **monitor its dynamics** to detect deviations from the expected behaviour".
 
 - One idea: use this combination for **risk assessment**.
   - As stated, _"if the_ **_intended_** _and_ **_expected_** _maneuver of a vehicle_ **_do not match_**_, the situation is classified as dangerous and an alert is triggered"_.
@@ -723,7 +723,7 @@ Li, S., Li, N., Girard, A., & Kolmanovsky, I. [2019].
 - Some related concepts:
   - `level-k game theory`, `cognitive hierarchy theory`, `interaction modelling`, `interaction-aware decision making`
 - One concept: **`cognitive hierarchy`**.
-  - Other drivers are assumed to follow some **"cognitive behavioral models"**, parametrized with a so called **"_cognitive level_"** `σ`.
+  - Other drivers are assumed to follow some **"cognitive behavioural models"**, parametrized with a so called **"_cognitive level_"** `σ`.
   - The goal is to **obtain and maintain belief about `σ`** based on observation in order to **optimally respond** (using a `MPC`).
   - Three levels are considered:
     - level-`0`: driver that treats other vehicles on road as **stationary obstacles**.
@@ -743,7 +743,7 @@ Related works:
     - Then `π-1` with all the other participants following `π-0`.
     - Then `π-2` ...
   - **Action masking**: "If a car in the _left lane_ is in a parallel position, the controlled car _cannot change lane to the left_".
-    - _"The use of these_ _**hard constrains**_ _eliminates the clearly undesirable behaviors better than through penalizing them in the reward function, and also_ **_increases the learning speed during training_**_"_
+    - _"The use of these_ _**hard constrains**_ _eliminates the clearly undesirable behaviours better than through penalizing them in the reward function, and also_ **_increases the learning speed during training_**_"_
 
 - Ren, Y., Elliott, S., Wang, Y., Yang, Y., & Zhang, W. [2019]. **"How Shall I Drive ? Interaction Modeling and Motion Planning towards Empathetic and Socially-Graceful Driving"** [[pdf](https://arxiv.org/abs/1901.10013)] [[code](https://github.com/scaperoth/carmachinelearning)]
 
@@ -788,7 +788,7 @@ Some figures:
 - Allegedly how **nuTonomy** (an [**Aptiv**](https://www.aptiv.com/autonomous-mobility) company) cars work.
 
 - One main concept: **_"rulebook"_**.
-  - It contains multiple **`rules`**, that specify the **desired behavior** of the self-driving cars.
+  - It contains multiple **`rules`**, that specify the **desired behaviour** of the self-driving cars.
   - A rule is simply a **scoring function**, or **“violation metric”**, on the _realizations_ (= trajectories).
   - The **degree of violation** acts like some **penalty term**: here some examples of evalution of a realization `x` evaluated by a rule `r`:
     - For speed limit: `r`(`x`) = interval for which the car was above `45 km/h`.
@@ -809,7 +809,7 @@ Some figures:
     - **Top**: Guarante **safety** of humans.
       - This is written **analytically** (e.g. a precise expression for the kinetic energy to minimize harm to people).
     - **Bottom**: _Comfort_ constraints and _progress_ goals.
-      - Can be **learnt** based on observed behavior (and also tend to be platform- and implementation- specific).
+      - Can be **learnt** based on observed behaviour (and also tend to be platform- and implementation- specific).
     - **Middle**: All the other priorities among rule groups
       - There are somehow **open for discussion**.
 - How to build a rulebook:
@@ -1012,10 +1012,10 @@ Some figures:
     - **Merging** - `action_space` = {`go`, `no go`}
     - **Traversal** - `action_space` = {`acc`, `decelerate`, `change-left`, `change-right` , `cv`}
     - **Exit** - `action_space` = {`acc`, `decelerate`, `change-left`, `change-right` , `cv`}
-  - Justification for using **discrete** action space: behavioral planning happens on a **slower time scale** than motion planning or trajectory control.
+  - Justification for using **discrete** action space: behavioural planning happens on a **slower time scale** than motion planning or trajectory control.
   - This reminds me some works on **hierarchical RL** (e.g. `Options` framework).
 - Another idea: **Curriculum learning**
-  - > "Each model is **first trained without any other interacting vehicle** so that it learns the most optimal policy and **later with other vehicles** with random initialization. In later stages, an **additional bonus reward** is given to merging and traversal if they lead to successful exit to **enable long-term** consistent behaviors."
+  - > "Each model is **first trained without any other interacting vehicle** so that it learns the most optimal policy and **later with other vehicles** with random initialization. In later stages, an **additional bonus reward** is given to merging and traversal if they lead to successful exit to **enable long-term** consistent behaviours."
 - One note about the `POMDP` formulation:
   - > "This also enables us to **integrate planning** and **prediction** into a single problem, as the agent learns to reason about its future."
   - I am a little bit confused by their formulation of the **`PO`**`MDP`.
@@ -1034,7 +1034,7 @@ Some figures:
   - Thus the second idea is to consider one **single model**: this method is called `Traffic-Conditioned`.
     - Some continuously varying feature (ratio of `velocity of other vehicles` to `target speed`) is used. It should be representative of the non-stationary environment.
   - One quote about the relation of **hidden-mode formulation** to **hierarchical RL**:
-    - > "For generalization, the hidden-mode formulation can also be viewed as a **hierarchical learning** problem where one `MDP`/`POMDP` framework **selects the mode** while the other learns the driving behavior **given the mode**".
+    - > "For generalization, the hidden-mode formulation can also be viewed as a **hierarchical learning** problem where one `MDP`/`POMDP` framework **selects the mode** while the other learns the driving behaviour **given the mode**".
 
 ---
 
@@ -1056,7 +1056,7 @@ Hu, B., Li, J., Yang, J., Bai, H., Li, S., & Sun, Y. [2019].
   - They include a **model-based** algorithm (`Dyna-Q`) in their study. This seems promising when training directly in real world, where the **sampling efficiency** is crucial.
   - They claim RL methods bring advantages compared to **PID controllers** in term of **adaptability** (_generalization_ - i.e. some PID parameters appropriate for driving on a _straight road_ may cause issues in _sharp turns_) and burden of **parameter tuning**.
   - They consider the **sampling efficiency** (better for _model-based_) and **computational time per step** (better for _`1`-step `TD` methods_ than for _`SARSA(λ)`_).
-    - > "`Q-learning` algorithm has a _poorer converging speed_ than the `SARSA(λ)` and `Dyna-Q` algorithm, it balances the performance between the _converging speed_, the _final control behavior_, and the _computational complexity_."
+    - > "`Q-learning` algorithm has a _poorer converging speed_ than the `SARSA(λ)` and `Dyna-Q` algorithm, it balances the performance between the _converging speed_, the _final control behaviour_, and the _computational complexity_."
   - Obviously, this remains far from real and serious AD. But this paper gives a good example of application of basic RL methods.
 
 ---
@@ -1663,7 +1663,7 @@ Some figures:
 
 - Another idea: adapt the combination of **_model-based_** and **_manoeuvre-estimation-based_** predictions, depending on **how far** the **rollout looks into the future**.
 
-> "As we go **deeper into the history tree** (that is, into the future), the **observed dynamics** of the targets at the root node become **less relevant** and so we **rely increasingly** in the model to **predict the behavior** of the obstacles."
+> "As we go **deeper into the history tree** (that is, into the future), the **observed dynamics** of the targets at the root node become **less relevant** and so we **rely increasingly** in the model to **predict the behaviour** of the obstacles."
 
 - Other related works:
   - The **Hierarchical architecture** of [(Sonu, E., Sunberg, Z., & Kochenderfer, M. J. (2018). _"Exploiting Hierarchy for Scalable Decision Making in Autonomous Driving"_)](https://www.researchgate.net/publication/328455111_Exploiting_Hierarchy_for_Scalable_Decision_Making_in_Autonomous_Driving).
