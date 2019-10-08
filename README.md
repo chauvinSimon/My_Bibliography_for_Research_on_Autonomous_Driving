@@ -321,6 +321,56 @@ One figure:
 
 </details>
 
+Amini, A., Schwarting, W., Rosman, G., Araki, B., Karaman, S., & Rus, D. [2018].
+**"Variational Autoencoder for End-to-End Control of Autonomous Driving with Novelty Detection and Training De-biasing"**
+[[pdf](https://arxiv.org/abs/1811.10119)]
+
+<details>
+  <summary>Click to expand</summary>
+
+Some figures:
+
+| ![One particular latent variable `^y` is **explicitly supervised** to **predict steering control**. Anther interesting idea: augmentation is based on domain knowledge - if a method __used to the middle-view__ is given some __left-view__ image, it should predict some __correction to the right__. [Source](https://arxiv.org/abs/1811.10119).](media/2019_amini_1.PNG "One particular latent variable `^y` is **explicitly supervised** to **predict steering control**. Anther interesting idea: augmentation is based on domain knowledge - if a method __used to the middle-view__ is given some __left-view__ image, it should predict some __correction to the right__. [Source](https://arxiv.org/abs/1811.10119).")  |
+|:--:|
+| *One particular latent variable `^y` is **explicitly supervised** to **predict steering control**. Another interesting idea: __augmentation__ is based on __domain knowledge__ - if a method __used to the middle-view__ is given some __left-view__ image, it should predict some __correction to the right__. [Source](https://arxiv.org/abs/1811.10119).* |
+
+| ![For each new image, empirical uncertainty estimates are computed by sampling from the variables of the latent space. These estimates lead to the `D` statistic that indicates __whether an observed image is well captured by our trained model__, i.e. `novelty detection`. [Source](https://arxiv.org/abs/1811.10119).](media/2019_amini_2.PNG "For each new image, empirical uncertainty estimates are computed by sampling from the variables of the latent space. These estimates lead to the `D` statistic that indicates __whether an observed image is well captured by our trained model__, i.e. `novelty detection`. [Source](https://arxiv.org/abs/1811.10119).")  |
+|:--:|
+| *For each new image, __empirical uncertainty estimates__ are computed by sampling from the variables of the __latent space__. These estimates lead to the __`D`__ statistic that indicates __whether an observed image is well captured by our trained model__, i.e. __`novelty detection`__. [Source](https://arxiv.org/abs/1811.10119).* |
+
+- Some related concepts:
+  - `VAE`, `uncertainty estimation`, `sampling efficiency`, `augmentation`
+- One issue raised about _vanilla_ `E2E`:
+  - The lack a **measure** of associated **confidence** in the prediction.
+  - The lack of **interpretion** of the learned features.
+  - Having said that, the authors present a approach to both **understand** and **estimate** the confidence of the output.
+  - The idea is to use a **Variational Autoencoder** (`VAE`), taking benefit of its **intermediate latent representation** which is learnt in a **unsupervised** way and provides **uncertainty estimates** for every variable in the latent space via their parameters.
+- One idea for the `VAE`: one particular latent variable is **explicitly supervised** to **predict steering control**.
+  - The loss function of the `VAE` has therefore `3` parts:
+    - A **`reconstruction`** loss: `L1`-norm between the input image and the output image.
+    - A **`latent`** loss: `KL`-divergence between the _latent variables_ and a _unit Gaussian_, providing **regularization for the latent space**.
+    - A **`supervised latent`** loss: `MSE` between the _predicted_ and _actual_ **curvature** of the vehicle’s path.
+- One contribution: "**Detection of novel events**" (which have not been sufficiently trained for).
+  - To check if an observed image is well captured by the trained model, the idea is to propagate the **`VAE`’s latent uncertainty** through the **decoder** and compare the result with the original input. This is done by **sampling** (empirical uncertainty estimates).
+  - The resulting **pixel-wise expectation** and **variance** are used to compute a sort of **_loss_ metric** `D`(`x`, `ˆx`) whose **distribution** for the training-set is known (approximated with an _histogram_).
+  - The image `x` is classified as **`novel`** if this **statistic is outside of the `95th` percentile** of the _training_ distribution and the prediction can finally be _"untrusted to produce reliable outputs"_.
+  - > "Our work presents an indicator to __detect novel images__ that were not contained in the training distribution by __weighting the reconstructed image__ by the __latent uncertainty__ propagated through the network. High loss indicates that the model has __not been trained on that type of image__ and thus reflects __lower confidence__ in the network’s __ability to generalize__ to that scenario."
+- A second contribution: **"Automated debiasing against learned biases"**.
+  - As for the novelty detection, it takes advantage of the **latent space distribution** and the possibility of **sampling from the most representative regions** of this space.
+  - Briefly said, the idea it to **increase the proportion of rarer datapoints** by **dropping over-represented regions** of the latent space to accelerate the training (**_sampling efficiency_**).
+  - This debiasing is **not manually specified** beforehand but based on learned latent variables.
+- One reason to use **single frame** predition (as opposed to `RNN`):
+  - > ""Note that only a **single image** is used as input at every time instant. This follows from original observations where models that were trained end-to-end with a **temporal information** (`CNN`+`LSTM`) are **unable to decouple the underlying spatial information from the temporal control aspect**. While these models perform well on **test** datasets, they face **control feedback issues** when placed on a physical vehicle and consistently drift off the road.""
+- One idea about **augmentation** (also met in the _Behavioral Cloning Project_ of the [Udacity Self-Driving Car Engineer Nanodegree](https://www.udacity.com/course/self-driving-car-engineer-nanodegree--nd013)):
+  - > "To **inject domain knowledge** into our network we augmented the dataset with images collected from cameras placed approximately `2` feet to the **left and right** of the main center camera. We correspondingly **changed the supervised control** value to teach the model how to **recover from off-center positions**."
+- Previous and further works:
+  - ["Spatial Uncertainty Sampling for End-to-End control"](https://arxiv.org/pdf/1805.04829.pdf) - (Amini, Soleimany, Karaman, & Rus, 2018)
+  - ["Variational End-to-End Navigation and Localization"](https://arxiv.org/pdf/1811.10119.pdf) - (Amini, Rosman, Karaman, & Rus, 2019)
+
+---
+
+</details>
+
 Bansal, M., Krizhevsky, A., & Ogale, A. [2018].
 **"ChauffeurNet: Learning to Drive by Imitating the Best and Synthesizing the Worst"**
 [[pdf](https://arxiv.org/abs/1812.03079)]
@@ -951,7 +1001,8 @@ Saxena, D. M., Bae, S., Nakhaei, A., Fujimura, K., & Likhachev, M. [2019].
 **"Driving in Dense Traffic with Model-Free Reinforcement Learning"**.
 [[pdf](https://arxiv.org/abs/1909.06710)]
 [[simulator](https://github.com/sisl/AutomotiveDrivingModels.jl)]
-[[code](https://github.com/honda-research-institute/DRLDriving)]
+[[code ML](https://github.com/honda-research-institute/DRLDriving)]
+[[code MPC](https://github.com/honda-research-institute/NNMPC.jl)]
 
 <details>
   <summary>Click to expand</summary>
