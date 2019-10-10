@@ -321,6 +321,69 @@ One figure:
 
 </details>
 
+Sauer, A., Savinov, N., & Geiger, A. [2018].
+**"Conditional Affordance Learning for Driving in Urban Environments"**
+[[pdf](http://www.cvlibs.net/publications/Sauer2018CORL.pdf)]
+[[video](https://www.youtube.com/watch?v=UtUbpigMgr0)]
+[[talk](https://www.youtube.com/watch?v=SceH3Al9w_M)]
+[[code](https://github.com/xl-sr/CAL)]
+
+<details>
+  <summary>Click to expand</summary>
+
+Some figures:
+
+| ![Examples of **affordances**, i.e. **attributes of the environment** which limit the space of **allowed actions**. `A1`, `A2` and `A3` are predefined **observation areas**. [Source](http://www.cvlibs.net/publications/Sauer2018CORL.pdf).](media/2018_sauer_4.PNG "Examples of **affordances**, i.e. **attributes of the environment** which limit the space of **allowed actions**. `A1`, `A2` and `A3` are predefined **observation areas**. [Source](http://www.cvlibs.net/publications/Sauer2018CORL.pdf).")  |
+|:--:|
+| *Examples of **affordances**, i.e. **attributes of the environment** which limit the space of **allowed actions**. `A1`, `A2` and `A3` are predefined **observation areas**. [Source](http://www.cvlibs.net/publications/Sauer2018CORL.pdf).* |
+
+| ![The presented __direct perception__ `DP` method predicts a __low-dimensional intermediate__ representation of the environment - __affordance__ - which is then used in a conventional control algorithm. The _affordance_ is conditioned for goal-directed navigation, i.e. before each intersection, it receives an instruction such as `go straight`, `turn left` or `turn right`. [Source](http://www.cvlibs.net/publications/Sauer2018CORL.pdf).](media/2018_sauer_1.PNG "The presented __direct perception__ `DP` method predicts a __low-dimensional intermediate__ representation of the environment - __affordance__ - which is then used in a conventional control algorithm. The _affordance_ is conditioned for goal-directed navigation, i.e. before each intersection, it receives an instruction such as `go straight`, `turn left` or `turn right`. [Source](http://www.cvlibs.net/publications/Sauer2018CORL.pdf).")  |
+|:--:|
+| *The presented `direct perception` method predicts a __low-dimensional intermediate__ representation of the environment - __affordance__ - which is then used in a conventional control algorithm. The _affordance_ is __conditioned__ for goal-directed navigation, i.e. before each intersection, it receives an instruction such as `go straight`, `turn left` or `turn right`. [Source](http://www.cvlibs.net/publications/Sauer2018CORL.pdf).* |
+
+ **low-dimensional intermediate representation** of the environment which can be then used in a conventional **control algorithm** to maneuver the vehicle
+
+- Some related concepts:
+  - `CARLA`, `end-to-mid`, `direct perception`
+
+- One term: **_"Direct perception"_** (`DP`):
+  - The goal of `DP` methods is to predict a **low-dimensional intermediate representation** of the environment which is then used in a conventional **control algorithm** to maneuver the vehicle.
+  - With this regard, `DP` could also be said `end-to-`**`mid`**. The mapping to learn is less complex than `end-to-`**`end`** (from **raw input** to **controls**).
+  - `DP` is meant to combine the advantages of two other commonly-used approaches: **modular pipelines** `MP` and `end-to-end` **imitation learning** `IL`.
+  - **Ground truth affordances** are collected using `CARLA`. Several augmentations are performed.
+- One term: **_"Conditional Affordance Learning"_** (`CAL`):
+  - **_"Conditional"_**: The actions of the agent are **conditioned** on a **high-level command** given by the navigation system (the planner) prior to intersections. It describes the **maneuver** to be performed, e.g., `go straight`, `turn left`, `turn right`.
+  - **_"Affordance"_**: **Affordances** are one example of `DP` **representation**. They are **attributes of the environment** which limit the space of **allowed actions**. Examples of affordances:
+    - `Distance to vehicle` (continuous).
+    - `Relative angle` (continuous and conditional).
+    - `Distance to centerline` (continuous and conditional).
+    - `Speed Sign` (discrete).
+    - `Red Traffic Light` (discrete - binary).
+    - `Hazard` (discrete - binary).
+  - **_"Learning"_**: A single **neural network** trained with multi-task learning (`MTL`) **predicts all affordances** in a single forward pass. It only takes a **single front-facing camera view** as input.
+- About the controllers: The **_path-velocity decomposition_** is applied. Hence two controllers are used in parallel:
+  - 1- `throttle` and `brake`
+    - Based on the predicted **affordances**, a state is _"rule-based"_ assigned among: `cruising`, `following`, `over limit`, `red light`, and `hazard stop` (all are mutually exclusive).
+    - Based on this state, the **longitudinal control** signals are derived, using `PID` or _threshold-predefined_ values.
+    - It can handle _traffic lights_, _speed signs_ and _smooth car-following_.
+    - Note: the _Supplementary Material_ provides details insights on controller tuning (especially `PID`) for `CARLA`.
+  - 2- `steering` is controlled by a Stanley Controller, based on two conditional affordances: `distance to centerline` and `relative angle`.
+- One idea: I am often wondering what **timeout** I should set when **testing a scenario** with `CARLA`. The author compute this time based on the **length of the pre-defined path** (which is actually easily **accessible**):
+  - > "The time limit equals the time needed to reach the goal when driving along the **optimal path** at `10 km/h`"
+- Another idea: **Attention Analysis**.
+  - For better **understanding** on how affordances are constructed, the **attention** of the `CNN` using _gradient-weighted class activation maps_ ([`Grad-CAMs`](https://arxiv.org/abs/1610.02391)).
+  - This _"visual explanation"_ reminds me another technique used in `end-to-end` approaches, [`VisualBackProp`](https://arxiv.org/abs/1611.05418), that highlights the **image pixels which contributed the most** to the final results.
+- Baselines and results:
+  - Compared to `CARLA`-based [_Modular Pipeline_](https://arxiv.org/abs/1711.03938) (`MP`), [_Conditional Imitation Learning_](https://arxiv.org/abs/1710.02410) (`CIL`) and [_Reinforcement Learning_](https://arxiv.org/abs/1711.03938) (`RL`), `CAL` particularly excels in **generalizing to the new town**.
+- _Where to provide the high-level navigation conditions?_
+  - The authors find that "**conditioning in the network** has several advantages over **conditioning in the controller**".
+  - In addition, in the net, it is preferable to **use the navigation command as as switch** between submodules rather than an input:
+    - > "We observed that **training specialized submodules** for each directional command leads to better performance compared to using the directional command as an **additional input to the task networks**".
+
+---
+
+</details>
+
 Amini, A., Schwarting, W., Rosman, G., Araki, B., Karaman, S., & Rus, D. [2018].
 **"Variational Autoencoder for End-to-End Control of Autonomous Driving with Novelty Detection and Training De-biasing"**
 [[pdf](https://dspace.mit.edu/handle/1721.1/118139)]
