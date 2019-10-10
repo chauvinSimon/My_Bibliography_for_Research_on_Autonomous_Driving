@@ -341,22 +341,22 @@ Some figures:
 |:--:|
 | *The presented `direct perception` method predicts a __low-dimensional intermediate__ representation of the environment - __affordance__ - which is then used in a conventional control algorithm. The _affordance_ is __conditioned__ for goal-directed navigation, i.e. before each intersection, it receives an instruction such as `go straight`, `turn left` or `turn right`. [Source](http://www.cvlibs.net/publications/Sauer2018CORL.pdf).* |
 
- **low-dimensional intermediate representation** of the environment which can be then used in a conventional **control algorithm** to maneuver the vehicle
-
 - Some related concepts:
   - `CARLA`, `end-to-mid`, `direct perception`
 
 - One term: **_"Direct perception"_** (`DP`):
-  - The goal of `DP` methods is to predict a **low-dimensional intermediate representation** of the environment which is then used in a conventional **control algorithm** to maneuver the vehicle.
+  - The goal of `DP` methods is to predict a **low-dimensional intermediate representation** of the environment which is then used in a conventional **control algorithm** to manoeuvre the vehicle.
   - With this regard, `DP` could also be said `end-to-`**`mid`**. The mapping to learn is less complex than `end-to-`**`end`** (from **raw input** to **controls**).
   - `DP` is meant to combine the advantages of two other commonly-used approaches: **modular pipelines** `MP` and `end-to-end` **imitation learning** `IL`.
   - **Ground truth affordances** are collected using `CARLA`. Several augmentations are performed.
+- Related work on _affordance learning_ and _direct perception_ (they apply this approach to _highway_, as opposed to _urban scenarios_).
+  - [**`Deepdriving`**: Learning affordance for direct perception in autonomous driving](https://arxiv.org/abs/1505.00256) by (Chen, Seff, Kornhauser, & Xiao, 2015).
 - One term: **_"Conditional Affordance Learning"_** (`CAL`):
-  - **_"Conditional"_**: The actions of the agent are **conditioned** on a **high-level command** given by the navigation system (the planner) prior to intersections. It describes the **maneuver** to be performed, e.g., `go straight`, `turn left`, `turn right`.
+  - **_"Conditional"_**: The actions of the agent are **conditioned** on a **high-level command** given by the navigation system (the planner) prior to intersections. It describes the **manoeuvre** to be performed, e.g., `go straight`, `turn left`, `turn right`.
   - **_"Affordance"_**: **Affordances** are one example of `DP` **representation**. They are **attributes of the environment** which limit the space of **allowed actions**. Examples of affordances:
     - `Distance to vehicle` (continuous).
     - `Relative angle` (continuous and conditional).
-    - `Distance to centerline` (continuous and conditional).
+    - `Distance to centre-line` (continuous and conditional).
     - `Speed Sign` (discrete).
     - `Red Traffic Light` (discrete - binary).
     - `Hazard` (discrete - binary).
@@ -366,9 +366,9 @@ Some figures:
     - Based on the predicted **affordances**, a state is _"rule-based"_ assigned among: `cruising`, `following`, `over limit`, `red light`, and `hazard stop` (all are mutually exclusive).
     - Based on this state, the **longitudinal control** signals are derived, using `PID` or _threshold-predefined_ values.
     - It can handle _traffic lights_, _speed signs_ and _smooth car-following_.
-    - Note: the _Supplementary Material_ provides details insights on controller tuning (especially `PID`) for `CARLA`.
+    - Note: The _Supplementary Material_ provides details insights on controller tuning (especially `PID`) for `CARLA`.
   - 2- `steering` is controlled by a Stanley Controller, based on two conditional affordances: `distance to centerline` and `relative angle`.
-- One idea: I am often wondering what **timeout** I should set when **testing a scenario** with `CARLA`. The author compute this time based on the **length of the pre-defined path** (which is actually easily **accessible**):
+- One idea: I am often wondering what **timeout** I should set when **testing a scenario** with `CARLA`. The author computes this time based on the **length of the pre-defined path** (which is actually easily **accessible**):
   - > "The time limit equals the time needed to reach the goal when driving along the **optimal path** at `10 km/h`"
 - Another idea: **Attention Analysis**.
   - For better **understanding** on how affordances are constructed, the **attention** of the `CNN` using _gradient-weighted class activation maps_ ([`Grad-CAMs`](https://arxiv.org/abs/1610.02391)).
@@ -377,7 +377,7 @@ Some figures:
   - Compared to `CARLA`-based [_Modular Pipeline_](https://arxiv.org/abs/1711.03938) (`MP`), [_Conditional Imitation Learning_](https://arxiv.org/abs/1710.02410) (`CIL`) and [_Reinforcement Learning_](https://arxiv.org/abs/1711.03938) (`RL`), `CAL` particularly excels in **generalizing to the new town**.
 - _Where to provide the high-level navigation conditions?_
   - The authors find that "**conditioning in the network** has several advantages over **conditioning in the controller**".
-  - In addition, in the net, it is preferable to **use the navigation command as as switch** between submodules rather than an input:
+  - In addition, in the net, it is preferable to **use the navigation command as switch** between submodules rather than an input:
     - > "We observed that **training specialized submodules** for each directional command leads to better performance compared to using the directional command as an **additional input to the task networks**".
 
 ---
