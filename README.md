@@ -459,7 +459,7 @@ Bansal, M., Krizhevsky, A., & Ogale, A. [2018].
 **"ChauffeurNet: Learning to Drive by Imitating the Best and Synthesizing the Worst"**
 [[pdf](https://arxiv.org/abs/1812.03079)]
 [[videos](https://sites.google.com/view/waymo-learn-to-drive)]
-[[presentation](https://www.youtube.com/watch?v=mxqdVO462HU)]
+[[talk](https://www.youtube.com/watch?v=mxqdVO462HU)]
 
 <details>
   <summary>Click to expand</summary>
@@ -503,6 +503,64 @@ Two figures:
       - Extend imitation losses.
       - Add **_environment losses_** to discourage undesirable behaviour, e.g. measuring the overlap of predicted agent positions with the _non-road_ regions.
       - Use **_imitation dropout_**, i.e. sometimes favor the _environment loss_ over the _imitation loss_.
+
+---
+
+</details>
+
+Kuefler, A., Morton, J., Wheeler, T., & Kochenderfer, M. [2018].
+**"Imitating Driver Behavior with Generative Adversarial Networks"**
+[[pdf](https://arxiv.org/abs/1701.06699)]
+[[code](https://github.com/sisl/gail-driver)]
+
+<details>
+  <summary>Click to expand</summary>
+
+Some figures:
+
+| ![The state consists in **`51` features** divided into `3` groups: The __core features__ include `Speed`, `Curvature` and `Lane Offset`. The __LIDAR-like beams__ capture the surrounding objects in a fixed-size representation **independant of the number of vehicles**. Finally `3` **binary indicator features** identify when the ego vehicle **encounters undesirable states** - `collision`, `drives off road`, and `travels in reverse`. [Source](https://arxiv.org/abs/1701.06699).](media/2017_kuefler_1.PNG "The state consists in **`51` features** divided into `3` groups: The __core features__ include `Speed`, `Curvature` and `Lane Offset`. The __LIDAR-like beams__ capture the surrounding objects in a fixed-size representation **independant of the number of vehicles**. Finally `3` **binary indicator features** identify when the ego vehicle **encounters undesirable states** - `collision`, `drives off road`, and `travels in reverse`. [Source](https://arxiv.org/abs/1812.03079).")  |
+|:--:|
+| *The `state` consists in **`51` features** divided into `3` groups: The hand-picked __core features__ include `Speed`, `Curvature` and `Lane Offset`. The __LIDAR-like beams__ capture the surrounding objects in a fixed-size representation **independant of the number of vehicles**. Finally `3` **binary indicator features** identify when the ego vehicle **encounters undesirable states** - `collision`, `drives off road`, and `travels in reverse`. [Source](https://arxiv.org/abs/1701.06699).* |
+
+| ![As for common **adverserial approaches**, the objective function in `GAIL` includes some **sigmoid cross entropy** terms. The objective is to **fit `ψ`** for the **discriminator**. But this objective function is **non-differentiable with respect to `θ`**. One solution is to **optimize `πθ` via `RL`**: In order to drive `πθ` into regions of the state-action space similar to those explored by the **expert `πE`**, a **surrogate rewards `˜r`** is generated for each sample and `TRPO` is used to perform a policy update of `πθ`. [Source](https://arxiv.org/abs/1701.06699).](media/2017_kuefler_2.PNG "As for common **adverserial approaches**, the objective function in `GAIL` includes some **sigmoid cross entropy** terms. The objective is to **fit `ψ`** for the **discriminator**. But this objective function is **non-differentiable with respect to `θ`**. One solution is to **optimize `πθ` via `RL`**: In order to drive `πθ` into regions of the state-action space similar to those explored by the **expert `πE`**, a **surrogate rewards `˜r`** is generated for each sample and `TRPO` is used to perform a policy update of `πθ`. [Source](https://arxiv.org/abs/1812.03079).")  |
+|:--:|
+| *As for common **adverserial approaches**, the objective function in `GAIL` includes some **sigmoid cross entropy** terms. The objective is to **fit `ψ`** for the **discriminator**. But this objective function is **non-differentiable with respect to `θ`**. One solution is to **optimize `πθ` via `RL`**: In order to drive `πθ` into regions of the state-action space similar to those explored by the **expert `πE`**, a **surrogate rewards `˜r`** is generated for each sample and `TRPO` is used to perform a policy update of `πθ`. [Source](https://arxiv.org/abs/1701.06699).* |
+
+- Some related concepts:
+  - `GAN`, `distributional shift problem`, `cascading errors`, `IDM`, [`NGSIM`](https://ops.fhwa.dot.gov/trafficanalysistools/ngsim.htm), [`rllab`](https://github.com/rll/rllab)
+- One term: the problem of **_"cascading errors"_** in **behavioural cloning** (**`BC`**).
+  - `BC`, which treats `IL` as a **supervised learning** problem, fitting a model to a **fixed dataset** of expert state-action pairs. In other words, `BC` solves a **regression problem** in which the policy parameterization is obtained by **maximizing the likelihood of the actions taken in the training data**.
+  - Inaccuracies can lead the **stochastic policy** to states that are **underrepresented in the training data** (e.g., _an ego-vehicle edging towards the side of the road_). Datasets rarely contain information about **how human drivers behave** in such situations.
+  - The policy network is then **forced to generalize** and this can lead to yet **poorer predictions**, and ultimately to **invalid or unseen situations** (e.g., _off-road driving_).
+  - **_"Cascading Errors"_** refers to this problem where **small inaccuracies compound** during simulation and the agent **cannot recover** from them.
+    - This issue is inherent to **sequential** decision making.
+  - As found by the results:
+    - > "The root-weighted square error results show that the feedforward `BC` model has the **best short-horizon performance**, but then begins to **accumulate error for longer time horizons**."
+    - > "Only `GAIL` (and of course `IDM``+``MOBIL`) are able to **stay on the road for extended stretches**."
+- One idea: **`RL`** provides **robustness** against **_"cascading errors"_**.
+  - `RL` maximizes the _global_, **expected return on a trajectory**, rather than _local_ instructions for each observation. Hence more appropriate for _sequencial_ decision making.
+  - Also, the reward function `r`(`s_t`, `a_t`) is defined **for all state-action pairs**, allowing an agent to receive a learning signal **even from unusual states**. And these signals can establish preferences between **mildly undesirable** behavior (e.g., _hard braking_) and **extremely undesirable behavioral** (e.g., _collisions_).
+    - In contrast, `BC` **only receives a learning signal** for those states **represented in a labeled, finite dataset**.
+    - Because **handcrafting an accurate `RL` reward function is often difficult**, `IRL` seems promising. In addition the **imitation** (via the _recovered_ reward function) **extends to unseen states**: a vehicle that is _perturbed_ toward the lane boundaries _should know to return toward the lane center_.
+- Another idea: `GAIL` instead of `IRL`:
+  - > "**IRL** approaches are typically **computationally expensive** in their **recovery of an expert cost function**. Instead, recent work has attempted to **imitate expert behavior** through **direct policy optimization**, without **first learning a cost function**."
+  - **_"Generative Adversarial Imitation Learning"_** (**`GAIL`**) implements this idea:
+    - > "Expert behavior can be **imitated by training a policy** to produce actions that a **binary classier mistakes** for those of an expert."
+    - > "`GAIL` trains a policy to **perform expert-like behavior** by rewarding it for **“deceiving” a classifier** trained to discriminate between **policy** and **expert state-action pairs**."
+  - One contribution is to extend `GAIL` to the **optimization of recurrent neural** networks (`GRU` in this case).
+- One concept: **_"Trust Region Policy Optimization"_**.
+  - Policy-gradient `RL` optimization with **_"Trust Region"_** is used to optimize the agent's policy `πθ`, addressing the issue of **training unstability** of vanilla policy-gradient methods.
+    - > "**`TRPO`** updates policy parameters through a **constrained optimization** procedure that enforces that a **policy cannot change too much in a single update**, and hence limits the damage that can be caused by noisy gradient estimates."
+  - _But what reward function to apply?_. Again, we do not want to do `IRL`. Instead, some **surrogate reward functions** is empirically derived from the discriminator. Although it may be quite different from the **true reward function** optimized by **expert**, it can be used to drive `πθ` into regions of the state-action space similar to those explored by `πE`.
+- One finding: _Should previous actions be included in the state `s`?_
+  - > "The **previous action** taken by the ego vehicle is not included in the **set of features** provided to the policies. We found that policies can develop an over-reliance on **previous actions** at the expense of relying on the other features contained in their input."
+  - But on the other hand, the authors find:
+  - > "The GAIL GRU policy takes similar actions to humans, but **oscillates between actions more than humans**. For instance, rather than outputting a turn-rate of zero on straight road stretches, it **will alternate** between outputting small **positive and negative turn-rates**".
+  - > "An **engineered reward function** could also be used to **penalize the oscillations** in acceleration and turn-rate produced by the GAIL GRU".
+- About the **`IDM`** and **`MOBIL`** driver models (resp. _longitudinal_ and _lateral_ control).
+  - The commonly used **rule-based parametric models** serve as **baselines**:
+  - > "The __Intelligent Driver Model__ (`IDM`) extended this work by __capturing asymmetries between acceleration and deceleration__, __preferred free road__ and bumper-to-bumper headways, and __realistic braking behavior__."
+  - > "`MOBIL` __maintains a utility function__ and __'politeness parameter'__ to capture intelligent driver behavior in both _acceleration_ and _turning_."
 
 ---
 
@@ -688,7 +746,7 @@ One figure:
 | *The framework consists of four modules: _encoder module_, _interaction module_, _prediction module_ and _control module_. [Source](http://cpslab.snu.ac.kr/publications/papers/2019_iros_predstl.pdf).* |
 
 - Some related concepts:
-  - `LTL`, `STL`, `CVAE for prediction`, `MPC`, `NGSIM`
+  - `LTL`, `STL`, `CVAE for prediction`, `MPC`, [`NGSIM`](https://ops.fhwa.dot.gov/trafficanalysistools/ngsim.htm)
 - One previous work: [_"Learning-Based Model Predictive Control under Signal Temporal Logic Specifications"_](http://cpslab.snu.ac.kr/publications/papers/2018_icra_mpcstl.pdf) by (Cho & Ho, 2018).
 - One term: **_"robustness slackness"_** for `STL`-formula.
   - The motivation is to solve _dilemma situations_ (inherent to **strict compliance** when all rules cannot be satisfied) by **disobeying certain rules** based on their **predicted degree of satisfaction**.
