@@ -110,9 +110,9 @@ One quote about the _representation of decision logic_:
 - > "Without learning, traditional robotic solutions cannot adequately handle **complex, dynamic human environments**, but **ensuring the safety** of learned systems remains a significant challenge."
 - > "Hence, we speculate that future high performance and safe behaviour planning solutions will be **_hybrid_** and **_heterogeneous_**, incorporating modules consisting of learned systems supervised by programmed logic."
 
----
-
 </details>
+
+---
 
 **`"A Behavioral Planning Framework for Autonomous Driving"`**
 
@@ -178,9 +178,9 @@ Note: I find very valuable to get insights from the **CMU** (Carnegie Mellon Uni
     - The **aggressiveness** of distance keeping.
     - The **maximum speed**.
 
----
-
 </details>
+
+---
 
 ## `Behavior Cloning` `End-To-End` and `Imitation Learning`
 
@@ -264,9 +264,9 @@ Authors: Buhet, T., Wirbel, E., & Perrotton, X.
 - One word about the choice of the simulator.
   - A possible alternative to [CARLA](http://carla.org/) could be [DeepDrive](https://deepdrive.io/) or the [**`LGSVL`** simulator](https://www.lgsvlsimulator.com) developed by the Advanced Platform Lab at the **LG Electronics** America R&D Centre. _This looks promising_.
 
----
-
 </details>
+
+---
 
 **`"Uncertainty Quantification with Statistical Guarantees in End-to-End Autonomous Driving Control"`**
 
@@ -333,9 +333,9 @@ Authors: Michelmore, R., Wicker, M., Laurenti, L., Cardelli, L., Gal, Y., & Kwia
   - To check the **generalization** ability of a model, the _safety analysis_ is re-run (_offline_) with **other weather conditions**.
   - As noted in conclusion, this _offline safety probability_ can be used as a **guide for active learning** in order to increase **data coverage** and **scenario representation** in training data.
 
----
-
 </details>
+
+---
 
 **`"Exploring the Limitations of Behavior Cloning for Autonomous Driving"`**
 
@@ -368,9 +368,9 @@ Authors: Codevilla, F., Santana, E., Antonio, M. L., & Gaidon, A.
 
 > "The more common the vehicle model and color, the better the trained agent reacts to it. This raises ethical challenges in automated driving".
 
----
-
 </details>
+
+---
 
 **`"Conditional Affordance Learning for Driving in Urban Environments"`**
 
@@ -442,9 +442,9 @@ Authors: Sauer, A., Savinov, N., & Geiger, A.
   - In addition, in the net, it is preferable to **use the navigation command as switch** between submodules rather than an input:
     - > "We observed that **training specialized submodules** for each directional command leads to better performance compared to using the directional command as an **additional input to the task networks**".
 
----
-
 </details>
+
+---
 
 **`"Variational Autoencoder for End-to-End Control of Autonomous Driving with Novelty Detection and Training De-biasing"`**
 
@@ -511,9 +511,9 @@ Authors: Amini, A., Schwarting, W., Rosman, G., Araki, B., Karaman, S., & Rus, D
       - > "For a range of __`z`-scores__ over the steering control distribution we __compute the number of samples__ within the test set where the __true (human) control output__ was within the predicted range."
     - About the training dataset: **`25 km`** of urban driving data.
 
----
-
 </details>
+
+---
 
 **`"ChauffeurNet: Learning to Drive by Imitating the Best and Synthesizing the Worst"`**
 
@@ -568,9 +568,9 @@ Authors: Bansal, M., Krizhevsky, A., & Ogale, A.
       - Add **_environment losses_** to discourage undesirable behaviour, e.g. measuring the overlap of predicted agent positions with the _non-road_ regions.
       - Use **_imitation dropout_**, i.e. sometimes favor the _environment loss_ over the _imitation loss_.
 
----
-
 </details>
+
+---
 
 **`"Imitating Driver Behavior with Generative Adversarial Networks"`**
 
@@ -631,9 +631,9 @@ Authors: Kuefler, A., Morton, J., Wheeler, T., & Kochenderfer, M.
   - > "The __Intelligent Driver Model__ (`IDM`) extended this work by __capturing asymmetries between acceleration and deceleration__, __preferred free road__ and bumper-to-bumper headways, and __realistic braking behaviour__."
   - > "`MOBIL` __maintains a utility function__ and __'politeness parameter'__ to capture intelligent driver behaviour in both _acceleration_ and _turning_."
 
----
-
 </details>
+
+---
 
 ## `Inverse Reinforcement Learning` `Inverse Optimal Control` and `Game Theory`
 
@@ -678,9 +678,9 @@ Authors: Sankar, G. S., & Han, K.
   - With **`IRL`**: where the agent can **predict the reaction** of other vehicles assuming they act optimally w.r.t a **reward function it is estimating**.
   - With **`MPC`**: the choice of the optimal control following a **receding horizon** strategy.
 
----
-
 </details>
+
+---
 
 **`"Towards Human-Like Prediction and Decision-Making for Automated Vehicles in Highway Scenarios"`**
 
