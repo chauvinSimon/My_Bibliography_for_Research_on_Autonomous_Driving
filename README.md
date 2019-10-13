@@ -13,18 +13,18 @@ Template:
 **[[:memo:](https://arxiv.org/)]**
 **[[:octocat:](https://github.com/)]**
 **[[🎞️](https://www.youtube.com/)]**
-**[** :moneybag: `company` **]**
-**[** :mortar_board: `University of X` **]**
+**[** :moneybag: `company X` **]**
+**[** :mortar_board: `University Y` **]**
 
 Categories:
 
-- [`Architecture and Map`](#Architecture and Map)
-- [`Behavior Cloning, End-To-End, Imitation Learning`](#Behavior Cloning, End-To-End, Imitation Learning)
-- [`Inverse Reinforcement Learning, Inverse Optimal Control, Game Theory`](#Inverse Reinforcement Learning, Inverse Optimal Control, Game Theory)
-- [`Prediction and Manoeuvre Recognition`](#Prediction and Manoeuvre Recognition)
-- [`Rule-based Decision Making`](#Rule-based Decision Making)
-- [`Model Free Reinforcement Learning`](#Model Free Reinforcement Learning)
-- [`Planning and Monte Carlo Tree Seach`](#Planning and Monte Carlo Tree Seach)
+- [`Architecture and Map`](#architecture-and-map)
+- [`Behavior Cloning, End-To-End and Imitation Learning`](#behavior-cloning-end-to-end-and-imitation-learning)
+- [`Inverse Reinforcement Learning, Inverse Optimal Control and Game Theory`](#inverse-reinforcement-learning-inverse-optimal-control-and-game-theory)
+- [`Prediction and Manoeuvre Recognition`](#prediction-and-manoeuvre-recognition)
+- [`Rule-based Decision Making`](#rule-based-decision-making)
+- [`Model Free Reinforcement Learning`](#model-free-reinforcement-learning)
+- [`Planning and Monte Carlo Tree Search`](#planning-and-monte-carlo-tree-search)
 
 I reference additional publications in my other works:
 
@@ -34,7 +34,7 @@ I reference additional publications in my other works:
 
 Looking forward your reading suggestions!
 
-## Architecture and Map
+## `Architecture` and `Map`
 
 **`"Design Space of Behaviour Planning for Autonomous Driving"`**
 **[** `2019` **]**
@@ -175,7 +175,7 @@ Note: I find very valuable to get insights from the **CMU** (Carnegie Mellon Uni
 
 </details>
 
-## Behavior Cloning, End-To-End, Imitation Learning
+## `Behavior Cloning` `End-To-End` and `Imitation Learning`
 
 Buhet, T., Wirbel, E., & Perrotton, X. [2019].
 **"Conditional Vehicle Trajectories Prediction in CARLA Urban Environment"**
@@ -596,7 +596,7 @@ Some figures:
 
 </details>
 
-## Inverse Reinforcement Learning, Inverse Optimal Control, Game Theory
+## `Inverse Reinforcement Learning` `Inverse Optimal Control` and `Game Theory`
 
 Sankar, G. S., & Han, K. [2019].
 **"Adaptive Robust Game-Theoretic Decision Making for Autonomous Vehicles"**
@@ -732,7 +732,7 @@ Kuderer, M., Gulati, S., & Burgard, W. [2015].
 
 </details>
 
-## Prediction and Manoeuvre Recognition
+## `Prediction` and `Manoeuvre Recognition`
 
 Leon, F., & Gavrilescu, M. [2019].
 **"A Review of Tracking, Prediction and Decision Making Methods for Autonomous Driving"**
@@ -984,7 +984,7 @@ Related works:
 
 </details>
 
-## Rule-based Decision Making
+## `Rule-based` `Decision Making`
 
 Censi, A., Slutsky, K., Wongpiromsarn, T., Yershov, D., Pendleton, S., Fu, J., & Frazzoli, E. [2019].
 **"Liability, Ethics, and Culture-Aware Behavior Specification using Rulebooks"**
@@ -1168,7 +1168,7 @@ One figure:
 
 </details>
 
-## Model Free Reinforcement Learning
+## `Model Free` `Reinforcement Learning`
 
 Saxena, D. M., Bae, S., Nakhaei, A., Fujimura, K., & Likhachev, M. [2019].
 **"Driving in Dense Traffic with Model-Free Reinforcement Learning"**.
@@ -1620,7 +1620,7 @@ Plessen, M. G. [2017].
 
 </details>
 
-## Model Based Reinforcement Learning
+## `Model Based` `Reinforcement Learning`
 
 Baheri, A., Kolmanovsky, I., Girard, A., Tseng, E., & Filev, D. [2019].
 **"Vision-Based Autonomous Driving : A Model Learning Approach"**
@@ -1733,7 +1733,7 @@ Some figures:
 
 </details>
 
-## Planning and Monte Carlo Tree Seach
+## `Planning` and `Monte Carlo Tree Search`
 
 Hoel, C.-J. [2019].
 **"Tactical decision-making for autonomous driving: A reinforcement learning approach"**
