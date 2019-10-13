@@ -10,9 +10,9 @@ Template:
 
 **`"title"`**
 **[** `Year` **]**
-**[[:memo:](https://arxiv.org/)]**
-**[[:octocat:](https://github.com/)]**
-**[[🎞️](https://www.youtube.com/)]**
+**[[:memo:](https://arxiv.org/) (paper)]**
+**[[:octocat:](https://github.com/) (code)]**
+**[[🎞️](https://www.youtube.com/) (video)]**
 **[** :car: `company X` **]**
 **[** :mortar_board: `University Y` **]**
 **[** _`related`, `concepts`_  **]**
@@ -330,9 +330,14 @@ Authors: Michelmore, R., Wicker, M., Laurenti, L., Cardelli, L., Gal, Y., & Kwia
 
 </details>
 
-Codevilla, F., Santana, E., Antonio, M. L., & Gaidon, A. [2019].
-**"Exploring the Limitations of Behavior Cloning for Autonomous Driving"**
-[[pdf](https://arxiv.org/abs/1904.08980)]
+**`"Exploring the Limitations of Behavior Cloning for Autonomous Driving"`**
+**[** `2019` **]**
+**[[:memo:](https://arxiv.org/abs/1904.08980)]**
+**[[🎞️](https://www.youtube.com/watch?v=sXIuU_wECQc)]**
+**[[:octocat:](https://github.com/felipecode/coiltraine)]**
+**[** :car: `Toyota Research Institute` **]**
+**[** :mortar_board: `Campus UAB, Barcelona` **]**
+**[** _`distributional shift problem`, `off-policy data collection`, [`CARLA`](http://carla.org/), `conditional imitation learning`, `residual architecture`, `reproducibility issue`, `variance caused by initialization and sampling`_ **]**
 
 <details>
   <summary>Click to expand</summary>
@@ -343,8 +348,8 @@ One figure:
 |:--:|
 | *Conditional Imitation Learning is extended with a ResNet architecture and Speed prediction (`CILRS`). [Source](https://arxiv.org/abs/1904.08980).* |
 
-- Some related concepts:
-  - `distributional shift problem`, `off-policy data collection`, [`CARLA`](http://carla.org/), `conditional imitation learning`, `residual architecture`, `reproducibility issue`, `variance caused by initialization and sampling`
+Authors: Codevilla, F., Santana, E., Antonio, M. L., & Gaidon, A.
+
 - One term: **“CILRS”** = **Conditional Imitation Learning** extended with a **ResNet** architecture and **Speed prediction**.
 - One Q&A: _How to include in E2E learning information about the destination, i.e. to disambiguate imitation around multiple types of intersections?_
   - Add a high-level `navigational command` (e.g. _take the next right_, _left_, or _stay in lane_) to the tuple <`observation`, `expert action`> when building the dataset.
@@ -358,12 +363,15 @@ One figure:
 
 </details>
 
-Sauer, A., Savinov, N., & Geiger, A. [2018].
-**"Conditional Affordance Learning for Driving in Urban Environments"**
-[[pdf](http://www.cvlibs.net/publications/Sauer2018CORL.pdf)]
-[[video](https://www.youtube.com/watch?v=UtUbpigMgr0)]
-[[talk](https://www.youtube.com/watch?v=SceH3Al9w_M)]
-[[code](https://github.com/xl-sr/CAL)]
+**`"Conditional Affordance Learning for Driving in Urban Environments"`**
+**[** `2018` **]**
+**[[:memo:](http://www.cvlibs.net/publications/Sauer2018CORL.pdf)]**
+**[[🎞️](https://www.youtube.com/watch?v=UtUbpigMgr0)]**
+**[[🎞️](https://www.youtube.com/watch?v=SceH3Al9w_M)]**
+**[[:octocat:](https://github.com/xl-sr/CAL)]**
+**[** :car: `Toyota Research Institute` **]**
+**[** :mortar_board: `CVC, UAB, Barcelona` **]**
+**[** _`CARLA`, `end-to-mid`, `direct perception`_ **]**
 
 <details>
   <summary>Click to expand</summary>
@@ -382,8 +390,7 @@ Some figures:
 |:--:|
 | *The **feature maps** produced by a `CNN` **feature extractor** are stored in a **memory** and consumed by task-specific layers (one _affordance_ has one _task block_). Every task block has it **own specific temporal receptive field** - it decides how much of the memory it needs. This figure also illustrates how the _navigation command_ is used as **switch between trained submodules**. [Source](http://www.cvlibs.net/publications/Sauer2018CORL.pdf).* |
 
-- Some related concepts:
-  - `CARLA`, `end-to-mid`, `direct perception`
+Authors: Sauer, A., Savinov, N., & Geiger, A.
 
 - One term: **_"Direct perception"_** (`DP`):
   - The goal of `DP` methods is to predict a **low-dimensional intermediate representation** of the environment which is then used in a conventional **control algorithm** to manoeuvre the vehicle.
@@ -428,11 +435,14 @@ Some figures:
 
 </details>
 
-Amini, A., Schwarting, W., Rosman, G., Araki, B., Karaman, S., & Rus, D. [2018].
-**"Variational Autoencoder for End-to-End Control of Autonomous Driving with Novelty Detection and Training De-biasing"**
-[[pdf](https://dspace.mit.edu/handle/1721.1/118139)]
-[[video](https://www.youtube.com/watch?v=ZwSdzcV-jr4)]
-[[video](https://www.youtube.com/watch?v=aXI4a_Nvcew)]
+**`"Variational Autoencoder for End-to-End Control of Autonomous Driving with Novelty Detection and Training De-biasing"`**
+**[** `2018` **]**
+**[[:memo:](https://dspace.mit.edu/handle/1721.1/118139)]**
+**[[🎞️](https://www.youtube.com/watch?v=ZwSdzcV-jr4)]**
+**[[🎞️](https://www.youtube.com/watch?v=aXI4a_Nvcew)]**
+**[** :car: `Toyota Research Institute` **]**
+**[** :mortar_board: `M.I.T.` **]**
+**[** _`VAE`, `uncertainty estimation`, `sampling efficiency`, `augmentation`_ **]**
 
 <details>
   <summary>Click to expand</summary>
@@ -451,8 +461,8 @@ Some figures:
 |:--:|
 | *In a subsequent work, the `VAE` is __conditionned__ onto the __road topology__. It serves multiple purposes such as localization and __`end-to-end` navigation__. The _routed_ or _unrouted map_ given as additional input goes toward the __`mid-to-end`__ approach where processing is performed and/or __external knowledge__ is embedded. [Source](https://arxiv.org/abs/1811.10119). See this [video](https://www.youtube.com/watch?v=aXI4a_Nvcew) temporal for evolution of the predictions.* |
 
-- Some related concepts:
-  - `VAE`, `uncertainty estimation`, `sampling efficiency`, `augmentation`
+Authors: Amini, A., Schwarting, W., Rosman, G., Araki, B., Karaman, S., & Rus, D.
+
 - One issue raised about _vanilla_ `E2E`:
   - The lack a **measure** of associated **confidence** in the prediction.
   - The lack of **interpretion** of the learned features.
@@ -492,11 +502,13 @@ Some figures:
 
 </details>
 
-Bansal, M., Krizhevsky, A., & Ogale, A. [2018].
-**"ChauffeurNet: Learning to Drive by Imitating the Best and Synthesizing the Worst"**
-[[pdf](https://arxiv.org/abs/1812.03079)]
-[[videos](https://sites.google.com/view/waymo-learn-to-drive)]
-[[talk](https://www.youtube.com/watch?v=mxqdVO462HU)]
+**`"ChauffeurNet: Learning to Drive by Imitating the Best and Synthesizing the Worst"`**
+**[** `2018` **]**
+**[[:memo:](https://arxiv.org/abs/1812.03079)]**
+**[[🎞️](https://sites.google.com/view/waymo-learn-to-drive)]**
+**[[🎞️](https://www.youtube.com/watch?v=mxqdVO462HU)]**
+**[** :car: `Waymo` **]**
+**[** _`imitation learning`, `distributional shift problem`_ **]**
 
 <details>
   <summary>Click to expand</summary>
@@ -511,8 +523,8 @@ Two figures:
 |:--:|
 | *Training architecture around `ChauffeurNet` with the different losses terms, that can be grouped into `environment` and `imitation` losses. [Source](https://arxiv.org/abs/1812.03079).* |
 
-- Some related concepts:
-  - `imitation learning`, `distributional shift problem`
+Authors: Bansal, M., Krizhevsky, A., & Ogale, A.
+
 - One term: **_"mid-level representation"_**
   - The decision-making task (between `perception` and `control`) is packed into one single "learnable" module.
     - Input: the representation divided into **several image-like layers**:
@@ -545,10 +557,12 @@ Two figures:
 
 </details>
 
-Kuefler, A., Morton, J., Wheeler, T., & Kochenderfer, M. [2018].
-**"Imitating Driver Behavior with Generative Adversarial Networks"**
-[[pdf](https://arxiv.org/abs/1701.06699)]
-[[code](https://github.com/sisl/gail-driver)]
+**`"Imitating Driver Behavior with Generative Adversarial Networks"`**
+**[** `2017` **]**
+**[[:memo:](https://arxiv.org/abs/1701.06699)]**
+**[[:octocat:](https://github.com/sisl/gail-driver)]**
+**[** :mortar_board: `Stanford` **]**
+**[** _`adversarial learning`, `distributional shift problem`, `cascading errors`, `IDM`, [`NGSIM`](https://ops.fhwa.dot.gov/trafficanalysistools/ngsim.htm), [`rllab`](https://github.com/rll/rllab)_ **]**
 
 <details>
   <summary>Click to expand</summary>
@@ -563,8 +577,8 @@ Some figures:
 |:--:|
 | *As for common **adversarial approaches**, the objective function in `GAIL` includes some **sigmoid cross entropy** terms. The objective is to **fit `ψ`** for the **discriminator**. But this objective function is **non-differentiable with respect to `θ`**. One solution is to **optimize `πθ` separately using `RL`**. But what for `reward function`? In order to drive `πθ` into regions of the state-action space similar to those explored by the **expert `πE`**, a **surrogate rewards `˜r`** is generated from `D`_`ψ` based on samples and `TRPO` is used to perform a policy update of `πθ`. [Source](https://arxiv.org/abs/1701.06699).* |
 
-- Some related concepts:
-  - `adversarial learning`, `distributional shift problem`, `cascading errors`, `IDM`, [`NGSIM`](https://ops.fhwa.dot.gov/trafficanalysistools/ngsim.htm), [`rllab`](https://github.com/rll/rllab)
+Authors: Kuefler, A., Morton, J., Wheeler, T., & Kochenderfer, M.
+
 - One term: the problem of **_"cascading errors"_** in **behavioural cloning** (**`BC`**).
   - `BC`, which treats `IL` as a **supervised learning** problem, tries to fit a model to a **fixed dataset** of expert state-action pairs. In other words, `BC` solves a **regression problem** in which the policy parameterization is obtained by **maximizing the likelihood** of the **actions taken in the training data**.
   - But inaccuracies can lead the **stochastic policy** to states that are **underrepresented in the training data** (e.g., _an ego-vehicle edging towards the side of the road_). And datasets rarely contain information about **how human drivers behave** in such situations.
