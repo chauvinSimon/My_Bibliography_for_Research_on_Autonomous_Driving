@@ -13,18 +13,19 @@ Template:
 **[[:memo:](https://arxiv.org/)]**
 **[[:octocat:](https://github.com/)]**
 **[[🎞️](https://www.youtube.com/)]**
-**[** :moneybag: `company X` **]**
+**[** :car: `company X` **]**
 **[** :mortar_board: `University Y` **]**
 
 Categories:
 
-- [`Architecture and Map`](#architecture-and-map)
-- [`Behavior Cloning, End-To-End and Imitation Learning`](#behavior-cloning-end-to-end-and-imitation-learning)
-- [`Inverse Reinforcement Learning, Inverse Optimal Control and Game Theory`](#inverse-reinforcement-learning-inverse-optimal-control-and-game-theory)
-- [`Prediction and Manoeuvre Recognition`](#prediction-and-manoeuvre-recognition)
-- [`Rule-based Decision Making`](#rule-based-decision-making)
-- [`Model Free Reinforcement Learning`](#model-free-reinforcement-learning)
-- [`Planning and Monte Carlo Tree Search`](#planning-and-monte-carlo-tree-search)
+- [**`Architecture`** and **`Map`**](#architecture-and-map)
+- [**`Behavior Cloning`**, **`End-To-End`** and **`Imitation Learning`**](#behavior-cloning-end-to-end-and-imitation-learning)
+- [**`Inverse Reinforcement Learning`**, **`Inverse Optimal Control`** and **`Game Theory`**](#inverse-reinforcement-learning-inverse-optimal-control-and-game-theory)
+- [**`Prediction`** and **`Manoeuvre Recognition`**](#prediction-and-manoeuvre-recognition)
+- [**`Rule-based`** **`Decision Making`**](#rule-based-decision-making)
+- [**`Model Free`** **`Reinforcement Learning`**](#model-free-reinforcement-learning)
+- [**`Model-Based`** **`Reinforcement Learning`**](#model-based-reinforcement-learning)
+- [**`Planning`** and **`Monte Carlo Tree Search`**](#planning-and-monte-carlo-tree-search)
 
 I reference additional publications in my other works:
 
@@ -111,9 +112,12 @@ One quote about the _representation of decision logic_:
 
 </details>
 
-Wei, J., Snider, J. M., & Dolan, J. M. [2014].
-**"A Behavioral Planning Framework for Autonomous Driving"**
-[[pdf](https://ri.cmu.edu/pub_files/2014/6/IV2014-Junqing-Final.pdf)]
+**`"A Behavioral Planning Framework for Autonomous Driving"`**
+**[** `2014` **]**
+**[[:memo:](https://ri.cmu.edu/pub_files/2014/6/IV2014-Junqing-Final.pdf)]**
+**[** :car: `General Motor` **]**
+**[** :mortar_board: `Carnegie Mellon University` **]**
+**[** `behavioural planning`, `sampling-based planner`, `decision under uncertainty`, [`TORCS`](https://en.wikipedia.org/wiki/TORCS) **]**
 
 <details>
   <summary>Click to expand</summary>
@@ -132,8 +136,7 @@ Some figures:
 |:--:|
 | *Related work by (Xu, Pan, Wei, & Dolan, 2014) - Grey ellipses indicate the magnitude of the uncertainty of state. [Source](https://ri.cmu.edu/pub_files/2014/6/ICRA14_0863_Final.pdf).* |
 
-- Some related concepts:
-  - `behavioural planning`, `sampling-based planner`, `decision under uncertainty`, [`TORCS`](https://en.wikipedia.org/wiki/TORCS)
+**[** Wei, J., Snider, J. M., & Dolan, J. M. **]**
 
 Note: I find very valuable to get insights from the **CMU** (Carnegie Mellon University) Team, based on their **experience of the DARPA Urban Challenges**.
 
