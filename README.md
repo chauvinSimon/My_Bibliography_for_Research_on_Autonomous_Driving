@@ -634,8 +634,7 @@ Authors: Kuefler, A., Morton, J., Wheeler, T., & Kochenderfer, M.
 **[** `2019` **]**
 **[[:memo:](https://arxiv.org/abs/1909.02586)]**
 **[[:mortar_board:](University of Michigan)]**
-**[[:octocat:](https://github.com/gokulsivasankar/RobustDecisionMaking) (code)]**
-
+**[[:octocat:](https://github.com/gokulsivasankar/RobustDecisionMaking)]**
 **[** _`k-level strategy`, `MPC`, `interaction-aware prediction`_ **]**
 
 <details>
@@ -896,9 +895,6 @@ Authors: Han, T., Filev, D., & Ozguner, U.
 **[** :mortar_board: `IEEE` **]**
 **[** _`HMM`, `Baum-Welch algorithm`, `forward algorithm`_  **]**
 
-**""**
-[[pdf]()]
-
 <details>
   <summary>Click to expand</summary>
 
@@ -921,21 +917,24 @@ Authors: Liu, S., Zheng, K., Member, S., Zhao, L., & Fan, P.
 
 </details>
 
-Huang, X., Hong, S., Hofmann, A., & Williams, B. [2019].
-**"Online Risk-Bounded Motion Planning for Autonomous Vehicles in Dynamic Environments"**
-[[pdf](https://arxiv.org/abs/1904.02341)]
+**`"Online Risk-Bounded Motion Planning for Autonomous Vehicles in Dynamic Environments"`**
+
+**[** `2019` **]**
+**[[:memo:](https://arxiv.org/abs/1904.02341)]**
+**[** :car: `Toyota Research Institute` **]**
+**[** :mortar_board: `M.I.T.` **]**
+**[** _`intention-aware planning`, `manoeuvre-based motion prediction`, `POMDP`, `probabilistic risk assessment`, `CARLA`_  **]**
 
 <details>
   <summary>Click to expand</summary>
-
-- Some related concepts:
-  - `intention-aware planning`, `manoeuvre-based motion prediction`, `POMDP`, `probabilistic risk assessment`, `CARLA`
 
 One figure:
 
 | ![[Source](https://arxiv.org/abs/1904.02341).](media/2019_huang.PNG "[Source](https://arxiv.org/abs/1904.02341).")  |
 |:--:|
 | *[Source](https://arxiv.org/abs/1904.02341).* |
+
+Authors: Huang, X., Hong, S., Hofmann, A., & Williams, B.
 
 - One term: [**"Probabilistic Flow Tubes"**](https://dspace.mit.edu/handle/1721.1/76824) (PFT)
   - A *motion representation* used in the **"Motion Model Generator"**.
@@ -954,17 +953,20 @@ One figure:
 
 </details>
 
-Sierra Gonzalez, D. [2019].
-**"Towards Human-Like Prediction and Decision-Making for Automated Vehicles in Highway Scenarios"**
-[[pdf](https://tel.archives-ouvertes.fr/tel-02184362/document)]
-[[video - simulator](https://www.youtube.com/watch?v=Xx5OmV86CsM)]
-[[code - simulator](https://github.com/marioney/hybrid_simulation/tree/decision-making)]
+**`"Towards Human-Like Prediction and Decision-Making for Automated Vehicles in Highway Scenarios"`**
+
+**[** `2019` **]**
+**[[:memo:](https://tel.archives-ouvertes.fr/tel-02184362/document)]**
+**[[:octocat:](https://github.com/marioney/hybrid_simulation/tree/decision-making)]**
+**[[🎞️](https://www.youtube.com/watch?v=Xx5OmV86CsM)]**
+**[** :car: `Toyota Motor Europe` **]**
+**[** :mortar_board: `INRIA` **]**
+**[** _`planning-based motion prediction`, `manoeuvre-based motion prediction`_  **]**
 
 <details>
   <summary>Click to expand</summary>
 
-- Some related concepts:
-  - `planning-based motion prediction`, `manoeuvre-based motion prediction`
+Author: Sierra Gonzalez, D.
 
 - Prediction techniques are often classified into three types:
   - `physics-based`
@@ -1000,15 +1002,19 @@ Sierra Gonzalez, D. [2019].
 
 </details>
 
-Li, S., Li, N., Girard, A., & Kolmanovsky, I. [2019].
-**"Decision making in dynamic and interactive environments based on cognitive hierarchy theory: Formulation, solution, and application to autonomous driving"**
-[[pdf](https://arxiv.org/abs/1908.04005)]
+**`"Decision making in dynamic and interactive environments based on cognitive hierarchy theory: Formulation, solution, and application to autonomous driving"`**
+
+**[** `2019` **]**
+**[[:memo:](https://arxiv.org/abs/1908.04005)]**
+**[** :mortar_board: `University of Michigan` **]**
+
+**[** _`level-k game theory`, `cognitive hierarchy theory`, `interaction modelling`, `interaction-aware decision making`_  **]**
 
 <details>
   <summary>Click to expand</summary>
 
-- Some related concepts:
-  - `level-k game theory`, `cognitive hierarchy theory`, `interaction modelling`, `interaction-aware decision making`
+Authors: Li, S., Li, N., Girard, A., & Kolmanovsky, I.
+
 - One concept: **`cognitive hierarchy`**.
   - Other drivers are assumed to follow some **"cognitive behavioural models"**, parametrized with a so called **"_cognitive level_"** `σ`.
   - The goal is to **obtain and maintain belief about `σ`** based on observation in order to **optimally respond** (using a `MPC`).
@@ -1049,10 +1055,17 @@ Related works:
 
 ## `Rule-based` `Decision Making`
 
-Censi, A., Slutsky, K., Wongpiromsarn, T., Yershov, D., Pendleton, S., Fu, J., & Frazzoli, E. [2019].
-**"Liability, Ethics, and Culture-Aware Behavior Specification using Rulebooks"**
-[[pdf](https://arxiv.org/abs/1902.09355)]
-[[videos and additional content](http://rulebooks.tech/)]
+**`"Liability, Ethics, and Culture-Aware Behavior Specification using Rulebooks"`**
+
+**[** `2019` **]**
+**[[:memo:](https://arxiv.org/abs/1902.09355)]**
+**[[:octocat:](https://github.com/marioney/hybrid_simulation/tree/decision-making)]**
+**[[🎞️](http://rulebooks.tech/)]**
+**[[🎞️](https://video.ethz.ch/events/2019/rsl/28a0302b-64eb-4ebe-a609-1dc05fcdb038.html)]**
+**[** :car: `nuTonomy, Aptiv` **]**
+**[** :mortar_board: `ETH Zurich` **]**
+
+**[** _`sampling-based planning`, `safety validation`, `reward function`, `RSS`_  **]**
 
 <details>
   <summary>Click to expand</summary>
@@ -1071,8 +1084,8 @@ Some figures:
 |:--:|
 | *The `rulebook` serves for __deciding which trajectory to take__ and can be __adapted__ using a series of operations. [Source](https://arxiv.org/abs/1902.09355).* |
 
-- Some related concepts:
-  - `sampling-based planning`, `safety validation`, `reward function`, `RSS`
+Authors: Censi, A., Slutsky, K., Wongpiromsarn, T., Yershov, D., Pendleton, S., Fu, J., & Frazzoli, E.
+
 - Allegedly how **nuTonomy** (an [**Aptiv**](https://www.aptiv.com/autonomous-mobility) company) cars work.
 
 - One main concept: **_"rulebook"_**.
@@ -1156,11 +1169,14 @@ Some figures from this related presentation:
 
 </details>
 
-Naumann, M., Königshof, H., & Stiller, C. [2019].
-**"Provably Safe and Smooth Lane Changes in Mixed Traffic"**
-[[pdf](https://www.mrt.kit.edu/z/publ/download/2019/Naumann2019LaneChange.pdf)]
-[[video](https://www.mrt.kit.edu/z/publ/download/2019_LaneChange_Naumann.mp4)]
-[[Code for Simulator](https://github.com/coincar-sim)]
+**`"Provably Safe and Smooth Lane Changes in Mixed Traffic"`**
+
+**[** `2019` **]**
+**[[:memo:](https://www.mrt.kit.edu/z/publ/download/2019/Naumann2019LaneChange.pdf)]**
+**[[:octocat:](https://github.com/coincar-sim)]**
+**[[🎞️](https://www.mrt.kit.edu/z/publ/download/2019_LaneChange_Naumann.mp4)]**
+**[** :mortar_board: `FZI & K.I.T.` **]**
+**[** _`path-velocity decomposition`, `IDM`, `RSS`_ **]**
 
 <details>
   <summary>Click to expand</summary>
@@ -1179,8 +1195,7 @@ Some figures:
 |:--:|
 | *Formulation by Pek, Zahn, & Althoff, 2017. [Source](https://mediatum.ub.tum.de/doc/1379669/794156.pdf).* |
 
-- Some related concepts:
-  - `path-velocity decomposition`, `IDM`, `RSS`
+Authors: Naumann, M., Königshof, H., & Stiller, C.
 
 - Main ideas:
   - The notion of **_safety_** is based on the **responsibility sensitive safety** (`RSS`) definition.
@@ -1196,10 +1211,13 @@ Some figures:
 
 </details>
 
-Noh, S. [2018].
-**"Decision-Making Framework for Autonomous Driving at Road Intersections: Safeguarding Against Collision, Overly Conservative Behavior, and Violation Vehicles"**
-[[html](https://ieeexplore.ieee.org/document/8370800)]
-[[video](https://www.youtube.com/watch?v=h7ExZ040wyk)]
+**`"Decision-Making Framework for Autonomous Driving at Road Intersections: Safeguarding Against Collision, Overly Conservative Behavior, and Violation Vehicles"`**
+
+**[** `2018` **]**
+**[[:memo:](https://ieeexplore.ieee.org/document/8370800)]**
+**[[🎞️](https://www.youtube.com/watch?v=h7ExZ040wyk)]**
+**[** :mortar_board: `Research Institute, Daejeon, Rep. of Korea` **]**
+**[** _`probabilistic risk assessment`, `rule-based probabilistic decision making`_ **]**
 
 <details>
   <summary>Click to expand</summary>
@@ -1210,8 +1228,8 @@ One figure:
 |:--:|
 | *[Source](https://ieeexplore.ieee.org/document/8370800).* |
 
-- Some related concepts:
-  - `probabilistic risk assessment`, `rule-based probabilistic decision making`
+Author: Noh, S.
+
 - Many ML-based works criticize rule-based approaches (_over-conservative_, _no generalization capability_ and _painful parameter tuning_).
   - True, the presented framework contains **many parameters whose tuning may be tedious**.
   - But this approach just works! At least they **go out of the simulator** and show some experiments on a **real car**.
@@ -1233,12 +1251,17 @@ One figure:
 
 ## `Model Free` `Reinforcement Learning`
 
-Saxena, D. M., Bae, S., Nakhaei, A., Fujimura, K., & Likhachev, M. [2019].
-**"Driving in Dense Traffic with Model-Free Reinforcement Learning"**.
-[[pdf](https://arxiv.org/abs/1909.06710)]
-[[simulator](https://github.com/sisl/AutomotiveDrivingModels.jl)]
-[[code ML](https://github.com/honda-research-institute/DRLDriving)]
-[[code MPC](https://github.com/honda-research-institute/NNMPC.jl)]
+**`"Driving in Dense Traffic with Model-Free Reinforcement Learning"`**
+
+**[** `2019` **]**
+**[[:memo:](https://arxiv.org/abs/1909.06710)]**
+**[[:octocat:](https://github.com/sisl/AutomotiveDrivingModels.jl) (simulator)]**
+**[[:octocat:](https://github.com/honda-research-institute/NNMPC.jl) (MPC)]**
+**[[:octocat:](https://github.com/honda-research-institute/DRLDriving) (ML)]**
+**[[🎞️](https://www.youtube.com/watch?v=zY4taTNRM1k)]**
+**[** :car: `Honda Research Institute` **]**
+**[** :mortar_board: `Berkeley & CMU` **]**
+**[** _`SISL`, `PPO`, `MPC`, `merging scenarios`_ **]**
 
 <details>
   <summary>Click to expand</summary>
@@ -1257,8 +1280,8 @@ Some figures:
 |:--:|
 | *In [another work](https://arxiv.org/abs/1909.05665), the authors try to incorporate a __`RNN` as a prediction model__ into an __`MPC` controller__, leading to a _reliable_, _interpretable_, and _tunable_ framework which also contains a __data-driven model__ that captures __interactive motions__ between drivers. [Source](https://arxiv.org/abs/1909.05665).* |
 
-- Some related concepts:
-  - `SISL`, `PPO`, `MPC`, `merging scenarios`
+Authors: Saxena, D. M., Bae, S., Nakhaei, A., Fujimura, K., & Likhachev, M.
+
 - One motivation: learn to perform comfortable merge into **dense traffic** using **model-free** RL.
   - _Dense traffic_ situations are difficult: traditional **rule-based** models **fail entirely**.
     - One reason is that in heavy traffic situations vehicles cannot merge into a lane without **cooperating** with other drivers.
@@ -1287,9 +1310,12 @@ Some figures:
 
 </details>
 
-Khurana, A. [2019].
-**"Behavior Planning at Roundabouts"**.
-[[pdf](https://www.ri.cmu.edu/wp-content/uploads/2019/08/ri_report_20190810.pdf)]
+**`"Behavior Planning at Roundabouts"`**
+
+**[** `2019` **]**
+**[[:memo:](https://www.ri.cmu.edu/wp-content/uploads/2019/08/ri_report_20190810.pdf)]**
+**[** :mortar_board: `CMU` **]**
+**[** _`POMDP`, `SUMO`, `generalization`_ **]**
 
 <details>
   <summary>Click to expand</summary>
@@ -1304,8 +1330,8 @@ Some figures:
 |:--:|
 | *`Hidden modes` framework: decomposing the __non-stationary__ environment into __multiple stationary environments__, where each `mode` is an `MDP` with __distinct dynamics__. [Source](https://www.ri.cmu.edu/wp-content/uploads/2019/08/ri_report_20190810.pdf).* |
 
-- Some related concepts:
-  - `POMDP`, `SUMO`, `generalization`
+Author: Khurana, A.
+
 - One idea: using **reccurent nets** (hence `D`**`R`**`DQN`) to integrate **history** in order to cope with **partial observability**.
   - Two `LSTM` layers, (considering `15` past observations) was added after `DQN` layers.
   - They also try to include the **action history** of the agent, leading to **`A`**`DRQN`. But this does not modify the score.
@@ -1342,15 +1368,17 @@ Some figures:
 
 </details>
 
-Hu, B., Li, J., Yang, J., Bai, H., Li, S., & Sun, Y. [2019].
-**"Reinforcement Learning Approach to Design Practical Adaptive Control for a Small-Scale Intelligent Vehicle"**
-[[pdf](https://www.researchgate.net/publication/335693770_Reinforcement_Learning_Approach_to_Design_Practical_Adaptive_Control_for_a_Small-Scale_Intelligent_Vehicle)]
+**`"Reinforcement Learning Approach to Design Practical Adaptive Control for a Small-Scale Intelligent Vehicle"`**
+
+**[** `2019` **]**
+**[[:memo:](https://www.researchgate.net/publication/335693770_Reinforcement_Learning_Approach_to_Design_Practical_Adaptive_Control_for_a_Small-Scale_Intelligent_Vehicle)]**
+**[** :mortar_board: `Chongqing University` **]**
+**[** _`non-deep RL`, `online learning`, `model-based RL`_ **]**
 
 <details>
   <summary>Click to expand</summary>
 
-- Some related concepts:
-  - `non-deep RL`, `online learning`, `model-based RL`
+Authors: Hu, B., Li, J., Yang, J., Bai, H., Li, S., & Sun, Y.
 
 - What I like in this paper:
   - The authors make sure they understand **tabular RL** methods, e.g. the difference between on-policy `SARSA(1)`, `SARSA(λ)` and off-policy `Q-learning`, before going to deep RL.
@@ -1365,9 +1393,13 @@ Hu, B., Li, J., Yang, J., Bai, H., Li, S., & Sun, Y. [2019].
 
 </details>
 
-Tram, T., Batkovic, I., Ali, M., & Sjöberg, J. [2019].
-**"Learning When to Drive in Intersections by Combining Reinforcement Learning and Model Predictive Control"**
-[[pdf](https://arxiv.org/abs/1908.00177)]
+**`"Learning When to Drive in Intersections by Combining Reinforcement Learning and Model Predictive Control"`**
+
+**[** `2019` **]**
+**[[:memo:](https://arxiv.org/abs/1908.00177)]**
+**[** :car: `Zenuity` **]**
+**[** :mortar_board: `Chalmers University` **]**
+**[** _`model-free RL`, `MPC`, `Q-Masking`, `POMDP`_ **]**
 
 <details>
   <summary>Click to expand</summary>
@@ -1382,8 +1414,8 @@ Two figures:
 |:--:|
 | *This work applies the **path-velocity decomposition** and focuses on the longitudinal control. **Three intentions** are considered: aggressive `take-way`, `cautious` (slows down without stopping), and passive `give-way`. [Source](https://arxiv.org/abs/1908.00177).* |
 
-- Some related concepts:
-  - `model-free RL`, `MPC`, `Q-Masking`, `POMDP`
+Authors: Tram, T., Batkovic, I., Ali, M., & Sjöberg, J.
+
 - Main idea: **hierarchy** in _learnt_/_optimized_ decision-making.
   - A **high-level decision module** based on RL uses the **feedback from the MPC controller** in the reward function.
   - The MPC controller is also responsible for **handling the comfort** of passengers in the car by **generating a smooth acceleration profile**.
@@ -1417,9 +1449,14 @@ Two figures:
 
 </details>
 
-Bouton, M., Nakhaei, A., Fujimura, K., & Kochenderfer, M. J. [2019].
-**"Cooperation-Aware Reinforcement Learning for Merging in Dense Traffic"**
-[[pdf](https://arxiv.org/abs/1906.11021)]
+**`"Cooperation-Aware Reinforcement Learning for Merging in Dense Traffic"`**
+
+**[** `2019` **]**
+**[[:memo:](https://arxiv.org/abs/1906.11021)]**
+**[[:octocat:](https://github.com/sisl/AutonomousMerging.jl)]**
+**[** :car: `Honda Research Institute` **]**
+**[** :mortar_board: `Stanford` **]**
+**[** _`POMDP`, `offline RL`, `value-based RL`, `interaction-aware decision making`, `belief state planning`_ **]**
 
 <details>
   <summary>Click to expand</summary>
@@ -1430,8 +1467,8 @@ One figure:
 |:--:|
 | *[Source](https://arxiv.org/abs/1906.11021).* |
 
-- Some related concepts:
-  - `POMDP`, `offline RL`, `value-based RL`, `interaction-aware decision making`, `belief state planning`
+Authors: Bouton, M., Nakhaei, A., Fujimura, K., & Kochenderfer, M. J.
+
 - One idea: offline **belief state RL** to solve dense merging scenarios modelled as a POMDP.
   - A belief updater explicitly maintains a probability distribution over the **driver cooperation levels** of other cars.
 - Another idea: projection of the merging vehicle on the main lane. This reduces the problem to **one dimension**, allowing for IDM. Similar to the [abstraction presented by R. Regele](https://ieeexplore.ieee.org/document/4488328/).
@@ -1453,10 +1490,18 @@ One figure:
 
 </details>
 
-Hu, Y., Nakhaei, A., Tomizuka, M., & Fujimura, K. [2019].
-**"Interaction-aware Decision Making with Adaptive Behaviors under Merging Scenarios"**
-[[pdf](https://arxiv.org/abs/1904.06025)]
-[[video](https://www.youtube.com/watch?v=2CTTFHDW1ec)]
+**`"Interaction-aware Decision Making with Adaptive Behaviors under Merging Scenarios"`**
+
+**[** `2019` **]**
+**[[:memo:](https://arxiv.org/abs/1904.06025)]**
+**[[🎞️](https://www.youtube.com/watch?v=2CTTFHDW1ec)]**
+**[** :car: `Honda Research Institute` **]**
+**[** :mortar_board: `Berkeley` **]**
+**[** _`multi agent RL`, `interaction-aware decision making`, `curriculum learning`, `action masking`_ **]**
+
+**""**
+[[pdf]()]
+[[video]()]
 
 <details>
   <summary>Click to expand</summary>
@@ -1467,8 +1512,7 @@ One figure:
 |:--:|
 | *Note: the visibility of each agent is assumed to be `100m` in front and back, with `0.5m`/`cell` resolution, for both its current lane (`obs_cl`) and the other lane (`obs_ol`). [Source](https://arxiv.org/abs/1904.06025).* |
 
-- Some related concepts:
-  - `multi agent RL`, `interaction-aware decision making`, `curriculum learning`, `action masking`
+Authors: Hu, Y., Nakhaei, A., Tomizuka, M., & Fujimura, K.
 
 - One term: **"IDAS"**: interaction-aware decision making with adaptive strategies.
   - The main goal is to generate manoeuvres which are **safe** but **less conservative** than rule-based approaches such as **IDM** and/or FSM.
@@ -1490,9 +1534,15 @@ One figure:
 
 </details>
 
-Bacchiani, G., Molinari, D., & Patander, M. [2019].
-**"Microscopic Traffic Simulation by Cooperative Multi-agent Deep Reinforcement Learning"**
-[[pdf](https://arxiv.org/abs/1903.01365)]
+**`"Microscopic Traffic Simulation by Cooperative Multi-agent Deep Reinforcement Learning"`**
+
+**[** `2019` **]**
+**[[:memo:](https://arxiv.org/abs/1903.01365)]**
+**[[:octocat:](  )]**
+**[[🎞️](  )]**
+**[** :car: `VisLab` **]**
+**[** :mortar_board: `University of Parma` **]**
+**[** _`multi-agent A3C`, `off-policy learning`_ **]**
 
 <details>
   <summary>Click to expand</summary>
@@ -1503,8 +1553,8 @@ One figure:
 |:--:|
 | *[Source](https://arxiv.org/abs/1903.01365).* |
 
-- Some related concepts:
-  - `multi-agent A3C`, `off-policy learning`
+Authors: Bacchiani, G., Molinari, D., & Patander, M.
+
 - One idea: **"parallel actor-learners"**: to **decorrelate** the sequence of experiences used to update the policy network, a common approach is to sample <`s`, `a`, `r`, `s'`> tuples from a memory buffer (**_experience replay_**).
   - Here, a **multiple-agent** setting is used instead: each agent acts in a different **instance of the environment** (hence diverse experiences) and sends its updates asynchronously to a **central network**.
 - Another idea: **"hybrid state representation"**: coupling some _grid-like_ representation (`path to follow`, `obstacles`, `navigable space`) with a vector of _explicit features_ (e.g. `target speed`, `distance to goal`, `elapsed time ratio`).
@@ -1521,10 +1571,14 @@ One figure:
 
 </details>
 
-Huegle, M., Kalweit, G., Mirchevska, B., Werling, M., & Boedecker, J. [2019].
-**"Dynamic Input for Deep Reinforcement Learning in Autonomous Driving"**
-[[pdf](https://arxiv.org/abs/1907.10994)]
-[[video](https://www.youtube.com/watch?v=mRQgHeAGk2g)]
+**`"Dynamic Input for Deep Reinforcement Learning in Autonomous Driving"`**
+
+**[** `2019` **]**
+**[[:memo:](https://arxiv.org/abs/1907.10994)]**
+**[[🎞️](https://www.youtube.com/watch?v=mRQgHeAGk2g)]**
+**[** :car: `BMW` **]**
+**[** :mortar_board: `University of Freiburg` **]**
+**[** _`feature engineering`, `off-policy learning`, `DQN`, `SUMO`_ **]**
 
 <details>
   <summary>Click to expand</summary>
@@ -1535,8 +1589,8 @@ Huegle, M., Kalweit, G., Mirchevska, B., Werling, M., & Boedecker, J. [2019].
 |:--:|
 | *By summing all the dynamic terms (one per surrounding vehicle), the input keeps a constant size. [Source](https://arxiv.org/abs/1907.10994).* |
 
-- Some related concepts:
-  - `feature engineering`, `off-policy learning`, `DQN`, `SUMO`
+Authors: Huegle, M., Kalweit, G., Mirchevska, B., Werling, M., & Boedecker, J.
+
 - One goal: find a **flexible** and **permutation-invariant** representation to **deal with variable sized inputs** (_variable number of surrounding vehicles_) in high-level decision making in autonomous lane changes, using model-free RL.
   - Four representations are considered:
     - Relational Grid (fixed-size vector)
@@ -1554,9 +1608,18 @@ Huegle, M., Kalweit, G., Mirchevska, B., Werling, M., & Boedecker, J. [2019].
 
 </details>
 
-Jaâfra, Y., Laurent, J.-L., Deruyver, A., & Naceur, M. S. [2019].
-**"Seeking for Robustness in Reinforcement Learning : Application on Carla Simulator"**
-[[pdf](https://openreview.net/pdf?id=Bke03G85DN)]
+**`"Seeking for Robustness in Reinforcement Learning : Application on Carla Simulator"`**
+
+**[** `2019` **]**
+**[[:memo:](https://openreview.net/pdf?id=Bke03G85DN)]**
+**[[:octocat:](  )]**
+**[[🎞️](  )]**
+**[** :car: `Segula` **]**
+**[** :mortar_board: `Universit de Strasbourg & ENIT Tunis` **]**
+**[** _`CARLA`, `A2C`_ **]**
+
+****
+[[pdf]()]
 
 <details>
   <summary>Click to expand</summary>
@@ -1567,8 +1630,8 @@ Jaâfra, Y., Laurent, J.-L., Deruyver, A., & Naceur, M. S. [2019].
 |:--:|
 | *`n`-step TD learning. [Source](http://www0.cs.ucl.ac.uk/staff/d.silver/web/Teaching.html).* |
 
-- Some related concepts:
-  - `CARLA`, `A2C`
+Authors: Jaâfra, Y., Laurent, J.-L., Deruyver, A., & Naceur, M. S.
+
 - One related work: reading this paper reminded me of one conclusion of the 2019 [CARLA AD Challenge](https://carlachallenge.org/):
 
 > "**Robust** open-source AV stacks are not a commodity yet: **No public AV stack has solved the challenge yet**."
@@ -1597,19 +1660,22 @@ Jaâfra, Y., Laurent, J.-L., Deruyver, A., & Naceur, M. S. [2019].
 
 </details>
 
-Isele, D., Nakhaei, A., Fujimura, K., [2018].
-**"Safe Reinforcement Learning on Autonomous Vehicles."**
-[[html](https://www.researchgate.net/publication/330595797_Safe_Reinforcement_Learning_on_Autonomous_Vehicles)]
+**`"Safe Reinforcement Learning on Autonomous Vehicles"`**
+
+**[** `2018` **]**
+**[[:memo:](https://arxiv.org/abs/1910.00399)]**
+**[** :car: `Honda Research Institute` **]**
+**[** _`action masking`, `risk assessment`, `reachability set`, `SUMO`_ **]**
 
 <details>
   <summary>Click to expand</summary>
 
-| ![ The `prediction` module **masks** undesired actions at each time step. [Source](https://www.researchgate.net/publication/330595797_Safe_Reinforcement_Learning_on_Autonomous_Vehicles).](media/2018_isele_1.PNG "The `prediction` module **masks** undesired actions at each time step. [Source](https://www.researchgate.net/publication/330595797_Safe_Reinforcement_Learning_on_Autonomous_Vehicles).")  |
+| ![ The `prediction` module **masks** undesired actions at each time step. [Source](https://arxiv.org/abs/1910.00399).](media/2018_isele_1.PNG "The `prediction` module **masks** undesired actions at each time step. [Source](https://arxiv.org/abs/1910.00399).")  |
 |:--:|
-| *The `prediction` module **masks** undesired actions at each time step. [Source](https://www.researchgate.net/publication/330595797_Safe_Reinforcement_Learning_on_Autonomous_Vehicles).* |
+| *The `prediction` module **masks** undesired actions at each time step. [Source](https://arxiv.org/abs/1910.00399).* |
 
-- Some related concepts:
-  - `action masking`, `risk assessment`, `reachability set`, `SUMO`
+Authors: Isele, D., Nakhaei, A., Fujimura, K.
+
 - Previous works about **learning control with `DQN`s** at diverse intersections:
   - ["Navigating occluded intersections with autonomous vehicles using deep reinforcement learning"](https://arxiv.org/abs/1705.01196) - (Isele et al., 2017)
   - ["Transferring Autonomous Driving Knowledge on Simulated and Real Intersections"](https://arxiv.org/abs/1712.01106) - (Isele et al., 2017)
