@@ -1,7 +1,14 @@
-# My_Bibliography_for_Research_on_Autonomous_Driving
+# My Bibliography for Research on Autonomous Driving
+
+:warning: :construction: `!` **WORK IN PROGRESS** `!` :construction: :warning:
+
+## Motivation
+
+In this document, I would like to **share some personal notes** about the latest exciting trends in **research** about decision making for autonomous driving.
+
+Template:
 
 **`"title"`**
-**[** Name, Letter_Vorname. **]**
 **[** `Year` **]**
 **[[:memo:](https://arxiv.org/)]**
 **[[:octocat:](https://github.com/)]**
@@ -9,18 +16,27 @@
 **[** :moneybag: `company` **]**
 **[** :mortar_board: `University of X` **]**
 
-! WORK IN PROGRESS !
+Categories:
+
+- [`Architecture and Map`](#Architecture and Map)
+- [`Behavior Cloning, End-To-End, Imitation Learning`](#Behavior Cloning, End-To-End, Imitation Learning)
+- [`Inverse Reinforcement Learning, Inverse Optimal Control, Game Theory`](#Inverse Reinforcement Learning, Inverse Optimal Control, Game Theory)
+- [`Prediction and Manoeuvre Recognition`](#Prediction and Manoeuvre Recognition)
+- [`Rule-based Decision Making`](#Rule-based Decision Making)
+- [`Model Free Reinforcement Learning`](#Model Free Reinforcement Learning)
+- [`Planning and Monte Carlo Tree Seach`](#Planning and Monte Carlo Tree Seach)
 
 I reference additional publications in my other works:
 
-- [Hierarchical Decision-Making for Autonomous Driving](https://github.com/chauvinSimon/Hierarchical-Decision-Making-for-Autonomous-Driving)
-- [Educational application of Hidden Markov Model to Autonomous Driving](https://github.com/chauvinSimon/hmm_for_autonomous_driving)
-- [My 10 takeaways from the 2019 Intelligent Vehicle Symposium](https://github.com/chauvinSimon/IV19)
+- [**`Hierarchical Decision-Making for Autonomous Driving`**](https://github.com/chauvinSimon/Hierarchical-Decision-Making-for-Autonomous-Driving)
+- [**`Educational application of Hidden Markov Model to Autonomous Driving`**](https://github.com/chauvinSimon/hmm_for_autonomous_driving)
+- [**`My 10 takeaways from the 2019 Intelligent Vehicle Symposium`**](https://github.com/chauvinSimon/IV19)
+
+Looking forward your reading suggestions!
 
 ## Architecture and Map
 
 **`"Design Space of Behaviour Planning for Autonomous Driving"`**
-**[** Ilievski, M., Sedwards, S., Gaurav, A., Balakrishnan, A., Sarkar, A., Lee, J., Bouchard, F., De Iaco, R., & Czarnecki K. **]**
 **[** `2019` **]**
 **[[:memo:](https://arxiv.org/abs/1908.07931)]**
 **[** :mortar_board: `University of Waterloo` **]**
@@ -45,6 +61,8 @@ Some figures:
 | ![Classification for Question `3` - on the decision logic representation. [Source](https://arxiv.org/abs/1908.07931).](media/2019_ilievski_1.PNG "Classification for Question `3` - on the decision logic representation. [Source](https://arxiv.org/abs/1908.07931).")  |
 |:--:|
 | *Classification for Question `3` - on the decision logic representation. [Source](https://arxiv.org/abs/1908.07931).* |
+
+**[** Ilievski, M., Sedwards, S., Gaurav, A., Balakrishnan, A., Sarkar, A., Lee, J., Bouchard, F., De Iaco, R., & Czarnecki K. **]**
 
 The authors divide their review into three sections:
 
@@ -157,7 +175,7 @@ Note: I find very valuable to get insights from the **CMU** (Carnegie Mellon Uni
 
 </details>
 
-## Behavior Cloning, End-To-End (E2E), Imitation Learning
+## Behavior Cloning, End-To-End, Imitation Learning
 
 Buhet, T., Wirbel, E., & Perrotton, X. [2019].
 **"Conditional Vehicle Trajectories Prediction in CARLA Urban Environment"**
