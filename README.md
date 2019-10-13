@@ -1,5 +1,14 @@
 # My_Bibliography_for_Research_on_Autonomous_Driving
 
+**`"title"`**
+**[** Name, Letter_Vorname. **]**
+**[** `Year` **]**
+**[[:memo:](https://arxiv.org/)]**
+**[[:octocat:](https://github.com/)]**
+**[[🎞️](https://www.youtube.com/)]**
+**[** :moneybag: `company` **]**
+**[** :mortar_board: `University of X` **]**
+
 ! WORK IN PROGRESS !
 
 I reference additional publications in my other works:
@@ -10,9 +19,11 @@ I reference additional publications in my other works:
 
 ## Architecture and Map
 
-Ilievski, M., Sedwards, S., Gaurav, A., Balakrishnan, A., Sarkar, A., Lee, J., Bouchard, F., De Iaco, R., & Czarnecki K. [2019].
-**"Design Space of Behaviour Planning for Autonomous Driving"**
-[[pdf](https://arxiv.org/abs/1908.07931)]
+**`"Design Space of Behaviour Planning for Autonomous Driving"`**
+**[** Ilievski, M., Sedwards, S., Gaurav, A., Balakrishnan, A., Sarkar, A., Lee, J., Bouchard, F., De Iaco, R., & Czarnecki K. **]**
+**[** `2019` **]**
+**[[:memo:](https://arxiv.org/abs/1908.07931)]**
+**[** :mortar_board: `University of Waterloo` **]**
 
 <details>
   <summary>Click to expand</summary>
