@@ -1,10 +1,8 @@
 # My Bibliography for Research on Autonomous Driving
 
-:warning: :construction: `!` **WORK IN PROGRESS** `!` :construction: :warning:
-
 ## Motivation
 
-In this document, I would like to **share some personal notes** about the latest exciting trends in **research** about decision making for autonomous driving.
+In this document, I would like to **share some personal notes** about the latest exciting trends in **research** about decision making for autonomous driving. I keep on updating it :construction_worker: :construction: :smiley:
 
 Template:
 
@@ -13,22 +11,22 @@ Template:
 **[[:memo:](https://arxiv.org/) (paper)]**
 **[[:octocat:](https://github.com/) (code)]**
 **[[🎞️](https://www.youtube.com/) (video)]**
-**[** :mortar_board: `University Y` **]**
-**[** :car: `company X` **]**
+**[** :mortar_board: `University X` **]**
+**[** :car: `company Y` **]**
 **[** _`related`, `concepts`_  **]**
 
 Categories:
 
-- [**`Architecture`** and **`Map`**](#architecture-and-map)
-- [**`Behavior Cloning`**, **`End-To-End`** and **`Imitation Learning`**](#behavior-cloning-end-to-end-and-imitation-learning)
-- [**`Inverse Reinforcement Learning`**, **`Inverse Optimal Control`** and **`Game Theory`**](#inverse-reinforcement-learning-inverse-optimal-control-and-game-theory)
-- [**`Prediction`** and **`Manoeuvre Recognition`**](#prediction-and-manoeuvre-recognition)
-- [**`Rule-based`** **`Decision Making`**](#rule-based-decision-making)
-- [**`Model Free`** **`Reinforcement Learning`**](#model-free-reinforcement-learning)
-- [**`Model-Based`** **`Reinforcement Learning`**](#model-based-reinforcement-learning)
-- [**`Planning`** and **`Monte Carlo Tree Search`**](#planning-and-monte-carlo-tree-search)
+- [**Architecture and Map**](#architecture-and-map)
+- [**Behaviour Cloning, End-To-End and Imitation Learning**](#behaviour-cloning-end-to-end-and-imitation-learning)
+- [**Inverse Reinforcement Learning, Inverse Optimal Control and Game Theory**](#inverse-reinforcement-learning-inverse-optimal-control-and-game-theory)
+- [**Prediction and Manoeuvre Recognition**](#prediction-and-manoeuvre-recognition)
+- [**Rule-based Decision Making**](#rule-based-decision-making)
+- [**Model Free Reinforcement Learning**](#model-free-reinforcement-learning)
+- [**Model-Based Reinforcement Learning**](#model-based-reinforcement-learning)
+- [**Planning and Monte Carlo Tree Search**](#planning-and-monte-carlo-tree-search)
 
-I reference additional publications in my other works:
+Besides, I reference additional publications in some parallel works:
 
 - [**`Hierarchical Decision-Making for Autonomous Driving`**](https://github.com/chauvinSimon/Hierarchical-Decision-Making-for-Autonomous-Driving)
 - [**`Educational application of Hidden Markov Model to Autonomous Driving`**](https://github.com/chauvinSimon/hmm_for_autonomous_driving)
@@ -36,7 +34,7 @@ I reference additional publications in my other works:
 
 Looking forward your reading suggestions!
 
---- 
+---
 
 ## `Architecture` and `Map`
 
@@ -53,9 +51,9 @@ Looking forward your reading suggestions!
 
 Some figures:
 
-| ![The focus is on the `BP` module, together with it precessessor (`environment`) and its successor (`LP`) in a modular architecture. [Source](https://arxiv.org/abs/1908.07931).](media/2019_ilievski_5.PNG "The focus is on the `BP` module, together with it precessessor (`environment`) and its successor (`LP`) in a modular architecture. [Source](https://arxiv.org/abs/1908.07931).")  |
+| ![The focus is on the `BP` module, together with its predecessor (`environment`) and its successor (`LP`) in a modular architecture. [Source](https://arxiv.org/abs/1908.07931).](media/2019_ilievski_5.PNG "The focus is on the `BP` module, together with its predecessor (`environment`) and its successor (`LP`) in a modular architecture. [Source](https://arxiv.org/abs/1908.07931).")  |
 |:--:|
-| *The focus is on the `BP` module, together with its precessessor (`environment`) and its successor (`LP`) in a modular architecture. [Source](https://arxiv.org/abs/1908.07931).* |
+| *The focus is on the `BP` module, together with its predecessor (`environment`) and its successor (`LP`) in a modular architecture. [Source](https://arxiv.org/abs/1908.07931).* |
 
 | ![Classification for Question `1` - environment representation. A combination is possible. In black, my notes giving examples. [Source](https://arxiv.org/abs/1908.07931).](media/2019_ilievski_6.PNG "Classification for Question `1` - environment representation. A combination is possible. In black, my notes giving examples. [Source](https://arxiv.org/abs/1908.07931).")  |
 |:--:|
@@ -73,9 +71,9 @@ Authors: Ilievski, M., Sedwards, S., Gaurav, A., Balakrishnan, A., Sarkar, A., L
 
 The authors divide their review into three sections:
 
-- Question `1`: **_How to represent the envrionment?_** (relation with _predecessor_ of `BP`)
+- Question `1`: **_How to represent the environment?_** (relation with _predecessor_ of `BP`)
   - Four representations are compared: `raw data`, `feature-based`, `grid-based` and `latent representation`.
-- Question `2`: **_How to communicated with other modules, especially the local planner (`LP`)?_** (relation with _successor_ (`LP`) of `BP`)
+- Question `2`: **_How to communicate with other modules, especially the local planner (`LP`)?_** (relation with _successor_ (`LP`) of `BP`)
   - A first sub-question is the relevance of **separation** `BP` / `LP`.
     - A complete separation (_top-down_) can lead to **computational redundancy** (both have a _collision checker_).
     - One idea, close to **sampling techniques**, could be to **invert the traditional architecture** for planning, i.e. **generate multiple possible local paths** (`~LP`) then selects the best manoeuvre according to a given cost function (`~BP`). But this exasperates the previous point.
@@ -84,7 +82,7 @@ The authors divide their review into three sections:
       - _Physics_-based (`->` trajectory).
       - _Manoeuvre_-based (`->` low-level motion primitives).
       - _Interaction_-aware (`->` intent).
-    - Then, the authors distinghuish between **_explicitly-defined_** and **_implicitly-defined_** prediction models:
+    - Then, the authors distinguish between **_explicitly-defined_** and **_implicitly-defined_** prediction models:
       - **_Explicitly-defined_** can be:
         - _Integrated_ with the motion planning process (called **_Internal prediction models_**) such as **belief-based** decision making (e.g. `POMDP`). Ideal for **planning under uncertainty**.
         - _Decoupled_ from the planning process (called **_External prediction models_**). There is a **clear interface** between prediction and planning, which aids **modularity**.
@@ -99,14 +97,14 @@ The authors divide their review into three sections:
     - Logic representation can also rely on mathematical models with **parameters learned** a priori.
       - A distinction is made depending on _"where does the training data come from and when is it created?"_.
       - In other words, one could think of **supervised learning** (_learning from example_) versus **reinforcement learning** (_learning from interaction_).
-      - The combination of both seems benefitial:
+      - The combination of both seems beneficial:
         - An initial behaviour is obtained through **imitation learning** (_learning from example_). Also possible with `IRL`.
         - But **improvements are made through interaction** with a simulated environment (_learning from interaction_).
           - By the way, the _learning from interaction_ techniques raise the question of the **origin of the experience** (e.g. realism of the simulator) and its **sampling efficiency**.
       - Another promising direction is **hierarchical RL** where the MDP is divided into sub-problems (the **lower for `LP`** and the **higher for `BP`**)
         - The _lowest level_ implementation of the hierarchy approximates a solution to the **control and LP problem** ...
-        - ... while the _higher level_ **selects a maneuver** to be executed by the lower level implementations.
-  - As mentioned my the section on [Scenarios and Datasets](https://github.com/chauvinSimon/IV19#scenarios-and-datasets), the authors mention the **lack of benchmark** to compare and **evaluate** the performance of BP technologies.
+        - ... while the _higher level_ **selects a manoeuvre** to be executed by the lower level implementations.
+  - As mentioned in my the section on [Scenarios and Datasets](https://github.com/chauvinSimon/IV19#scenarios-and-datasets), the authors mention the **lack of benchmark** to compare and **evaluate** the performance of BP technologies.
 
 One quote about the _representation of decision logic_:
 
@@ -153,16 +151,16 @@ Note: I find very valuable to get insights from the **CMU** (Carnegie Mellon Uni
     - They introduced the **_"Prediction- and Cost-function Based (`PCB`) algorithm"_** used.
     - The idea is to `generate`-`forward_simulate`-`evaluate` a set of manoeuvres.
     - The planner can therefore take **surrounding vehicles’ reactions** into account **in the cost function** when it searches for the best strategy.
-    - At the time, the authors rejected the option of a `POMDP` forumlation (_computing the control policy over the space of the belief state, which is a probability distribution over all the possible states_) deemed as computationally expensive. Improvements in hardware and algorithmic have been made since 2014.
+    - At the time, the authors rejected the option of a `POMDP` formulation (_computing the control policy over the space of the belief state, which is a probability distribution over all the possible states_) deemed as computationally expensive. Improvements in hardware and algorithmic have been made since 2014.
   - [_Motion planning under uncertainty for on-road autonomous driving_. 2014](https://ri.cmu.edu/pub_files/2014/6/ICRA14_0863_Final.pdf) by (Xu, Pan, Wei, & Dolan, 2014).
     - An extension of the framework to **consider uncertainty** (both for _environment_ and the _others participants_) in the decision-making.
     - The prediction module is using a **Kalman Filter** (assuming constant velocity).
-    - For each candidate trajectory, the **uncertainty** can be estimated using a **_Linear-Quadratic Gaussian_** (`LQG`) framework (based on the the noise characteristics of the localization and control).
+    - For each candidate trajectory, the **uncertainty** can be estimated using a **_Linear-Quadratic Gaussian_** (`LQG`) framework (based on the noise characteristics of the localization and control).
     - Their Gaussian-based method gives some **probabilistic safety guaranty** (e.g. likelihood `2%` of collision to occur).
 - Proposed architecture for _decision-making_:
   - First ingredient: **Hierarchical** architecture.
-    - The hierachy `mission` `->` `manoeuver` `->` `motion` [`3M` concept](https://github.com/chauvinSimon/Hierarchical-Decision-Making-for-Autonomous-Driving) makes it very modular but can raise limitations:
-    - > "the higher-level decision making module usually **does not have enough detailed information**, and the lower-level layer **does not have authority** to **reevaluate the decision**."
+    - The hierarchy `mission` `->` `manoeuvre` `->` `motion` [`3M` concept](https://github.com/chauvinSimon/Hierarchical-Decision-Making-for-Autonomous-Driving) makes it very modular but can raise limitations:
+    - > "the higher-level decision making module usually **does not have enough detailed information**, and the lower-level layer **does not have authority** to **re-evaluate the decision**."
   - Second ingredient: **Parallel** architecture.
     - This is inspired from **ADAS** engineering.
     - The control modules (`ACC`, `Merge Assist`, `Lane Centering`) are relatively **independent** and **work in parallel**.
@@ -173,7 +171,7 @@ Note: I find very valuable to get insights from the **CMU** (Carnegie Mellon Uni
     - Hence the **computational cost** shrinks (by over 90% compared to a **_sample-based planner_** in the **spatio-temporal space**).
 - One module worth mentioning: **_Traffic-free Reference Planner_**.
   - Its input: lane-level **sub-missions** from the _Mission Planning_.
-  - Its output: kinematically and dynamically feasible **paths** and a **speed profiles** for the **_Behavioural Planner_** (`BP`).
+  - Its output: kinematically and dynamically feasible **paths** and a **speed profile** for the **_Behavioural Planner_** (`BP`).
     - It assumes there is **no traffic** on the road, i.e. **ignores dynamic obstacles**.
     - It also applies **traffic rules** such as _speed limits_.
   - This **guides** the `BP` layer which considers both static and dynamic obstacles to generate so-called **_"controller directives"_** such as:
@@ -186,7 +184,7 @@ Note: I find very valuable to get insights from the **CMU** (Carnegie Mellon Uni
 
 ---
 
-## `Behavior Cloning` `End-To-End` and `Imitation Learning`
+## `Behaviour Cloning` `End-To-End` and `Imitation Learning`
 
 ---
 
@@ -322,7 +320,7 @@ Authors: Michelmore, R., Wicker, M., Laurenti, L., Cardelli, L., Gal, Y., & Kwia
   - **Hamiltonian Monte Carlo** (`HMC`).
 - _What to do with this information?_
   - > "This measure of uncertainty can be employed together with commonly employed _measures of uncertainty_, such as __mutual information__, to __quantify__ in __real time__ the degree that the model is __confident in its predictions__ and can offer a notion of __trust__ in its predictions."
-    - I did not know about **"mutual information"** and liked the explanation of [wikipedia](https://en.wikipedia.org/wiki/Mutual_information) about the link of `MI` to `entropy` and `KL-div`.
+    - I did not know about **"mutual information"** and liked the explanation of [Wikipedia](https://en.wikipedia.org/wiki/Mutual_information) about the link of `MI` to `entropy` and `KL-div`.
       - *I am a little bit confused: in what I read, the `MI` is function of **two random variables**. What are they here? The authors rather speak about the __predictive distribution__ exhibited by the predictive distribution*.
   - Depending on the **uncertainty level**, several actions are taken:
     - `mutual information warnings` **slow down** the vehicle.
@@ -403,9 +401,9 @@ Some figures:
 |:--:|
 | *The presented `direct perception` method predicts a __low-dimensional intermediate__ representation of the environment - __affordance__ - which is then used in a conventional control algorithm. The _affordance_ is __conditioned__ for goal-directed navigation, i.e. before each intersection, it receives an instruction such as `go straight`, `turn left` or `turn right`. [Source](http://www.cvlibs.net/publications/Sauer2018CORL.pdf).* |
 
-| ![The **feature maps** produced by a `CNN` **feature extractor** are stored in a **memory** and consumed by task-specific layers (one _affordance_ has one _task block_). Every task block has it **own specific temporal receptive field** - decides how much of the memory it needs. This figure also illustrates how the _navigation command_ is used as **switch between trained submodules**. [Source](http://www.cvlibs.net/publications/Sauer2018CORL.pdf).](media/2018_sauer_2.PNG "The **feature maps** produced by a `CNN` **feature extractor** are stored in a **memory** and consumed by task-specific layers (one _affordance_ has one _task block_). Every task block has it **own specific temporal receptive field** - decides how much of the memory it needs. This figure also illustrates how the _navigation command_ is used as **switch between trained submodules**. [Source](http://www.cvlibs.net/publications/Sauer2018CORL.pdf).")  |
+| ![The **feature maps** produced by a `CNN` **feature extractor** are stored in a **memory** and consumed by task-specific layers (one _affordance_ has one _task block_). Every task block has its **own specific temporal receptive field** - decides how much of the memory it needs. This figure also illustrates how the _navigation command_ is used as **switch between trained submodules**. [Source](http://www.cvlibs.net/publications/Sauer2018CORL.pdf).](media/2018_sauer_2.PNG "The **feature maps** produced by a `CNN` **feature extractor** are stored in a **memory** and consumed by task-specific layers (one _affordance_ has one _task block_). Every task block has its **own specific temporal receptive field** - decides how much of the memory it needs. This figure also illustrates how the _navigation command_ is used as **switch between trained submodules**. [Source](http://www.cvlibs.net/publications/Sauer2018CORL.pdf).")  |
 |:--:|
-| *The **feature maps** produced by a `CNN` **feature extractor** are stored in a **memory** and consumed by task-specific layers (one _affordance_ has one _task block_). Every task block has it **own specific temporal receptive field** - it decides how much of the memory it needs. This figure also illustrates how the _navigation command_ is used as **switch between trained submodules**. [Source](http://www.cvlibs.net/publications/Sauer2018CORL.pdf).* |
+| *The **feature maps** produced by a `CNN` **feature extractor** are stored in a **memory** and consumed by task-specific layers (one _affordance_ has one _task block_). Every task block has its **own specific temporal receptive field** - it decides how much of the memory it needs. This figure also illustrates how the _navigation command_ is used as **switch between trained submodules**. [Source](http://www.cvlibs.net/publications/Sauer2018CORL.pdf).* |
 
 Authors: Sauer, A., Savinov, N., & Geiger, A.
 
@@ -427,7 +425,7 @@ Authors: Sauer, A., Savinov, N., & Geiger, A.
     - `Speed Sign` (discrete).
     - `Red Traffic Light` (discrete - binary).
     - `Hazard` (discrete - binary).
-      - The `Class Weighted Cross Entropy` is the **loss** used for _discrete affordances_ to put **more weights on rare but important occurences** (`hazard` occurs rarely compared to `traffic light red`).
+      - The `Class Weighted Cross Entropy` is the **loss** used for _discrete affordances_ to put **more weights on rare but important occurrences** (`hazard` occurs rarely compared to `traffic light red`).
   - **_"Learning"_**: A single **neural network** trained with multi-task learning (`MTL`) **predicts all affordances** in a single forward pass (`~50ms`). It only takes a **single front-facing camera view** as input.
 - About the controllers: The **_path-velocity decomposition_** is applied. Hence two controllers are used in parallel:
   - 1- `throttle` and `brake`
@@ -435,7 +433,7 @@ Authors: Sauer, A., Savinov, N., & Geiger, A.
     - Based on this state, the **longitudinal control** signals are derived, using `PID` or _threshold-predefined_ values.
     - It can handle _traffic lights_, _speed signs_ and _smooth car-following_.
     - Note: The _Supplementary Material_ provides details insights on controller tuning (especially `PID`) for `CARLA`.
-  - 2- `steering` is controlled by a Stanley Controller, based on two conditional affordances: `distance to centerline` and `relative angle`.
+  - 2- `steering` is controlled by a Stanley Controller, based on two conditional affordances: `distance to centreline` and `relative angle`.
 - One idea: I am often wondering what **timeout** I should set when **testing a scenario** with `CARLA`. The author computes this time based on the **length of the pre-defined path** (which is actually easily **accessible**):
   - > "The time limit equals the time needed to reach the goal when driving along the **optimal path** at `10 km/h`"
 - Another idea: **Attention Analysis**.
@@ -468,7 +466,7 @@ Authors: Sauer, A., Savinov, N., & Geiger, A.
 
 Some figures:
 
-| ![One particular latent variable `^y` is **explicitly supervised** to **predict steering control**. Anther interesting idea: augmentation is based on domain knowledge - if a method __used to the middle-view__ is given some __left-view__ image, it should predict some __correction to the right__. [Source](https://dspace.mit.edu/handle/1721.1/118139).](media/2018_amini_1.PNG "One particular latent variable `^y` is **explicitly supervised** to **predict steering control**. Anther interesting idea: augmentation is based on domain knowledge - if a method __used to the middle-view__ is given some __left-view__ image, it should predict some __correction to the right__. [Source](https://dspace.mit.edu/handle/1721.1/118139).")  |
+| ![One particular latent variable `^y` is **explicitly supervised** to **predict steering control**. Anther interesting idea: augmentation is based on domain knowledge - if a method __used to the middle-view__ is given some __left-view__ image, it should predict some __correction to the right__. [Source](https://dspace.mit.edu/handle/1721.1/118139).](media/2018_amini_1.PNG "One particular latent variable `^y` is **explicitly supervised** to **predict steering control**. Another interesting idea: augmentation is based on domain knowledge - if a method __used to the middle-view__ is given some __left-view__ image, it should predict some __correction to the right__. [Source](https://dspace.mit.edu/handle/1721.1/118139).")  |
 |:--:|
 | *One particular latent variable `^y` is **explicitly supervised** to **predict steering control**. Another interesting idea: __augmentation__ is based on __domain knowledge__ - if a method __used to the middle-view__ is given some __left-view__ image, it should predict some __correction to the right__. [Source](https://dspace.mit.edu/handle/1721.1/118139).* |
 
@@ -476,17 +474,17 @@ Some figures:
 |:--:|
 | *For each new image, __empirical uncertainty estimates__ are computed by sampling from the variables of the __latent space__. These estimates lead to the __`D`__ statistic that indicates __whether an observed image is well captured by our trained model__, i.e. __`novelty detection`__. [Source](https://dspace.mit.edu/handle/1721.1/118139).* |
 
-| ![In a subsequent work, the `VAE` is __conditionned onto the road topology__. It serves multiple purposes such as localization and __`end-to-end` navigation__. The _routed_ or _unrouted map_ given as additional input goes toward the __`mid-to-end`__ approach where processing is performed and/or __external knowledge__ is embedded. [Source](https://arxiv.org/abs/1811.10119).](media/2019_amini_1.PNG "In a subsequent work, the `VAE` is __conditionned onto the road topology__. It serves multiple purposes such as localization and __`end-to-end` navigation__. The _routed_ or _unrouted map_ given as additional input goes toward the __`mid-to-end`__ approach where processing is performed and/or __external knowledge__ is embedded. [Source](https://arxiv.org/abs/1811.10119).")  |
+| ![In a subsequent work, the `VAE` is __conditioned onto the road topology__. It serves multiple purposes such as localization and __`end-to-end` navigation__. The _routed_ or _unrouted map_ given as additional input goes toward the __`mid-to-end`__ approach where processing is performed and/or __external knowledge__ is embedded. [Source](https://arxiv.org/abs/1811.10119).](media/2019_amini_1.PNG "In a subsequent work, the `VAE` is __conditioned onto the road topology__. It serves multiple purposes such as localization and __`end-to-end` navigation__. The _routed_ or _unrouted map_ given as additional input goes toward the __`mid-to-end`__ approach where processing is performed and/or __external knowledge__ is embedded. [Source](https://arxiv.org/abs/1811.10119).")  |
 |:--:|
-| *In a subsequent work, the `VAE` is __conditionned__ onto the __road topology__. It serves multiple purposes such as localization and __`end-to-end` navigation__. The _routed_ or _unrouted map_ given as additional input goes toward the __`mid-to-end`__ approach where processing is performed and/or __external knowledge__ is embedded. [Source](https://arxiv.org/abs/1811.10119). See this [video](https://www.youtube.com/watch?v=aXI4a_Nvcew) temporal for evolution of the predictions.* |
+| *In a subsequent work, the `VAE` is __conditioned__ onto the __road topology__. It serves multiple purposes such as localization and __`end-to-end` navigation__. The _routed_ or _unrouted map_ given as additional input goes toward the __`mid-to-end`__ approach where processing is performed and/or __external knowledge__ is embedded. [Source](https://arxiv.org/abs/1811.10119). See this [video](https://www.youtube.com/watch?v=aXI4a_Nvcew) temporal for evolution of the predictions.* |
 
 Authors: Amini, A., Schwarting, W., Rosman, G., Araki, B., Karaman, S., & Rus, D.
 
 - One issue raised about _vanilla_ `E2E`:
   - The lack a **measure** of associated **confidence** in the prediction.
-  - The lack of **interpretion** of the learned features.
-  - Having said that, the authors present a approach to both **understand** and **estimate** the confidence of the output.
-  - The idea is to use a **Variational Autoencoder** (`VAE`), taking benefit of its **intermediate latent representation** which is learnt in a **unsupervised** way and provides **uncertainty estimates** for every variable in the latent space via their parameters.
+  - The lack of **interpretation** of the learned features.
+  - Having said that, the authors present an approach to both **understand** and **estimate** the confidence of the output.
+  - The idea is to use a **Variational Autoencoder** (`VAE`), taking benefit of its **intermediate latent representation** which is learnt in an **unsupervised** way and provides **uncertainty estimates** for every variable in the latent space via their parameters.
 - One idea for the `VAE`: one particular latent variable is **explicitly supervised** to **predict steering control**.
   - The loss function of the `VAE` has therefore `3` parts:
     - A **`reconstruction`** loss: `L1`-norm between the input image and the output image.
@@ -494,26 +492,26 @@ Authors: Amini, A., Schwarting, W., Rosman, G., Araki, B., Karaman, S., & Rus, D
     - A **`supervised latent`** loss: `MSE` between the _predicted_ and _actual_ **curvature** of the vehicle’s path.
 - One contribution: "**Detection of novel events**" (which have not been sufficiently trained for).
   - To check if an observed image is well captured by the trained model, the idea is to propagate the **`VAE`’s latent uncertainty** through the **decoder** and compare the result with the original input. This is done by **sampling** (empirical uncertainty estimates).
-  - The resulting **pixel-wise expectation** and **variance** are used to compute a sort of **_loss_ metric** `D`(`x`, `ˆx`) whose **distribution** for the training-set is known (approximated with an _histogram_).
+  - The resulting **pixel-wise expectation** and **variance** are used to compute a sort of **_loss_ metric** `D`(`x`, `ˆx`) whose **distribution** for the training-set is known (approximated with a _histogram_).
   - The image `x` is classified as **`novel`** if this **statistic is outside of the `95th` percentile** of the _training_ distribution and the prediction can finally be _"untrusted to produce reliable outputs"_.
   - > "Our work presents an indicator to __detect novel images__ that were not contained in the training distribution by __weighting the reconstructed image__ by the __latent uncertainty__ propagated through the network. High loss indicates that the model has __not been trained on that type of image__ and thus reflects __lower confidence__ in the network’s __ability to generalize__ to that scenario."
 - A second contribution: **"Automated debiasing against learned biases"**.
   - As for the novelty detection, it takes advantage of the **latent space distribution** and the possibility of **sampling from the most representative regions** of this space.
   - Briefly said, the idea it to **increase the proportion of rarer datapoints** by **dropping over-represented regions** of the latent space to accelerate the training (**_sampling efficiency_**).
   - This debiasing is **not manually specified** beforehand but based on learned latent variables.
-- One reason to use **single frame** predition (as opposed to `RNN`):
+- One reason to use **single frame** prediction (as opposed to `RNN`):
   - > ""Note that only a **single image** is used as input at every time instant. This follows from original observations where models that were trained end-to-end with a **temporal information** (`CNN`+`LSTM`) are **unable to decouple the underlying spatial information from the temporal control aspect**. While these models perform well on **test** datasets, they face **control feedback issues** when placed on a physical vehicle and consistently drift off the road.""
 - One idea about **augmentation** (also met in the _Behavioral Cloning Project_ of the [Udacity Self-Driving Car Engineer Nanodegree](https://www.udacity.com/course/self-driving-car-engineer-nanodegree--nd013)):
-  - > "To **inject domain knowledge** into our network we augmented the dataset with images collected from cameras placed approximately `2` feet to the **left and right** of the main center camera. We correspondingly **changed the supervised control** value to teach the model how to **recover from off-center positions**."
+  - > "To **inject domain knowledge** into our network we augmented the dataset with images collected from cameras placed approximately `2` feet to the **left and right** of the main centre camera. We correspondingly **changed the supervised control** value to teach the model how to **recover from off-centre positions**."
 - One note about the output:
   - > "We refer to **steering command** interchangeably as the **road curvature**: the actual _steering angle_ requires reasoning about _road slip_ and _control plant parameters_ that **change between vehicles**."
 - Previous and further works:
   - ["Spatial Uncertainty Sampling for End-to-End control"](https://arxiv.org/pdf/1805.04829.pdf) - (Amini, Soleimany, Karaman, & Rus, 2018)
   - ["Variational End-to-End Navigation and Localization"](https://arxiv.org/pdf/1811.10119.pdf) - (Amini, Rosman, Karaman, & Rus, 2019)
-    - One idea: incorporate some **coarse grained roadmaps** with raw perceptual data.
+    - One idea: incorporate some **coarse-grained roadmaps** with raw perceptual data.
       - Either **unrouted** (just containing the drivable roads). `Output` = continuous **probability distribution** over steering control.
       - Or **routed** (target road highlighted). `Output` = **deterministic** steering control to navigate.
-    - _How to evaluate the continuous probability distribution over steering control given the human "scalar" demontration?_
+    - _How to evaluate the continuous probability distribution over steering control given the human "scalar" demonstration?_
       - > "For a range of __`z`-scores__ over the steering control distribution we __compute the number of samples__ within the test set where the __true (human) control output__ was within the predicted range."
     - About the training dataset: **`25 km`** of urban driving data.
 
@@ -540,9 +538,9 @@ Two figures:
 |:--:|
 | *Different layers composing the `mid-level representation`. [Source](https://arxiv.org/abs/1812.03079).* |
 
-| ![Training architecture around `ChauffeurNet` with the different losses terms, that can be grouped into `environment` and `imitation` losses. [Source](https://arxiv.org/abs/1812.03079).](media/2018_bansal_2.PNG "Training architecture around `ChauffeurNet` with the different losses terms, that can be grouped into `environment` and `imitation` losses. [Source](https://arxiv.org/abs/1812.03079).")  |
+| ![Training architecture around `ChauffeurNet` with the different loss terms, that can be grouped into `environment` and `imitation` losses. [Source](https://arxiv.org/abs/1812.03079).](media/2018_bansal_2.PNG "Training architecture around `ChauffeurNet` with the different loss terms, that can be grouped into `environment` and `imitation` losses. [Source](https://arxiv.org/abs/1812.03079).")  |
 |:--:|
-| *Training architecture around `ChauffeurNet` with the different losses terms, that can be grouped into `environment` and `imitation` losses. [Source](https://arxiv.org/abs/1812.03079).* |
+| *Training architecture around `ChauffeurNet` with the different loss terms, that can be grouped into `environment` and `imitation` losses. [Source](https://arxiv.org/abs/1812.03079).* |
 
 Authors: Bansal, M., Krizhevsky, A., & Ogale, A.
 
@@ -569,10 +567,10 @@ Authors: Bansal, M., Krizhevsky, A., & Ogale, A.
         - One idea for future works is to use **more complex augmentations**, e.g. with RL, especially for highly interactive scenarios.
       - **_Past dropout_**: to prevent **using the history to cheat** by **just extrapolating** from the past rather than finding the **underlying causes** of the behaviour.
       - Hence the concept of tweaking the training data in order to **_“simulate the bad rather than just imitate the good”._**
-    - Going **beyond the vanially imitation loss**.
+    - Going **beyond the vanilla imitation loss**.
       - Extend imitation losses.
       - Add **_environment losses_** to discourage undesirable behaviour, e.g. measuring the overlap of predicted agent positions with the _non-road_ regions.
-      - Use **_imitation dropout_**, i.e. sometimes favor the _environment loss_ over the _imitation loss_.
+      - Use **_imitation dropout_**, i.e. sometimes favour the _environment loss_ over the _imitation loss_.
 
 </details>
 
@@ -596,9 +594,9 @@ Some figures:
 |:--:|
 | *The `state` consists in **`51` features** divided into `3` groups: The __core features__ include hand-picked features such as `Speed`, `Curvature` and `Lane Offset`. The __LIDAR-like beams__ capture the surrounding objects in a fixed-size representation **independent of the number of vehicles**. Finally, `3` **binary indicator features** identify when the ego vehicle **encounters undesirable states** - `collision`, `drives off road`, and `travels in reverse`. [Source](https://arxiv.org/abs/1701.06699).* |
 
-| ![As for common **adversarial approaches**, the objective function in `GAIL` includes some **sigmoid cross entropy** terms. The objective is to **fit `ψ`** for the **discriminator**. But this objective function is **non-differentiable with respect to `θ`**. One solution is to **optimize `πθ` separately using `RL`**. But what for `reward function`? In order to drive `πθ` into regions of the state-action space similar to those explored by the **expert `πE`**, a **surrogate rewards `˜r`** is generated from `D`_`ψ` based on samples and `TRPO` is used to perform a policy update of `πθ`. [Source](https://arxiv.org/abs/1701.06699).](media/2017_kuefler_2.PNG "As for common **adversarial approaches**, the objective function in `GAIL` includes some **sigmoid cross entropy** terms. The objective is to **fit `ψ`** for the **discriminator**. But this objective function is **non-differentiable with respect to `θ`**. One solution is to **optimize `πθ` separately using `RL`**. But what for `reward function`? In order to drive `πθ` into regions of the state-action space similar to those explored by the **expert `πE`**, a **surrogate rewards `˜r`** is generated from `D`_`ψ` based on samples and `TRPO` is used to perform a policy update of `πθ`. [Source](https://arxiv.org/abs/1812.03079).")  |
+| ![As for common **adversarial approaches**, the objective function in `GAIL` includes some **sigmoid cross entropy** terms. The objective is to **fit `ψ`** for the **discriminator**. But this objective function is **non-differentiable with respect to `θ`**. One solution is to **optimize `πθ` separately using `RL`**. But what for `reward function`? In order to drive `πθ` into regions of the state-action space similar to those explored by the **expert `πE`**, a **surrogate reward `˜r`** is generated from `D`_`ψ` based on samples and `TRPO` is used to perform a policy update of `πθ`. [Source](https://arxiv.org/abs/1701.06699).](media/2017_kuefler_2.PNG "As for common **adversarial approaches**, the objective function in `GAIL` includes some **sigmoid cross entropy** terms. The objective is to **fit `ψ`** for the **discriminator**. But this objective function is **non-differentiable with respect to `θ`**. One solution is to **optimize `πθ` separately using `RL`**. But what for `reward function`? In order to drive `πθ` into regions of the state-action space similar to those explored by the **expert `πE`**, a **surrogate reward `˜r`** is generated from `D`_`ψ` based on samples and `TRPO` is used to perform a policy update of `πθ`. [Source](https://arxiv.org/abs/1812.03079).")  |
 |:--:|
-| *As for common **adversarial approaches**, the objective function in `GAIL` includes some **sigmoid cross entropy** terms. The objective is to **fit `ψ`** for the **discriminator**. But this objective function is **non-differentiable with respect to `θ`**. One solution is to **optimize `πθ` separately using `RL`**. But what for `reward function`? In order to drive `πθ` into regions of the state-action space similar to those explored by the **expert `πE`**, a **surrogate rewards `˜r`** is generated from `D`_`ψ` based on samples and `TRPO` is used to perform a policy update of `πθ`. [Source](https://arxiv.org/abs/1701.06699).* |
+| *As for common **adversarial approaches**, the objective function in `GAIL` includes some **sigmoid cross entropy** terms. The objective is to **fit `ψ`** for the **discriminator**. But this objective function is **non-differentiable with respect to `θ`**. One solution is to **optimize `πθ` separately using `RL`**. But what for `reward function`? In order to drive `πθ` into regions of the state-action space similar to those explored by the **expert `πE`**, a **surrogate reward `˜r`** is generated from `D`_`ψ` based on samples and `TRPO` is used to perform a policy update of `πθ`. [Source](https://arxiv.org/abs/1701.06699).* |
 
 Authors: Kuefler, A., Morton, J., Wheeler, T., & Kochenderfer, M.
 
@@ -615,7 +613,7 @@ Authors: Kuefler, A., Morton, J., Wheeler, T., & Kochenderfer, M.
   - `RL` maximizes the _global_, **expected return on a trajectory**, rather than _local_ instructions for each observation. Hence more appropriate for _sequential_ decision making.
   - Also, the reward function `r`(`s_t`, `a_t`) is defined **for all state-action pairs**, allowing an agent to receive a learning signal **even from unusual states**. And these signals can establish preferences between **mildly undesirable** behaviour (e.g., _hard braking_) and **extremely undesirable behaviour** (e.g., _collisions_).
     - In contrast, `BC` **only receives a learning signal** for those states **represented in a labelled, finite dataset**.
-    - Because **handcrafting an accurate `RL` reward function is often difficult**, `IRL` seems promising. In addition the **imitation** (via the _recovered_ reward function) **extends to unseen states**: e.g. a vehicle that is _perturbed_ toward the lane boundaries _should know to return toward the lane centre_.
+    - Because **handcrafting an accurate `RL` reward function is often difficult**, `IRL` seems promising. In addition, the **imitation** (via the _recovered_ reward function) **extends to unseen states**: e.g. a vehicle that is _perturbed_ toward the lane boundaries _should know to return toward the lane centre_.
 - Another idea: use **`GAIL`** instead of **`IRL`**:
   - > "**IRL** approaches are typically **computationally expensive** in their **recovery of an expert cost function**. Instead, recent work has attempted to **imitate expert behaviour** through **direct policy optimization**, without **first learning a cost function**."
   - **_"Generative Adversarial Imitation Learning"_** (**`GAIL`**) implements this idea:
@@ -707,7 +705,7 @@ Authors: Sankar, G. S., & Han, K.
 
 - Note:
   - this **`190`-page thesis** is also referenced in the sections for **prediction** and **planning**.
-  - I really like how the author organizes synergies between three modules that are split and made indepedent in most modular architectures:
+  - I really like how the author organizes synergies between three modules that are split and made independent in most modular architectures:
     - **`(1)` driver model**
     - **`(2)` behaviour prediction**
     - **`(3)` decision-making**
@@ -724,13 +722,13 @@ Author: Sierra Gonzalez, D.
   - Include **dynamic features**, such as the `time-headway`, in the linear combination of the cost function, to take the **interactions** between traffic participants into account.
   - Combine IRL with a trajectory planner based on **_"conformal spatiotemporal state lattices"_**.
     - The motivation is to deal with _continuous_ state and action spaces and handle the presence of _dynamic obstacles_.
-    - Several advantages (_I honnestly did not understand that point_): the ability to exploit the structure of the environment, to **consider time as part of the state-space** and respect the non-holonomic motion constraints of the vehicle.
+    - Several advantages (_I honestly did not understand that point_): the ability to exploit the structure of the environment, to **consider time as part of the state-space** and respect the non-holonomic motion constraints of the vehicle.
 
 - One term: **"_planning-based motion prediction_"**.
   - The resulting reward function can be used to **generate trajectory** (for prediction), using optimal control.
   - Simply put, it can be assumed that each vehicle in the scene behaves in the **"risk-averse"** manner **encoded by the model**, i.e. choosing actions leading to the lowest cost / highest reward.
-  - This method is also called "**model**-based prediction" since it relies on a reward function or on the models of a MDP.
-  - This prediction tool is not used alone but rather coupled with some **DBN-based maneuver estimation** (detailed in the [section on prediction](#Prediction_and_Manoeuvre_Recognition)).
+  - This method is also called "**model**-based prediction" since it relies on a reward function or on the models of an MDP.
+  - This prediction tool is not used alone but rather coupled with some **DBN-based manoeuvre estimation** (detailed in the [section on prediction](#Prediction_and_Manoeuvre_Recognition)).
 
 </details>
 
@@ -818,16 +816,16 @@ One figure:
 
 Authors: Leon, F., & Gavrilescu, M.
 
-- A reference to one white paper: [**"Safety first for automated driving"**](https://www.aptiv.com/docs/default-source/white-papers/safety-first-for-automated-driving-aptiv-white-paper.pdf) 2019 - from Aptiv, Audi, Baidu, BMW, Continental, Daimler, Fiat Chrysler Automobiles, HERE, Infineon, Intel and Volkswagen (alphabetical order). The authors quotes some of the good practices about **_Interpretation  and  Prediction_**:
+- A reference to one white paper: [**"Safety first for automated driving"**](https://www.aptiv.com/docs/default-source/white-papers/safety-first-for-automated-driving-aptiv-white-paper.pdf) 2019 - from Aptiv, Audi, Baidu, BMW, Continental, Daimler, Fiat Chrysler Automobiles, HERE, Infineon, Intel and Volkswagen (alphabetical order). The authors quote some of the good practices about **_Interpretation  and  Prediction_**:
   - Predict only a **short time** into the future (_the further the predicted state is in the future, the less likely it is that the prediction is correct_).
   - Rely on **physics** where possible (_a vehicle driving in front of the automated vehicle will not stop in zero time on its own_).
   - Consider the **compliance** of other road users with traffic rules.
 - Miscellaneous notes about prediction:
   - The authors point the need of **high-level reasoning** (the more **abstract** the feature, the more reliable it is **long term**), mentioning both _"affinity"_ and _"attention"_ mechanisms.
-  - They also call for **jointly** addressing vehicle **motion modeling** and **risk estimation** (_criticality assessment_).
-  - **Gaussian Processed** is found to be a flexible tool for **modeling motion patterns** and is compared to Markov Models for prediction.
+  - They also call for **jointly** addressing vehicle **motion modelling** and **risk estimation** (_criticality assessment_).
+  - **Gaussian Processed** is found to be a flexible tool for **modelling motion patterns** and is compared to Markov Models for prediction.
     - In particular, GP regressions have the ability to **quantify uncertainty** (e.g. **occlusion**).
-  - > "**CNNs** can be **superior to LSTMs** for **temporal modeling** since trajectories are continuous in nature, do not have complicated "state", and have high spatial and temporal correlations".
+  - > "**CNNs** can be **superior to LSTMs** for **temporal modelling** since trajectories are continuous in nature, do not have complicated "state", and have high spatial and temporal correlations".
 
 </details>
 
@@ -866,7 +864,7 @@ Authors: Cho, K., Ha, T., Lee, G., & Oh, S.
   - **Interaction** module: To consider interaction, all `LSTM` states are **concatenated** (**_joint_** state) together with a feature vector of **relative distances**. In addition, a **CVAE** is used for multi-modality (several possible trajectories are **generated**) and **capture interactions** (_I did not fully understand that point_), as stated by the authors:
     - > "The latent variable `z` models inherent structure in the interaction of multiple vehicles, and it also helps to describe underlying ambiguity of future behaviours of other vehicles."
   - **Prediction** module: Based on the `LSTM` states, the **concatenated vector** and the **latent variable**, both **future trajectories** and **margins to the satisfaction** of each rule are predicted.
-  - **Control** module: A `MPC` optimizes the control of the ego car, deciding **which rules should be prioritized** based on the two predicted objects (_trajectories_ and _robustness slackness_).
+  - **Control** module: An `MPC` optimizes the control of the ego car, deciding **which rules should be prioritized** based on the two predicted objects (_trajectories_ and _robustness slackness_).
 
 </details>
 
@@ -895,12 +893,12 @@ Authors: Han, T., Filev, D., & Ozguner, U.
 - Motivation
   - _"_**_Rule-based_** and **_supervised-learning_** _methods cannot_ **_recognize unexpected situations_** _so that the AV controller cannot react appropriately under_ **_unknown circumstances_**_."_
   - Based on their previous work on RL [“Highway Traffic Modeling and Decision Making for Autonomous Vehicle Using Reinforcement Learning”](http://dcsl.gatech.edu/papers/iv2018.pdf) by (You, Lu, Filev, & Tsiotras, 2018).
-- Main ideas: Both the **state space** and the the **transition model** (here discrete state space so transition matricies) of a MDP are **adapted online**.
+- Main ideas: Both the **state space** and the **transition model** (here discrete state space so transition matrices) of an MDP are **adapted online**.
   - I understand it as trying to **learn the transition model** (experience is generated using `SUMO`), hence to some extent going toward **_model-based RL_**.
   - The motivation is to assist any AV **control framework** with a so-called **_"evolving Finite State Machine"_** (**`e`-`FSM`**).
-    - By **identifing state-transitions** precisely, the **future states** can be **predicted**.
+    - By **identifying state-transitions** precisely, the **future states** can be **predicted**.
     - By determining states uniquely (using **online-clustering** methods) and recognizing the state consistently (expressed by a probability distribution), initially **unexpected dangerous situations** can be detected.
-    - It reminds some [ideas about risk assessment](https://github.com/chauvinSimon/IV19#risk-assessment-and-safety-checkers) discussed during IV19: the **discrepency between expected outcome and observed outcome** is use to **quantify risk**, i.e. the _surprise_ or _misinterpretation_ of the current situation).
+    - It reminds some [ideas about risk assessment](https://github.com/chauvinSimon/IV19#risk-assessment-and-safety-checkers) discussed during IV19: the **discrepancy between expected outcome and observed outcome** is used to **quantify risk**, i.e. the _surprise_ or _misinterpretation_ of the current situation).
 - Some concerns:
   - _"The_ **_dimension_** _of transition matrices should_ **_be expanded_** _to represent state-transitions between all existing states"_
     - What when the scenario gets more complex than the presented _"simple car-following"_ and that the **state space** (treated as **_discrete_**) becomes huge?
@@ -1000,15 +998,15 @@ Author: Sierra Gonzalez, D.
   - `interaction-aware`
 
 - As I understood, the main idea here is to **combine prediction techniques** (and their advantages).
-  - The **driver-models** (i.e. the reward functions previously learnt with IRL) can be used to identify the most likely, risk-aversive, anticipatory maneuvers. This is called the `model-based` prediction by the author since it relies on one _model_.
-    - But relying only on **driver models** to predict the behaviour of surrounding traffic might fail to predict dangerous maneuvers.
+  - The **driver-models** (i.e. the reward functions previously learnt with IRL) can be used to identify the most likely, risk-aversive, anticipatory manoeuvres. This is called the `model-based` prediction by the author since it relies on one _model_.
+    - But relying only on **driver models** to predict the behaviour of surrounding traffic might fail to predict dangerous manoeuvres.
     - As stated, _"the model-based method is not a reliable alternative for the_ **_short-term_** estimation of behaviour, since it cannot predict_ **_dangerous actions that deviate_** _from_ **_what is encoded in the model_**_"_.
     - One solution is to add a term that represents **how the observed movement of the target _matches_ a given maneuver**.
-    - In other words, to **consider the noisy observation of the dynamics of the targets** and include theses so-called `dynamic evidence` into the prediction.
+    - In other words, to **consider the noisy observation of the dynamics of the targets** and include these so-called `dynamic evidence` into the prediction.
 
 - Usage:
   - The resulting approach is used in the _probabilistic filtering framework_ to **update the belief** in the POMDP and in its **rollout** (to bias the **construction of the history tree** towards likely situations given the state and intention estimations of the surrounding vehicles).
-  - It improves the inference of manoeuvers, **reducing rate of false positives** in the detection of lane change maneuvers and enables the exploration of situations in which the surrounding vehicles behave dangerously (not possible if relying on **safe generative models** such as `IDM`).
+  - It improves the inference of manoeuvres, **reducing rate of false positives** in the detection of `lane change` manoeuvres and enables the exploration of situations in which the surrounding vehicles behave dangerously (not possible if relying on **safe generative models** such as `IDM`).
 
 - One quote about this combination:
 
@@ -1016,12 +1014,12 @@ Author: Sierra Gonzalez, D.
 
 - One idea: use this combination for **risk assessment**.
   - As stated, _"if the_ **_intended_** _and_ **_expected_** _maneuver of a vehicle_ **_do not match_**_, the situation is classified as dangerous and an alert is triggered"_.
-  - This is a important concept of **risk assessement** I could [identify at IV19](https://github.com/chauvinSimon/IV19#risk-assessment-and-safety-checkers): a situation is dangerous if there is a discrepency between _what is expected_ (given the context) and _what is observed_.
+  - This is an important concept of **risk assessment** I could [identify at IV19](https://github.com/chauvinSimon/IV19#risk-assessment-and-safety-checkers): a situation is dangerous if there is a discrepancy between _what is expected_ (given the context) and _what is observed_.
 
 - One term: **"_Interacting Multiple Model_"** (`IMM`), used as baseline in the comparison.
   - The idea is to consider a **group of motion models** (e.g. `lane keeping with CV`, `lane change with CV`) and continuously estimate which of them captures more accurately the dynamics exhibited by the target.
   - The final predictions are produced as a **weighted combination** of the **individual predictions of each filter**.
-  - `IMM` belongs to the **_physics-based_** predictions approaches and could be extended for `maneuver inference` (called _dynamics matching_). It is often used to **maintain the beliefs** and **guide the observation sampling** in POMDP.
+  - `IMM` belongs to the **_physics-based_** predictions approaches and could be extended for `manoeuvre inference` (called _dynamics matching_). It is often used to **maintain the beliefs** and **guide the observation sampling** in POMDP.
   - But the issue is that IMM completely **disregards the interactions between vehicles**.
 
 </details>
@@ -1043,7 +1041,7 @@ Authors: Li, S., Li, N., Girard, A., & Kolmanovsky, I.
 
 - One concept: **`cognitive hierarchy`**.
   - Other drivers are assumed to follow some **"cognitive behavioural models"**, parametrized with a so called **"_cognitive level_"** `σ`.
-  - The goal is to **obtain and maintain belief about `σ`** based on observation in order to **optimally respond** (using a `MPC`).
+  - The goal is to **obtain and maintain belief about `σ`** based on observation in order to **optimally respond** (using an `MPC`).
   - Three levels are considered:
     - level-`0`: driver that treats other vehicles on road as **stationary obstacles**.
     - level-`1`: **cautious/conservative** driver.
@@ -1119,7 +1117,7 @@ Authors: Censi, A., Slutsky, K., Wongpiromsarn, T., Yershov, D., Pendleton, S., 
 - One main concept: **_"rulebook"_**.
   - It contains multiple **`rules`**, that specify the **desired behaviour** of the self-driving cars.
   - A rule is simply a **scoring function**, or **“violation metric”**, on the _realizations_ (= trajectories).
-  - The **degree of violation** acts like some **penalty term**: here some examples of evalution of a realization `x` evaluated by a rule `r`:
+  - The **degree of violation** acts like some **penalty term**: here some examples of evaluation of a realization `x` evaluated by a rule `r`:
     - For speed limit: `r`(`x`) = interval for which the car was above `45 km/h`.
     - For minimizing harm: `r`(`x`) = kinetic energy transferred to human bodies.
   - Based on Use as a comparison operator to rank candidate trajectories.
@@ -1135,7 +1133,7 @@ Authors: Censi, A., Slutsky, K., Wongpiromsarn, T., Yershov, D., Pendleton, S., 
     - Ex.: (_edge-case_): Instruct the agent to _collide with the object on its lane_, rather than _collide with the object on the opposite lane_, since _changing lane_ will **provoke** an accident for which **it would be at fault**.
     - This is close to the [RSS](https://github.com/chauvinSimon/IV19#rss) ("responsibility-sensitive safety" model) of Mobileye.
   - **Hierarchy** between rules:
-    - **Top**: Guarante **safety** of humans.
+    - **Top**: Guarantee **safety** of humans.
       - This is written **analytically** (e.g. a precise expression for the kinetic energy to minimize harm to people).
     - **Bottom**: _Comfort_ constraints and _progress_ goals.
       - Can be **learnt** based on observed behaviour (and also tend to be platform- and implementation- specific).
@@ -1149,7 +1147,7 @@ Authors: Censi, A., Slutsky, K., Wongpiromsarn, T., Yershov, D., Pendleton, S., 
   - **Regulations** and cultures differ depending on the country and the state.
   - A rulebook <**`R`**, **`<`**> can easily be **adapted** using three operations (`priority refinement`, `rule augmentation`, `rule aggregation`).
 
-- Related work: Several topics raised in this papers reminds me subjects addressed in [Emilio Frazzoli, CTO, nuTonomy - 09.03.2018](https://www.youtube.com/watch?v=dWSbItd0HEA)
+- Related work: Several topics raised in this paper reminds me subjects addressed in [Emilio Frazzoli, CTO, nuTonomy - 09.03.2018](https://www.youtube.com/watch?v=dWSbItd0HEA)
   - 1- Decision making with **FSM**:
     - Too **complex** to code. Easy to make mistake. Difficult to adjust. Impossible to **debug** (:cry:).
   - 2- Decision making with **E2E learning**:
@@ -1163,9 +1161,9 @@ Authors: Censi, A., Slutsky, K., Wongpiromsarn, T., Yershov, D., Pendleton, S., 
     - Number of **rules**: small (`15` are enough for level-`4`).
     - Number of **possible scenarios**: huge (combinational).
   - Second note:
-    - Driving bahaviours are **hard to code**.
-    - Driving bahaviours are **hard to learn**.
-    - But driving bahaviours are **easy to assess**.
+    - Driving baheviours are **hard to code**.
+    - Driving baheviours are **hard to learn**.
+    - But driving baheviours are **easy to assess**.
   - Strategy:
     - 1- **Generate candidate** trajectories
       - Not only in _time_ and _space_.
@@ -1229,7 +1227,7 @@ Authors: Naumann, M., Königshof, H., & Stiller, C.
 - Main ideas:
   - The notion of **_safety_** is based on the **responsibility sensitive safety** (`RSS`) definition.
     - As stated by the authors, _"A **`safe`** lane change is guaranteed not to **`cause`** a collision according to the previously defined rules, while a single vehicle cannot ensure that it will never be involved in a collision."_
-  - Use _set-based reachability analysis_ to prove the "RSS-safety" of lane change maneuvers based on **gap evaluation**.
+  - Use _set-based reachability analysis_ to prove the "RSS-safety" of lane change manoeuvre based on **gap evaluation**.
     - In other words, it is the **responsibility** of the ego vehicle to **maintain safe distances** during the lane change manoeuvre.
 
 - Related works: A couple of safe distances are defined, building on
@@ -1245,7 +1243,7 @@ Authors: Naumann, M., Königshof, H., & Stiller, C.
 - **[** `2018` **]**
 **[[:memo:](https://ieeexplore.ieee.org/document/8370800)]**
 **[[🎞️](https://www.youtube.com/watch?v=h7ExZ040wyk)]**
-**[** :mortar_board: `Research Institute, Daejeon, South Korea` **]**
+**[** :mortar_board: `Daejeon Research Institute, South Korea` **]**
 
 - **[** _`probabilistic risk assessment`, `rule-based probabilistic decision making`_ **]**
 
@@ -1305,13 +1303,13 @@ Some figures:
 |:--:|
 | *[Source](https://arxiv.org/abs/1909.06710).* |
 
-| ![The __occupancy-grid-like observation space__ is divided into `4` channels, each containing `3` lanes. A _ego-vehicle_ specific __feature vector__ is also considered. The authors use **policy-gradient** Proximal Policy Optimisation - `PPO` - method and decided not to share parameters between the _actor_ and the _critic_. [Source](https://arxiv.org/abs/1909.06710).](media/2019_saxena_1.PNG "The __occupancy-grid-like observation space__ is divided into `4` channels, each containing `3` lanes. A _ego-vehicle_ specific __feature vector__ is also considered. The authors use **policy-gradient** Proximal Policy Optimisation - `PPO` - method and decided not to share parameters between the _actor_ and the _critic_. [Source](https://arxiv.org/abs/1909.06710).")  |
+| ![The __occupancy-grid-like observation space__ is divided into `4` channels, each containing `3` lanes. An _ego-vehicle_ specific __feature vector__ is also considered. The authors use **policy-gradient** Proximal Policy Optimisation - `PPO` - method and decided not to share parameters between the _actor_ and the _critic_. [Source](https://arxiv.org/abs/1909.06710).](media/2019_saxena_1.PNG "The __occupancy-grid-like observation space__ is divided into `4` channels, each containing `3` lanes. An _ego-vehicle_ specific __feature vector__ is also considered. The authors use **policy-gradient** Proximal Policy Optimisation - `PPO` - method and decided not to share parameters between the _actor_ and the _critic_. [Source](https://arxiv.org/abs/1909.06710).")  |
 |:--:|
-| *The __occupancy-grid-like observation space__ is divided into `4` channels, each containing `3` lanes. A _ego-vehicle_ specific __feature vector__ is also considered. The authors use **policy-gradient** Proximal Policy Optimisation - `PPO` - method and decided not to share parameters between the _actor_ and the _critic_. [Source](https://arxiv.org/abs/1909.06710).* |
+| *The __occupancy-grid-like observation space__ is divided into `4` channels, each containing `3` lanes. An _ego-vehicle_ specific __feature vector__ is also considered. The authors use **policy-gradient** Proximal Policy Optimisation - `PPO` - method and decided not to share parameters between the _actor_ and the _critic_. [Source](https://arxiv.org/abs/1909.06710).* |
 
-| ![In [another work](https://arxiv.org/abs/1909.05665), the authors try to incorporate a __`RNN` as a prediction model__ into an __`MPC` controller__, leading to a _reliable_, _interpretable_, and _tunable_ framework which also contains a __data-driven model__ that captures __interactive motions__ between drivers. [Source](https://arxiv.org/abs/1909.05665).](media/2019_bae_1.PNG "In [another work](https://arxiv.org/abs/1909.05665), the authors try to incorporate a __`RNN` as a prediction model__ into an __`MPC` controller__, leading to a _reliable_, _interpretable_, and _tunable_ framework which also contains a __data-driven model__ that captures __interactive motions__ between drivers. [Source](https://arxiv.org/abs/1909.05665).")  |
+| ![In [another work](https://arxiv.org/abs/1909.05665), the authors try to incorporate an __`RNN` as a prediction model__ into an __`MPC` controller__, leading to a _reliable_, _interpretable_, and _tunable_ framework which also contains a __data-driven model__ that captures __interactive motions__ between drivers. [Source](https://arxiv.org/abs/1909.05665).](media/2019_bae_1.PNG "In [another work](https://arxiv.org/abs/1909.05665), the authors try to incorporate an __`RNN` as a prediction model__ into an __`MPC` controller__, leading to a _reliable_, _interpretable_, and _tunable_ framework which also contains a __data-driven model__ that captures __interactive motions__ between drivers. [Source](https://arxiv.org/abs/1909.05665).")  |
 |:--:|
-| *In [another work](https://arxiv.org/abs/1909.05665), the authors try to incorporate a __`RNN` as a prediction model__ into an __`MPC` controller__, leading to a _reliable_, _interpretable_, and _tunable_ framework which also contains a __data-driven model__ that captures __interactive motions__ between drivers. [Source](https://arxiv.org/abs/1909.05665).* |
+| *In [another work](https://arxiv.org/abs/1909.05665), the authors try to incorporate an __`RNN` as a prediction model__ into an __`MPC` controller__, leading to a _reliable_, _interpretable_, and _tunable_ framework which also contains a __data-driven model__ that captures __interactive motions__ between drivers. [Source](https://arxiv.org/abs/1909.05665).* |
 
 Authors: Saxena, D. M., Bae, S., Nakhaei, A., Fujimura, K., & Likhachev, M.
 
@@ -1366,7 +1364,7 @@ Some figures:
 
 Author: Khurana, A.
 
-- One idea: using **reccurent nets** (hence `D`**`R`**`DQN`) to integrate **history** in order to cope with **partial observability**.
+- One idea: using **recurrent nets** (hence `D`**`R`**`DQN`) to integrate **history** in order to cope with **partial observability**.
   - Two `LSTM` layers, (considering `15` past observations) was added after `DQN` layers.
   - They also try to include the **action history** of the agent, leading to **`A`**`DRQN`. But this does not modify the score.
 - Another idea: **several** context-based **action spaces**:
@@ -1389,7 +1387,7 @@ Author: Khurana, A.
   - But as noted by the authors: _"the rule-based planner outperforms others in the case of a_ **_single-lane roundabout_** as there’s no scope for lane change."_
 - One addressed problem: **_"non-stationary"_** environments.
   - A **single policy** learned on a **specific traffic density** may perform badly on another density (the _dynamic_ of the world modelled by the `MDP` changes over time).
-  - The goal is to **generalize across different traffic scenarios**, especially accross different **traffic densities**.
+  - The goal is to **generalize across different traffic scenarios**, especially across different **traffic densities**.
   - One idea is to decompose the **non-stationary** environment into **multiple stationary environments**, where each _mode_ is an MDP with **distinct dynamics**: this method is called `Hidden modes`.
     - _How to then switch between modes?_ The authors proposed to use **external information** (_Google Maps_ could for instance tell ahead if traffic jams occur on your planned route).
     - But as the number of **discrete modes** increases, the `hidden-mode` method suffers from oscillations at the **boundaries of the mode transitions**.
@@ -1461,7 +1459,7 @@ Authors: Tram, T., Batkovic, I., Ali, M., & Sjöberg, J.
   - In particular they reused the concept of **_"actions as Short Term Goals (`STG`)"_**. e.g. _keep set speed or yield for crossing car_ instead of some numerical acceleration outputs.
     - This allows for **comfort** on actuation and **safety** to be **tuned separately**, reducing the policy selection to a classification problem.
     - The use of such abstracted / high-level decisions could be a first step toward **hierarchical RL** techniques (`macro-action` and `option` framework).
-  - Another contribution consists in remplacing the **Sliding Mode** (**`SM`**) controller used previously by a `MPC`, allegedly to _"achieve safer actuation by using constraints"_.
+  - Another contribution consists in replacing the **Sliding Mode** (**`SM`**) controller used previously by an `MPC`, allegedly to _"achieve safer actuation by using constraints"_.
     - The **intention of all agents** is implemented with a `SM` controller with **various target values**.
 - I find it valuable to have details about the **training phase** (no all papers do that). In particular:
   - The **normalization** of the input features in [`-1`, `1`].
@@ -1469,8 +1467,8 @@ Authors: Tram, T., Batkovic, I., Ali, M., & Sjöberg, J.
   - The use of **equal weights** for inputs that describe the state of **interchangeable objects**.
   - Use of a **`LSTM`**, as an alternative to a **DQN with stacked observations**. (Findings from _(Jansson & Grönberg, 2017)_).
 - Additional notes:
-  - The main benefits of the combination seems to be about **avoiding over conservative behaviours** while improving the **"sampling-efficient"** of the model-free RL approach.
-    - Such approachs looks to be particularly relevant (in term of _success rate_ and _collision-to-timeout ratio_ [`CTR`]) for complex scenarios, e.g. `2`-crossing scenarios.
+  - The main benefits of the combination seem to be about **avoiding over conservative behaviours** while improving the **"sampling-efficient"** of the model-free RL approach.
+    - Such approach looks to be particularly relevant (in term of _success rate_ and _collision-to-timeout ratio_ [`CTR`]) for complex scenarios, e.g. `2`-crossing scenarios.
     - For simple cases, the performance stays close to the baseline.
   - The reliance (_and the burden_) on an appropriate **parametrisation** inherent to rule-based has not disappeared and the **generalisation seems limited**:
     - _"Since MPC uses_ **_predefined models_** _, e.g. vehicle models and other obstacle prediction models, the_ **_performance relies on their accuracy and assumptions_** _."_
@@ -1646,7 +1644,7 @@ Authors: Huegle, M., Kalweit, G., Mirchevska, B., Werling, M., & Boedecker, J.
 
 - **[** `2019` **]**
 **[[:memo:](https://openreview.net/pdf?id=Bke03G85DN)]**
-**[** :mortar_board: `Universit de Strasbourg & ENIT Tunis` **]**
+**[** :mortar_board: `Université de Strasbourg & ENIT Tunis` **]**
 **[** :car: `Segula` **]**
 
 - **[** _[`CARLA`](http://carla.org), `A2C`_ **]**
@@ -1669,7 +1667,7 @@ Authors: Jaâfra, Y., Laurent, J.-L., Deruyver, A., & Naceur, M. S.
 - One idea: use an actor-critic architecture with **multi-step returns** (`n`-step `A2C`) to _"achieve a better robustness"_.
   - The introduction of a **critic** aims at **reducing the variance** of the **gradient** of _policy-based_ methods.
   - As illustrated in the above figure, in _value-based_ methods, the **TD-target** of a critic can be computed in several ways:
-    - With boostrapped, using the current estimate for the next state `s'`: `1`-step TD - **low variance** but biased estimate ...
+    - With bootsrapped, using the current estimate for the next state `s'`: `1`-step TD - **low variance** but biased estimate ...
     - ... Up to considering all the steps in the trajectory until termination: `Monte Carlo` - high variance but **unbiased estimate**.
     - In between are **multi-step returns critics** (`MSRC`). Obviously a trade-off between **bias**/**variance**.
 - Some limitations:
@@ -1680,7 +1678,7 @@ Authors: Jaâfra, Y., Laurent, J.-L., Deruyver, A., & Naceur, M. S.
   - No real comparison is performed: it should be feasible to use the built-it **rule-based agent** present in CARLA as a **baseline**.
   - _Why not also supplying a video of the resulting agent?_
 - One additional work: **_Meta-Reinforcement Learning for Adaptive Autonomous Driving_**, (Jaafra, Luc, Aline, & Mohamed, 2019) [[pdf](https://openreview.net/pdf?id=S1eoN9rsnN)] [[poster](https://www.ds3-datascience-polytechnique.fr/wp-content/uploads/2019/06/DS3-552_2019.pdf)].
-  - This idea is to use **multi-task learning** to improve **generalization** capabilities for a AD controller.
+  - This idea is to use **multi-task learning** to improve **generalization** capabilities for an AD controller.
   - As detailed, _"Meta-learning refers to **learn-to-learn** approaches that aim at **training** a model on a set of different but linked tasks and subsequently **generalize** to new cases using **few additional examples**"_.
   - In other words, the goal is to find an optimal **initialization of parameters**, to then quickly adapt to a new task through a few standard gradient descents(**few-shot generalization**).
   - A **gradient-based meta-learner** inspired from **_Model-Agnostic Meta-Learning_** (`MAML` - Finn et al., 2017) is used.
@@ -1714,7 +1712,7 @@ Authors: Isele, D., Nakhaei, A., Fujimura, K.
   - 1- Modifying the **reward function** (requires careful tuning).
   - 2- **Constraining exploration** (e.g. `action masking`, `action shielding`).
     - > "The methods can completely **forbid undesirable states** and are usually accompanied by **formal guarantees**".
-    - In addtion, the **learning efficiency** can be increased (fewer states to explore).
+    - In addition, the **learning efficiency** can be increased (fewer states to explore).
   - For additional contents on _"Safe-RL in the context of autonomous vehicles"_, one could read [this github project](https://github.com/AliBaheri/Safe-Reinforcement-Learning) by @AliBaheri.
 - Here: The `DQN` is augmented with some **action-masking mechanism**.
   - More precisely, a **prediction model** is used:
@@ -1756,7 +1754,7 @@ Authors: Isele, D., Nakhaei, A., Fujimura, K.
 
 Author: Plessen, M. G.
 
-- One remark: to be honnest, I find this publication _not very easy_ to understand. But **it raises important questions**. Here are some take-aways.
+- One remark: to be honest, I find this publication _not very easy_ to understand. But **it raises important questions**. Here are some take-aways.
 
 - One term: `(TSHC)` = **_Task Separation with Hill Climbing_**
   - _Hill Climbing_ has nothing to do with the [gym _MountainCar_ env](https://github.com/openai/gym/wiki/MountainCar-v0).
@@ -1771,14 +1769,14 @@ Author: Plessen, M. G.
     - Secondly, because nonzero rewards are seen so rarely, the sequence of actions that resulted in the reward might be very long, and it is **not clear which of those actions were really useful** in getting the reward. This problem is known as **credit assignment** in RL. (Explanations are from [here](https://www.quora.com/Why-are-sparse-rewards-problematic-in-Reinforcement-Learning-RL-difficult)).
   - Two options are considered in this work:
     - **_"Rich reward signals"_**, where a feedback is provided at **every time step** (`r` becomes function of `t`).
-    - **_"Curriculum learning"_**, where the leanring agent is first provided with **simpler examples** before gradually increasing complexity.
+    - **_"Curriculum learning"_**, where the learning agent is first provided with **simpler examples** before gradually increasing complexity.
   - After trials, the author claims that no consistent improvement could be observed with these two techniques, adding that the **design** of both rich reward signals and "simple examples" for curriculum learning are problematic.
     - He rather kept working with sparse rewards (**_maximal sparse rewards_**), but introduced some _"virtual velocity constraints"_ to speed up the training.
 - I like the points he made concerning **feature selection** for the state, i.e. how to design the state `s(t)` of the MDP.
   - He notes that `s(t)` must always relate the current vehicle state with **reference to a goal state**.
     - In other words, one should use **relative features** for the description of the position and velocity, relative to their targets.
   - In addition, `s(t)` should also **consider the past** and embed a collection of multiple past time measurements.
-    - It seems sounds. But this would indicated that the **"Markov property"** in the MDP formulation does not hold.
+    - It seems sounds. But this would indicate that the **"Markov property"** in the MDP formulation does not hold.
 
 </details>
 
@@ -1812,7 +1810,7 @@ Authors: Baheri, A., Kolmanovsky, I., Girard, A., Tseng, E., & Filev, D.
 - Three modules are used:
   - 1- A `VAE` is trained to **encode** front camera views into an **abstract latent representation**.
   - 2- A `LSTM` is trained to **predict** the latent representation of the **one time-step ahead frame**, given the **action** taken and the current state representation. Based on this prediction (`mean` and `std`), a next state representation is sampled using the VAE.
-  - 3- A `CMA-ES` is trained to **take actions** (`steering`, `acceleration`, and `brake`) based on the `LSTM` hidden state (capturing history information) and the current state representation (predicted). The problem is formulated as a `MDP`.
+  - 3- A `CMA-ES` is trained to **take actions** (`steering`, `acceleration`, and `brake`) based on the `LSTM` hidden state (capturing history information) and the current state representation (predicted). The problem is formulated as an `MDP`.
 - One idea about the **continuous** action space:
   - > "We combine the acceleration and brake commands into a **single value** between `−1` to `+1`, where the values between `−1` and `0` correspond to the brake command and the values between `0` and `1` correspond to the acceleration command".
   - The authors use the term _"acceleration command"_ for one of the actions. CARLA works with `throttle`, as human use the gas-pedal.
@@ -1822,7 +1820,7 @@ Authors: Baheri, A., Kolmanovsky, I., Girard, A., Tseng, E., & Filev, D.
     - `ES` is easy to **implement**, easy to **scale**, very fast if **parallelized** and extremely **simple**.
   - `CMA` means "Covariance Matrix Adaptation".
     - This means that in the `variation` phase, not only the `mean` but also the `covariance matrix` of the population is updated to increase the probability of previously successful steps.
-    - Therefore, it can been seen as _Cross-Entropy Methods_ (`CEM`) with momentum.
+    - Therefore, it can be seen as _Cross-Entropy Methods_ (`CEM`) with momentum.
 - About **sampling efficiency**:
   - The authors note that `IL` and `model-free RL` baselines were taking resp. `14` hours and `12` days of driving for training and were both outperformed by the presented `model-based RL` approach which required `5` hours of human driving.
     - This only considers the **time to interact** with the environment, i.e. to record images.
@@ -1832,7 +1830,7 @@ Authors: Baheri, A., Kolmanovsky, I., Girard, A., Tseng, E., & Filev, D.
 - About `model-based` RL:
   - The performance really depends on the **ability to learn a reliable model** of the environment.
     - The **low-level** representation of the `VAE` (size `128`) may not capture the most difficult situations.
-    - The authors suggests looking at **mid-level** representations such as the [**affordance** representation](http://deepdriving.cs.princeton.edu/paper.pdf) of [DeepDriving](http://deepdriving.cs.princeton.edu/) instead.
+    - The authors suggest looking at **mid-level** representations such as the [**affordance** representation](http://deepdriving.cs.princeton.edu/paper.pdf) of [DeepDriving](http://deepdriving.cs.princeton.edu/) instead.
   - Here, the authors **strictly split** the two tasks: First learn a model. Then do planning.
   - Why not ***keeping interacting from time to time with the `env`**, in order to vary the **sources of experience**?
     - This should still be more **sample efficient** than model-free approaches while making sure the agent keep seeing **"correct" transitions**.
@@ -1880,7 +1878,7 @@ Authors: Zhu, Y., & Zhao, D.
 - _What is learnt by the controller?_
   - One option would be to learn the **transition function** leading to the new state: **`x[t+1]`** = `f`(`y`, `u`, `x`). This is what the simulator applies internally.
   - Instead, here, the _distribution_ of the **_change_** in **state** is learnt: **`delta`(`x`)** = `x[t+1]` - `x[t]` = `f`(`y`, `u`, `x`).
-  - **Data is collected through interactions** and used to optimized the parameters of the controller:
+  - **Data is collected through interactions** and used to optimize the parameters of the controller:
     - Training **inputs** are formed by some recorded `Y` = [`y`, `u`].
     - Training **targets** are built with some recorded `ΔX` = [`delta`(`x`)].
 - Another idea: the car is expected to **run at different velocities**.
@@ -1926,17 +1924,17 @@ Authors: Zhu, Y., & Zhao, D.
 
 Some figures:
 
-| ![ `MCTS` is especially benefitial when it is necessary to plan relatively __far into the future__. [Source](https://research.chalmers.se/publication/511929/file/511929_Fulltext.pdf).](media/2019_hoel_3.PNG "`MCTS` is especially benefitial when it is necessary to plan relatively __far into the future__. [Source](https://research.chalmers.se/publication/511929/file/511929_Fulltext.pdf).")  |
+| ![ `MCTS` is especially beneficial when it is necessary to plan relatively __far into the future__. [Source](https://research.chalmers.se/publication/511929/file/511929_Fulltext.pdf).](media/2019_hoel_3.PNG "`MCTS` is especially beneficial when it is necessary to plan relatively __far into the future__. [Source](https://research.chalmers.se/publication/511929/file/511929_Fulltext.pdf).")  |
 |:--:|
-| *`MCTS` is especially benefitial when it is necessary to plan relatively __far into the future__. [Source](https://research.chalmers.se/publication/511929/file/511929_Fulltext.pdf).* |
+| *`MCTS` is especially beneficial when it is necessary to plan relatively __far into the future__. [Source](https://research.chalmers.se/publication/511929/file/511929_Fulltext.pdf).* |
 
 | ![ The `RL`-learnt neural network predicts two values used to __guide the search__. [Source](https://research.chalmers.se/publication/511929/file/511929_Fulltext.pdf).](media/2019_hoel_2.PNG "The `RL`-learnt neural network predicts two values used to __guide the search__. [Source](https://research.chalmers.se/publication/511929/file/511929_Fulltext.pdf).")  |
 |:--:|
 | *The `RL`-learnt neural network predicts two values used to __guide the search__. [Source](https://research.chalmers.se/publication/511929/file/511929_Fulltext.pdf).* |
 
-| ![ Treate surrounding vehicles as __interchangeable objects__ using __`CNN`__ layers. [Source](https://research.chalmers.se/publication/511929/file/511929_Fulltext.pdf).](media/2019_hoel_1.PNG "Treate surrounding vehicles as __interchangeable objects__ using __`CNN`__ layers. [Source](https://research.chalmers.se/publication/511929/file/511929_Fulltext.pdf).")  |
+| ![ Treat surrounding vehicles as __interchangeable objects__ using __`CNN`__ layers. [Source](https://research.chalmers.se/publication/511929/file/511929_Fulltext.pdf).](media/2019_hoel_1.PNG "Treat surrounding vehicles as __interchangeable objects__ using __`CNN`__ layers. [Source](https://research.chalmers.se/publication/511929/file/511929_Fulltext.pdf).")  |
 |:--:|
-| *Treate surrounding vehicles as __interchangeable objects__ using __`CNN`__ layers. [Source](https://research.chalmers.se/publication/511929/file/511929_Fulltext.pdf).* |
+| *Treat surrounding vehicles as __interchangeable objects__ using __`CNN`__ layers. [Source](https://research.chalmers.se/publication/511929/file/511929_Fulltext.pdf).* |
 
 | ![ Comparison of __sampling efficiency__ - need for `domain knowledge` and `computational speed` should also be considered. [Source](https://research.chalmers.se/publication/511929/file/511929_Fulltext.pdf).](media/2019_hoel_4.PNG "Comparison of __sampling efficiency__ - need for `domain knowledge` and `computational speed` should also be considered. [Source](https://research.chalmers.se/publication/511929/file/511929_Fulltext.pdf).")  |
 |:--:|
@@ -1960,7 +1958,7 @@ Author: Hoel, C.-J.
   - Only the **physical parts** of the state (`position` and `speed`) are **observed**.
   - The **parameters** of the surrounding drivers, which are assumed to behave according to the `IDM`/`MOBIL` models, is not directly accessible by the ego-agent.
   - A **particle filter** is used to estimate them (**_belief state estimation_**).
-- One idea: Treate surrounding vehicles as **interchangeable objects** using **`CNN`** layers.
+- One idea: Treat surrounding vehicles as **interchangeable objects** using **`CNN`** layers.
   - Using CNN layers with `max-pooling` creates a **translational invariance** between the vehicles.
   - > "The output is independent on the ordering of the vehicles in the input vector, and it also removes the problem of specifying a fixed input vector size, which instead can be made larger than necessary and padded with dummy values for the extra slots"
 - About **_"sampling efficiency_"**, **_"domain knowledge_"** and trade-off of `speed` vs. `generality`:
@@ -1970,7 +1968,7 @@ Author: Hoel, C.-J.
 - Results:
   - The baseline is a **rule-based** approach built with **`IDM`** and **`MOBIL`** driver models (also used in the _generative model_ and to _simulate other vehicles_).
   - > "All methods outperform the baseline `IDM`/`MOBIL` model by taking decisions that allows the vehicle to navigate through traffic between `5%` and `10%` faster."
-  - `MCTS` is especially benefitial when it is necessary to **plan relatively far into the future** (e.g. _highway exit case_).
+  - `MCTS` is especially beneficial when it is necessary to **plan relatively far into the future** (e.g. _highway exit case_).
 
 </details>
 
@@ -2003,7 +2001,7 @@ Authors: Lee, J., Balakrishnan, A., Gaurav, A., & Feb, L. G.
   - The idea is to decompose the decision by working with **temporal abstracted actions** (e.g. _slow down_, _turn left_) on a high-level (like a **behaviour planner**).
   - Each of these so called _options_ rely on **low-level primitive policies** that implement their manoeuvres (similar to a **geometrical trajectory optimizer**).
 - One idea: **LTL** formalism is used to check the validity of high-level decisions.
-  - An option is defined by (1) a **underlying primitive policy**, but also by (2) a **initial condition** and (3) a **terminal condition**.
+  - An option is defined by (1) a **underlying primitive policy**, but also by (2) an **initial condition** and (3) a **terminal condition**.
   - For instance, the option `take-over` is available only if a vehicle is on my lane and a second lane exists. The manoeuvre is finished when I arrive in front of the other vehicle.
   - _I like to think of it as another sort of_ **_masking mechanism_**.
   - Here, these conditions are expressed as **hand-crafted rules** in an **LTL**-like syntax.
@@ -2033,9 +2031,9 @@ Authors: Lee, J., Balakrishnan, A., Gaurav, A., & Feb, L. G.
 
 - One diagram is better than 100 words:
 
-| ![The term `action` comprises a lateral maneuver decision and a set speed request. [Source](https://www.researchgate.net/publication/334745733_A_Simulation-Based_Reinforcement_Learning_Approach_for_Long-Term_Maneuver_Planning_in_Highway_Traffic_Scenarios).](media/2019_augustin.PNG "The term `action` comprises a lateral maneuver decision and a set speed request. [Source](https://www.researchgate.net/publication/334745733_A_Simulation-Based_Reinforcement_Learning_Approach_for_Long-Term_Maneuver_Planning_in_Highway_Traffic_Scenarios).")  |
+| ![The term `action` comprises a lateral manoeuvre decision and a set speed request. [Source](https://www.researchgate.net/publication/334745733_A_Simulation-Based_Reinforcement_Learning_Approach_for_Long-Term_Maneuver_Planning_in_Highway_Traffic_Scenarios).](media/2019_augustin.PNG "The term `action` comprises a lateral manoeuvre decision and a set speed request. [Source](https://www.researchgate.net/publication/334745733_A_Simulation-Based_Reinforcement_Learning_Approach_for_Long-Term_Maneuver_Planning_in_Highway_Traffic_Scenarios).")  |
 |:--:|
-| *The term `action` comprises a lateral maneuver decision and a set speed request. [Source](https://www.researchgate.net/publication/334745733_A_Simulation-Based_Reinforcement_Learning_Approach_for_Long-Term_Maneuver_Planning_in_Highway_Traffic_Scenarios).* |
+| *The term `action` comprises a lateral manoeuvre decision and a set speed request. [Source](https://www.researchgate.net/publication/334745733_A_Simulation-Based_Reinforcement_Learning_Approach_for_Long-Term_Maneuver_Planning_in_Highway_Traffic_Scenarios).* |
 
 Authors: Augustin, D., Schucker, J., Tschirner, J., Hofmann, M., & Konigorski, L.
 
@@ -2044,7 +2042,7 @@ Authors: Augustin, D., Schucker, J., Tschirner, J., Hofmann, M., & Konigorski, L
 - One promising tool: [FLOW](https://flow-project.github.io/)
   - `FLOW` is a Python library that interfaces the RL libraries [RLlib](https://ray.readthedocs.io/en/latest/rllib.html) and [rllab](https://github.com/rll/rllab) with `SUMO`. It has been developed and is supported by _UC Berkeley_.
   - It has not been used many times (_because of the lack of Windows support?_). Instead, many research using `SUMO` develop their own interface, which makes comparison and reproduction difficult.
-  - A few recent `FLOW`-based works can be mentionned though:
+  - A few recent `FLOW`-based works can be mentioned though:
     - "Simulation to scaled city: zero-shot policy transfer for traffic control via autonomous vehicles" by [(Jang et al., 2018)](https://arxiv.org/abs/1812.06120)
     - "Benchmarks for reinforcement learning in mixed-autonomy traffic" by [(Vinitsky et al., 2018)](https://arxiv.org/abs/1812.06120)
 
@@ -2106,7 +2104,7 @@ Author: Sierra Gonzalez, D.
 
 - One quote about the _(relative)_ benefits of POMDP formulations:
 
-> "There have not been significative differences between the decisions taken by the **proposed POMDP planner** and the **reactive SUMO model**. This is due to the fact that neither of those scenes truly required to analyze the **long-term consequences** of a maneuver".
+> "There have not been significative differences between the decisions taken by the **proposed POMDP planner** and the **reactive SUMO model**. This is due to the fact that neither of those scenes truly required to analyse the **long-term consequences** of a maneuver".
 
 </details>
 
@@ -2134,13 +2132,13 @@ Authors: Weingertner, P., Autef, A., & Le Cleac’h, S.
 
 - One algorithm: [`POMCP`](https://papers.nips.cc/paper/4031-monte-carlo-planning-in-large-pomdps).
   - Presented in 2010, `POMCP` is an extension of the traditional **MCTS algorithm to POMDP**.
-  - Together with [`DESPOT`], `POMCP` is a often-used POMDP online solver.
+  - Together with [`DESPOT`], `POMCP` is an often-used POMDP online solver.
 - One term: **"observation class"**.
-  - Different extensions of `POMCP` and `DESPOT` have been proposed. In the presented approach, the goal is to work with **continuous observations**, while ensuriung safety.
+  - Different extensions of `POMCP` and `DESPOT` have been proposed. In the presented approach, the goal is to work with **continuous observations**, while ensuring safety.
   - The idea is to **limit the number of observation nodes** in the tree by **grouping observations** based on some **utility function**.
   - This utility function should not to be confused with the **offline-learn _value function_** representing the probability of collision.
   - The safe **clusterization of observations** can be based on _smallest `TTC`_ or _smallest distance_ to other participants.
-- One idea: **guide the online graph search** using a **offline methods** to improve safety.
+- One idea: **guide the online graph search** using an **offline methods** to improve safety.
   - This is based on the work of [(Bouton, Karlsson, et al., 2019)](https://arxiv.org/abs/1904.07189), where **offline `VI`** (value iteration) is used to compute `P_collision`(`s`, `a`).
   - This **safety criterion** is then used to limit the **set of safe available actions**.
   - In the presented work, the author reason over the `belief` instead of the `state`.
@@ -2152,8 +2150,8 @@ Authors: Weingertner, P., Autef, A., & Le Cleac’h, S.
 - One promising tool: [POMDPs.jl](https://github.com/JuliaPOMDP/POMDPs.jl)
   - `POMDPs.jl` is an interface for defining, solving, and simulating `MDPs` and `POMDPs` on discrete and continuous spaces. It has been developed and is supported by a team from _Stanford_.
 - Two ideas for future works:
-  - In their [repo](https://github.com/PhilippeW83440/ACT), the authors suggest **combining learning** (e.g. model-free RL used as an heuristic and/or for rollout) with **planning** (MCTS), mentioning the success of AlphaGo Zero.
-  - Another improvment concerns the **transition model** for the observed vehicles. Instead of `CV` (constant velocity) models, one could assume surrounding vehicles are **following a driver model** (e.g. `IDM`) and the task would be to **infer its hidden parameters**.
+  - In their [repo](https://github.com/PhilippeW83440/ACT), the authors suggest **combining learning** (e.g. model-free RL used as a heuristic and/or for rollout) with **planning** (MCTS), mentioning the success of AlphaGo Zero.
+  - Another improvement concerns the **transition model** for the observed vehicles. Instead of `CV` (constant velocity) models, one could assume surrounding vehicles are **following a driver model** (e.g. `IDM`) and the task would be to **infer its hidden parameters**.
 
 </details>
 
@@ -2178,7 +2176,7 @@ One figure:
 
 Author: Vodopivec, T., Samothrakis, S., & Ster, B.
 
-- Goal: The authors aim at promoting an _"unified view of `learning`, `planning`, and `search`"_.
+- Goal: The authors aim at promoting a _"unified view of `learning`, `planning`, and `search`"_.
   - First, the difference `planning` / `learning` is discussed.
     - It depends on the **source of experience**: _simulated_ / _real_ **interaction**.
   - Then, **sample-based** (RL and MCTS) **search** algorithms can all be described as a combination of:
@@ -2192,7 +2190,7 @@ Author: Vodopivec, T., Samothrakis, S., & Ster, B.
   - Both are **value-based** and share the concepts of:
     - **_Policy evaluation_**: `backpropagation` phase
     - **_Policy improvement_**: `selection` phase.
-  - Both exhibit **anytime** behaviours.
+  - Both exhibits **anytime** behaviours.
 
 - Two major `RL`/`MCTS` differences:
   - RL methods do not recognize the **playout phase**, i.e. a **separate policy for non-memorized** (i.e., non-represented) parts of space.
@@ -2203,7 +2201,7 @@ Author: Vodopivec, T., Samothrakis, S., & Ster, B.
       - The `RL` theory should **acknowledge a non-represented** (i.e., non-memorized) part of the state space, i.e. the part that is **not described (estimated) by the representation model** at a given moment.
     - `MCTS` algorithms initially **approximate only a part of the state space** (with high accuracy).
       - Therefore `MCTS` maintains the distinction between a **_memorized_** and **_non-memorized_** part of the **state space**.
-      - The state-space representation is changed online: it is a **_"adaptive (incremental) representation method"_**.
+      - The state-space representation is changed online: it is an **_"adaptive (incremental) representation method"_**.
       - Indeed **“incomplete” representations** can be beneficial: it might be better to accurately approximate the **relevant part** of the space and less accurately (or not at all) the remaining part.
 
 - Contribution: Based on this comparison, the authors introduce a framework called **_"temporal-difference tree search"_** (`TDTS`) which aims at **combining the advantages** of both RL and MCTS methods.
@@ -2236,7 +2234,7 @@ Author: Vodopivec, T., Samothrakis, S., & Ster, B.
   - **_"Transposition tables"_**:
     - As I understand, it plays the role of **generalisation** in function approximation: _two similar states should have similar values_.
     - It originates from **search** of the **game tree**, where it is possible to reach a given position in more than one way. These are called `transpositions`.
-    - The **transposition table** is a **kind of cache**: on encountering a new position, the program checks the table to see whether the **state has already been analyzed**. If yes, the value (stored) can be used instead of calculating it (which would require expending a subtree).
+    - The **transposition table** is a **kind of cache**: on encountering a new position, the program checks the table to see whether the **state has already been analysed**. If yes, the value (stored) can be used instead of calculating it (which would require expending a subtree).
   - **_"afterstates"_**:
     - I understand it as a third metric to quantify the "value":
       - V(`s`): **state value** of **being** in state `s` and following policy `π`.
