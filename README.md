@@ -15,6 +15,7 @@ Template:
 **[[🎞️](https://www.youtube.com/)]**
 **[** :car: `company X` **]**
 **[** :mortar_board: `University Y` **]**
+**[** _`related`, `concepts`_  **]**
 
 Categories:
 
@@ -63,7 +64,7 @@ Some figures:
 |:--:|
 | *Classification for Question `3` - on the decision logic representation. [Source](https://arxiv.org/abs/1908.07931).* |
 
-**[** Ilievski, M., Sedwards, S., Gaurav, A., Balakrishnan, A., Sarkar, A., Lee, J., Bouchard, F., De Iaco, R., & Czarnecki K. **]**
+Authors: Ilievski, M., Sedwards, S., Gaurav, A., Balakrishnan, A., Sarkar, A., Lee, J., Bouchard, F., De Iaco, R., & Czarnecki K.
 
 The authors divide their review into three sections:
 
@@ -117,7 +118,7 @@ One quote about the _representation of decision logic_:
 **[[:memo:](https://ri.cmu.edu/pub_files/2014/6/IV2014-Junqing-Final.pdf)]**
 **[** :car: `General Motor` **]**
 **[** :mortar_board: `Carnegie Mellon University` **]**
-**[** `behavioural planning`, `sampling-based planner`, `decision under uncertainty`, [`TORCS`](https://en.wikipedia.org/wiki/TORCS) **]**
+**[** _`behavioural planning`, `sampling-based planner`, `decision under uncertainty`, [`TORCS`](https://en.wikipedia.org/wiki/TORCS)_ **]**
 
 <details>
   <summary>Click to expand</summary>
@@ -136,7 +137,7 @@ Some figures:
 |:--:|
 | *Related work by (Xu, Pan, Wei, & Dolan, 2014) - Grey ellipses indicate the magnitude of the uncertainty of state. [Source](https://ri.cmu.edu/pub_files/2014/6/ICRA14_0863_Final.pdf).* |
 
-**[** Wei, J., Snider, J. M., & Dolan, J. M. **]**
+Authors:  Wei, J., Snider, J. M., & Dolan, J. M.
 
 Note: I find very valuable to get insights from the **CMU** (Carnegie Mellon University) Team, based on their **experience of the DARPA Urban Challenges**.
 
@@ -180,10 +181,12 @@ Note: I find very valuable to get insights from the **CMU** (Carnegie Mellon Uni
 
 ## `Behavior Cloning` `End-To-End` and `Imitation Learning`
 
-Buhet, T., Wirbel, E., & Perrotton, X. [2019].
-**"Conditional Vehicle Trajectories Prediction in CARLA Urban Environment"**
-[[pdf](https://arxiv.org/abs/1909.00792)]
-[[video](https://www.youtube.com/watch?v=J_2HtNMV6qA)]
+**`"Conditional Vehicle Trajectories Prediction in CARLA Urban Environment"`**
+**[** `2019` **]**
+**[[:memo:](https://arxiv.org/abs/1909.00792)]**
+**[[🎞️](https://www.youtube.com/watch?v=J_2HtNMV6qA)]**
+**[** :car: `Valeo` **]**
+**[** _`conditional IL`, [`CARLA`](http://carla.org/), `distributional shift problem`_ **]**
 
 <details>
   <summary>Click to expand</summary>
@@ -206,8 +209,8 @@ Some figures:
 |:--:|
 | *[`VisualBackProp`](https://arxiv.org/abs/1611.05418) highlights the **image pixels which contributed the most** to the final results - **Traffic lights** and their colours are important, together with highlights lane markings and curbs when there is a significant lateral deviation. [Source](https://arxiv.org/abs/1909.00792).* |
 
-- Some related concepts:
-  - `conditional IL`, [`CARLA`](http://carla.org/), `distributional shift problem`
+Authors: Buhet, T., Wirbel, E., & Perrotton, X.
+
 - Previous works:
   - ["Imitation Learning for End to End Vehicle Longitudinal Control with Forward Camera"](https://arxiv.org/abs/1812.05841) - (George, Buhet, Wirbel, Le-Gall, & Perrotton, 2018).
   - ["End to End Vehicle Lateral Control Using a Single Fisheye Camera"](https://arxiv.org/abs/1808.06940) (Toromanoff, M., Wirbel, E., Wilhelm, F., Vejarano, C., Perrotton, X., & Moutarde, F. 2018).
@@ -260,9 +263,11 @@ Some figures:
 
 </details>
 
-Michelmore, R., Wicker, M., Laurenti, L., Cardelli, L., Gal, Y., & Kwiatkowska, M. [2019].
-**"Uncertainty Quantification with Statistical Guarantees in End-to-End Autonomous Driving Control"**
-[[pdf](https://arxiv.org/abs/1909.09884)]
+**`"Uncertainty Quantification with Statistical Guarantees in End-to-End Autonomous Driving Control"`**
+**[** `2019` **]**
+**[[:memo:](https://arxiv.org/abs/1909.09884)]**
+**[** :mortar_board: `Oxford` **]**
+**[** _`uncertainty-aware decision`, `Bayesian inference`, [`CARLA`](http://carla.org/)_ **]**
 
 <details>
   <summary>Click to expand</summary>
@@ -281,8 +286,8 @@ One figure:
 |:--:|
 | *As noted by the authors: while the `variance` can be useful in __collision avoidance__, the wide variance of `HMC` causes a larger proportion of trajectories to fall __outside of the safety boundary__ when a _new weather_ is applied. [Source](https://arxiv.org/abs/1904.08980).* |
 
-- Some related concepts:
-  - `uncertainty-aware decision`, `Bayesian inference`, [`CARLA`](http://carla.org/)
+Authors: Michelmore, R., Wicker, M., Laurenti, L., Cardelli, L., Gal, Y., & Kwiatkowska, M
+
 - One related work:
   - NVIDIA’s [**`PilotNet`**](https://arxiv.org/abs/1704.07911) [`DAVE-2`] where **expert demonstrations** are used together with **supervised learning** to map from **images** (front camera) to **steering command**.
   - Here, human demonstrations are collected in the **CARLA** simulator.
