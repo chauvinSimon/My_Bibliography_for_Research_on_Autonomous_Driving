@@ -39,6 +39,7 @@ Looking forward your reading suggestions!
 ## `Architecture` and `Map`
 
 **`"Design Space of Behaviour Planning for Autonomous Driving"`**
+
 **[** `2019` **]**
 **[[:memo:](https://arxiv.org/abs/1908.07931)]**
 **[** :mortar_board: `University of Waterloo` **]**
@@ -114,6 +115,7 @@ One quote about the _representation of decision logic_:
 </details>
 
 **`"A Behavioral Planning Framework for Autonomous Driving"`**
+
 **[** `2014` **]**
 **[[:memo:](https://ri.cmu.edu/pub_files/2014/6/IV2014-Junqing-Final.pdf)]**
 **[** :car: `General Motor` **]**
@@ -182,6 +184,7 @@ Note: I find very valuable to get insights from the **CMU** (Carnegie Mellon Uni
 ## `Behavior Cloning` `End-To-End` and `Imitation Learning`
 
 **`"Conditional Vehicle Trajectories Prediction in CARLA Urban Environment"`**
+
 **[** `2019` **]**
 **[[:memo:](https://arxiv.org/abs/1909.00792)]**
 **[[🎞️](https://www.youtube.com/watch?v=J_2HtNMV6qA)]**
@@ -264,6 +267,7 @@ Authors: Buhet, T., Wirbel, E., & Perrotton, X.
 </details>
 
 **`"Uncertainty Quantification with Statistical Guarantees in End-to-End Autonomous Driving Control"`**
+
 **[** `2019` **]**
 **[[:memo:](https://arxiv.org/abs/1909.09884)]**
 **[** :mortar_board: `Oxford` **]**
@@ -331,6 +335,7 @@ Authors: Michelmore, R., Wicker, M., Laurenti, L., Cardelli, L., Gal, Y., & Kwia
 </details>
 
 **`"Exploring the Limitations of Behavior Cloning for Autonomous Driving"`**
+
 **[** `2019` **]**
 **[[:memo:](https://arxiv.org/abs/1904.08980)]**
 **[[🎞️](https://www.youtube.com/watch?v=sXIuU_wECQc)]**
@@ -364,6 +369,7 @@ Authors: Codevilla, F., Santana, E., Antonio, M. L., & Gaidon, A.
 </details>
 
 **`"Conditional Affordance Learning for Driving in Urban Environments"`**
+
 **[** `2018` **]**
 **[[:memo:](http://www.cvlibs.net/publications/Sauer2018CORL.pdf)]**
 **[[🎞️](https://www.youtube.com/watch?v=UtUbpigMgr0)]**
@@ -436,6 +442,7 @@ Authors: Sauer, A., Savinov, N., & Geiger, A.
 </details>
 
 **`"Variational Autoencoder for End-to-End Control of Autonomous Driving with Novelty Detection and Training De-biasing"`**
+
 **[** `2018` **]**
 **[[:memo:](https://dspace.mit.edu/handle/1721.1/118139)]**
 **[[🎞️](https://www.youtube.com/watch?v=ZwSdzcV-jr4)]**
@@ -503,6 +510,7 @@ Authors: Amini, A., Schwarting, W., Rosman, G., Araki, B., Karaman, S., & Rus, D
 </details>
 
 **`"ChauffeurNet: Learning to Drive by Imitating the Best and Synthesizing the Worst"`**
+
 **[** `2018` **]**
 **[[:memo:](https://arxiv.org/abs/1812.03079)]**
 **[[🎞️](https://sites.google.com/view/waymo-learn-to-drive)]**
@@ -558,6 +566,7 @@ Authors: Bansal, M., Krizhevsky, A., & Ogale, A.
 </details>
 
 **`"Imitating Driver Behavior with Generative Adversarial Networks"`**
+
 **[** `2017` **]**
 **[[:memo:](https://arxiv.org/abs/1701.06699)]**
 **[[:octocat:](https://github.com/sisl/gail-driver)]**
@@ -620,10 +629,14 @@ Authors: Kuefler, A., Morton, J., Wheeler, T., & Kochenderfer, M.
 
 ## `Inverse Reinforcement Learning` `Inverse Optimal Control` and `Game Theory`
 
-Sankar, G. S., & Han, K. [2019].
-**"Adaptive Robust Game-Theoretic Decision Making for Autonomous Vehicles"**
-[[pdf](https://arxiv.org/abs/1909.02586)]
-[[code - simulator](https://github.com/gokulsivasankar/RobustDecisionMaking)]
+**`"Adaptive Robust Game-Theoretic Decision Making for Autonomous Vehicles"`**
+
+**[** `2019` **]**
+**[[:memo:](https://arxiv.org/abs/1909.02586)]**
+**[[:mortar_board:](University of Michigan)]**
+**[[:octocat:](https://github.com/gokulsivasankar/RobustDecisionMaking) (code)]**
+
+**[** _`k-level strategy`, `MPC`, `interaction-aware prediction`_ **]**
 
 <details>
   <summary>Click to expand</summary>
@@ -632,8 +645,8 @@ Sankar, G. S., & Han, K. [2019].
 |:--:|
 | *The agent maintain belief on the `k` parameter for other vehicles and updates it at each step. [Source](https://arxiv.org/abs/1902.09068).* |
 
-- Some related concepts:
-  - `k-level strategy`, `MPC`, `interaction-aware prediction`
+Authors: Sankar, G. S., & Han, K.
+
 - One related work (described further below): [_Decision making in dynamic and interactive environments based on cognitive hierarchy theory: Formulation, solution, and application to autonomous driving_](https://arxiv.org/abs/1908.04005) by (Li, S., Li, N., Girard, A., & Kolmanovsky, I. 2019).
 - One framework: **"_level-`k` game-theoretic framework_"**.
   - It is used to **model the interactions** between vehicles, taking into account the **rationality** of the other agents.
@@ -662,11 +675,15 @@ Sankar, G. S., & Han, K. [2019].
 
 </details>
 
-Sierra Gonzalez, D. [2019].
-**"Towards Human-Like Prediction and Decision-Making for Automated Vehicles in Highway Scenarios"**
-[[pdf](https://tel.archives-ouvertes.fr/tel-02184362/document)]
-[[video - simulator](https://www.youtube.com/watch?v=Xx5OmV86CsM)]
-[[code - simulator](https://github.com/marioney/hybrid_simulation/tree/decision-making)]
+**`"Towards Human-Like Prediction and Decision-Making for Automated Vehicles in Highway Scenarios"`**
+
+**[** `2019` **]**
+**[[:memo:](https://tel.archives-ouvertes.fr/tel-02184362/document)]**
+**[[:octocat:](https://github.com/marioney/hybrid_simulation/tree/decision-making)]**
+**[[🎞️](https://www.youtube.com/watch?v=Xx5OmV86CsM)]**
+**[** :car: `Toyota Motor Europe` **]**
+**[** :mortar_board: `INRIA` **]**
+**[** _`Maximum Entropy IRL`_  **]**
 
 <details>
   <summary>Click to expand</summary>
@@ -678,8 +695,7 @@ Sierra Gonzalez, D. [2019].
     - **`(2)` behaviour prediction**
     - **`(3)` decision-making**
 
-- Some related concepts:
-  - `Maximum Entropy IRL`
+Author: Sierra Gonzalez, D.
 
 - Related work: there are close concepts to the approach of `(Kuderer et al., 2015)` referenced below.
 - One idea: **encode the driving preferences** of a human driver with a **reward function** (or **cost function**), mentioning a quote from Abbeel, Ng and Russell:
@@ -703,9 +719,13 @@ Sierra Gonzalez, D. [2019].
 
 </details>
 
-He, X., Xu, D., Zhao, H., Moze, M., Aioun, F., & Franck, G. [2018].
-**"A Human-like Trajectory Planning Method by Learning from Naturalistic Driving Data"**
-[[html](https://ieeexplore.ieee.org/document/8500448)]
+**`"A Human-like Trajectory Planning Method by Learning from Naturalistic Driving Data"`**
+
+**[** `2018` **]**
+**[[:memo:](https://ieeexplore.ieee.org/document/8500448)]**
+**[** :car: `P.S.A.` **]**
+**[** :mortar_board: `Peking University` **]**
+**[** _`sampling-based trajectory planning`_  **]**
 
 <details>
   <summary>Click to expand</summary>
@@ -716,8 +736,8 @@ One figure:
 |:--:|
 | *[Source](https://ieeexplore.ieee.org/document/8500448).* |
 
-- Some related concepts:
-  - `sampling-based trajectory planning`
+Authors: He, X., Xu, D., Zhao, H., Moze, M., Aioun, F., & Franck, G.
+
 - One idea: couple **_learning_** and **_sampling_** for **motion planning**.
   - More precisely, learn from human demonstrations (offline) how to **weight** different contributions in a **cost function** (as opposed to _hand-crafted_ approaches).
   - This cost function is then used for **trajectory planning** (online) to evaluate and select one trajectory to follow, among a set of candidates generated by **sampling methods**.
@@ -734,15 +754,19 @@ One figure:
 
 </details>
 
-Kuderer, M., Gulati, S., & Burgard, W. [2015].
-**"Learning driving styles for autonomous vehicles from demonstration"**
-[[pdf](http://ais.informatik.uni-freiburg.de/publications/papers/kuderer15icra.pdf)]
+**`"Learning driving styles for autonomous vehicles from demonstration"`**
+
+**[** `2015` **]**
+**[[:memo:](http://ais.informatik.uni-freiburg.de/publications/papers/kuderer15icra.pdf)]**
+**[** :car: `Bosch` **]**
+**[** :mortar_board: `University of Freiburg` **]**
+**[** _`inverse optimal control`, `IRL`_  **]**
 
 <details>
   <summary>Click to expand</summary>
 
-- Some related concepts:
-  - `inverse optimal control`, `IRL`
+Authors: Kuderer, M., Gulati, S., & Burgard, W.
+
 - One term: **"ME-IRL"** = **Maximum Entropy** IRL. The probability distribution over trajectories is in the form `exp`(`-cost[f(traj), θ]`), to model that **agents are exponentially more likely to select trajectories with lower cost**.
 - One Q&A: The trajectory object is first mapped to some feature vector (`speed`, `acceleration` ...). How to then derive a cost (or reward) from these features?
   - The authors assume the cost function to be a **linear combination of the features**. The goal is then to **learn the weights**. But they acknowledge in the conclusion that it may be a too simple model. Maybe **neural nets** could help to capture some more complex relations.
@@ -756,9 +780,11 @@ Kuderer, M., Gulati, S., & Burgard, W. [2015].
 
 ## `Prediction` and `Manoeuvre Recognition`
 
-Leon, F., & Gavrilescu, M. [2019].
-**"A Review of Tracking, Prediction and Decision Making Methods for Autonomous Driving"**
-[[pdf](https://arxiv.org/abs/1909.07707)]
+**`"A Review of Tracking, Prediction and Decision Making Methods for Autonomous Driving"`**
+
+**[** `2019` **]**
+**[[:memo:](https://arxiv.org/abs/1909.07707)]**
+**[** :mortar_board: `University of Iasi` **]**
 
 <details>
   <summary>Click to expand</summary>
@@ -768,6 +794,8 @@ One figure:
 | ![Classification of __motion models__ based on three increasingly abstract levels - adapted from (Lefèvre, S., Vasquez. D. & Laugier C. - 2014). [Source](https://arxiv.org/abs/1909.07707).](media/2019_leon_1.PNG " Classification of motion __motion models__ on three increasingly abstract levels - adapted from (Lefèvre, S., Vasquez. D. & Laugier C. - 2014). [Source](https://arxiv.org/abs/1909.07707).")  |
 |:--:|
 | *Classification of __motion models__ based on three increasingly abstract levels - adapted from [(Lefèvre, S., Vasquez. D. & Laugier C. - 2014)](https://robomechjournal.springeropen.com/track/pdf/10.1186/s40648-014-0001-z). [Source](https://arxiv.org/abs/1909.07707).* |
+
+Authors: Leon, F., & Gavrilescu, M.
 
 - A reference to one white paper: [**"Safety first for automated driving"**](https://www.aptiv.com/docs/default-source/white-papers/safety-first-for-automated-driving-aptiv-white-paper.pdf) 2019 - from Aptiv, Audi, Baidu, BMW, Continental, Daimler, Fiat Chrysler Automobiles, HERE, Infineon, Intel and Volkswagen (alphabetical order). The authors quotes some of the good practices about **_Interpretation  and  Prediction_**:
   - Predict only a **short time** into the future (_the further the predicted state is in the future, the less likely it is that the prediction is correct_).
@@ -784,9 +812,12 @@ One figure:
 
 </details>
 
-Cho, K., Ha, T., Lee, G., & Oh, S. [2019].
-**"Deep Predictive Autonomous Driving Using Multi-Agent Joint Trajectory Prediction and Traffic Rules"**
-[[pdf](http://cpslab.snu.ac.kr/publications/papers/2019_iros_predstl.pdf)]
+**`"Deep Predictive Autonomous Driving Using Multi-Agent Joint Trajectory Prediction and Traffic Rules"`**
+
+**[** `2019` **]**
+**[[:memo:](http://cpslab.snu.ac.kr/publications/papers/2019_iros_predstl.pdf)]**
+**[[🎞️](https://www.youtube.com/watch?v=jpxVm0zL_TM)]**
+**[** :mortar_board: `Seoul National University` **]**
 
 <details>
   <summary>Click to expand</summary>
@@ -797,8 +828,8 @@ One figure:
 |:--:|
 | *The framework consists of four modules: _encoder module_, _interaction module_, _prediction module_ and _control module_. [Source](http://cpslab.snu.ac.kr/publications/papers/2019_iros_predstl.pdf).* |
 
-- Some related concepts:
-  - `LTL`, `STL`, `CVAE for prediction`, `MPC`, [`NGSIM`](https://ops.fhwa.dot.gov/trafficanalysistools/ngsim.htm)
+Authors: Cho, K., Ha, T., Lee, G., & Oh, S.
+
 - One previous work: [_"Learning-Based Model Predictive Control under Signal Temporal Logic Specifications"_](http://cpslab.snu.ac.kr/publications/papers/2018_icra_mpcstl.pdf) by (Cho & Ho, 2018).
 - One term: **_"robustness slackness"_** for `STL`-formula.
   - The motivation is to solve _dilemma situations_ (inherent to **strict compliance** when all rules cannot be satisfied) by **disobeying certain rules** based on their **predicted degree of satisfaction**.
@@ -820,9 +851,13 @@ One figure:
 
 </details>
 
-Han, T., Filev, D., & Ozguner, U. [2019].
-**"An Online Evolving Framework for Modeling the Safe Autonomous Vehicle Control System via Online Recognition of Latent Risks"**
-[[pdf](https://arxiv.org/abs/1908.10823)]
+**`"An Online Evolving Framework for Modeling the Safe Autonomous Vehicle Control System via Online Recognition of Latent Risks"`**
+
+**[** `2019` **]**
+**[[:memo:](https://arxiv.org/abs/1908.10823)]**
+**[** :car: `Ford` **]**
+**[** :mortar_board: `Ohio State University` **]**
+**[** _`MDP`, `action-state transitions matrix`, [`SUMO`](https://sumo.dlr.de/docs/index.html), `risk assessment`_  **]**
 
 <details>
   <summary>Click to expand</summary>
@@ -833,8 +868,8 @@ One figure:
 |:--:|
 | *Both the **state space** and the **transition model** are adapted online, offering two features: **prediction** about the next state and **detection of unknown (i.e. `risky`) situations**. [Source](https://arxiv.org/abs/1908.10823).* |
 
-- Some related concepts:
-  - `MDP`, `action-state transitions matrix`, `SUMO`, `risk assessment`
+Authors: Han, T., Filev, D., & Ozguner, U.
+
 - Motivation
   - _"_**_Rule-based_** and **_supervised-learning_** _methods cannot_ **_recognize unexpected situations_** _so that the AV controller cannot react appropriately under_ **_unknown circumstances_**_."_
   - Based on their previous work on RL [“Highway Traffic Modeling and Decision Making for Autonomous Vehicle Using Reinforcement Learning”](http://dcsl.gatech.edu/papers/iv2018.pdf) by (You, Lu, Filev, & Tsiotras, 2018).
@@ -854,9 +889,15 @@ One figure:
 
 </details>
 
-Liu, S., Zheng, K., Member, S., Zhao, L., & Fan, P. [2019].
-**"A Driving Intention Prediction Method Based on Hidden Markov Model for Autonomous Driving"**
-[[pdf](https://arxiv.org/abs/1902.09068)]
+**`"A Driving Intention Prediction Method Based on Hidden Markov Model for Autonomous Driving"`**
+
+**[** `2019` **]**
+**[[:memo:](https://arxiv.org/abs/1902.09068)]**
+**[** :mortar_board: `IEEE` **]**
+**[** _`HMM`, `Baum-Welch algorithm`, `forward algorithm`_  **]**
+
+**""**
+[[pdf]()]
 
 <details>
   <summary>Click to expand</summary>
@@ -867,8 +908,8 @@ One figure:
 |:--:|
 | *[Source](https://arxiv.org/abs/1902.09068).* |
 
-- Some related concepts:
-  - `HMM`, `Baum-Welch algorithm`, `forward algorithm`
+Authors: Liu, S., Zheng, K., Member, S., Zhao, L., & Fan, P.
+
 - One term: **"mobility feature matrix"**
   - The recorded data (e.g. absolute positions, timestamps ...) are processed to form the _mobility feature matrix_ (e.g. speed, relative position, lateral gap in lane ...).
   - Its size is `T × L × N`: `T` time steps, `L` vehicles, `N` types of mobility features.
