@@ -40,7 +40,7 @@ Looking forward your reading suggestions!
 
 **`"Design Space of Behaviour Planning for Autonomous Driving"`**
 
-**[** `2019` **]**
+- **[** `2019` **]**
 **[[:memo:](https://arxiv.org/abs/1908.07931)]**
 **[** :mortar_board: `University of Waterloo` **]**
 
@@ -116,11 +116,12 @@ One quote about the _representation of decision logic_:
 
 **`"A Behavioral Planning Framework for Autonomous Driving"`**
 
-**[** `2014` **]**
+- **[** `2014` **]**
 **[[:memo:](https://ri.cmu.edu/pub_files/2014/6/IV2014-Junqing-Final.pdf)]**
 **[** :car: `General Motor` **]**
 **[** :mortar_board: `Carnegie Mellon University` **]**
-**[** _`behavioural planning`, `sampling-based planner`, `decision under uncertainty`, [`TORCS`](https://en.wikipedia.org/wiki/TORCS)_ **]**
+
+- **[** _`behavioural planning`, `sampling-based planner`, `decision under uncertainty`, [`TORCS`](https://en.wikipedia.org/wiki/TORCS)_ **]**
 
 <details>
   <summary>Click to expand</summary>
@@ -185,11 +186,12 @@ Note: I find very valuable to get insights from the **CMU** (Carnegie Mellon Uni
 
 **`"Conditional Vehicle Trajectories Prediction in CARLA Urban Environment"`**
 
-**[** `2019` **]**
+- **[** `2019` **]**
 **[[:memo:](https://arxiv.org/abs/1909.00792)]**
 **[[🎞️](https://www.youtube.com/watch?v=J_2HtNMV6qA)]**
 **[** :car: `Valeo` **]**
-**[** _`conditional IL`, [`CARLA`](http://carla.org/), `distributional shift problem`_ **]**
+
+- **[** _`conditional IL`, [`CARLA`](http://carla.org/), `distributional shift problem`_ **]**
 
 <details>
   <summary>Click to expand</summary>
@@ -268,10 +270,11 @@ Authors: Buhet, T., Wirbel, E., & Perrotton, X.
 
 **`"Uncertainty Quantification with Statistical Guarantees in End-to-End Autonomous Driving Control"`**
 
-**[** `2019` **]**
+- **[** `2019` **]**
 **[[:memo:](https://arxiv.org/abs/1909.09884)]**
 **[** :mortar_board: `Oxford` **]**
-**[** _`uncertainty-aware decision`, `Bayesian inference`, [`CARLA`](http://carla.org/)_ **]**
+
+- **[** _`uncertainty-aware decision`, `Bayesian inference`, [`CARLA`](http://carla.org/)_ **]**
 
 <details>
   <summary>Click to expand</summary>
@@ -336,13 +339,14 @@ Authors: Michelmore, R., Wicker, M., Laurenti, L., Cardelli, L., Gal, Y., & Kwia
 
 **`"Exploring the Limitations of Behavior Cloning for Autonomous Driving"`**
 
-**[** `2019` **]**
+- **[** `2019` **]**
 **[[:memo:](https://arxiv.org/abs/1904.08980)]**
 **[[🎞️](https://www.youtube.com/watch?v=sXIuU_wECQc)]**
 **[[:octocat:](https://github.com/felipecode/coiltraine)]**
 **[** :car: `Toyota Research Institute` **]**
 **[** :mortar_board: `Campus UAB, Barcelona` **]**
-**[** _`distributional shift problem`, `off-policy data collection`, [`CARLA`](http://carla.org/), `conditional imitation learning`, `residual architecture`, `reproducibility issue`, `variance caused by initialization and sampling`_ **]**
+
+- **[** _`distributional shift problem`, `off-policy data collection`, [`CARLA`](http://carla.org/), `conditional imitation learning`, `residual architecture`, `reproducibility issue`, `variance caused by initialization and sampling`_ **]**
 
 <details>
   <summary>Click to expand</summary>
@@ -370,14 +374,15 @@ Authors: Codevilla, F., Santana, E., Antonio, M. L., & Gaidon, A.
 
 **`"Conditional Affordance Learning for Driving in Urban Environments"`**
 
-**[** `2018` **]**
+- **[** `2018` **]**
 **[[:memo:](http://www.cvlibs.net/publications/Sauer2018CORL.pdf)]**
 **[[🎞️](https://www.youtube.com/watch?v=UtUbpigMgr0)]**
 **[[🎞️](https://www.youtube.com/watch?v=SceH3Al9w_M)]**
 **[[:octocat:](https://github.com/xl-sr/CAL)]**
 **[** :car: `Toyota Research Institute` **]**
 **[** :mortar_board: `CVC, UAB, Barcelona` **]**
-**[** _`CARLA`, `end-to-mid`, `direct perception`_ **]**
+
+- **[** _`CARLA`, `end-to-mid`, `direct perception`_ **]**
 
 <details>
   <summary>Click to expand</summary>
@@ -443,13 +448,14 @@ Authors: Sauer, A., Savinov, N., & Geiger, A.
 
 **`"Variational Autoencoder for End-to-End Control of Autonomous Driving with Novelty Detection and Training De-biasing"`**
 
-**[** `2018` **]**
+- **[** `2018` **]**
 **[[:memo:](https://dspace.mit.edu/handle/1721.1/118139)]**
 **[[🎞️](https://www.youtube.com/watch?v=ZwSdzcV-jr4)]**
 **[[🎞️](https://www.youtube.com/watch?v=aXI4a_Nvcew)]**
 **[** :car: `Toyota Research Institute` **]**
 **[** :mortar_board: `M.I.T.` **]**
-**[** _`VAE`, `uncertainty estimation`, `sampling efficiency`, `augmentation`_ **]**
+
+- **[** _`VAE`, `uncertainty estimation`, `sampling efficiency`, `augmentation`_ **]**
 
 <details>
   <summary>Click to expand</summary>
@@ -511,12 +517,13 @@ Authors: Amini, A., Schwarting, W., Rosman, G., Araki, B., Karaman, S., & Rus, D
 
 **`"ChauffeurNet: Learning to Drive by Imitating the Best and Synthesizing the Worst"`**
 
-**[** `2018` **]**
+- **[** `2018` **]**
 **[[:memo:](https://arxiv.org/abs/1812.03079)]**
 **[[🎞️](https://sites.google.com/view/waymo-learn-to-drive)]**
 **[[🎞️](https://www.youtube.com/watch?v=mxqdVO462HU)]**
 **[** :car: `Waymo` **]**
-**[** _`imitation learning`, `distributional shift problem`_ **]**
+
+- **[** _`imitation learning`, `distributional shift problem`_ **]**
 
 <details>
   <summary>Click to expand</summary>
@@ -567,11 +574,12 @@ Authors: Bansal, M., Krizhevsky, A., & Ogale, A.
 
 **`"Imitating Driver Behavior with Generative Adversarial Networks"`**
 
-**[** `2017` **]**
+- **[** `2017` **]**
 **[[:memo:](https://arxiv.org/abs/1701.06699)]**
 **[[:octocat:](https://github.com/sisl/gail-driver)]**
 **[** :mortar_board: `Stanford` **]**
-**[** _`adversarial learning`, `distributional shift problem`, `cascading errors`, `IDM`, [`NGSIM`](https://ops.fhwa.dot.gov/trafficanalysistools/ngsim.htm), [`rllab`](https://github.com/rll/rllab)_ **]**
+
+- **[** _`adversarial learning`, `distributional shift problem`, `cascading errors`, `IDM`, [`NGSIM`](https://ops.fhwa.dot.gov/trafficanalysistools/ngsim.htm), [`rllab`](https://github.com/rll/rllab)_ **]**
 
 <details>
   <summary>Click to expand</summary>
@@ -1499,10 +1507,6 @@ Authors: Bouton, M., Nakhaei, A., Fujimura, K., & Kochenderfer, M. J.
 **[** :mortar_board: `Berkeley` **]**
 **[** _`multi agent RL`, `interaction-aware decision making`, `curriculum learning`, `action masking`_ **]**
 
-**""**
-[[pdf]()]
-[[video]()]
-
 <details>
   <summary>Click to expand</summary>
 
@@ -1617,9 +1621,6 @@ Authors: Huegle, M., Kalweit, G., Mirchevska, B., Werling, M., & Boedecker, J.
 **[** :car: `Segula` **]**
 **[** :mortar_board: `Universit de Strasbourg & ENIT Tunis` **]**
 **[** _`CARLA`, `A2C`_ **]**
-
-****
-[[pdf]()]
 
 <details>
   <summary>Click to expand</summary>
