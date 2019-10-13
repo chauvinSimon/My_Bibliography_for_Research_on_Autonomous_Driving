@@ -13,8 +13,8 @@ Template:
 **[[:memo:](https://arxiv.org/) (paper)]**
 **[[:octocat:](https://github.com/) (code)]**
 **[[🎞️](https://www.youtube.com/) (video)]**
-**[** :car: `company X` **]**
 **[** :mortar_board: `University Y` **]**
+**[** :car: `company X` **]**
 **[** _`related`, `concepts`_  **]**
 
 Categories:
@@ -35,6 +35,8 @@ I reference additional publications in my other works:
 - [**`My 10 takeaways from the 2019 Intelligent Vehicle Symposium`**](https://github.com/chauvinSimon/IV19)
 
 Looking forward your reading suggestions!
+
+--- 
 
 ## `Architecture` and `Map`
 
@@ -120,10 +122,10 @@ One quote about the _representation of decision logic_:
 
 - **[** `2014` **]**
 **[[:memo:](https://ri.cmu.edu/pub_files/2014/6/IV2014-Junqing-Final.pdf)]**
-**[** :car: `General Motor` **]**
 **[** :mortar_board: `Carnegie Mellon University` **]**
+**[** :car: `General Motor` **]**
 
-- **[** _`behavioural planning`, `sampling-based planner`, `decision under uncertainty`, [`TORCS`](https://en.wikipedia.org/wiki/TORCS)_ **]**
+- **[** _`behavioural planning`, `sampling-based planner`, `decision under uncertainty`, [`TORCS`](http://torcs.sourceforge.net/)_ **]**
 
 <details>
   <summary>Click to expand</summary>
@@ -276,7 +278,7 @@ Authors: Buhet, T., Wirbel, E., & Perrotton, X.
 
 - **[** `2019` **]**
 **[[:memo:](https://arxiv.org/abs/1909.09884)]**
-**[** :mortar_board: `Oxford` **]**
+**[** :mortar_board: `Oxford University` **]**
 
 - **[** _`uncertainty-aware decision`, `Bayesian inference`, [`CARLA`](http://carla.org/)_ **]**
 
@@ -347,8 +349,8 @@ Authors: Michelmore, R., Wicker, M., Laurenti, L., Cardelli, L., Gal, Y., & Kwia
 **[[:memo:](https://arxiv.org/abs/1904.08980)]**
 **[[🎞️](https://www.youtube.com/watch?v=sXIuU_wECQc)]**
 **[[:octocat:](https://github.com/felipecode/coiltraine)]**
-**[** :car: `Toyota Research Institute` **]**
-**[** :mortar_board: `Campus UAB, Barcelona` **]**
+**[** :mortar_board: `CVC, UAB, Barcelona` **]**
+**[** :car: `Toyota` **]**
 
 - **[** _`distributional shift problem`, `off-policy data collection`, [`CARLA`](http://carla.org/), `conditional imitation learning`, `residual architecture`, `reproducibility issue`, `variance caused by initialization and sampling`_ **]**
 
@@ -383,10 +385,10 @@ Authors: Codevilla, F., Santana, E., Antonio, M. L., & Gaidon, A.
 **[[🎞️](https://www.youtube.com/watch?v=UtUbpigMgr0)]**
 **[[🎞️](https://www.youtube.com/watch?v=SceH3Al9w_M)]**
 **[[:octocat:](https://github.com/xl-sr/CAL)]**
-**[** :car: `Toyota Research Institute` **]**
 **[** :mortar_board: `CVC, UAB, Barcelona` **]**
+**[** :car: `Toyota` **]**
 
-- **[** _`CARLA`, `end-to-mid`, `direct perception`_ **]**
+- **[** _[`CARLA`](http://carla.org/), `end-to-mid`, `direct perception`_ **]**
 
 <details>
   <summary>Click to expand</summary>
@@ -456,8 +458,8 @@ Authors: Sauer, A., Savinov, N., & Geiger, A.
 **[[:memo:](https://dspace.mit.edu/handle/1721.1/118139)]**
 **[[🎞️](https://www.youtube.com/watch?v=ZwSdzcV-jr4)]**
 **[[🎞️](https://www.youtube.com/watch?v=aXI4a_Nvcew)]**
-**[** :car: `Toyota Research Institute` **]**
-**[** :mortar_board: `M.I.T.` **]**
+**[** :mortar_board: `MIT` **]**
+**[** :car: `Toyota` **]**
 
 - **[** _`VAE`, `uncertainty estimation`, `sampling efficiency`, `augmentation`_ **]**
 
@@ -647,7 +649,7 @@ Authors: Kuefler, A., Morton, J., Wheeler, T., & Kochenderfer, M.
 
 - **[** `2019` **]**
 **[[:memo:](https://arxiv.org/abs/1909.02586)]**
-**[[:mortar_board:](University of Michigan)]**
+**[** :mortar_board: `University of Michigan` **]**
 **[[:octocat:](https://github.com/gokulsivasankar/RobustDecisionMaking)]**
 
 - **[** _`k-level strategy`, `MPC`, `interaction-aware prediction`_ **]**
@@ -695,10 +697,10 @@ Authors: Sankar, G. S., & Han, K.
 **[[:memo:](https://tel.archives-ouvertes.fr/tel-02184362/document)]**
 **[[:octocat:](https://github.com/marioney/hybrid_simulation/tree/decision-making)]**
 **[[🎞️](https://www.youtube.com/watch?v=Xx5OmV86CsM)]**
-**[** :car: `Toyota Motor Europe` **]**
 **[** :mortar_board: `INRIA` **]**
+**[** :car: `Toyota` **]**
 
-- **[** _`Maximum Entropy IRL`_  **]**
+- **[** _`maximum entropy IRL`_  **]**
 
 <details>
   <summary>Click to expand</summary>
@@ -738,8 +740,8 @@ Author: Sierra Gonzalez, D.
 
 - **[** `2018` **]**
 **[[:memo:](https://ieeexplore.ieee.org/document/8500448)]**
-**[** :car: `P.S.A.` **]**
 **[** :mortar_board: `Peking University` **]**
+**[** :car: `Groupe PSA` **]**
 
 - **[** _`sampling-based trajectory planning`_  **]**
 
@@ -774,8 +776,8 @@ Authors: He, X., Xu, D., Zhao, H., Moze, M., Aioun, F., & Franck, G.
 
 - **[** `2015` **]**
 **[[:memo:](http://ais.informatik.uni-freiburg.de/publications/papers/kuderer15icra.pdf)]**
-**[** :car: `Bosch` **]**
 **[** :mortar_board: `University of Freiburg` **]**
+**[** :car: `Bosch` **]**
 
 - **[** _`inverse optimal control`, `IRL`_  **]**
 
@@ -874,8 +876,8 @@ Authors: Cho, K., Ha, T., Lee, G., & Oh, S.
 
 - **[** `2019` **]**
 **[[:memo:](https://arxiv.org/abs/1908.10823)]**
-**[** :car: `Ford` **]**
 **[** :mortar_board: `Ohio State University` **]**
+**[** :car: `Ford` **]**
 
 - **[** _`MDP`, `action-state transitions matrix`, [`SUMO`](https://sumo.dlr.de/docs/index.html), `risk assessment`_  **]**
 
@@ -943,10 +945,10 @@ Authors: Liu, S., Zheng, K., Member, S., Zhao, L., & Fan, P.
 
 - **[** `2019` **]**
 **[[:memo:](https://arxiv.org/abs/1904.02341)]**
-**[** :car: `Toyota Research Institute` **]**
-**[** :mortar_board: `M.I.T.` **]**
+**[** :mortar_board: `MIT` **]**
+**[** :car: `Toyota` **]**
 
-- **[** _`intention-aware planning`, `manoeuvre-based motion prediction`, `POMDP`, `probabilistic risk assessment`, `CARLA`_  **]**
+- **[** _`intention-aware planning`, `manoeuvre-based motion prediction`, `POMDP`, `probabilistic risk assessment`, [`CARLA`](http://carla.org)_  **]**
 
 <details>
   <summary>Click to expand</summary>
@@ -982,8 +984,8 @@ Authors: Huang, X., Hong, S., Hofmann, A., & Williams, B.
 **[[:memo:](https://tel.archives-ouvertes.fr/tel-02184362/document)]**
 **[[:octocat:](https://github.com/marioney/hybrid_simulation/tree/decision-making)]**
 **[[🎞️](https://www.youtube.com/watch?v=Xx5OmV86CsM)]**
-**[** :car: `Toyota Motor Europe` **]**
 **[** :mortar_board: `INRIA` **]**
+**[** :car: `Toyota` **]**
 
 - **[** _`planning-based motion prediction`, `manoeuvre-based motion prediction`_  **]**
 
@@ -1088,8 +1090,8 @@ Related works:
 **[[:octocat:](https://github.com/marioney/hybrid_simulation/tree/decision-making)]**
 **[[🎞️](http://rulebooks.tech/)]**
 **[[🎞️](https://video.ethz.ch/events/2019/rsl/28a0302b-64eb-4ebe-a609-1dc05fcdb038.html)]**
-**[** :car: `nuTonomy, Aptiv` **]**
 **[** :mortar_board: `ETH Zurich` **]**
+**[** :car: `nuTonomy, Aptiv` **]**
 
 - **[** _`sampling-based planning`, `safety validation`, `reward function`, `RSS`_  **]**
 
@@ -1201,7 +1203,7 @@ Some figures from this related presentation:
 **[[:memo:](https://www.mrt.kit.edu/z/publ/download/2019/Naumann2019LaneChange.pdf)]**
 **[[:octocat:](https://github.com/coincar-sim)]**
 **[[🎞️](https://www.mrt.kit.edu/z/publ/download/2019_LaneChange_Naumann.mp4)]**
-**[** :mortar_board: `FZI & K.I.T.` **]**
+**[** :mortar_board: `FZI & KIT` **]**
 
 - **[** _`path-velocity decomposition`, `IDM`, `RSS`_ **]**
 
@@ -1243,7 +1245,7 @@ Authors: Naumann, M., Königshof, H., & Stiller, C.
 - **[** `2018` **]**
 **[[:memo:](https://ieeexplore.ieee.org/document/8370800)]**
 **[[🎞️](https://www.youtube.com/watch?v=h7ExZ040wyk)]**
-**[** :mortar_board: `Research Institute, Daejeon, Rep. of Korea` **]**
+**[** :mortar_board: `Research Institute, Daejeon, South Korea` **]**
 
 - **[** _`probabilistic risk assessment`, `rule-based probabilistic decision making`_ **]**
 
@@ -1285,12 +1287,12 @@ Author: Noh, S.
 
 - **[** `2019` **]**
 **[[:memo:](https://arxiv.org/abs/1909.06710)]**
-**[[:octocat:](https://github.com/sisl/AutomotiveDrivingModels.jl) (simulator)]**
-**[[:octocat:](https://github.com/honda-research-institute/NNMPC.jl) (MPC)]**
-**[[:octocat:](https://github.com/honda-research-institute/DRLDriving) (ML)]**
+**[[:octocat:](https://github.com/sisl/AutomotiveDrivingModels.jl)** `simulator` **]**
+**[[:octocat:](https://github.com/honda-research-institute/NNMPC.jl)** `MPC` **]**
+**[[:octocat:](https://github.com/honda-research-institute/DRLDriving)** `ML` **]**
 **[[🎞️](https://www.youtube.com/watch?v=zY4taTNRM1k)]**
-**[** :car: `Honda Research Institute` **]**
-**[** :mortar_board: `Berkeley & CMU` **]**
+**[** :mortar_board: `Berkeley & Carnegie Mellon` **]**
+**[** :car: `Honda` **]**
 
 - **[** _`SISL`, `PPO`, `MPC`, `merging scenarios`_ **]**
 
@@ -1345,9 +1347,9 @@ Authors: Saxena, D. M., Bae, S., Nakhaei, A., Fujimura, K., & Likhachev, M.
 
 - **[** `2019` **]**
 **[[:memo:](https://www.ri.cmu.edu/wp-content/uploads/2019/08/ri_report_20190810.pdf)]**
-**[** :mortar_board: `CMU` **]**
+**[** :mortar_board: `Carnegie Mellon` **]**
 
-- **[** _`POMDP`, `SUMO`, `generalization`_ **]**
+- **[** _`POMDP`, [`SUMO`](https://sumo.dlr.de/docs/index.html), `generalization`_ **]**
 
 <details>
   <summary>Click to expand</summary>
@@ -1430,8 +1432,8 @@ Authors: Hu, B., Li, J., Yang, J., Bai, H., Li, S., & Sun, Y.
 
 - **[** `2019` **]**
 **[[:memo:](https://arxiv.org/abs/1908.00177)]**
-**[** :car: `Zenuity` **]**
 **[** :mortar_board: `Chalmers University` **]**
+**[** :car: `Zenuity` **]**
 
 - **[** _`model-free RL`, `MPC`, `Q-Masking`, `POMDP`_ **]**
 
@@ -1488,8 +1490,8 @@ Authors: Tram, T., Batkovic, I., Ali, M., & Sjöberg, J.
 - **[** `2019` **]**
 **[[:memo:](https://arxiv.org/abs/1906.11021)]**
 **[[:octocat:](https://github.com/sisl/AutonomousMerging.jl)]**
-**[** :car: `Honda Research Institute` **]**
 **[** :mortar_board: `Stanford` **]**
+**[** :car: `Honda` **]**
 
 - **[** _`POMDP`, `offline RL`, `value-based RL`, `interaction-aware decision making`, `belief state planning`_ **]**
 
@@ -1530,8 +1532,8 @@ Authors: Bouton, M., Nakhaei, A., Fujimura, K., & Kochenderfer, M. J.
 - **[** `2019` **]**
 **[[:memo:](https://arxiv.org/abs/1904.06025)]**
 **[[🎞️](https://www.youtube.com/watch?v=2CTTFHDW1ec)]**
-**[** :car: `Honda Research Institute` **]**
 **[** :mortar_board: `Berkeley` **]**
+**[** :car: `Honda` **]**
 
 - **[** _`multi agent RL`, `interaction-aware decision making`, `curriculum learning`, `action masking`_ **]**
 
@@ -1570,8 +1572,8 @@ Authors: Hu, Y., Nakhaei, A., Tomizuka, M., & Fujimura, K.
 
 - **[** `2019` **]**
 **[[:memo:](https://arxiv.org/abs/1903.01365)]**
-**[** :car: `VisLab` **]**
 **[** :mortar_board: `University of Parma` **]**
+**[** :car: `VisLab` **]**
 
 - **[** _`multi-agent A3C`, `off-policy learning`_ **]**
 
@@ -1607,10 +1609,10 @@ Authors: Bacchiani, G., Molinari, D., & Patander, M.
 - **[** `2019` **]**
 **[[:memo:](https://arxiv.org/abs/1907.10994)]**
 **[[🎞️](https://www.youtube.com/watch?v=mRQgHeAGk2g)]**
-**[** :car: `BMW` **]**
 **[** :mortar_board: `University of Freiburg` **]**
+**[** :car: `BMW` **]**
 
-- **[** _`feature engineering`, `off-policy learning`, `DQN`, `SUMO`_ **]**
+- **[** _`feature engineering`, `off-policy learning`, `DQN`, [`SUMO`](https://sumo.dlr.de/docs/index.html)_ **]**
 
 <details>
   <summary>Click to expand</summary>
@@ -1644,10 +1646,10 @@ Authors: Huegle, M., Kalweit, G., Mirchevska, B., Werling, M., & Boedecker, J.
 
 - **[** `2019` **]**
 **[[:memo:](https://openreview.net/pdf?id=Bke03G85DN)]**
-**[** :car: `Segula` **]**
 **[** :mortar_board: `Universit de Strasbourg & ENIT Tunis` **]**
+**[** :car: `Segula` **]**
 
-- **[** _`CARLA`, `A2C`_ **]**
+- **[** _[`CARLA`](http://carla.org), `A2C`_ **]**
 
 <details>
   <summary>Click to expand</summary>
@@ -1692,9 +1694,9 @@ Authors: Jaâfra, Y., Laurent, J.-L., Deruyver, A., & Naceur, M. S.
 
 - **[** `2018` **]**
 **[[:memo:](https://arxiv.org/abs/1910.00399)]**
-**[** :car: `Honda Research Institute` **]**
+**[** :car: `Honda` **]**
 
-- **[** _`action masking`, `risk assessment`, `reachability set`, `SUMO`_ **]**
+- **[** _`action masking`, `risk assessment`, `reachability set`, [`SUMO`](https://sumo.dlr.de/docs/index.html)_ **]**
 
 <details>
   <summary>Click to expand</summary>
@@ -1790,10 +1792,10 @@ Author: Plessen, M. G.
 
 - **[** `2019` **]**
 **[[:memo:](https://www.researchgate.net/publication/332912542_Vision-Based_Autonomous_Driving_A_Model_Learning_Approach)]**
-**[** :car: `Ford` **]**
 **[** :mortar_board: `University of Michigan` **]**
+**[** :car: `Ford` **]**
 
-- **[** _`VAE`, `stochastic policy search`, `CARLA`_ **]**
+- **[** _`VAE`, `stochastic policy search`, [`CARLA`](http://carla.org)_ **]**
 
 <details>
   <summary>Click to expand</summary>
@@ -1845,7 +1847,7 @@ Authors: Baheri, A., Kolmanovsky, I., Girard, A., Tseng, E., & Filev, D.
 **[[:memo:](https://link.springer.com/article/10.1007/s12652-019-01503-y)]**
 **[** :mortar_board: `Chinese Academy of Sciences` **]**
 
-- **[** _`PILCO`, `TORCS`_ **]**
+- **[** _`PILCO`, [`TORCS`](http://torcs.sourceforge.net/)_ **]**
 
 <details>
   <summary>Click to expand</summary>
@@ -1914,8 +1916,8 @@ Authors: Zhu, Y., & Zhao, D.
 
 - **[** `2019` **]**
 **[[:memo:](https://research.chalmers.se/publication/511929/file/511929_Fulltext.pdf)]**
-**[** :car: `Volvo` **]**
 **[** :mortar_board: `Chalmers University` **]**
+**[** :car: `Volvo` **]**
 
 - **[** _`POMDP`, `MCTS`_ **]**
 
@@ -2021,10 +2023,10 @@ Authors: Lee, J., Balakrishnan, A., Gaurav, A., & Feb, L. G.
 
 - **[** `2019` **]**
 **[[:memo:](https://www.researchgate.net/publication/334745733_A_Simulation-Based_Reinforcement_Learning_Approach_for_Long-Term_Maneuver_Planning_in_Highway_Traffic_Scenarios)]**
-**[** :car: `Opel` **]**
 **[** :mortar_board: `Technische Universität Darmstadt` **]**
+**[** :car: `Opel` **]**
 
-- **[** _`combining learning/planning`, `hierarchical/modular decision making`, `POMDP`, `SUMO`_ **]**
+- **[** _`combining learning/planning`, `hierarchical/modular decision making`, `POMDP`, [`SUMO`](https://sumo.dlr.de/docs/index.html)_ **]**
 
 <details>
   <summary>Click to expand</summary>
@@ -2056,10 +2058,10 @@ Authors: Augustin, D., Schucker, J., Tschirner, J., Hofmann, M., & Konigorski, L
 **[[:memo:](https://tel.archives-ouvertes.fr/tel-02184362/document)]**
 **[[:octocat:](https://github.com/marioney/hybrid_simulation/tree/decision-making)]**
 **[[🎞️](https://www.youtube.com/watch?v=Xx5OmV86CsM)]**
-**[** :car: `Toyota Motor Europe` **]**
 **[** :mortar_board: `INRIA` **]**
+**[** :car: `Toyota` **]**
 
-- **[** _`MCTS`, `online POMDP`, `POMCP`, `progressive widening`, `SUMO`_  **]**
+- **[** _`MCTS`, `online POMDP`, `POMCP`, `progressive widening`, [`SUMO`](https://sumo.dlr.de/docs/index.html)_  **]**
 
 <details>
   <summary>Click to expand</summary>
