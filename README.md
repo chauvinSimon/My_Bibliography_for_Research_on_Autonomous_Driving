@@ -1708,9 +1708,12 @@ Authors: Isele, D., Nakhaei, A., Fujimura, K.
 
 </details>
 
-Plessen, M. G. [2017].
-**"Automating Vehicles by Deep Reinforcement Learning Using Task Separation with Hill Climbing."**
-[[pdf](https://arxiv.org/abs/1711.10785)]
+**`"Automating Vehicles by Deep Reinforcement Learning Using Task Separation with Hill Climbing"`**
+
+**[** `2017` **]**
+**[[:memo:](https://arxiv.org/abs/1711.10785)]**
+**[** :mortar_board: `IMT Lucca` **]**
+**[** _`stochastic policy search`, `gradient-free RL`, `policy-gradient RL`, `reward shaping`_ **]**
 
 <details>
   <summary>Click to expand</summary>
@@ -1719,8 +1722,8 @@ Plessen, M. G. [2017].
 |:--:|
 | *[Source](https://arxiv.org/abs/1711.10785).* |
 
-- Some related concepts:
-  - `stochastic policy search`, `gradient-free RL`, `policy-gradient RL`, `reward shaping`
+Author: Plessen, M. G.
+
 - One remark: to be honnest, I find this publication _not very easy_ to understand. But **it raises important questions**. Here are some take-aways.
 
 - One term: `(TSHC)` = **_Task Separation with Hill Climbing_**
@@ -1751,9 +1754,13 @@ Plessen, M. G. [2017].
 
 ## `Model Based` `Reinforcement Learning`
 
-Baheri, A., Kolmanovsky, I., Girard, A., Tseng, E., & Filev, D. [2019].
-**"Vision-Based Autonomous Driving : A Model Learning Approach"**
-[[pdf](https://www.researchgate.net/publication/332912542_Vision-Based_Autonomous_Driving_A_Model_Learning_Approach)]
+**`"Vision-Based Autonomous Driving : A Model Learning Approach"`**
+
+**[** `2019` **]**
+**[[:memo:](https://www.researchgate.net/publication/332912542_Vision-Based_Autonomous_Driving_A_Model_Learning_Approach)]**
+**[** :car: `Ford` **]**
+**[** :mortar_board: `University of Michigan` **]**
+**[** _`VAE`, `stochastic policy search`, `CARLA`_ **]**
 
 <details>
   <summary>Click to expand</summary>
@@ -1764,8 +1771,8 @@ One figure:
 |:--:|
 | *The `perception` module, the `memory` or `prediction` module, and the `control` module. [Source](https://www.researchgate.net/publication/332912542_Vision-Based_Autonomous_Driving_A_Model_Learning_Approach).* |
 
-- Some related concepts:
-  - `VAE`, `stochastic policy search`, `CARLA`
+Authors: Baheri, A., Kolmanovsky, I., Girard, A., Tseng, E., & Filev, D.
+
 - The idea is to first **learn a model** of the environment (the `transition function` of the `MDP`) and **subsequently derive a policy** based on it.
 - Three modules are used:
   - 1- A `VAE` is trained to **encode** front camera views into an **abstract latent representation**.
@@ -1799,9 +1806,13 @@ One figure:
 
 </details>
 
-Zhu, Y., & Zhao, D. [2019].
-**"Vision ‑ based control in the open racing car simulator with deep and reinforcement learning"**
-[[html](https://link.springer.com/article/10.1007/s12652-019-01503-y)]
+**`"Vision‑based control in the open racing car simulator with deep and reinforcement learning"`**
+
+**[** `2019` **]**
+**[[:memo:](https://link.springer.com/article/10.1007/s12652-019-01503-y)]**
+**[[:octocat:](  )]**
+**[** :mortar_board: `Chinese Academy of Sciences` **]**
+**[** _`PILCO`, `TORCS`_ **]**
 
 <details>
   <summary>Click to expand</summary>
@@ -1816,8 +1827,8 @@ Some figures:
 |:--:|
 | *The __model-based__ `PILCO` algorithm is used to quickly learn to predict the __desired speed__. [Source](https://link.springer.com/article/10.1007/s12652-019-01503-y).* |
 
-- Some related concepts:
-  - `PILCO`, `TORCS`
+Authors: Zhu, Y., & Zhao, D.
+
 - Definitions:
   - **State** variables: `x` = [`lateral deviation`, `angle deviation`, `desired speed`].
   - **Dynamical** variables: `y` = [`x`, `curvature`].
@@ -1864,9 +1875,13 @@ Some figures:
 
 ## `Planning` and `Monte Carlo Tree Search`
 
-Hoel, C.-J. [2019].
-**"Tactical decision-making for autonomous driving: A reinforcement learning approach"**
-[[pdf](https://research.chalmers.se/publication/511929/file/511929_Fulltext.pdf)]
+**`"Tactical decision-making for autonomous driving: A reinforcement learning approach"`**
+
+**[** `2019` **]**
+**[[:memo:](https://research.chalmers.se/publication/511929/file/511929_Fulltext.pdf)]**
+**[** :car: `Volvo` **]**
+**[** :mortar_board: `Chalmers University` **]**
+**[** _`POMDP`, `MCTS`_ **]**
 
 <details>
   <summary>Click to expand</summary>
@@ -1889,8 +1904,8 @@ Some figures:
 |:--:|
 | *Comparison of __sampling efficiency__ - need for `domain knowledge` and `computational speed` should also be considered. [Source](https://research.chalmers.se/publication/511929/file/511929_Fulltext.pdf).* |
 
-- Some related concepts:
-  - `POMDP`, `MCTS`
+Author: Hoel, C.-J.
+
 - Three related works corresponding to three proposed approaches (all `RL`-related):
   - 1- **Genetic algorithm** (_policy based RL_) to train a **rule-based** driver model (each chromosome encodes a rule-based **driver model** via a set of instructions).
     - ["An evolutionary approach to general-purpose automated speed and lane change behavior"](https://arxiv.org/abs/1803.10056v2) - (Hoel et al. 2018).
@@ -1923,10 +1938,13 @@ Some figures:
 
 </details>
 
-Lee, J., Balakrishnan, A., Gaurav, A., & Feb, L. G. [2019].
-**"WiseMove: A Framework for Safe Deep Reinforcement Learning for Autonomous Driving"**
-[[pdf](https://arxiv.org/abs/1902.04118)]
-[[code](https://git.uwaterloo.ca/wise-lab/wise-move)]
+**`"WiseMove: A Framework for Safe Deep Reinforcement Learning for Autonomous Driving"`**
+
+**[** `2019` **]**
+**[[:memo:](https://arxiv.org/abs/1902.04118)]**
+**[[:octocat:](https://git.uwaterloo.ca/wise-lab/wise-move)]**
+**[** :mortar_board: `University of Waterloo` **]**
+**[** _`MCTS`, `options framework`, `LTL`, `hierarchical decision making`, `POMDP`_ **]**
 
 <details>
   <summary>Click to expand</summary>
@@ -1937,8 +1955,8 @@ One figure:
 |:--:|
 | *[Source](https://arxiv.org/abs/1902.04118).* |
 
-- Some related concepts:
-  - `MCTS`, `options framework`, `LTL`, `hierarchical decision making`, `POMDP`
+Authors: Lee, J., Balakrishnan, A., Gaurav, A., & Feb, L. G.
+
 - One related work: The presented approach reminds me the work of [Paxton, C., Raman, V., Hager, G. D., & Kobilarov, M.](https://arxiv.org/abs/1703.07887).
 - One term: **"WiseMove"**: the presented **options**-based **modular** safe DRL framework.
   - The _modular_, or _hierarchical_, aspect comes from the [**option framework**](http://www-anw.cs.umass.edu/~barto/courses/cs687/Sutton-Precup-Singh-AIJ99.pdf). Sometimes called **macro-actions**.
@@ -1962,9 +1980,13 @@ One figure:
 
 </details>
 
-Augustin, D., Schucker, J., Tschirner, J., Hofmann, M., & Konigorski, L. [2019].
-**"A Simulation-Based Reinforcement Learning Approach for Long-Term Maneuver Planning in Highway Traffic Scenarios"**
-[[pdf](https://www.researchgate.net/publication/334745733_A_Simulation-Based_Reinforcement_Learning_Approach_for_Long-Term_Maneuver_Planning_in_Highway_Traffic_Scenarios)]
+**`"A Simulation-Based Reinforcement Learning Approach for Long-Term Maneuver Planning in Highway Traffic Scenarios"`**
+
+**[** `2019` **]**
+**[[:memo:](https://www.researchgate.net/publication/334745733_A_Simulation-Based_Reinforcement_Learning_Approach_for_Long-Term_Maneuver_Planning_in_Highway_Traffic_Scenarios)]**
+**[** :car: `Opel` **]**
+**[** :mortar_board: `Technische Universität Darmstadt` **]**
+**[** _`combining learning/planning`, `hierarchical/modular decision making`, `POMDP`, `SUMO`_ **]**
 
 <details>
   <summary>Click to expand</summary>
@@ -1975,8 +1997,8 @@ Augustin, D., Schucker, J., Tschirner, J., Hofmann, M., & Konigorski, L. [2019].
 |:--:|
 | *The term `action` comprises a lateral maneuver decision and a set speed request. [Source](https://www.researchgate.net/publication/334745733_A_Simulation-Based_Reinforcement_Learning_Approach_for_Long-Term_Maneuver_Planning_in_Highway_Traffic_Scenarios).* |
 
-- Some related concepts:
-  - `combining learning/planning`, `hierarchical/modular decision making`, `POMDP`, `SUMO`
+Authors: Augustin, D., Schucker, J., Tschirner, J., Hofmann, M., & Konigorski, L.
+
 - One remark: I like the **hierarchy** and **modularity** of the approach.
   - Especially the fact that the `action` stays high-level (`speed desire` and `high-level manoeuvre`), as opposed to `steering angle` and `throttle` commands that are often used in RL.
 - One promising tool: [FLOW](https://flow-project.github.io/)
@@ -1990,11 +2012,15 @@ Augustin, D., Schucker, J., Tschirner, J., Hofmann, M., & Konigorski, L. [2019].
 
 </details>
 
-Sierra Gonzalez, D. [2019].
-**"Towards Human-Like Prediction and Decision-Making for Automated Vehicles in Highway Scenarios"**
-[[pdf](https://tel.archives-ouvertes.fr/tel-02184362/document)]
-[[video - simulator](https://www.youtube.com/watch?v=Xx5OmV86CsM)]
-[[code - simulator](https://github.com/marioney/hybrid_simulation/tree/decision-making)]
+**`"Towards Human-Like Prediction and Decision-Making for Automated Vehicles in Highway Scenarios"`**
+
+**[** `2019` **]**
+**[[:memo:](https://tel.archives-ouvertes.fr/tel-02184362/document)]**
+**[[:octocat:](https://github.com/marioney/hybrid_simulation/tree/decision-making)]**
+**[[🎞️](https://www.youtube.com/watch?v=Xx5OmV86CsM)]**
+**[** :car: `Toyota Motor Europe` **]**
+**[** :mortar_board: `INRIA` **]**
+**[** _`MCTS`, `online POMDP`, `POMCP`, `progressive widening`, `SUMO`_  **]**
 
 <details>
   <summary>Click to expand</summary>
@@ -2018,8 +2044,7 @@ Some figures:
 |:--:|
 | *[Source](https://tel.archives-ouvertes.fr/tel-02184362/document).* |
 
-- Some related concepts:
-  - `MCTS`, `online POMDP`, `POMCP`, `progressive widening`, `SUMO`
+Author: Sierra Gonzalez, D.
 
 - The author targets some **_"human-like tactical planning"_**.
   - The **POMDP** formulation is ideal since it considers uncertainty in the `controls`, `states`, and the `intentions` of the traffic participants.
@@ -2046,10 +2071,13 @@ Some figures:
 
 </details>
 
-Weingertner, P., Autef, A., & Le Cleac’h, S. [2018].
-**"Decision Making Under Uncertainty for Urban Driving"**
-[[pdf](https://web.stanford.edu/class/aa228/reports/2018/final100.pdf)]
-[[code](https://github.com/PhilippeW83440/ACT)]
+**`"Decision Making Under Uncertainty for Urban Driving"`**
+
+**[** `2018` **]**
+**[[:memo:](https://web.stanford.edu/class/aa228/reports/2018/final100.pdf)]**
+**[[:octocat:](https://github.com/PhilippeW83440/ACT)]**
+**[** :mortar_board: `Stanford` **]**
+**[** _`POMDP`, `MCTS`, `julia`, `probabilistic risk assessment`, `value iteration`_ **]**
 
 <details>
   <summary>Click to expand</summary>
@@ -2060,8 +2088,8 @@ One figure:
 |:--:|
 | *Comparing the vanilla POMCP and proposed safe variant of it. [Source](https://web.stanford.edu/class/aa228/reports/2018/final100.pdf).* |
 
-- Some related concepts:
-  - `POMDP`, `MCTS`, `julia`, `probabilistic risk assessment`, `value iteration`
+Authors: Weingertner, P., Autef, A., & Le Cleac’h, S.
+
 - One algorithm: [`POMCP`](https://papers.nips.cc/paper/4031-monte-carlo-planning-in-large-pomdps).
   - Presented in 2010, `POMCP` is an extension of the traditional **MCTS algorithm to POMDP**.
   - Together with [`DESPOT`], `POMCP` is a often-used POMDP online solver.
@@ -2089,9 +2117,12 @@ One figure:
 
 </details>
 
-Vodopivec, T., Samothrakis, S., & Ster, B. [2017].
-**"On Monte Carlo Tree Search and Reinforcement Learning"**
-[[pdf](https://pdfs.semanticscholar.org/3d78/317f8aaccaeb7851507f5256fdbc5d7a6b91.pdf)]
+**`"On Monte Carlo Tree Search and Reinforcement Learning"`**
+
+**[** `2017` **]**
+**[[:memo:](https://pdfs.semanticscholar.org/3d78/317f8aaccaeb7851507f5256fdbc5d7a6b91.pdf)]**
+**[** :mortar_board: `Universities of Ljubljana and Essex` **]**
+**[** _`RL`, `MCTS`, `learning`, `planning`_ **]**
 
 <details>
   <summary>Click to expand</summary>
@@ -2102,8 +2133,8 @@ One figure:
 |:--:|
 | *Four parameters introduced in a TD-Tree Search (`TDTS`) algorithm related to `forgetting`, `first-visit updating`, `discounting` and `initial bias`. [Source](https://pdfs.semanticscholar.org/3d78/317f8aaccaeb7851507f5256fdbc5d7a6b91.pdf).* |
 
-- Some related concepts:
-  - `RL`, `MCTS`, `learning`, `planning`
+Author: Vodopivec, T., Samothrakis, S., & Ster, B.
+
 - Goal: The authors aim at promoting an _"unified view of `learning`, `planning`, and `search`"_.
   - First, the difference `planning` / `learning` is discussed.
     - It depends on the **source of experience**: _simulated_ / _real_ **interaction**.
