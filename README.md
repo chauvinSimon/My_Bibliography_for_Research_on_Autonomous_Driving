@@ -28,9 +28,9 @@ Categories:
 
 Besides, I reference additional publications in some parallel works:
 
-- [**`Hierarchical Decision-Making for Autonomous Driving`**](https://github.com/chauvinSimon/Hierarchical-Decision-Making-for-Autonomous-Driving)
-- [**`Educational application of Hidden Markov Model to Autonomous Driving`**](https://github.com/chauvinSimon/hmm_for_autonomous_driving)
-- [**`My 10 takeaways from the 2019 Intelligent Vehicle Symposium`**](https://github.com/chauvinSimon/IV19)
+- [**Hierarchical Decision-Making for Autonomous Driving**](https://github.com/chauvinSimon/Hierarchical-Decision-Making-for-Autonomous-Driving)
+- [**Educational application of Hidden Markov Model to Autonomous Driving**](https://github.com/chauvinSimon/hmm_for_autonomous_driving)
+- [**My 10 takeaways from the 2019 Intelligent Vehicle Symposium**](https://github.com/chauvinSimon/IV19)
 
 Looking forward your reading suggestions!
 
@@ -1281,6 +1281,53 @@ Author: Noh, S.
 
 ---
 
+**`"Dynamic Interaction-Aware Scene Understanding Reinforcement Learning in Autonomous Driving"`**
+
+- **[** `2019` **]**
+**[[:memo:](https://arxiv.org/abs/1909.13582)]**
+**[** :mortar_board: `University of Freiburg` **]**
+**[** :car: `BMW` **]**
+
+- **[** _`feature engineering`, `interaction-aware networks`, [`SUMO`](https://sumo.dlr.de/docs/index.html)_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+Some figures:
+
+| ![In the proposed `DeepSet` approach, **embeddings** are first created depending on the object type (using `φ1` for vehicles and `φ2` for lanes), forming the `encoded scene`. They are _'merged'_ only in a **second stage** to create a **fixed vector representation**. `Deep Set` can be extended with `Graph Convolutional Networks` when combining the set of node features to **capture the relations** - _interaction_ - between vehicles. [Source](https://arxiv.org/abs/1909.13582).](media/2019_huegle_1.PNG "In the proposed `DeepSet` approach, **embeddings** are first created depending on the object type (using `φ1` for vehicles and `φ2` for lanes), forming the `encoded scene`. They are _'merged'_ only in a **second stage** to create a **fixed vector representation**. `Deep Set` can be extended with `Graph Convolutional Networks` when combining the set of node features to **capture the relations** - _interaction_ - between vehicles. [Source](https://arxiv.org/abs/1909.13582).")  |
+|:--:|
+| *In the proposed `DeepSet` approach, **embeddings** are first created depending on the object type (using `φ1` for vehicles and `φ2` for lanes), forming the `encoded scene`. They are _'merged'_ only in a **second stage** to create a **fixed vector representation**. `Deep Set` can be extended with `Graph Convolutional Networks` when combining the set of node features to **capture the relations** - _interaction_ - between vehicles. [Source](https://arxiv.org/abs/1909.13582).* |
+
+Authors: Huegle, M., Kalweit, B., Werling, M., & Boedecker, J.
+
+- Two motivations:
+  - Deal with an **arbitrary number of objects or lanes**.
+    - The authors acknowledge that a **fix-size state** will be **enough for scenarios** like **highways driving** where interactions with the **direct neighbours** of the agent are most important.
+    - But they also note that a **variable-length list** can be very important in certain situations such as **urban driving**.
+    - To deal with the variable-length **dynamic input set** `X-dyn`, there encodings are just `summed`.
+      - This makes the `Q-function` **permutation invariant** w.r.t. the order of the dynamic input and **independent of its size**.
+  - Model **interactions between objects** in the **scene representations**.
+    - The structure of **Graph Convolutional Networks** (`GCN`) is used for that. All **_node features_** are combined by the `sum`.
+- Baselines:
+  - > "Graph-Q is compared to two other interaction-aware Q-learning algorithms, that use input modules originally proposed for supervised vehicle trajectory prediction."
+    - [**Convolutional Social Pooling**](https://arxiv.org/abs/1805.06771) (`SocialCNN`) is using a **grid-map**: "a social tensor is created by learning latent vectors of all cars by an encoder network and **projecting them to a grid map** in order to **learn spatial dependencies**".
+    - [**Vehicle Behaviour Interaction Networks**](https://arxiv.org/abs/1903.00848) (`VBIN`) imposes working with a **fixed number of cars** since the embedding vectors are just **concatenated**, i.e. **not summarizing** as in the Deep Sets approach.
+    - > "Graph Networks are a class of neural networks that can learn functions on graphs as input and can reason about how objects in complex systems interact."
+  - A built-in `SUMO` **rule-based controller** is also used for comparison.
+
+Previous works:
+
+- `Dynamic input for deep reinforcement learning in autonomous driving` - detailed below.
+- `High-level Decision Making for Safe and Reasonable Autonomous Lane Changing using Reinforcement Learning` - detailed below.
+  - _How to ensure safety when working with a `DQN`_? The concept of **`action masking`** is applied, i.e. the technique of **not exposing** to the agent **dangerous or non-applicable actions** during the action selection.
+
+Deep sets
+
+</details>
+
+---
+
 **`"Driving in Dense Traffic with Model-Free Reinforcement Learning"`**
 
 - **[** `2019` **]**
@@ -1683,6 +1730,40 @@ Authors: Jaâfra, Y., Laurent, J.-L., Deruyver, A., & Naceur, M. S.
   - In other words, the goal is to find an optimal **initialization of parameters**, to then quickly adapt to a new task through a few standard gradient descents(**few-shot generalization**).
   - A **gradient-based meta-learner** inspired from **_Model-Agnostic Meta-Learning_** (`MAML` - Finn et al., 2017) is used.
   - RL performance in **non-stationary** environments and generalisation in AD are interesting topics. But no clear benefit is demonstrated, and the above limitations apply also here.
+
+</details>
+
+---
+
+**`"High-level Decision Making for Safe and Reasonable Autonomous Lane Changing using Reinforcement Learning"`**
+
+- **[** `2018` **]**
+**[[:memo:](http://mediatum.ub.tum.de/doc/1454224/712763187208.pdf)]**
+**[** :mortar_board: `University of Freiburg` **]**
+**[** :car: `BMW` **]**
+
+- **[** _`Q-Masking`, `RSS`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+One figure:
+
+| ![[Source](http://mediatum.ub.tum.de/doc/1454224/712763187208.pdf).](media/2018_mirchevska_1.PNG "[Source](http://mediatum.ub.tum.de/doc/1454224/712763187208.pdf).")  |
+|:--:|
+| *[Source](http://mediatum.ub.tum.de/doc/1454224/712763187208.pdf).* |
+
+Authors: Mirchevska, B., Pek, C., Werling, M., Althoff, M., & Boedecker, J.
+
+- It relates to the **`RSS`** and **`Q-masking`** principles.
+  - The **learning-based** algorithm (`DQN`) is combined with a `rule-based` checker to ensure that **only safe actions are chosen at any time**.
+  - A `Safe Free Space` is introduced.
+    - For instance, the agent must **keep a safe distance** from other vehicles so that it **can stop without colliding**.
+- _What if the `Safe Free Space` is empty?_
+  - > "If the action is considered safe, it is executed; if not, we take the second best action. If that one is also unsafe, we stay in the current lane."
+- About the [**`PELOPS`**](https://de.wikipedia.org/wiki/PELOPS_(Verkehrsflusssimulationsprogramm)) simulator:
+  - It has been developed between **[** :car: `fka` (`ZF`) **]** and **[** :car: `BMW` **]**.
+  - In future works (see above), they switch to an **open source** simulator: [`SUMO`](https://sumo.dlr.de/docs/index.html).
 
 </details>
 
