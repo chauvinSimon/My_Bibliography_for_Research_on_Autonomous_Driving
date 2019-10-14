@@ -1302,27 +1302,25 @@ Some figures:
 Authors: Huegle, M., Kalweit, B., Werling, M., & Boedecker, J.
 
 - Two motivations:
-  - Deal with an **arbitrary number of objects or lanes**.
+  - `1-` Deal with an **arbitrary number of objects or lanes**.
     - The authors acknowledge that a **fix-size state** will be **enough for scenarios** like **highways driving** where interactions with the **direct neighbours** of the agent are most important.
-    - But they also note that a **variable-length list** can be very important in certain situations such as **urban driving**.
+      - But they also note that a **variable-length list** can be very important in certain situations such as **urban driving**.
     - To deal with the variable-length **dynamic input set** `X-dyn`, there encodings are just `summed`.
       - This makes the `Q-function` **permutation invariant** w.r.t. the order of the dynamic input and **independent of its size**.
-  - Model **interactions between objects** in the **scene representations**.
+  - `2-` Model **interactions between objects** in the **scene representations**.
     - The structure of **Graph Convolutional Networks** (`GCN`) is used for that. All **_node features_** are combined by the `sum`.
+    - > "`Graph Networks` are a class of neural networks that can **learn functions on graphs as input** and can reason about how objects in complex systems **interact**."
 - Baselines:
-  - > "Graph-Q is compared to two other interaction-aware Q-learning algorithms, that use input modules originally proposed for supervised vehicle trajectory prediction."
+  - > "Graph-Q is compared to two other **interaction-aware `Q`-learning** algorithms, that use input modules originally proposed for supervised vehicle **trajectory prediction**."
     - [**Convolutional Social Pooling**](https://arxiv.org/abs/1805.06771) (`SocialCNN`) is using a **grid-map**: "a social tensor is created by learning latent vectors of all cars by an encoder network and **projecting them to a grid map** in order to **learn spatial dependencies**".
     - [**Vehicle Behaviour Interaction Networks**](https://arxiv.org/abs/1903.00848) (`VBIN`) imposes working with a **fixed number of cars** since the embedding vectors are just **concatenated**, i.e. **not summarizing** as in the Deep Sets approach.
-    - > "Graph Networks are a class of neural networks that can learn functions on graphs as input and can reason about how objects in complex systems interact."
   - A built-in `SUMO` **rule-based controller** is also used for comparison.
-
-Previous works:
-
-- `Dynamic input for deep reinforcement learning in autonomous driving` - detailed below.
-- `High-level Decision Making for Safe and Reasonable Autonomous Lane Changing using Reinforcement Learning` - detailed below.
-  - _How to ensure safety when working with a `DQN`_? The concept of **`action masking`** is applied, i.e. the technique of **not exposing** to the agent **dangerous or non-applicable actions** during the action selection.
-
-Deep sets
+- Previous works:
+  - `Dynamic input for deep reinforcement learning in autonomous driving` - detailed below.
+    - Introducing the idea of `Deep Set`.
+  - `High-level Decision Making for Safe and Reasonable Autonomous Lane Changing using Reinforcement Learning` - detailed below.
+    - _How to ensure safety when working with a `DQN`_?
+    - The concept of **`action masking`** is applied, i.e. the technique of **not exposing** to the agent **dangerous or non-applicable actions** during the action selection.
 
 </details>
 
