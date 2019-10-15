@@ -649,7 +649,7 @@ Authors: Kuefler, A., Morton, J., Wheeler, T., & Kochenderfer, M.
 **[[:memo:](https://arxiv.org/abs/1909.12914)]**
 **[** :car: `Honda` **]**
 
-- **[** _`game-tree`, `interactive decision making`, `risk assessment`, ``_ **]**
+- **[** _`game tree search`, `interaction-aware decision making`_ **]**
 
 <details>
   <summary>Click to expand</summary>
@@ -664,10 +664,10 @@ Authors: Kuefler, A., Morton, J., Wheeler, T., & Kochenderfer, M.
 
 Author: Isele, D.
 
-- Three motivations:
+- Three motivations when working on decision-making for **merging in dense traffic**:
   - `1-` Prefer `game theory` approaches over `rule-based` planners.
     - To avoid the **`frozen robot`** issue, especially in dense traffic.
-    - > "If the ego car were to wait for an opening, it may have to wait indefinitely, greatly frustrating drivers behind it".
+    - > "If the ego car were to wait for an opening, it may have to **wait indefinitely**, greatly frustrating drivers behind it".
   - `2-` Prefer the `stochastic game` formulation over `MDP`.
     - Merging in dense traffic involves **interacting with self-interested agents** (_"self-interested"_ in the sense that they want to **travel as fast as possible** without crashing).
     - > "`MDPs` assume agents follow a **set distribution** which limits an autonomous agent’s ability to **handle non-stationary agents** which **change their behaviour over time**."
@@ -682,20 +682,20 @@ Author: Isele, D.
         - The traffic participant’s **willingness to yield**.
         - The **size of the gap**.
         - The **distance to the gap** (from our current position).
-- _How to_ **_model other participants_**, so that they act "intelligently"?_
+- _How to_ **_model other participants_**_, so that they act "intelligently"?_
   - > "In order to validate our behaviour we need **interactive agents** to test against. This produces a `chicken and egg` problem, where we **need to have an intelligent agent** to develop and test our agent. To address this problem, we develop a **stochastic rule-based merge behaviour** which can give the appearance that agents are changing their mind."
   - This _merging-response_ driver model builds on the ideas of `IDM`, introducing **two thresholds** (c.f. figure):
     - One threshold governs **whether or not the agent reacts** to the ego car,
     - The second threshold determines **how the agent reacts**.
     - > "This process can be viewed as a **rule-based variant of negotiation strategies**: an agent proposes he/she go first by **making it more dangerous for the other**, the other agent accepts by backing off."
-- _How to_ **_reduce the computational complexity_** _for the probabilistic game tree search, while keeping_ **_safely considerations_** _?_
+- _How to_ **_reduce the computational complexity_** _of the probabilistic game tree search, while keeping_ **_safely considerations_** _?_
   - The **_forward simulation_** and the **_collision checking_** are costly operations. Especially when the depth of the tree increases.
-  - Some approximations include reducing the **number of actions** (for both the ego- and the other agents), reducing the **number of interacting participants** and reducing the **branching factor**, as can been seen in the steps of the presented approach:
-    - `1-` `Select an **intention class** based on a **coarse search.**` - the ego-actions are decomposed into a `sub-goal selection task` and a `within-sub-goal set of actions`.
-    - `2-` `Identify the **interactive** traffic participant.` - it is assumed that at any given time, the ego-agent **interacts with only one other agent**.
-    - `3-` `**Predict** other agents’ **intentions**.` - working with **`intentions`**, the **continuous action space** can be **discretized**. It reminds me the concept of **`temporal abstraction`** which **reduces the depth of the search**.
-    - `4-` `Sample and evaluate the ego intentions.` - a set of safe (absence of collision) ego-intentions can be generated and assessed.
-    - `5-` `Act, observe, and update our probability models.` - the probability of safe successful merge.
+  - Some approximations include reducing the **number of actions** _(for both the ego- and the other agents)_, reducing the **number of interacting participants** and reducing the **branching factor**, as can been seen in the steps of the presented approach:
+    - **`1-`** `Select an intention class based on a coarse search.` - the ego-actions are decomposed into a `sub-goal selection task` and a `within-sub-goal set of actions`.
+    - **`2-`** `Identify the interactive traffic participant.` - it is assumed that at any given time, the ego-agent **interacts with only one other agent**.
+    - **`3-`** `Predict other agents’ intentions.` - working with **`intentions`**, the **continuous action space** can be **discretized**. It reminds me the concept of **`temporal abstraction`** which **reduces the depth of the search**.
+    - **`4-`** `Sample and evaluate the ego intentions.` - a set of safe (absence of collision) ego-intentions can be generated and assessed.
+    - **`5-`** `Act, observe, and update our probability models.` - the probability of safe successful merge.
 
 </details>
 
