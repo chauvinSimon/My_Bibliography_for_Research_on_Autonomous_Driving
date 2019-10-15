@@ -643,6 +643,64 @@ Authors: Kuefler, A., Morton, J., Wheeler, T., & Kochenderfer, M.
 
 ---
 
+**`"Interactive Decision Making for Autonomous Vehicles in Dense Traffic"`**
+
+- **[** `2019` **]**
+**[[:memo:](https://arxiv.org/abs/1909.12914)]**
+**[** :car: `Honda` **]**
+
+- **[** _`game-tree`, `interactive decision making`, `risk assessment`, ``_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![In the **rule-based stochastic driver model** describing the other agents, `2` thresholds are introduced: The `reaction threshold`, sampled from the range {`−1.5m`, `0.4m`}, describes whether or not the **agent reacts to the ego car**. The `aggression threshold`, uniformly sampled {`−2.2`, `1.1m`}, describes **how the agent reacts**. [Source](https://arxiv.org/abs/1909.12914).](media/2019_isele_2.PNG "In the **rule-based stochastic driver model** describing the other agents, `2` thresholds are introduced: The `reaction threshold`, sampled from the range {`−1.5m`, `0.4m`}, describes whether or not the **agent reacts to the ego car**. The `aggression threshold`, uniformly sampled {`−2.2`, `1.1m`}, describes **how the agent reacts**. [Source](https://arxiv.org/abs/1909.12914).")  |
+|:--:|
+| *In the **rule-based stochastic driver model** describing the other agents, `2` thresholds are introduced: The `reaction threshold`, sampled from the range {`−1.5m`, `0.4m`}, describes whether or not the **agent reacts to the ego car**. The `aggression threshold`, uniformly sampled {`−2.2`, `1.1m`}, describes **how the agent reacts**. [Source](https://arxiv.org/abs/1909.12914).* |
+
+| ![Two **tree searches** are performed: The first step is to **identify a target merging gap** based on the probability of a **successful merge** for each of them. The second search involves **forward simulation** and **collision checking** for multiple ego and traffic intentions. In practice the author found that ''the **coarse tree** - i.e. with intention only - was sufficient for **long term planning** and **only one intention depth** needed to be considered for the fine-grained search''. This reduces this second tree to a **matrix game**. [Source](https://arxiv.org/abs/1909.12914).](media/2019_isele_1.PNG "Two **tree searches** are performed: The first step is to **identify a target merging gap** based on the probability of a **successful merge** for each of them. The second search involves **forward simulation** and **collision checking** for multiple ego and traffic intentions. In practice the author found that ''the **coarse tree** - i.e. with intention only - was sufficient for **long term planning** and **only one intention depth** needed to be considered for the fine-grained search''. This reduces this second tree to a **matrix game**. [Source](https://arxiv.org/abs/1909.12914).")  |
+|:--:|
+| *Two **tree searches** are performed: The first step is to **identify a target merging gap** based on the probability of a **successful merge** for each of them. The second search involves **forward simulation** and **collision checking** for multiple ego and traffic intentions. In practice the author found that ''the **coarse tree** - i.e. with intention only - was sufficient for **long term planning** and **only one intention depth** needed to be considered for the fine-grained search''. This reduces this second tree to a **matrix game**. [Source](https://arxiv.org/abs/1909.12914).* |
+
+Author: Isele, D.
+
+- Three motivations:
+  - `1-` Prefer `game theory` approaches over `rule-based` planners.
+    - To avoid the **`frozen robot`** issue, especially in dense traffic.
+    - > "If the ego car were to wait for an opening, it may have to wait indefinitely, greatly frustrating drivers behind it".
+  - `2-` Prefer the `stochastic game` formulation over `MDP`.
+    - Merging in dense traffic involves **interacting with self-interested agents** (_"self-interested"_ in the sense that they want to **travel as fast as possible** without crashing).
+    - > "`MDPs` assume agents follow a **set distribution** which limits an autonomous agent’s ability to **handle non-stationary agents** which **change their behaviour over time**."
+    - > "**`Stochastic games`** are an extension to `MDPs` that generalize to **multiple agents**, each of which has its **own policy** and **own reward function**."
+    - In other words, `stochastic games` seen more appropriate to **model interactive behaviours**, especially in the **forward rollout** of tree search:
+      - An _interactive prediction model_ based on the concept of [**`counterfactual reasoning`**](https://en.wikipedia.org/wiki/Counterfactual_thinking) is proposed.
+      - It describes how **behaviour might change in response to ego agent intervention**.
+  - `3-` Prefer `tree search` over `neural networks`.
+    - > "Working with the **`game trees`** directly produces **interpretable decisions** which are better suited to **safety guarantees**, and ease the **debugging** of undesirable behaviour."
+    - In addition, it is possible to include **stochasticity** for the tree search.
+      - More precisely, the **probability of a successful merge** is computed for each **potential gap** based on:
+        - The traffic participant’s **willingness to yield**.
+        - The **size of the gap**.
+        - The **distance to the gap** (from our current position).
+- _How to_ **_model other participants_**, so that they act "intelligently"?_
+  - > "In order to validate our behaviour we need **interactive agents** to test against. This produces a `chicken and egg` problem, where we **need to have an intelligent agent** to develop and test our agent. To address this problem, we develop a **stochastic rule-based merge behaviour** which can give the appearance that agents are changing their mind."
+  - This _merging-response_ driver model builds on the ideas of `IDM`, introducing **two thresholds** (c.f. figure):
+    - One threshold governs **whether or not the agent reacts** to the ego car,
+    - The second threshold determines **how the agent reacts**.
+    - > "This process can be viewed as a **rule-based variant of negotiation strategies**: an agent proposes he/she go first by **making it more dangerous for the other**, the other agent accepts by backing off."
+- _How to_ **_reduce the computational complexity_** _for the probabilistic game tree search, while keeping_ **_safely considerations_** _?_
+  - The **_forward simulation_** and the **_collision checking_** are costly operations. Especially when the depth of the tree increases.
+  - Some approximations include reducing the **number of actions** (for both the ego- and the other agents), reducing the **number of interacting participants** and reducing the **branching factor**, as can been seen in the steps of the presented approach:
+    - `1-` `Select an **intention class** based on a **coarse search.**` - the ego-actions are decomposed into a `sub-goal selection task` and a `within-sub-goal set of actions`.
+    - `2-` `Identify the **interactive** traffic participant.` - it is assumed that at any given time, the ego-agent **interacts with only one other agent**.
+    - `3-` `**Predict** other agents’ **intentions**.` - working with **`intentions`**, the **continuous action space** can be **discretized**. It reminds me the concept of **`temporal abstraction`** which **reduces the depth of the search**.
+    - `4-` `Sample and evaluate the ego intentions.` - a set of safe (absence of collision) ego-intentions can be generated and assessed.
+    - `5-` `Act, observe, and update our probability models.` - the probability of safe successful merge.
+
+</details>
+
+---
+
 **`"Adaptive Robust Game-Theoretic Decision Making for Autonomous Vehicles"`**
 
 - **[** `2019` **]**
@@ -1288,7 +1346,7 @@ Author: Noh, S.
 **[** :mortar_board: `University of Freiburg` **]**
 **[** :car: `BMW` **]**
 
-- **[** _`feature engineering`, `interaction-aware networks`, [`SUMO`](https://sumo.dlr.de/docs/index.html)_ **]**
+- **[** _`feature engineering`, `graph neural networks`, `interaction-aware networks`, [`SUMO`](https://sumo.dlr.de/docs/index.html)_ **]**
 
 <details>
   <summary>Click to expand</summary>
@@ -1758,7 +1816,7 @@ Authors: Mirchevska, B., Pek, C., Werling, M., Althoff, M., & Boedecker, J.
   - A `Safe Free Space` is introduced.
     - For instance, the agent must **keep a safe distance** from other vehicles so that it **can stop without colliding**.
 - _What if the `Safe Free Space` is empty?_
-  - > "If the action is considered safe, it is executed; if not, we take the second best action. If that one is also unsafe, we stay in the current lane."
+  - > "If the action is considered safe, it is executed; if not, we take the **second-best action**. If that one is also unsafe, we **stay in the current lane**."
 - About the [**`PELOPS`**](https://de.wikipedia.org/wiki/PELOPS_(Verkehrsflusssimulationsprogramm)) simulator:
   - It has been developed between **[** :car: `fka` (`ZF`) **]** and **[** :car: `BMW` **]**.
   - In future works (see above), they switch to an **open source** simulator: [`SUMO`](https://sumo.dlr.de/docs/index.html).
