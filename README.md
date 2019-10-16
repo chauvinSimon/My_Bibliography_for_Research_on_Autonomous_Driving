@@ -1017,7 +1017,7 @@ One figure:
 
 Authors: Huang, X., Hong, S., Hofmann, A., & Williams, B.
 
-- One term: [**"Probabilistic Flow Tubes"**](https://dspace.mit.edu/handle/1721.1/76824) (PFT)
+- One term: [**"Probabilistic Flow Tubes"**](https://dspace.mit.edu/handle/1721.1/76824) (`PFT`)
   - A *motion representation* used in the **"Motion Model Generator"**.
   - Instead of using **hand-crafted** rules for the transition model, the idea is to **learns human behaviours** from demonstration.
   - The inferred models are encoded with **PFTs** and are used to generate **probabilistic predictions** for both _manoeuvre_ (long-term reasoning) and _motion_ of the other vehicles.
@@ -1025,7 +1025,7 @@ Authors: Huang, X., Hong, S., Hofmann, A., & Williams, B.
 - Another term: **"Risk-bounded POMDP Planner"**
   - The **uncertainty** in the intention estimation is then propagated to the decision module.
   - Some notion of **risk**, defined as the _probability of collision_, is evaluated and considered when taking actions, leading to the introduction of a **"chance-constrained POMDP"** (`CC-POMDP`).
-  - The **online solver** uses a heuristic-search algorithm, [**Risk-Bounded AO\***](https://www.aaai.org/ocs/index.php/AAAI/AAAI16/paper/download/12321/12095) (**RAO\***), takes advantage of the **risk estimation** to prune the over-risky branches that violate the **risk constraints** and eventually outputs a plan with a **guarantee over the probability of success**.
+  - The **online solver** uses a heuristic-search algorithm, [**Risk-Bounded AO\***](https://www.aaai.org/ocs/index.php/AAAI/AAAI16/paper/download/12321/12095) (**`RAO*`**), takes advantage of the **risk estimation** to prune the over-risky branches that violate the **risk constraints** and eventually outputs a plan with a **guarantee over the probability of success**.
 - One quote (_this could apply to many other works_):
 
 > "One possible future work is to test our work in real systems".
@@ -2044,6 +2044,47 @@ Authors: Zhu, Y., & Zhao, D.
 ---
 
 ## `Planning` and `Monte Carlo Tree Search`
+
+---
+
+**`"Risk-Aware Reasoning for Autonomous Vehicles"`**
+
+- **[** `2019` **]**
+**[[:memo:](http://arxiv.org/abs/1910.02461)]**
+**[** :mortar_board: `Khalifa University, Abu Dhabi` **]**
+
+- **[** _`risk-bounded planning`, `chance constraint`, `POMDP`, `hierachical planning`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+Architecture to deal with **uncertainty** and produce **risk-aware** decisions. **Probabilistic vehicle motions** are modelled using **Probabilistic Flow Tube** ([`PFT`](https://dspace.mit.edu/handle/1721.1/76824)). These `PFTs` learnt from demonstrating trajectories represent a sequence of **probabilistic reachable sets**, and are used to calculate the **risk of collision**. This risk quantification serves in the **`CC-POMDP` formulation** of the `short-horizon` planner, where the ego-agent should plan the best sequence of actions while respecting a **bound on the probability** of **collision**. Uncertainty is also propagated in the **higher modules** of the hierarchical planning where _Temporal Plan Networks with Uncertainty_ ([`STNUs`](https://www.ijcai.org/proceedings/2019/0765.pdf)) are used to derive **short-term objectives**.
+
+| ![aaaaa. [Source](http://arxiv.org/abs/1910.02461).](media/2019_khonji_1.PNG "aaaaa. [Source](http://arxiv.org/abs/1910.02461).")  |
+|:--:|
+| *aaaaa. [Source](http://arxiv.org/abs/1910.02461).* |
+
+Authors: Khonji, M., Dias, J., & Seneviratne, L.
+
+- One remark: _Not too many details are given about the implementation, but it is interesting to read reformulation of concepts met in other works_.
+- One related work:
+  - Several ideas (**`RAO*`**, **`PFT`**, **`CC-POMDP`**) reminded me the work of _[(Huang, Hong, Hofmann, & Williams, 2019)](https://arxiv.org/abs/1904.02341)_ - `Online Risk-Bounded Motion Planning for Autonomous Vehicles in Dynamic Environments` - detailed further above.
+  - _The first author has been actually collaborating with this research group._
+- One idea: **hierarchical planning**.
+  - The uncertainty-aware decision-making task is decomposed between a **`high-level`** planner, a **`short-horizon`** planner and some **`MPC`**-based precomputed and learned manoeuvre trajectories.
+  - Three levels of actions are distinguished for `short-horizon` planner:
+    - **`Micro Actions`** are **primitive** actions, e.g. `accelerate`, `decelerate`, `maintain`.
+    - **`Manoeuvre Actions`** are **sequences of micro actions**, e.g. `merge left`. `merge right`.
+    - **`Macro Actions`** are **sequences of manoeuvre actions**, e.g. `pass the front vehicle`, `go straight until next intersection`.
+- One concept: **_"chance constraint"_** optimization.
+  - Some **measure of uncertainty** (e.g. about _perception_, about _unknown intention_, about _control_) is available to the `short-horizon` planner.
+  - To goal is to solve the **optimization problem** (as for vanilla `POMDP` formulations) i.e. find the optimal sequence of ego-vehicle actions, while ensuring that the **probability of meeting a certain constraint** (e.g. _too small gap_ or _collision_) is above a **certain level**.
+    - In other words, and contrary to _strict_ constrained optimization, here there is a **bound on the probability** of **violating constraints**.
+    - The **policymaker** can set the desired **level of conservatism** in the plan.
+  - The authors mention [**`RAO*`**](https://dspace.mit.edu/handle/1721.1/101416). This is solver for **_"chance-constrained POMDP"_** (**`CC-POMDP`**).
+    - During the search, it uses **heuristics** to quickly detect and **prune overly-risky policy branches**.
+
+</details>
 
 ---
 
