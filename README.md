@@ -18,7 +18,7 @@ Template:
 Categories:
 
 - [**Architecture and Map**](#architecture-and-map)
-- [**Behaviour Cloning, End-To-End and Imitation Learning**](#behaviour-cloning-end-to-end-and-imitation-learning)
+- [**Behavioural Cloning, End-To-End and Imitation Learning**](#behavioural-cloning-end-to-end-and-imitation-learning)
 - [**Inverse Reinforcement Learning, Inverse Optimal Control and Game Theory**](#inverse-reinforcement-learning-inverse-optimal-control-and-game-theory)
 - [**Prediction and Manoeuvre Recognition**](#prediction-and-manoeuvre-recognition)
 - [**Rule-based Decision Making**](#rule-based-decision-making)
@@ -163,7 +163,7 @@ Note: I find very valuable to get insights from the **CMU** (Carnegie Mellon Uni
     - > "the higher-level decision making module usually **does not have enough detailed information**, and the lower-level layer **does not have authority** to **re-evaluate the decision**."
   - Second ingredient: **Parallel** architecture.
     - This is inspired from **ADAS** engineering.
-    - The control modules (`ACC`, `Merge Assist`, `Lane Centering`) are relatively **independent** and **work in parallel**.
+    - The control modules (`ACC`, `Merge Assist`, `Lane Centreing`) are relatively **independent** and **work in parallel**.
     - In some **complicated cases** needing cooperation, this framework may not perform well.
       - _This probably shows that just_ **_extending the common ADAS architectures_** _cannot be enough to reach the_ **_level-`5` of autonomy_**.
   - Idea of the proposed framework: **combine the strengths** of the **_hierarchical_** and **_parallel_** architectures.
@@ -184,7 +184,7 @@ Note: I find very valuable to get insights from the **CMU** (Carnegie Mellon Uni
 
 ---
 
-## `Behaviour Cloning` `End-To-End` and `Imitation Learning`
+## `Behavioural Cloning` `End-To-End` and `Imitation Learning`
 
 ---
 
@@ -1004,7 +1004,7 @@ Authors: Liu, S., Zheng, K., Member, S., Zhao, L., & Fan, P.
 **[** :mortar_board: `MIT` **]**
 **[** :car: `Toyota` **]**
 
-- **[** _`intention-aware planning`, `manoeuvre-based motion prediction`, `POMDP`, `probabilistic risk assessment`, [`CARLA`](http://carla.org)_  **]**
+- **[** _`intention-aware planning`, `manoeuvre-based motion prediction`, `POMDP`, `probabilistic risk assessment`, [`CARLA`](http://carla.org)_ **]**
 
 <details>
   <summary>Click to expand</summary>
@@ -1336,6 +1336,72 @@ Author: Noh, S.
 ---
 
 ## `Model Free` `Reinforcement Learning`
+
+---
+
+**`"Simulation-based reinforcement learning for autonomous driving"`**
+
+- **[** `2019` **]**
+**[[:memo:](https://deepsense.ai/wp-content/uploads/2019/06/Simulation-based-reinforcement-learning-for-autonomous-driving.pdf)]**
+**[** :mortar_board: `Universities of Warsaw and Jagiellonian` **]**
+**[** :car: `deepsense.ai` **]**
+**[[🎞️](https://sites.google.com/view/sim2real-autonomous-driving)]**
+**[[🎞️](https://sites.google.com/deepsense.ai/sim2real-carla)]**
+
+- **[** _`sim-to-real`, `end-to-end`, [`CARLA`](http://carla.org)_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![Neural architecture of the policy function trained with `PPO`: the `RGB` image is concatenated with its **semantic segmentation**. Randomisation is performed to **prevent over-fitting** and **increase sampling-efficiency**. It is also worth mentioning the high-level navigation command that is provided to guide the agent when approaching intersections. [Source](https://deepsense.ai/wp-content/uploads/2019/06/Simulation-based-reinforcement-learning-for-autonomous-driving.pdf).](media/2019_galias_1.PNG "Neural architecture of the policy function trained with `PPO`: the `RGB` image is concatenated with its **semantic segmentation**. Randomisation is performed to **prevent over-fitting** and **increase sampling-efficiency**. It is also worth mentioning the high-level navigation command that is provided to guide the agent when approaching intersections. [Source](https://deepsense.ai/wp-content/uploads/2019/06/Simulation-based-reinforcement-learning-for-autonomous-driving.pdf).")  |
+|:--:|
+| *Neural architecture of the policy function trained with `PPO`: the `RGB` image is concatenated with its **semantic segmentation**. Randomisation is performed to **prevent over-fitting** and **increase sampling-efficiency**. It is also worth mentioning the high-level navigation command that is provided to guide the agent when approaching intersections. [Source](https://deepsense.ai/wp-content/uploads/2019/06/Simulation-based-reinforcement-learning-for-autonomous-driving.pdf).* |
+
+| ![Several option for producing the **`std`** of the **steering distribution**. Best results are achieved when the **policy outputs both `mean` and `std`**. The left screenshot illustrates that **`shaped rewards`** (as opposed to `sparse rewards` where rewards are only five at the goal state) can bias learning and lead to **un-intended behaviours**: to make the agent stay close to the centre line, the authors originally penalized the gap in `X`, `Y` but also `Z` coordinates. ''Due to technical reasons our list of lane-centre positions was actually placed **above the road in the `Z` axis**. This resulted in a policy that drives with **two right side wheels placed on a high curb**, so its **elevation is increased** and distance to the centre-line point above the ground is decreased''. [Source](https://deepsense.ai/wp-content/uploads/2019/06/Simulation-based-reinforcement-learning-for-autonomous-driving.pdf) [Source](https://www.youtube.com/watch?v=YCpFQuAAhqI).](media/2019_galias_2.PNG "Several option for producing the **`std`** of the **steering distribution**. Best results are achieved when the **policy outputs both `mean` and `std`**. The left screenshot illustrates that **`shaped rewards`** (as opposed to `sparse rewards` where rewards are only five at the goal state) can bias learning and lead to **un-intended behaviours**: to make the agent stay close to the centre line, the authors originally penalized the gap in `X`, `Y` but also `Z` coordinates. ''Due to technical reasons our list of lane-centre positions was actually placed **above the road in the `Z` axis**. This resulted in a policy that drives with **two right side wheels placed on a high curb**, so its **elevation is increased** and distance to the centre-line point above the ground is decreased''. [Source](https://deepsense.ai/wp-content/uploads/2019/06/Simulation-based-reinforcement-learning-for-autonomous-driving.pdf) [Source](https://www.youtube.com/watch?v=YCpFQuAAhqI).")  |
+|:--:|
+| *Several option for producing the **`std`** of the **steering distribution**. Best results are achieved when the **policy outputs both `mean` and `std`**. The left screenshot illustrates that **`shaped rewards`** (as opposed to `sparse rewards` where rewards are only five at the goal state) can bias learning and lead to **un-intended behaviours**: to make the agent stay close to the centre line, the authors originally penalized the gap in `X`, `Y` but also `Z` coordinates. ''Due to technical reasons our list of lane-centre positions was actually placed **above the road in the `Z` axis**. This resulted in a policy that drives with **two right side wheels placed on a high curb**, so its **elevation is increased** and distance to the centre-line point above the ground is decreased''. [Source](https://deepsense.ai/wp-content/uploads/2019/06/Simulation-based-reinforcement-learning-for-autonomous-driving.pdf) [Source](https://www.youtube.com/watch?v=YCpFQuAAhqI).* |
+
+Authors: Galias, C., Jakubowski, A., Michalewski, H., Osinski, B., & Ziecina, P.
+
+- One goal: learn the **continuous `steering` control** of the car to **stay on its lane** (no consideration of traffic rules) in an `end-to-end` fashion using **`RL`**.
+  - The **`throttle`** is controlled by a `PID` controller with constant speed target.
+  - In addition, the simulated environment is **static**, without any moving cars or pedestrians.
+  - The authors want to test how good a **policy learnt in simulation** can **transfer to real-world**. This is sometimes called **`sim-to-real`**.
+    - For this second motivation, this reminds me the impressive [`Wayve`](https://wayve.ai)'s work ["Simulation Training, Real Driving"](https://wayve.ai/blog/sim2real).
+- _How to model the_ **_standard deviation_** _parameter of the_ **_continuous steering action distribution_**_?_
+  - It could be set it to a **constant value** or treat it as an **external learnable variable** (detached from the policy).
+  - But the authors found that **letting the policy control it**, as for the `mean`, gave the best results.
+    - It allows the policy to **adjust the degree of exploration** on a per-observation basis.
+    - > "An important implementation detail was to **enforce an upper boundary** for the **standard deviation**. Without such a boundary the standard deviation would **sometime explode** and never go down below a certain point (the **entropy of the policy climbs up**), performing poorly when deployed on real-world cars."
+- An interesting variant: **`end-to-mid`**
+  - In [another work](https://www.mimuw.edu.pl/~henrykm/pubs_2019/sim2real_outdoor.pdf), the task was not to directly predict the `CARLA` `steering` command, but rather **some target waypoint** on the road and **outsource the steering control task** to some external controller.
+  - > "Given a **target waypoint**, **low-level steering** of the driving wheel is executed in order to reach this point. In simulation, it is realized by a **`PID` controller** while in the case of the real car, we use a proprietary **control system**. The action space is discrete - potential waypoints are located every `5` degrees between `−30` and `30`, where `0` is the current orientation of the vehicle."
+- One idea: `3` sources of **observations** and the inclusion of **segmentation mask** to the `state` (input) of the `RL` net:
+  - `1-` A `RGB` image.
+    - It is **concatenated by its semantic segmentation**: it passes through a **previous-learnt segmentation network**.
+    - This can be thought as an **intermediate human-designed** or **learned representations** of the real world.
+    - As said, the `seg-net` has been learnt before with supervised learning.
+      - But it could also be (_further_) **trained online**, at the same time as the policy, leading to the promising concept of **`auxiliary learning`**.
+  - `2-` A **high-level navigation command** to guide the agent when approaching an intersection.
+    - In {`LANE FOLLOW`, `GO STRAIGHT`, `TURN RIGHT`, `TURN LEFT`}.
+    - This is inspired by [(Codevilla et al., 2017)](https://arxiv.org/abs/1710.02410).
+  - `3-` The current `speed` and `acceleration`.
+  - The authors tried to also **include the information about the last action**.
+    - Without success: the car was rapidly switching between `extreme left` and `extreme right`. In other words, the **steering** was controlling in a _pulse width modulation-like manner_.
+- One idea to **promote generalisation** and **robustness**: **_Randomisation_**.
+  - It should also **prevent overfitting** and improve **sample efficiency**.
+  - Some randomizations are applied to **visual camera input**.
+    - An **additional loss term** is introduce to check if the policy outputs a **similar distribution** for the **_perturbed_** and **_unperturbed_ images**.
+  - Some **perturbations** are also applied to the **car dynamics**.
+- One idea for debug: generate **saliency map**.
+  - The idea is to find which **region of the image** has the most **impact in the prediction** of the steering command.
+  - This can be done by **blurring different patches** of the input image, i.e. removing information from that patch, and **measuring the output difference**.
+- Some good ideas mentioned for future works:
+  - To improve the driving stability, try to focus the training on fragments of scenarios with the **highest uncertainty**. c.f. concepts of **Bayesian `RL`**.
+  - Go to **`mid-to-end`**, using an **intermediate representation layer**, for example a `2D`-map or a **bird's-eye view**.
+  - To further improve the **sampling efficiency**, **model-based methods** could be integrated. c.f. ["Wayve Simulation Training, Real Driving"](https://wayve.ai/blog/sim2real)
+
+</details>
 
 ---
 
