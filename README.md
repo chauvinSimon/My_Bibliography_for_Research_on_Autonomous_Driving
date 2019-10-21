@@ -192,6 +192,96 @@ Note: I find very valuable to get insights from the **CMU** (Carnegie Mellon Uni
 
 ---
 
+**`"Deep Imitative Models for Flexible Inference, Planning, and Control"`**
+
+- **[** `2019` **]**
+**[[:memo:](https://arxiv.org/abs/1810.06544v4)]**
+**[[🎞️](https://sites.google.com/view/imitative-models)]**
+**[** :mortar_board: `Carnegie Mellon University, UC Berkeley` **]**
+
+- **[** _`conditional IL`, ,`model-based RL`, [`CARLA`](http://carla.org/)_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![The main motivation is to combine the benefits of **`IL`** (imitate expert demonstration) and **`model-based RL`** (i.e. **planning**). [Source](https://arxiv.org/abs/1810.06544v4).](media/2019_rhinehart_1.PNG "The main motivation is to combine the benefits of **`IL`** (imitate expert demonstration) and **`model-based RL`** (i.e. **planning**). [Source](https://arxiv.org/abs/1810.06544v4).")  |
+|:--:|
+| *The main motivation is to **combine the benefits** of **`IL`** (to imitate some expert demonstrations) and **`model-based RL`** (i.e. **planning**). [Source](https://arxiv.org/abs/1810.06544v4).* |
+
+| ![`φ` represents the scene consisted of the current `lidar scan`, `previous states` in the trajectory as well as the current `traffic light state`. [Source](https://arxiv.org/abs/1810.06544v4).](media/2019_rhinehart_2.PNG "`φ` represents the scene consisted of the current `lidar scan`, `previous states` in the trajectory as well as the current `traffic light state`. [Source](https://arxiv.org/abs/1810.06544v4).")  |
+|:--:|
+| *__`φ`__ represents the **scene**. It consists of the current `lidar scan`, `previous states` in the trajectory as well as the current `traffic light state`. [Source](https://arxiv.org/abs/1810.06544v4).* |
+
+| ![From left to right: `Point`, `Line-Segment` and `Region` (small and wide) **Final State Indicators** used for **planning**. [Source](https://arxiv.org/abs/1810.06544v4).](media/2019_rhinehart_4.PNG "From left to right: `Point`, `Line-Segment` and `Region` (small and wide) **Final State Indicators** used for **planning**. [Source](https://arxiv.org/abs/1810.06544v4).")  |
+|:--:|
+| *From left to right: `Point`, `Line-Segment` and `Region` (small and wide) **Final State Indicators** used for **planning**. [Source](https://arxiv.org/abs/1810.06544v4).* |
+
+| ![Comparison of features and implementations. [Source](https://arxiv.org/abs/1810.06544v4).](media/2019_rhinehart_3.PNG "Comparison of features and implementations. [Source](https://arxiv.org/abs/1810.06544v4).")  |
+|:--:|
+| *Comparison of features and implementations. [Source](https://arxiv.org/abs/1810.06544v4).* |
+
+Authors: Rhinehart, N., McAllister, R., & Levine, S.
+
+- Main motivation: combine the benefits of **`imitation learning`** (**`IL`**) and **`goal-directed planning`** such as `model-based RL` (**`MBRL`**).
+  - Especially to generate **interpretable**, **expert-like plans** with **offline learning** and **no reward engineering**.
+  - Neither `IL` nor `MBRL` can do so.
+  - In other words, it completes **planning** based on some **imitation prior**.
+- One concept: **"_Imitative Models"_**
+  - They are _"probabilistic predictive models able to **_plan interpretable expert-like trajectories to achieve new goals_**".
+  - As for `IL` -> use **expert demonstration**:
+    - It generates **expert-like** behaviors **without reward function crafting**.
+    - The model is learnt _"offline"_ also means it avoids costly online data collection (contrary to `MBRL`).
+    - It learns **dynamics desirable behaviour models** (as opposed to learning the _dynamics of **_possible_** behaviour_ done by `MBRL`).
+  - As for `MBRL` -> use **planning**:
+    - It achieves **new goals** (goals that were not seen during training). Therefore, it avoids the theoretical **drift shortcomings** (_distribution shift_) of vanilla behavioural cloning (`BC`).
+    - It outputs (_interpretable_) **`plan`** to them  at **test-time**, which `IL` cannot.
+    - It does not need goal labels for training.
+  - Binding `IL` and `planning`:
+    - The learnt `imitative model` `q(S|φ)` can **generate trajectories** that resemble those that the expert might generate.
+      - These manoeuvres do not have a **specific goal**. _How to direct our agent to goals?_
+    - _General tasks_ are defined by a set of **goal variables `G`**.
+      - At test time, a route planner provides **waypoints** to the **imitative planner**, which computes **expert-like paths to each goal**.
+    - The best plan is chosen according to the **planning objective** (e.g. _prefer routes avoiding potholes_) and provided to a low-level `PID`-controller in order to produce `steering` and `throttle` actions.
+    - In other words, the derived **plan** (list of set-points) should be:
+      - Maximizing the **similarity to the expert demonstrations** (term with `q`)
+      - Maximizing the **probability of reaching some general goals** (term with `P(G)`).
+    - _How to represent goals?_
+      - `dim=0` - with points: `Final-State Indicator`.
+      - `dim=1` - with lines: `Line-Segment Final-State Indicator`.
+      - `dim=2` - with areas (regions): `Final-State Region Indicator`.
+
+- _How to deal with traffic lights?_
+  - The concept of **`smart waypointer`** is introduced.
+  - > "It **removes far waypoints** beyond `5` meters from the vehicle when a **red light is observed** in the measurements provided by CARLA".
+  - > "The planner prefers **closer goals when obstructed**, when the vehicle was already stopped, and when a **red light was detected** [...] The planner prefers **farther goals** when unobstructed and when **green lights** or no lights were observed."
+
+- About **interpretability** and safety:
+  - > "In contrast to **black-box one-step `IL`** that predicts _controls_, our method produces **interpretable multi-step plans** accompanied by two scores. One estimates the plan’s **`expertness`**, the second estimates its **probability to achieve the goal**."
+    - The `imitative model` can produce some **expert probability distribution function (`PDF`)**, hence offering superior interpretability to one-step `IL` models.
+    - It is able to score **how likely** a trajectory is to **come from the expert**.
+    - The probability to achieve a goal is based on some "Goal Indicator methods" (using "Goal Likelihoods"). _I must say I did not fully understand that part_
+  - The safety aspect relies on the fact that **experts were driving safely** and is formalized as a **_"plan reliability estimation"_**:
+    - > "Besides using our model to make a best-effort attempt to reach a **user-specified goal**, the fact that our model **produces explicit likelihoods** can also be leveraged to test the **reliability** of a plan by evaluating **whether reaching particular waypoints will result in human-like behavior or not**."
+    - Based on this idea, a **classification** is performed to **recognize _safe_ and _unsafe_ plans**, based on the planning criterion.
+
+- About the baselines:
+  - Obviously, the proposed approach is compared to the two methods it aims at **combining**.
+  - About `MBRL`:
+    - `1-` First, a **`forward dynamics model`** is learnt using given observed **expert data**.
+      - It does **not imitate** the expert preferred actions, but **only models what is physically possible**.
+    - `2-` The model then is used to **plan a reachability tree** through the free-space up to the waypoint while **avoiding obstacles**:
+      - Playing with the `throttle` action, the search **expands each state node** and retains the `50` closest nodes to the **target waypoint**.
+      - The planner finally opts for the **lowest-cost path** that **ends near the goal**.
+    - > "The task of **evoking expert-like behavior** is offloaded to the **reward function**, which can be difficult and time-consuming to **craft properly**."
+  - About `IL`: It used **Conditional** terms on **States**, leading to **`CILS`**.
+    - `S` for `state`: Instead of emitting **low-level control** commands (`throttle`, `steering`), it outputs **set-points for some `PID`-controller**.
+    - `C` for `conditional`: To **navigate at intersections**, waypoints are classified into one of several **directives**: {`Turn left`, `Turn right`, `Follow Lane`, `Go Straight`}.
+      - This is inspired by ["End-to-end driving via conditional imitation learning"](https://arxiv.org/abs/1710.02410v2) - (Codevilla et al. 2018) - detailed below.
+
+</details>
+
+---
+
 **`"Conditional Vehicle Trajectories Prediction in CARLA Urban Environment"`**
 
 - **[** `2019` **]**
@@ -1394,6 +1484,7 @@ Authors: Galias, C., Jakubowski, A., Michalewski, H., Osinski, B., & Ziecina, P.
     - This can be thought as an **intermediate human-designed** or **learned representations** of the real world.
     - As said, the `seg-net` has been learnt before with supervised learning.
       - But it could also be (_further_) **trained online**, at the same time as the policy, leading to the promising concept of **`auxiliary learning`**.
+      - This has been done for instance by [(Tan, Xu, & Kong, 2018)](http://arxiv.org/abs/1801.05299), where a framework of **`RL` with image semantic segmentation** network is developped to make the **whole model adaptable to reality**.
   - `2-` A **high-level navigation command** to guide the agent when approaching an intersection.
     - In {`LANE FOLLOW`, `GO STRAIGHT`, `TURN RIGHT`, `TURN LEFT`}.
     - This is inspired by [(Codevilla et al., 2017)](https://arxiv.org/abs/1710.02410).
@@ -1411,7 +1502,7 @@ Authors: Galias, C., Jakubowski, A., Michalewski, H., Osinski, B., & Ziecina, P.
   - This can be done by **blurring different patches** of the input image, i.e. removing information from that patch, and **measuring the output difference**.
 - Some good ideas mentioned for future works:
   - To improve the driving stability, try to focus the training on fragments of scenarios with the **highest uncertainty**. c.f. concepts of **Bayesian `RL`**.
-  - Go to **`mid-to-end`**, using an **intermediate representation layer**, for example a `2D`-map or a **bird's-eye view**.
+  - Go to **`mid-to-end`**, using an **intermediate representation layer**, for example a `2D`-map or a **bird's-eye view**. e.g. `ChauffeurNet` - also detailed on this page.
   - To further improve the **sampling efficiency**, **model-based methods** could be integrated. c.f. ["Wayve Simulation Training, Real Driving"](https://wayve.ai/blog/sim2real)
 
 </details>
