@@ -204,9 +204,9 @@ Note: I find very valuable to get insights from the **CMU** (Carnegie Mellon Uni
 <details>
   <summary>Click to expand</summary>
 
-| ![The main motivation is to combine the benefits of **`IL`** (imitate expert demonstration) and **`model-based RL`** (i.e. **planning**). [Source](https://arxiv.org/abs/1810.06544v4).](media/2019_rhinehart_1.PNG "The main motivation is to combine the benefits of **`IL`** (imitate expert demonstration) and **`model-based RL`** (i.e. **planning**). [Source](https://arxiv.org/abs/1810.06544v4).")  |
+| ![The main motivation is to combine the benefits of **`IL`** (imitate expert demonstration) and **`model-based RL`** (i.e. **planning**). [Source](https://arxiv.org/abs/1810.06544v4).](media/2019_rhinehart_1.PNG "The main motivation is to combine the benefits of **`IL`** (imitate expert demonstration) and **`goal-directed planning`** (e.g. `model-based RL`). [Source](https://arxiv.org/abs/1810.06544v4).")  |
 |:--:|
-| *The main motivation is to **combine the benefits** of **`IL`** (to imitate some expert demonstrations) and **`model-based RL`** (i.e. **planning**). [Source](https://arxiv.org/abs/1810.06544v4).* |
+| *The main motivation is to **combine the benefits** of **`IL`** (to imitate some expert demonstrations) and **`goal-directed planning`** (e.g. `model-based RL`). [Source](https://arxiv.org/abs/1810.06544v4).* |
 
 | ![`φ` represents the scene consisted of the current `lidar scan`, `previous states` in the trajectory as well as the current `traffic light state`. [Source](https://arxiv.org/abs/1810.06544v4).](media/2019_rhinehart_2.PNG "`φ` represents the scene consisted of the current `lidar scan`, `previous states` in the trajectory as well as the current `traffic light state`. [Source](https://arxiv.org/abs/1810.06544v4).")  |
 |:--:|
@@ -240,7 +240,7 @@ Authors: Rhinehart, N., McAllister, R., & Levine, S.
     - The learnt `imitative model` `q(S|φ)` can **generate trajectories** that resemble those that the expert might generate.
       - These manoeuvres do not have a **specific goal**. _How to direct our agent to goals?_
     - _General tasks_ are defined by a set of **goal variables `G`**.
-      - At test time, a route planner provides **waypoints** to the **imitative planner**, which computes **expert-like paths to each goal**.
+      - At test time, a route planner provides **waypoints** to the **imitative planner**, which computes **expert-like paths for each candidate waypoint**.
     - The best plan is chosen according to the **planning objective** (e.g. _prefer routes avoiding potholes_) and provided to a low-level `PID`-controller in order to produce `steering` and `throttle` actions.
     - In other words, the derived **plan** (list of set-points) should be:
       - Maximizing the **similarity to the expert demonstrations** (term with `q`)
@@ -952,6 +952,58 @@ Authors: Kuderer, M., Gulati, S., & Burgard, W.
 ---
 
 ## `Prediction` and `Manoeuvre Recognition`
+
+---
+
+**`"SafeCritic: Collision-Aware Trajectory Prediction"`**
+
+- **[** `2019` **]**
+**[[:memo:](https://arxiv.org/abs/1910.06673)]**
+**[** :mortar_board: `University of Amsterdam` **]**
+**[** :car: `BMW` **]**
+
+- **[** _`Conditional GAN`_  **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![The **Generator** predicts trajectories that are scored against **two criteria**: The **Discriminator** (as in `GAN`) for **`accuracy`** (i.e. consistent with the observed inputs) and the **Critic** (the generator acts as an **Actor**) for **`safety`**. The random noise vector variable `z` in the Generator can be sampled from `N`(`0`, `1`) to sample novel trajectories. [Source](https://arxiv.org/abs/1909.07707).](media/2019_van_der_heiden_1.PNG "The **Generator** predicts trajectories that are scored against **two criteria**: The **Discriminator** (as in `GAN`) for **`accuracy`** (i.e. consistent with the observed inputs) and the **Critic** (the generator acts as an **Actor**) for **`safety`**. The random noise vector variable `z` in the Generator can be sampled from `N`(`0`, `1`) to sample novel trajectories. [Source](https://arxiv.org/abs/1909.07707).")  |
+|:--:|
+| *The **Generator** predicts trajectories that are scored against **two criteria**: The **Discriminator** (as in `GAN`) for **`accuracy`** (i.e. consistent with the observed inputs) and the **Critic** (the generator acts as an **Actor**) for **`safety`**. The random noise vector variable `z` in the Generator can be sampled from `N`(`0`, `1`) to sample novel trajectories. [Source](https://arxiv.org/abs/1909.07707).* |
+
+| ![Several features offered by the predictions of `SafeCritic`: **accuracy**, **diversity**, **attention** and **safety**. [Source](https://arxiv.org/abs/1909.07707).](media/2019_van_der_heiden_2.PNG "Several features offered by the predictions of `SafeCritic`: **accuracy**, **diversity**, **attention** and **safety**. [Source](https://arxiv.org/abs/1909.07707).")  |
+|:--:|
+| *Several features offered by the predictions of `SafeCritic`: **accuracy**, **diversity**, **attention** and **safety**. [Source](https://arxiv.org/abs/1909.07707).* |
+
+Authors: van der Heiden, T., Nagaraja, N. S., Weiss, C., & Gavves, E.
+
+- Main motivation:
+  - > "We argue that one should take into account `safety`, when designing a model to **predict future trajectories**. Our focus is to generate trajectories that are **not just `accurate`** but also **lead to minimum collisions** and thus are `safe`. Safe trajectories are different from trajectories that **try to imitate** the ground truth, as the latter **may lead to `implausible` paths**, e.g, pedestrians going through walls."
+  - Hence the trajectory predictions of the _Generator_ are evaluated against **multiple criteria**:
+    - **`Accuracy`**: The _Discriminator_ checks if the prediction is **coherent** / **plausible** with the observation.
+    - **`Safety`**: Some _Critic_ predicts the **likelihood** of a future dynamic and static  **collision**.
+  - A third loss term is introduced:
+    - > "Training the generator is harder than training the discriminator, leading to slow convergence or even failure."
+    - An additional **auto-encoding loss** to the ground truth is introduced.
+    - It should encourage the model to **avoid trivial solutions** and **mode collapse**, and should **increase the diversity** of future generated trajectories.
+    - The term **`mode collapse`** means that instead of suggesting multiple trajectory candidates (`multi-modal`), the model restricts its prediction to only one instance.
+- About `RL`:
+  - The authors mentioned several terms related to `RL`, in particular they try to dray a parallel with **`Inverse RL`**:
+    - > "`GANs` resemble `IRL` in that the **discriminator** learns the **cost function** and the **generator** represents the **policy**."
+  - _I got the feeling of that idea, but I was honestly did not understand where it was implemented here. In particular no `MDP` formulation is given_.
+- About attention mechanism:
+  - > "We rely on attention mechanism for spatial relations in the scene to propose a compact representation for **modelling interaction among all agents** [...] We employ an **attention mechanism** to **prioritize certain elements** in the latent state representations."
+  - The _grid-like_ **scene representation** is shared by both the _Generator_ and the _Critic_.
+- About the baselines:
+  - I like the _"related work"_ section which shortly introduces the state-of-the-art trajectory prediction models based on deep learning. `SafeCritic` takes inspiration from some of their ideas, such as:
+    - Aggregation of past information about multiple agents in a **recurrent model**.
+    - Use of **Conditional `GAN`** to offer the possibility to also **generate** novel trajectory given observation via **sampling** (standard `GANs` have not encoder).
+    - Generation of **multi-modal** future trajectories.
+    - Incorporation of **semantic visual** features (extracted by deep networks) combined with an **attention mechanism**.
+  - [`SocialGAN`](https://arxiv.org/abs/1803.10892), [`SocialLSTM`](http://cvgl.stanford.edu/papers/CVPR16_Social_LSTM.pdf), [Car-Net](https://arxiv.org/abs/1711.10061), [`SoPhie`](https://arxiv.org/abs/1806.01482) and [`DESIRE`](https://arxiv.org/abs/1704.04394) are used as baselines.
+  - [`R2P2`](http://openaccess.thecvf.com/content_ECCV_2018/papers/Nicholas_Rhinehart_R2P2_A_ReparameteRized_ECCV_2018_paper.pdf) and [`SocialAttention`](https://arxiv.org/abs/1710.04689) are also mentioned.
+
+</details>
 
 ---
 
