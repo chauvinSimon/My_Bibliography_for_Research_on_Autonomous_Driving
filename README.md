@@ -739,6 +739,38 @@ Authors: Kuefler, A., Morton, J., Wheeler, T., & Kochenderfer, M.
 
 ---
 
+**`"Game-theoretic Modeling of Traffic in Unsignalized Intersection Network for Autonomous Vehicle Control Verification and Validation"`**
+
+- **[** `2019` **]**
+**[[:memo:](https://arxiv.org/abs/1910.07141v2)]**
+**[** :mortar_board: `University of Michigan and Bilkent University, Ankara` **]**
+- **[** _`DAgger`, `level-k control policy`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+Authors: Tian, R., Li, N., Kolmanovsky, I., Yildiz, Y., & Girard, A.
+
+- This paper builds on several works (also analysed further below):
+  - ["Adaptive Game-Theoretic Decision Making for Autonomous Vehicle Control at Roundabouts"](https://arxiv.org/abs/1810.00829) - (Tian, Li, Li, et al., 2019).
+  - ["Game Theoretic Modeling of Vehicle Interactions at Unsignalized Intersections and Application to Autonomous Vehicle Control"](https://www.researchgate.net/publication/323428804_Game_Theoretic_Modeling_of_Vehicle_Interactions_at_Unsignalized_Intersections_and_Application_to_Autonomous_Vehicle_Control) - (N. Li, Kolmanovsky, Girard, & Yildiz, 2018).
+  - ["Game-theoretic modeling of driver and vehicle interactions for verification and validation of autonomous vehicle control systems"](https://arxiv.org/abs/1608.08589) - (N. Li et al., 2016).
+
+- Addressed problem: **unsignalized intersections** with **heterogenous driving styles** (`k` in [`0`, `1`, `2`])
+  - The problem is formulated using the **level-`k`** game-theory formalism (See analysed related works for more details).
+- One idea: use **imitation learning** (`IL`) to obtain an **explicit level-`k` control policy**.
+  - A level-`k` policy is a mapping `pi`: <**`ego state`**, **`other's states`**, **`ego k`**> `->` <**`sequence of ego actions`**>.
+  - The ego-agent **maintains belief over the level `k`** of other participants. These estimates are updated using _maximum likelihood_ and _Bayes rule_.
+  - A first attempt with **supervised learning on a fix dataset** (_`behavioural cloning`_) was not satisfying enough due to its **drift shortcomings**:
+    - > "A small error may cause the vehicle to **reach a state that is not exactly included in the dataset** and, consequently, a large error may occur at the next time step."
+  - The solution is to also **aggregate experience sampled from the currently learnt policy**.
+    - The [**`DAgger`**](https://www.cs.cmu.edu/~sross1/publications/Ross-AIStats11-NoRegret.pdf) algorithm (**_Dataset Aggregation_**) is used in this work.
+    - The policy is represented by a neural network.
+
+</details>
+
+---
+
 **`"Interactive Decision Making for Autonomous Vehicles in Dense Traffic"`**
 
 - **[** `2019` **]**
