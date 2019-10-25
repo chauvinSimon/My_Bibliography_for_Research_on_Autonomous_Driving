@@ -751,20 +751,21 @@ Authors: Kuefler, A., Morton, J., Wheeler, T., & Kochenderfer, M.
 
 Authors: Tian, R., Li, N., Kolmanovsky, I., Yildiz, Y., & Girard, A.
 
-- This paper builds on several works (also analysed further below):
+- This paper builds on several works _(also analysed further below)_:
   - ["Adaptive Game-Theoretic Decision Making for Autonomous Vehicle Control at Roundabouts"](https://arxiv.org/abs/1810.00829) - (Tian, Li, Li, et al., 2019).
   - ["Game Theoretic Modeling of Vehicle Interactions at Unsignalized Intersections and Application to Autonomous Vehicle Control"](https://www.researchgate.net/publication/323428804_Game_Theoretic_Modeling_of_Vehicle_Interactions_at_Unsignalized_Intersections_and_Application_to_Autonomous_Vehicle_Control) - (N. Li, Kolmanovsky, Girard, & Yildiz, 2018).
   - ["Game-theoretic modeling of driver and vehicle interactions for verification and validation of autonomous vehicle control systems"](https://arxiv.org/abs/1608.08589) - (N. Li et al., 2016).
 
 - Addressed problem: **unsignalized intersections** with **heterogenous driving styles** (`k` in [`0`, `1`, `2`])
-  - The problem is formulated using the **level-`k`** game-theory formalism (See analysed related works for more details).
-- One idea: use **imitation learning** (`IL`) to obtain an **explicit level-`k` control policy**.
+  - The problem is formulated using the **level-`k`** game-theory formalism _(See analysed related works for more details)_.
+- One idea: use **imitation learning** (`IL`) to obtain an **explicit level-`k` control poli  cy**.
   - A level-`k` policy is a mapping `pi`: <**`ego state`**, **`other's states`**, **`ego k`**> `->` <**`sequence of ego actions`**>.
   - The ego-agent **maintains belief over the level `k`** of other participants. These estimates are updated using _maximum likelihood_ and _Bayes rule_.
   - A first attempt with **supervised learning on a fix dataset** (_`behavioural cloning`_) was not satisfying enough due to its **drift shortcomings**:
     - > "A small error may cause the vehicle to **reach a state that is not exactly included in the dataset** and, consequently, a large error may occur at the next time step."
   - The solution is to also **aggregate experience sampled from the currently learnt policy**.
     - The [**`DAgger`**](https://www.cs.cmu.edu/~sross1/publications/Ross-AIStats11-NoRegret.pdf) algorithm (**_Dataset Aggregation_**) is used in this work.
+    - _One point I did not understand: I am surprised that no initial "off-policy" demonstrations is used. The dataset `D` is initialized as empty._
     - The policy is represented by a neural network.
 
 </details>
@@ -984,6 +985,62 @@ Authors: Kuderer, M., Gulati, S., & Burgard, W.
 ---
 
 ## `Prediction` and `Manoeuvre Recognition`
+
+---
+
+**`"MultiPath : Multiple Probabilistic Anchor Trajectory Hypotheses for Behavior Prediction"`**
+
+- **[** `2019` **]**
+**[[:memo:](https://arxiv.org/abs/1910.05449v1)]**
+**[** :car: `Waymo` **]**
+
+- **[** _`anchor`, `multi-modality prediction`, `weighted prediction`_  **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://arxiv.org/abs/1910.05449v1).](media/2019_chai_1.PNG "[Source](https://arxiv.org/abs/1910.05449v1).")  |
+|:--:|
+| *[Source](https://arxiv.org/abs/1910.05449v1).* |
+
+| ![A **discrete set of intents** is modelled as a set of `K=3` **anchor trajectories**. Uncertainty is assumed to be **unimodal given `intent`** (here `3` intents are considered) while `control uncertainty` is modelled with a **Gaussian distribution** dependent on each waypoint state of an anchor trajectory. Such an example shows that modelling **multiple intents** is important. [Source](https://arxiv.org/abs/1910.05449v1).](media/2019_chai_1.PNG "A **discrete set of intents** is modelled as a set of `K=3` **anchor trajectories**. Uncertainty is assumed to be **unimodal given `intent`** (here `3` intents are considered) while `control uncertainty` is modelled with a **Gaussian distribution** dependent on each waypoint state of an anchor trajectory. Such an example shows that modelling **multiple intents** is important. [Source](https://arxiv.org/abs/1910.05449v1).")  |
+|:--:|
+| *A **discrete set of intents** is modelled as a set of `K=3` **anchor trajectories**. Uncertainty is assumed to be **unimodal given `intent`** (here `3` intents are considered) while `control uncertainty` is modelled with a **Gaussian distribution** dependent on each waypoint state of an anchor trajectory. Such an example shows that modelling **multiple intents** is important. [Source](https://arxiv.org/abs/1910.05449v1).* |
+
+Authors: Chai, Y., Sapp, B., Bansal, M., & Anguelov, D.
+
+- One idea: **"Anchor Trajectories"**.
+  - "Anchor" is a common idea in `ML` (`GMM`, `SSD`).
+  - Concrete applications of **"anchor" methods** for `AD` include **`Faster-RCNN` and `YOLO` for object detections**.
+    - Instead of directly predicting a bounding box, the `NN` **predicts offsets from a predetermined set of boxes** with particular height-width ratios. Those **predetermined set** of boxes are the **anchor boxes**. (explanation from [this page](https://github.com/pjreddie/darknet/issues/568)).
+  - One could therefore draw a parallel between the **_sizes of bounding boxes_** in `Yolo` and the **_shape of trajectories_**: they could be **approximated with some static predetermined patterns** and **refined to the current context** (the actual task of the `NN` here).
+    - > "After doing some **clustering studies** on ground truth labels, it turns out that **most bounding boxes have certain height-width ratios**." _[explanation about Yolo from [this page](https://github.com/pjreddie/darknet/issues/568)]_
+    - > "Our **trajectory anchors** are **modes found** in our training data in state-sequence space via **unsupervised learning**. These anchors provide **templates for coarse-granularity futures** for an agent and might correspond to **semantic concepts** like `change lanes`, or `slow down`." _[from the presented paper]_
+  - This idea reminds also me the concept of **`template`** for path planning.
+- One motivation: model **multiple intents**.
+  - This contrasts with the numerous approaches which predict one **single most-likely** trajectory per agent, usually via supervised regression.
+  - The **multi-modality** is important since prediction is inherently **stochastic**.
+    - The authors distinguish between **`intent uncertainty`** and **`control uncertainty`** (conditioned on intent).
+  - A **Gaussian Mixture** Model (`GMM`) distribution is used to model both types of uncertainty.
+    - > "At inference, our model predicts a **discrete distribution over the anchors** and, for **each anchor**, regresses offsets from anchor waypoints along with uncertainties, yielding a **Gaussian mixture** at each time step."
+- One risk when working with **multi-modality**: directly **learning a mixture** suffers from issues of **"mode collapse"**.
+  - This issue is common in `GAN` where the generator starts producing limited varieties of samples.
+  - The solution implemented here is to estimate the **anchors** **_a priori_** before **fixing them** to learn the rest of our parameters (as for **`Faster-RCNN`** and **`Yolo`** for instance).
+- Second motivation: **weight** the several trajectory predictions.
+  - This contrasts with methods that **randomly sample from a generative model** (e.g. **`CVAE`** and **`GAN`**), leading to an **unweighted set** of trajectory samples (not to mention the problem of _reproducibility_ and _analysis_).
+  - Here, a **parametric probability distribution** is directly predicted: p(`trajectory`|`observation`), together with a **compact weighted set of explicit trajectories** which **summarizes this distribution well**.
+    - This contrasts with methods that outputs a **probabilistic occupancy grid**.
+- About the **"top-down" representation**, structured in a **`3d` array**:
+  - The first `2` dimensions represent **spatial** locations in the **top-down image**
+  - > "The channels in the **depth** dimension hold **`static`** and **time-varying (`dynamic`)** content of a fixed number of previous time steps."
+    - **Static context** includes `lane connectivity`, `lane type`, `stop lines`, `speed limit`.
+    - **Dynamic context** includes `traffic light states` over the past `5` time-steps.
+    - The **previous positions** of the different dynamic objects are also encoded in some **depth channels**.
+- One word about the **training dataset**.
+  - The model is trained via **`imitation learning`** by fitting the parameters to maximize the **log-likelihood of recorded driving trajectories**.
+  - > "The balanced dataset totals **`3.85 million` examples**, contains **`5.75 million` agent trajectories** and constitutes approximately **`200 hours` of (real-world) driving**."
+
+</details>
 
 ---
 
