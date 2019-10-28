@@ -42,6 +42,43 @@ Looking forward your reading suggestions!
 
 ---
 
+**`"Longitudinal Motion Planning for Autonomous Vehicles and Its Impact on Congestion: A Survey"`**
+
+- **[** `2019` **]**
+**[[:memo:](https://arxiv.org/abs/1910.06070)]**
+**[** :mortar_board: `Georgia Institute of Technology` **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![`mMP` refers to machine learning methods for longitudinal motion planning. [Source](https://arxiv.org/abs/1910.06070).](media/2019_zhou_1.PNG "`mMP` refers to machine learning methods for longitudinal motion planning. [Source](https://arxiv.org/abs/1910.06070).")  |
+|:--:|
+| *`mMP` refers to machine learning methods for longitudinal motion planning. [Source](https://arxiv.org/abs/1910.06070).* |
+
+Authors: Zhou, H., & Laval, J.
+
+- This review has been completed at a _School of_ **_Civil_** and **_Environmental_** Engineering_.
+  - It **does not have any scientific contribution**, but offers a quick overview about some current trends in `decision-making`.
+  - The authors try to look at **industrial applications** (e.g. `Waymo`, `Uber`, `Tesla`), i.e. not just focussing on theoretical research. Since companies do no communicate explicitly about their approaches, most of their publications should be considered as **_research side-projects_**, rather than "actual state" of the industry.
+- One focus of the review: the **machine learning** approaches for decision-making for **longitudinal motion**.
+  - About the **architecture** and **representation** models. They mention the works of [**`DeepDriving`**](http://deepdriving.cs.princeton.edu/) and [(H. Xu, Gao, Yu, & Darrell, 2016)](https://arxiv.org/abs/1612.01079).
+    - **`Mediated perception`** approaches **parse an entire scene** to make a driving decision.
+    - **`Direct perception`** approaches first extract **affordance indicators** (i.e. only the **information** that are important for driving in a particular situation) and then map them to actions.
+      - > "Only a small portion of detected objects are indeed related to the real driving reactions so that it would be meaningful to reduce the number of key perception indicators known as learning **`affordances`**".
+    - **`Behavioural reflex`** approaches **directly map** an input image to a driving action by a regressor.
+      - This `end-to-end` paradigm can be extended with **auxiliary tasks** such as learning semantic segmentation (_this "side task" should **_further improves_** the model_), leading to **`Privileged training`**.
+  - About the learning methods:
+    - `BC`, `RL`, `IRL` and `GAIL` are considered.
+    - The authors argue that their `memory` and `prediction` abilities should make them stand out from the rule-based approaches.
+    - > "Both `BC` and `IRL` algorithms implicitly assume that the **demonstrations are complete**, meaning that the action for each demonstrated state is fully observable and available."
+    - > "We argue that adopting `RL` transforms the problem of learnt longitudinal motion planning from **imitating human demonstrations** to searching for a policy complying a **hand-crafted reward rule** [...] No studies have shown that a genuine **reward function for human driving** really exists."
+- About **congestion**:
+  - > "The AV industry has been mostly **focusing on the long tail** problem caused by `corner errors` related to **safety**, while the impact of AVs on **traffic efficiency** is almost ignored."
+
+</details>
+
+---
+
 **`"Design Space of Behaviour Planning for Autonomous Driving"`**
 
 - **[** `2019` **]**
