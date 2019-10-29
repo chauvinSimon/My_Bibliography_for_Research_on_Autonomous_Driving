@@ -22,7 +22,7 @@ Categories:
 - [**Inverse Reinforcement Learning, Inverse Optimal Control and Game Theory**](#inverse-reinforcement-learning-inverse-optimal-control-and-game-theory)
 - [**Prediction and Manoeuvre Recognition**](#prediction-and-manoeuvre-recognition)
 - [**Rule-based Decision Making**](#rule-based-decision-making)
-- [**Model Free Reinforcement Learning**](#model-free-reinforcement-learning)
+- [**Model-Free Reinforcement Learning**](#model-free-reinforcement-learning)
 - [**Model-Based Reinforcement Learning**](#model-based-reinforcement-learning)
 - [**Planning and Monte Carlo Tree Search**](#planning-and-monte-carlo-tree-search)
 
@@ -57,7 +57,7 @@ Looking forward your reading suggestions!
 
 Authors: Zhou, H., & Laval, J.
 
-- This review has been completed at a _School of_ **_Civil_** and **_Environmental_** Engineering_.
+- This review has been completed at a school of _"_**_civil_** and **_environmental_** _engineering"_.
   - It **does not have any scientific contribution**, but offers a quick overview about some current trends in `decision-making`.
   - The authors try to look at **industrial applications** (e.g. `Waymo`, `Uber`, `Tesla`), i.e. not just focussing on theoretical research. Since companies do no communicate explicitly about their approaches, most of their publications should be considered as **_research side-projects_**, rather than "actual state" of the industry.
 - One focus of the review: the **machine learning** approaches for decision-making for **longitudinal motion**.
@@ -74,6 +74,7 @@ Authors: Zhou, H., & Laval, J.
     - > "We argue that adopting `RL` transforms the problem of learnt longitudinal motion planning from **imitating human demonstrations** to searching for a policy complying a **hand-crafted reward rule** [...] No studies have shown that a genuine **reward function for human driving** really exists."
 - About **congestion**:
   - > "The AV industry has been mostly **focusing on the long tail** problem caused by `corner errors` related to **safety**, while the impact of AVs on **traffic efficiency** is almost ignored."
+  - It reminds me the finding of (Kellett, J., Barreto, R., Van Den Hengel, A. & Vogiatzis. N., 2019) in ["How Might Autonomous Vehicles Impact the City? The Case of Commuting to Central Adelaide"](https://www.tandfonline.com/doi/full/10.1080/08111146.2019.1674646): **driverless cars could lead to more traffic congestion**.
 
 </details>
 
@@ -1614,9 +1615,81 @@ Author: Noh, S.
 
 ---
 
-## `Model Free` `Reinforcement Learning`
+## `Model-Free` `Reinforcement Learning`
 
 ---
+
+---
+
+**`"Learning Resilient Behaviors for Navigation Under Uncertainty Environments"`**
+
+- **[** `2019` **]**
+**[[:memo:](https://arxiv.org/abs/1910.09998)]**
+**[[🎞️](https://www.youtube.com/watch?v=KxRJp_Aanpo)]**
+**[[🎞️](https://sites.google.com/view/resilient-nav/)]**
+**[** :mortar_board: `Fuzhou University, University of Maryland, University of Hong Kong` **]**
+**[** :car: `Baidu` **]**
+
+- **[** _`uncertainty estimation`, `uncertainty-aware policy`, `SAC`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![ The **confidence in the prediction** (left) is used as an **`uncertainty` estimate**. This estimate impacts the decision (`μ` = **`mean` of the steering action distribution**) of the agent. [Source](https://arxiv.org/abs/1910.09998).](media/2019_fan_2.PNG "The **confidence in the prediction** (left) is used as an **`uncertainty` estimate**. This estimate impacts the decision (`μ` = **`mean` of the steering action distribution**) of the agent. [Source](https://arxiv.org/abs/1910.09998).")  |
+|:--:|
+| *The **confidence in the prediction** (left) is used as an **`uncertainty` estimate**. This estimate impacts the decision (`μ` = **`mean` of the steering action distribution**) of the agent. [Source](https://arxiv.org/abs/1910.09998).* |
+
+| ![ The `variance` of the steering action distribution (**`behavioural uncertainty`**) is not estimated by the agent itself, but rather built by a simple **mapping-function** from the **`environmental uncertainty`** estimated by the **prediction module**. [Source](https://arxiv.org/abs/1910.09998).](media/2019_fan_1.PNG "The `variance` of the steering action distribution (**`behavioural uncertainty`**) is not estimated by the agent itself, but rather built by a simple **mapping-function** from the **`environmental uncertainty`** estimated by the **prediction module**. [Source](https://arxiv.org/abs/1910.09998).")  |
+|:--:|
+| *The `variance` of the steering action distribution (**`behavioural uncertainty`**) is not estimated by the agent itself, but rather built by a simple **mapping-function** from the **`environmental uncertainty`** estimated by the **prediction module**. [Source](https://arxiv.org/abs/1910.09998).* |
+
+Authors: Fan, T., Long, P., Liu, W., Pan, J., Yang, R., & Manocha, D.
+
+- One motivation: derive an **uncertainty-aware** + **`model-free`** + **`RL`** policy.
+  - **_"Uncertainty-aware"_**:
+    - The core idea is to forward the **observation uncertainty** to the **behaviour uncertainty** (i.e. **uncertainty of the action distribution**), in order to **boost exploration** during training.
+  - `Model-free` as opposed to `model-based` `RL` methods.
+    - In `model-based` methods, the **collision probability** and **uncertainty prediction** can [**explicitly**] be **formulated** into the **risk term** for an `MPC` to minimize.
+    - Here, the **action selection** is directly output by a net, based on **raw laser data** (i.e. not from some `MPC` that would require challenging parameter tuning).
+  - **`RL`** as opposed to `IL` (where _uncertainty estimation_ has already been applied, by recycling techniques of supervised learning).
+    - Besides, in `IL`, it is difficult to learn policies to **actively avoid** uncertain regions.
+- The proposed framework consists in `3` parts:
+  - `1-` A **prediction** net:
+    - Inputs: A **sequence of laser scans** and velocity data.
+    - Outputs:
+      - `1-1.` The **motion prediction** of surrounding environments (_this seems to be trajectories_).
+      - `1-2.` Some associated **uncertainty**: _"we expect to measure the_ _**environmental uncertainty**_ _by computing the confidence of the prediction results."_
+    - It is trained with **supervised learning** with recorded trajectories. The loss function therefore **discourages large uncertainty** while **minimizing prediction errors**.
+  - `2-` A **policy net**:
+    - Inputs:
+      - `2-1.` The two estimates (`uncertainty` and `motion information`) of the predictor.
+      - `2-2.` The current `laser scan`, the current `velocity` and the relative `goal position`.
+    - Outputs: The **`mean`*** of the **action distribution** (`steering`).
+    - It is trained with model-free `RL`, using the `ROS`-based [**`Stage`**](http://wiki.ros.org/stage) simulator.
+  - `3-` A parallel **NON-LEARNABLE** **`mapping function`** estimates the **`variance`** of that action distribution directly from the environmental uncertainty.
+    - Input: The "predicted" environmental uncertainty. (_I would have called it `observation uncertainty`_).
+    - Output: The **`variance`** of the action distribution (`steering`).
+    - About the _mapping_: The uncertainty predictions are **weighted** according to the distance of each laser point:
+      - > "We consider that **the closer the laser point**, the **higher the impact on the action**."
+    - Again, the **variance** of the action distribution **is not learnt!**
+      - It reminds me the work of [(Galias, Jakubowski, Michalewski, Osinski, & Ziecina, 2019)](https://deepsense.ai/wp-content/uploads/2019/06/Simulation-based-reinforcement-learning-for-autonomous-driving.pdf) where best results are achieved when the policy outputs **both the `mean` and `variance`**.
+      - Here, the policy network should learn to **adaptively generate the `mean` value** according to the `variance` value (capturing the environment uncertainty), e.g. exhibit more **conservative behaviours** in the case of **high environmental uncertainty**.
+- About the `RL` method: `SAC` = **Soft Actor-Critic**.
+  - The above defined **mapping forwards environmental uncertainties** to the **action variance**.
+    - The idea is then to **encourage the agent to reduce this action variance** (`distribution entropy`) in order to obtain some **"uncertainty-averse"** behaviour.
+    - **`SAC`** is appropriate for that:
+  - > "The key idea of `SAC` is to maximize the `expected return` and **`action entropy`** together instead of the expected return itself to balance the exploration and exploitation."
+    - My interpretation:
+      - `1-` The agent is **given** (non-learnable) an `action variance` from the uncertainty mapping.
+      - `2-` This **impacts its objective function**.
+      - `3-` It will therefore try to **decrease this uncertainty of action distribution** and by doing so will try to **minimize the environmental uncertainty**.
+      - `4-` Hence more exploration during the training phase.
+  - Similar to the **`ε`-greedy annealing process** in `DQNs`, the **`temperature` parameter** is decayed during training to weight between the two objectives (`entropy` of policy distribution and `expected return`).
+- Bonus (not directly connected to their contributions): _How to model uncertainties in `DNN`s?_
+  - > "The **`aleatoric`** uncertainty (_data_ uncertainty) can be modelled by a specific **loss function** for the **uncertainty term** in the network output".
+  - > "The **`epistemic`** uncertainty (i.e. _model_ uncertainty) can be captured by the **Monte-Carlo Dropout** (`MC`-Dropout) technique" - _dropout can be seen as a Bayesian approximation_.
+
+</details>
 
 ---
 
