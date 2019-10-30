@@ -1621,6 +1621,66 @@ Author: Noh, S.
 
 ---
 
+**`"Autonomous Driving using Safe Reinforcement Learning by Incorporating a Regret-based Human Lane-Changing Decision Model"`**
+
+- **[** `2019` **]**
+**[[:memo:](https://arxiv.org/abs/1910.04803)]**
+**[** :mortar_board: `Michigan State University, Clemson University` **]**
+
+- **[** _`safe RL`, `action masking`, `motivational decision model`, `regret theory`, [`CARLA`](http://carla.org)_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![ Every time after the `RL` agent chooses an action, the **supervisor checks** whether this action is `safe` or not. It does that by **predicting** the trajectories of other cars using a **regret decision model**. [Source](https://arxiv.org/abs/1910.04803).](media/2019_chen_1.PNG "Every time after the `RL` agent chooses an action, the **supervisor checks** whether this action is `safe` or not. It does that by **predicting** the trajectories of other cars using a **regret decision model**. [Source](https://arxiv.org/abs/1910.04803).")  |
+|:--:|
+| *Every time after the `RL` agent chooses an action, the **supervisor checks** whether this action is `safe` or not. It does that by **predicting** the trajectories of other cars using a **regret decision model**. [Source](https://arxiv.org/abs/1910.04803).* |
+
+| ![ The two actions (`keep lane` and `change lane`) have different **probabilities of occurrence**, and different **harms** (**costs**) (`I`) that can be formulated as utilities (`II`) expressed with physical variables (`III`). **Affordance indicators** are used in the **world representation**. [Source](https://arxiv.org/abs/1910.04803).](media/2019_chen_2.PNG "The two actions (`keep lane` and `change lane`) have different **probabilities of occurrence**, and different **harms** (**costs**) (`I`) that can be formulated as utilities (`II`) expressed with physical variables (`III`). **Affordance indicators** are used in the **world representation**. [Source](https://arxiv.org/abs/1910.04803).")  |
+|:--:|
+| *The two actions (`keep lane` and `change lane`) have different **probabilities of occurrence**, and different **harms** (**costs**) (`I`) that can be formulated as **utilities** (`II`), expressed with **physical variables** (`III`). **Affordance indicators** are used in the **world representation**. [Source](https://arxiv.org/abs/1910.04803).* |
+
+Authors: Chen, D., Jiang, L., Wang, Y., & Li, Z.
+
+- Main motivation for `safeRL` for two-lane highway scenarios:
+  - > "We found that when using **conventional `RL`**, about `14.5%` training epochs ended with collisions. [...] Collisions cause **training unstable** as the RL algorithm needs to **reset the simulation** whenever collisions happen."
+- One idea: A **"safety supervisor"** evaluates the consequences of an ego-action and decides **whether an it is _"safe"_** using a **prediction model**.
+  - _"What is predicted?"_
+    - The **`lane-changing` decisions** of other cars.
+  - _"How?"_
+    - The approach belongs to the **_motivational_** methods, hence **explainable** (as opposed to the **_data-driven_** methods).
+    - A **"regret decision model"** is developed:
+      - > "**`Risks`** in driving have two dimensions: **`harm`** (=`costs`) and **`probabilities`**."
+      - A `probability` (relating to the `time-to-collision`), a `weighting effect` function (non-linear function of the probability), a `cost` function, a `utility` (cost normalized by `collision cost`) and a `regret` (non-linear function of the utility) are defined.
+      - The (_deterministic_) decision is based on the resulting the **`net advantage`** (**~weighted regret**) of **option `C`** (_change_) over **option `K`** (_keep lane_).
+  - _"Can we draw a parallel with how human drivers reason?"_
+    - > "Not all the drivers have experienced collisions, but all of them can **perceive the threat** of a potential collision. It is plausible to assume that the surrounding driver perceives the threat of the approaching vehicle to be **proportional to its kinematic energy**." Hence somehow proportional to `speed²`.
+  - _"What does `safe` means here?"_
+    - Short-horizon **rollouts** are performed.
+      - `1-` The ego trajectory is anticipated based on the `action` candidate.
+      - `2-` Trajectories are obtained for other all cars using the **predictor** and their current speeds.
+    - The action is **considered `safe`** if the ego agent **stays on the road** and if his **trajectories does not intersect** (_in spatial-temporal domain_) with any other trajectory.
+  - _What if the action is deemed `unsafe`?_
+    - `1-` The supervisor **replaces** the identified risky action with a safe option (_probably based on the model_).
+      - This **avoids terminating the episode** and starting a new one during _training_ and obviously it improves safety during _testing_.
+    - `2-` An experience tuple <`state`, `action`, `r_collision`, `*` (_no next-action_)> is created and added to the **experience replay buffer** (together with _safe_ tuples). This will be **sampled** during the update phase.
+      - It reminds me the idea of another work by the authors (["Deep Q-Learning with Dynamically-Learned Safety Module : A Case Study in Autonomous Driving"](https://www.researchgate.net/publication/336591335_Deep_Q-Learning_with_Dynamically-Learned_Safety_Module_A_Case_Study_in_Autonomous_Driving) - detailed below) where **two distinct buffers** (`safe` and `collision`) are maintained and **equally sampled**.
+  - _"What values for the model parameters?"_
+    - Ideally, these values should be **inferred for each observed car** (they are parts of the **hidden state**). For instance, within a `POMDP` formulation, using a **belief tracker**.
+    - Here, a single set of parameters is derived via `max-likelihood` based on **human demonstration**.
+  - _"What is the impact on training?"_
+    - It is **faster** and **more stable** (almost **constant improving rate**) compared to conventional `RL`.
+- Another idea: **_hierarchical_ decision-making**:
+  - The `RL` agent first selects _"manoeuvre-like"_ decisions among {`decelerating`, `cruising`, `accelerating`} and {`lane change`, `lane keeping`}.
+  - Its decision is then **implemented by a low-level controller** (`PID`).
+    - > "This hierarchical design greatly **reduces the training time** compared to methods using agents to **output control signals directly**."
+- One related previous work (about **_regret decision model_**):
+  - ["A human-computer interface design for quantitative measure of regret theory"](https://arxiv.org/abs/1810.00462) - (Jiang L. & Wang Y., 2019).
+
+</details>
+
+---
+
 **`"Learning Resilient Behaviors for Navigation Under Uncertainty Environments"`**
 
 - **[** `2019` **]**
@@ -1679,12 +1739,14 @@ Authors: Fan, T., Long, P., Liu, W., Pan, J., Yang, R., & Manocha, D.
     - The idea is then to **encourage the agent to reduce this action variance** (`distribution entropy`) in order to obtain some **"uncertainty-averse"** behaviour.
     - **`SAC`** is appropriate for that:
   - > "The key idea of `SAC` is to maximize the `expected return` and **`action entropy`** together instead of the expected return itself to balance the exploration and exploitation."
+    - `SAC` trains a **stochastic policy** with **entropy regularization**, and explores in an **on-policy** way.
     - My interpretation:
       - `1-` The agent is **given** (non-learnable) an `action variance` from the uncertainty mapping.
       - `2-` This **impacts its objective function**.
       - `3-` It will therefore try to **decrease this uncertainty of action distribution** and by doing so will try to **minimize the environmental uncertainty**.
       - `4-` Hence more exploration during the training phase.
   - Similar to the **`ε`-greedy annealing process** in `DQNs`, the **`temperature` parameter** is decayed during training to weight between the two objectives (`entropy` of policy distribution and `expected return`).
+    - `SAC` incorporates the `entropy` measure of the policy into the reward to encourage exploration, i.e. the agent should act **as randomly as possible** [encourage uniform action probability] while it is still able to **succeed** at the task.
 - Bonus (not directly connected to their contributions): _How to model uncertainties in `DNN`s?_
   - > "The **`aleatoric`** uncertainty (_data_ uncertainty) can be modelled by a specific **loss function** for the **uncertainty term** in the network output".
   - > "The **`epistemic`** uncertainty (i.e. _model_ uncertainty) can be captured by the **Monte-Carlo Dropout** (`MC`-Dropout) technique" - _dropout can be seen as a Bayesian approximation_.
@@ -1752,10 +1814,10 @@ Authors: Baheri, A., Nageshrao, S., Kolmanovsky, I., Girard, A., Tseng, E., & Fi
 
 - **[** `2019` **]**
 **[[:memo:](https://deepsense.ai/wp-content/uploads/2019/06/Simulation-based-reinforcement-learning-for-autonomous-driving.pdf)]**
-**[** :mortar_board: `Universities of Warsaw and Jagiellonian` **]**
-**[** :car: `deepsense.ai` **]**
 **[[🎞️](https://sites.google.com/view/sim2real-autonomous-driving)]**
 **[[🎞️](https://sites.google.com/deepsense.ai/sim2real-carla)]**
+**[** :mortar_board: `Universities of Warsaw and Jagiellonian` **]**
+**[** :car: `deepsense.ai` **]**
 
 - **[** _`sim-to-real`, `end-to-end`, [`CARLA`](http://carla.org)_ **]**
 
