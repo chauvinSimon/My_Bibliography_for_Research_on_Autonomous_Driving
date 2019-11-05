@@ -230,6 +230,85 @@ Note: I find very valuable to get insights from the **CMU** (Carnegie Mellon Uni
 
 ---
 
+**`"Learning by Cheating"`**
+
+- **[** `2019` **]**
+**[[:memo:](http://vladlen.info/papers/learning-by-cheating.pdf)]**
+**[[:octocat:](https://github.com/dianchen96/LearningByCheating)]**
+**[** :mortar_board: `UT Austin` **]**
+**[** :car: `Intel Labs` **]**
+
+- **[** _`on-policy supervision`, `DAgger`, `conditional IL`, `mid-to-mid`, [`CARLA`](http://carla.org/)_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![The main idea is to **decompose** the **imitation learning** (`IL`) process into **two stages**: `1-` Learn to **act**. `2-` Learn to **see**. [Source](http://vladlen.info/papers/learning-by-cheating.pdf).](media/2019_chen_3.PNG "The main idea is to **decompose** the **imitation learning** (`IL`) process into **two stages**: `1-` Learn to **act**. `2-` Learn to **see**. [Source](http://vladlen.info/papers/learning-by-cheating.pdf).")  |
+|:--:|
+| *The main idea is to **decompose** the **imitation learning** (`IL`) process into **two stages**: `1-` Learn to **act**. `2-` Learn to **see**. [Source](http://vladlen.info/papers/learning-by-cheating.pdf).* |
+
+| ![**`mid-to-mid`** learning: Based on a processed **`bird’s-eye view map`**, the **privileged agent** predicts a sequence of **waypoints** to follow. This _desired trajectory_ is eventually **converted into low-level commands** by two `PID` controllers. It is also worth noting how this `privileged` agent serves as an **oracle** that provides **adaptive on-demand supervision** to train the `sensorimotor` agent **across all possible commands**. [Source](http://vladlen.info/papers/learning-by-cheating.pdf).](media/2019_chen_4.PNG "**`mid-to-mid`** learning: Based on a processed **`bird’s-eye view map`**, the **privileged agent** predicts a sequence of **waypoints** to follow. This _desired trajectory_ is eventually **converted into low-level commands** by two `PID` controllers. It is also worth noting how this `privileged` agent serves as an **oracle** that provides **adaptive on-demand supervision** to train the `sensorimotor` agent **across all possible commands**. [Source](http://vladlen.info/papers/learning-by-cheating.pdf).")  |
+|:--:|
+| ***`mid-to-mid`** learning: Based on a processed **`bird’s-eye view map`**, the **privileged agent** predicts a sequence of **waypoints** to follow. This _desired trajectory_ is eventually **converted into low-level commands** by two `PID` controllers. It is also worth noting how this `privileged` agent serves as an **oracle** that provides **adaptive on-demand supervision** to train the `sensorimotor` agent **across all possible commands**. [Source](http://vladlen.info/papers/learning-by-cheating.pdf).* |
+
+| ![Example of **_privileged map_** supplied to the first agent. And details about the **lateral `PID`** controller that **produces `steering` commands** based on a list of target waypoints. [Source](http://vladlen.info/papers/learning-by-cheating.pdf).](media/2019_chen_5.PNG "Example of **_privileged map_** supplied to the first agent. And details about the **lateral `PID`** controller that **produces `steering` commands** based on a list of target waypoints. [Source](http://vladlen.info/papers/learning-by-cheating.pdf).")  |
+|:--:|
+| *Example of **_privileged map_** supplied to the first agent. And details about the **lateral `PID`** controller that **produces `steering` commands** based on a list of target waypoints. [Source](http://vladlen.info/papers/learning-by-cheating.pdf).* |
+
+Authors: Chen, D., Zhou, B., Koltun, V. & Krähenbühl, P
+
+- One motivation: **decomposing** the **imitation learning** (`IL`) process into **two stages**:
+  - **`Direct IL`** (from expert trajectories to vision-based driving) conflates **two difficult tasks**:
+    - `1-` Learning to **see**.
+    - `2-` Learning to **act**.
+- One term: **"_Cheating_"**.
+  - `1-` First, train an agent that has access to **privileged information**:
+    - > "This **privileged agent** _cheats_ by observing the **ground-truth** layout of the environment and the positions of all traffic participants."
+    - Goal: The agent can **focus on learning to act** (it does not need to _learn to see_ because it gets direct access to the environment’s state).
+  - `2-` Then, this **privileged agent** serves as a **teacher** to train a purely **vision-based** system (`abundant supervision`).
+    - Goal: **Learning to see**.
+- `1-` First agent (`privileged` agent):
+  - Input: A processed **`bird’s-eye view map`** (with ground-truth information about _lanes_, _traffic lights_, _vehicles_ and _pedestrians_) together with high-level `navigation command` and `current speed`.
+  - Output: A list of **waypoints** the vehicle should travel to.
+  - Hence **`mid-to-mid`** learning approach.
+  - Goal: imitate the **expert trajectories**.
+  - Training: Behaviour cloning (`BC`) from a set of recorded **expert driving trajectories**.
+    - **Augmentation** can be done _offline_, to facilitate **generalization**.
+    - The agent is thus placed in a variety of **perturbed configurations** to learn how to **recover**
+    - E.g. _facing the sidewalk or placed on the opposite lane_, it should find its way back onto the road.
+- `2-` Second agent (`sensorimotor` agent):
+  - Input: Monocular `RGB` image, current `speed`, and a high-level `navigation command`.
+  - Output: A list of **waypoints**.
+  - Goal: Imitate the **privileged agent**.
+- One idea: **"White-box_"** agent:
+  - The **internal state** of the `privileged` agent can be examined at will.
+    - Based on that, one could **test different high-level commands**: _"What would you do now if the command was [`follow-lane`] [`go left`] [`go right`] [`go straight`]"_.
+  - This relates to `conditional IL`: all **conditional** branches are **supervised** during training.
+- Another idea: **_"online learning"_** and **"_on-policy supervision"_**:
+  - > "**“On-policy”** refers to the sensorimotor agent **rolling out its _own_ policy** during training."
+    - Here, the decision of the second agents are directly implemented (`close-loop`).
+    - And an **oracle** is still available for the **newly encountered situation** (hence `on-policy`), which also accelerates the training.
+    - This is an advantage of using a **simulator**: it would be difficult/impossible in the physical world.
+  - Here, the second agent is first trained `off-policy` (on expert demonstration) to speed up the learning (`offline BC`), and only then go `on-policy`:
+    - > "Finally, we train the sensorimotor agent `on-policy`, **using the privileged agent as an oracle** that provides **adaptive on-demand supervision** in **any state reached** by the sensorimotor student."
+    - The `sensorimotor` agent can thus be supervised on **all its waypoints** and **across all commands** at once.
+  - It resembles the **Dataset aggregation** technique of [**`DAgger`**](https://www.cs.cmu.edu/~sross1/publications/Ross-AIStats11-NoRegret.pdf):
+    - > "This enables **automatic `DAgger`-like training** in which supervision from the privileged agent is **gathered adaptively** via **online rollouts** of the sensorimotor agent."
+- About the two benchmarks:
+  - `1-` Original `CARLA` [benchmark](https://arxiv.org/abs/1711.03938) (`2017`).
+  - `2-` **`NoCrash`** [benchmark](https://arxiv.org/abs/1904.08980) (`2019`).
+  - Interesting idea for **timeout**:
+    - > "The **time limit corresponds** to the amount of time needed to drive the route at a cruising speed of `10 km/h`".
+- Another idea: Do not directly output **low-level** commands.
+  - Instead, predict **waypoints** and **speed targets**.
+  - And rely on two `PID` controllers to implement them.
+    - > `1-` "We fit a **parametrized circular arc to all waypoints** using least-squares fitting and then steer towards a point on the arc."
+    - > `2-` "A **longitudinal** `PID` controller tries to match a **target velocity** as closely as possible [...] We ignore negative throttle commands, and **only brake** if the predicted velocity is **below some threshold** (`2 km/h`)."
+
+</details>
+
+---
+
 **`"Deep Imitative Models for Flexible Inference, Planning, and Control"`**
 
 - **[** `2019` **]**
@@ -237,7 +316,7 @@ Note: I find very valuable to get insights from the **CMU** (Carnegie Mellon Uni
 **[[🎞️](https://sites.google.com/view/imitative-models)]**
 **[** :mortar_board: `Carnegie Mellon University, UC Berkeley` **]**
 
-- **[** _`conditional IL`, ,`model-based RL`, [`CARLA`](http://carla.org/)_ **]**
+- **[** _`conditional IL`, `model-based RL`, [`CARLA`](http://carla.org/)_ **]**
 
 <details>
   <summary>Click to expand</summary>
@@ -1126,7 +1205,7 @@ Authors: van der Heiden, T., Nagaraja, N. S., Weiss, C., & Gavves, E.
     - Use of **Conditional `GAN`** to offer the possibility to also **generate** novel trajectory given observation via **sampling** (standard `GANs` have not encoder).
     - Generation of **multi-modal** future trajectories.
     - Incorporation of **semantic visual** features (extracted by deep networks) combined with an **attention mechanism**.
-  - [`SocialGAN`](https://arxiv.org/abs/1803.10892), [`SocialLSTM`](http://cvgl.stanford.edu/papers/CVPR16_Social_LSTM.pdf), [Car-Net](https://arxiv.org/abs/1711.10061), [`SoPhie`](https://arxiv.org/abs/1806.01482) and [`DESIRE`](https://arxiv.org/abs/1704.04394) are used as baselines.
+  - [`SocialGAN`](https://arxiv.org/abs/1803.10892), [`SocialLSTM`](http://cvgl.stanford.edu/papers/CVPR16_Social_LSTM.pdf), [`Car-Net`](https://arxiv.org/abs/1711.10061), [`SoPhie`](https://arxiv.org/abs/1806.01482) and [`DESIRE`](https://arxiv.org/abs/1704.04394) are used as baselines.
   - [`R2P2`](http://openaccess.thecvf.com/content_ECCV_2018/papers/Nicholas_Rhinehart_R2P2_A_ReparameteRized_ECCV_2018_paper.pdf) and [`SocialAttention`](https://arxiv.org/abs/1710.04689) are also mentioned.
 
 </details>
