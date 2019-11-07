@@ -230,6 +230,59 @@ Note: I find very valuable to get insights from the **CMU** (Carnegie Mellon Uni
 
 ---
 
+**`"Application of Imitation Learning to Modeling Driver Behavior in Generalized Environments"`**
+
+- **[** `2019` **]**
+**[[:memo:](https://www.bernardlange.com/s/Application-of-Imitation-Learning-to-Modeling-Driver-Behavior-in-Generalized-Environments.pdf)]**
+**[** :mortar_board: `Stanford` **]**
+
+- **[** _`GAIL`, `RAIL`, `domain adaption`, [`NGSIM`](https://github.com/sisl/ngsim_env)_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![The `IL` models were trained on a **straight road** and tested on roads with **high curvature**. **`PS-GAIL`** is effective only while **surrounded by other vehicles**, while the **`RAIL`** policy remained stably within the bounds of the road thanks to the **additional rewards terms** included into the learning process.. [Source](https://www.bernardlange.com/s/Application-of-Imitation-Learning-to-Modeling-Driver-Behavior-in-Generalized-Environments.pdf).](media/2019_lange_1.PNG "The `IL` models were trained on a **straight road** and tested on roads with **high curvature**. **`PS-GAIL`** is effective only while **surrounded by other vehicles**, while the **`RAIL`** policy remained stably within the bounds of the road thanks to the **additional rewards terms** included into the learning process.. [Source](https://www.bernardlange.com/s/Application-of-Imitation-Learning-to-Modeling-Driver-Behavior-in-Generalized-Environments.pdf).")  |
+|:--:|
+| *The `IL` models were trained on a **straight road** and tested on roads with **high curvature**. **`PS-GAIL`** is effective only while **surrounded by other vehicles**, while the **`RAIL`** policy remained stably within the bounds of the road thanks to the **additional rewards terms** included into the learning process.. [Source](https://www.bernardlange.com/s/Application-of-Imitation-Learning-to-Modeling-Driver-Behavior-in-Generalized-Environments.pdf).* |
+
+Authors: Lange, B. A., & Brannon, W. D.
+
+- One motivation: Compare the **robustness** (domain adaptation) of three **`IL`** techniques:
+  - `1-` Generative Adversarial Imitation Learning ([**`GAIL`**](https://arxiv.org/abs/1606.03476)).
+  - `2-` Parameter Sharing GAIL ([**`PS-GAIL`**](https://arxiv.org/abs/1803.01044)).
+  - `3-` Reward Augmented Imitation Learning ([**`RAIL`**](https://arxiv.org/abs/1903.05766)).
+- One take-away: This **student project** builds a **good overview** of the different `IL` algorithms and why these algorithms came out.
+  - **Imitation Learning** (**`IL`**) aims at building an (efficient) **policy** using some **expert demonstrations**.
+  - **Behavioural Cloning** (**`BC`**) is a sub-class of `IL`. It treats `IL` as a **supervised learning** problem: a **regression model** is fit to the `state`/`action` space given by the expert.
+    - > Issue of **distribution shift**: "Because data is not infinite nor likely to **contain information** about all possible `state`/`action` pairs in a continuous `state`/`action` space, `BC` can display **undesirable effects** when **placed in these unknown or not well-known states**."
+    - > "A **cascading effect** is observed as the time horizon grows and **errors expand** upon each other."
+  - Several solutions (not exhaustive):
+    - `1-` **`DAgger`**: **Ask the expert** to say what should be done in some encountered situations. Thus **iteratively enriching** the demonstration dataset.
+    - `2-` **`IRL`**: Human driving behaviour is not modelled inside a **policy**, but rather capture into a **reward/cost function**.
+      - Based on this reward function, an (optimal) **policy** can be derived with classic `RL` techniques.
+      - One issue: It can be **computationally expensive**.
+    - `3-` **`GAIL`** _(I still need to read more about it)_:
+      - > "It fits distributions of states and actions given by an expert dataset, and a **cost function** is learned via **Maximum Causal Entropy `IRL`**."
+      - > "When the `GAIL`-policy driven vehicle was placed in a **multi-agent** setting, in which multiple agents take over the learned policy, this algorithm produced undesirable results among the agents."
+  - `PS-GAIL` is therefore introduced for **multi-agent** driving models (agents share a single policy learnt with `PS-TRPO`).
+    - > "Though `PS-GAIL` yielded better results in **multi-agent** simulations than `GAIL`, its results still led to **undesirable driving characteristics**, including unwanted **trajectory deviation** and **off-road duration**."
+  - `RAIL` offers a fix for that: the policy-learning process is **augmented with two types of reward terms**:
+    - **Binary** penalties: e.g. _collision_ and _hard braking_.
+    - **Smoothed** penalties: "applied in advance of undesirable actions with the theory that this would prevent these actions from occurring".
+    - I see that technique as a way to **incorporate knowledge**.
+- About the experiment:
+  - The three policies were originally trained on the **straight roadway**: cars only consider the **lateral distance** to the edge.
+  - In the "new" environment, a **road curvature** is introduced.
+  - Findings:
+    - > "None of them were able to fully accommodate the turn in the road."
+    - `PS-GAIL` is effective **only while surrounded by other vehicles**.
+    - The **smoothed** reward augmentation helped `RAIL`, but it was too late to avoid off-road (the car is already driving too fast and does not dare a `hard brake` which is strongly penalized).
+    - The **reward function should therefore be updated** (back to **reward engineering** :sweat_smile:), for instance adding a **harder reward** term to prevent the car from leaving the road.
+
+</details>
+
+---
+
 **`"Learning by Cheating"`**
 
 - **[** `2019` **]**
