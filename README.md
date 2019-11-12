@@ -1793,6 +1793,77 @@ Author: Noh, S.
 
 ---
 
+**`"DeepRacer: Educational Autonomous Racing Platform for Experimentation with Sim2Real Reinforcement Learning"`**
+
+- **[** `2019` **]**
+**[[:memo:](https://arxiv.org/abs/1911.01562)]**
+**[[:octocat:](https://github.com/awslabs/amazon-sagemaker-examples/tree/master/reinforcement_learning/rl_deepracer_robomaker_coach_gazebo)]**
+**[[🎞️](https://github.com/awslabs/amazon-sagemaker-examples/tree/master/reinforcement_learning/rl_deepracer_robomaker_coach_gazebo/videos)]**
+**[** :car: `Amazon` **]**
+
+- **[** _`sim2real`, `end-to-end`, `sampling efficiency`, `distributed RL`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![ `real2sim` experiment for `model-free RL` `end-to-end` (from **monocular camera** to low-level controls) **track following** using a **`1/18th` scale** car.. [Source](https://arxiv.org/abs/1911.01562).](media/2019_balaji_2.PNG "`real2sim` experiment for `model-free RL` `end-to-end` (from **monocular camera** to low-level controls) **track following** using a **`1/18th` scale** car.. [Source](https://arxiv.org/abs/1911.01562).")  |
+|:--:|
+| *`real2sim` experiment for `model-free RL` `end-to-end` (from **monocular camera** to low-level controls) **track following** using a **`1/18th` scale** car.. [Source](https://arxiv.org/abs/1911.01562).* |
+
+| ![ Comparison of tools to perform **`RL` `sim2real`** applications. [Source](https://arxiv.org/abs/1911.01562).](media/2019_balaji_1.PNG "Comparison of tools to perform **`RL` `sim2real`** applications. [Source](https://arxiv.org/abs/1911.01562).")  |
+|:--:|
+| *Comparison of tools to perform **`RL` `sim2real`** applications. [Source](https://arxiv.org/abs/1911.01562).* |
+
+Authors: Balaji, B., Mallya, S., Genc, S., Gupta, S., Dirac, L., Khare, V., Roy, G., Sun, T., Tao, Y., Townsend, B., Calleja, E., Muralidhara, S. & Karuppasamy, D.
+
+- _What?_
+  - > "`DeepRacer` is an experimentation and **educational platform** for **`sim2real`** `RL`."
+- About the `POMDP` and the algorithm:
+  - **Observation**: `160x120` **grayscale** front view.
+  - **Action**: `10` discretized values: **`2`** levels for **throttle** and **`5`** for **steering**.
+  - **Timestep**: One action per observation. At **`15 fps`** (average speed `1.6 m/s`).
+  - `model-free` (_that is important_) `PPO` to learn the policy.
+- Tools:
+  - [`Amazon RoboMaker`](https://aws.amazon.com/de/robomaker/): An extension of the `ROS` framework with **cloud services**, to develop and test deploy this robot software.
+  - [`Amazon SageMaker`](https://aws.amazon.com/de/sagemaker/): The Amazon cloud **platform** to train and deploy machine learning models at scale using the `Jupyter` Notebook.
+  - [`Amazon S3`](https://aws.amazon.com/s3/) (Simple **Storage** Service) to **save** and store the neural network **models**.
+  - [`OpenAI Gym`] **interface** between the `agent` and the `env`.
+  - [`Intel Coach`](https://github.com/NervanaSystems/coach) **`RL` framework** for easy experimentation.
+  - [`Intel OpenVINO`](https://docs.openvinotoolkit.org/), a toolkit for quick development of vision-based applications, to convert the `Tensorflow` models to an **optimized binary**.
+  - [`Gazebo`](http://gazebosim.org/) robotics **simulator**.
+  - [`ROS`](https://www.ros.org/) for the **communication** between the agent and the simulation.
+  - [`ODE`](https://www.ode.org/) (Open **Dynamics** Engine) to simulate the laws of physics using the robot model.
+  - [`Ogre`](https://www.ogre3d.org/) as graphics **rendering** engine.
+  - [`Redis`](https://redis.io/), an in-memory **database**, as a buffer to store the **experience tuples** <`obs`, `action`, `reward`, `next_obs`>.
+- About **`sim2real`**:
+  - The policy is **learnt** (_+tested_) from **simulations** ("replica track") and then **transferred** (_+tested_) to real world.
+  - > "The entire process from training a policy to testing in the real car takes `< 30` minutes."
+  - The authors mention several approaches for `sim2real`:
+    - **Mixing** `sim` and `real` experiences during training:
+      - E.g. learn **features** from a combination of simulation and real data.
+      - Mix **expert demonstrations** with simulations.
+    - **Model-based** dynamics transfer:
+      - Assess simulation bias.
+      - Learn **model ensembles**.
+      - Perform **calibration**: here, they have to **match the robot model** to the measured dimensions of the car.
+    - **Domain randomization**: simulation **parameters are perturbed** during training to **gain robustness**.
+      - Add **adversarial** noise.
+      - **Observation noise**, such as _random colouring_.
+      - **Action noise** (up to `10%` uniform random noise to `steering` and `throttle`).
+      - Add "reverse direction of travel" each episode (_I did not understand_).
+    - **`Privileged learning`**:
+      - E.g. learn **semantic segmentation** at the same time, as an **auxiliary task**.
+  - They note that (_I thought they were using grayscale?_):
+    - > "**Random colour** was the **most effective** method for **`sim2real` transfer**."
+- About the **distributed rollout** mechanism, to improve the **sampling efficiency**:
+  - > "We introduce a training mechanism that **decouples `RL` policy updates** with the **rollouts**, which enables independent scaling of the simulation cluster."
+  - As I understand, **multiple simulations** are run in parallel, with the **same dynamics model**.
+  - Each worker sends its **experience tuples** (_not the gradient_) to the central `Redis` buffer where **updates of the shared model** are performed.
+
+</details>
+
+---
+
 **`"Autonomous Driving using Safe Reinforcement Learning by Incorporating a Regret-based Human Lane-Changing Decision Model"`**
 
 - **[** `2019` **]**
