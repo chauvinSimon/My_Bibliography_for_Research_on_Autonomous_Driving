@@ -909,6 +909,92 @@ Authors: Kuefler, A., Morton, J., Wheeler, T., & Kochenderfer, M.
 
 ---
 
+**`"A Survey of Inverse Reinforcement Learning: Challenges, Methods and Progress"`**
+
+- **[** `2019` **]**
+**[[:memo:](https://arxiv.org/abs/1806.06877)]**
+**[** :mortar_board: `University of Georgia` **]**
+- **[** _`reward engineering`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+Authors: Arora, S., & Doshi, P.
+
+| ![Trying to generalize and classify `IRL` methods. [Source](https://arxiv.org/abs/1806.06877).](media/2019_arora_1.PNG "Trying to generalize and classify `IRL` methods. [Source](https://arxiv.org/abs/1806.06877).")  |
+|:--:|
+| *Trying to generalize and classify `IRL` methods. [Source](https://arxiv.org/abs/1806.06877).* |
+
+| ![I learnt about **state visitation frequency**: `ψ`(`π`)(`s`) and the **feature count expectation**: `µ`(`π`)(`φ`). [Source](https://arxiv.org/abs/1806.06877).](media/2019_arora_3.PNG "I learnt about **state visitation frequency**: `ψ`(`π`)(`s`) and the **feature count expectation**: `µ`(`π`)(`φ`). [Source](https://arxiv.org/abs/1806.06877).")  |
+|:--:|
+| *I learnt about **state visitation frequency**: `ψ`(`π`)(`s`) and the **feature count expectation**: `µ`(`π`)(`φ`). [Source](https://arxiv.org/abs/1806.06877).* |
+
+- This large review does not focus on `AD` applications, but it provides a good picture of `IRL` and can give ideas. Here are my take-aways.
+- Definition:
+  - > "Inverse reinforcement learning (**`IRL`**) is the problem of **modeling the preferences** of another agent using its **observed behavior** _[hence class of `IL`]_, thereby avoiding a manual specification of its **reward function**."
+- Potential `AD` applications of `IRL`:
+  - **Decision-making**: _If I find your underlying reward function, and I consider you as an expert,_ **_I can imitate you_**.
+  - **Prediction**: _If I find your underlying reward function, I can imagine_ **_what you are going to do_**
+- I start rethinking `Imitation Learning`. The goal of `IL` is to **derive a policy** based on some (expert) **demonstrations**.
+  - Two branches emerge, depending on **what structure is used to model the expert behaviour**. Where is that model **captured**?
+    - `1-` In a **policy**.
+      - This is a **"direct approach"**. It includes `BC` and its variants.
+      - The task is to learn that `state` `->` `action` **mapping**.
+    - `2-` In a **reward function**.
+      - **Core assumption**: Each driver has an **internal reward function** and **acts optimally** w.r.t. it.
+      - The main task it to learn that **reward function** (`IRL`), which captures the expert's preferences.
+      - The second step consists in **deriving the optimal policy** for this derived reward function.
+  - _What happens if some states are_ **_missing in the demonstration_**_?_
+    - `1-` **Direct methods** will not know what to do. And will try to **interpolate** from similar states. This could be risky. (c.f. `distributional shift` problem and `DAgger`).
+    - `2-` `IRL` methods acts **optimally** w.r.t. the underlying reward function, which _could_ be better.
+- One new concept I learnt: **`State-visitation frequency`** (it reminds me some concepts of _Markov chains_).
+  - Take a **policy `π`**. Let run the agent with it. Count how **often it sees each state**. This is called the `state-visitation frequency` (note it is for **specific `π`**).
+  - Two ideas from there:
+    - **Iterating** until this `state-visitation frequency` **stops changing** yields the `converged frequency function`.
+    - Multiplying that `converged state-visitation frequency` with `reward` gives another **perspective to the `value function`**.
+      - The `value function` can now be seen as a **linear combination** of the **expected feature count** **`µ`**(`φk`)(`π`) (also called `successor feature`).
+- One common assumption:
+  -> "The solution is a **weighted linear combination** of a set of **reward features**".
+  - This greatly reduces the **search space**.
+  - > "It allowed the use of **feature expectations** as a **sufficient statistic** for representing the **value** of trajectories or the **value** of an expert’s policy."
+- Known `IRL` **issues** (and solutions):
+  - `1-` This is an **under-constrained** learning problem.
+    - > "Many reward functions **could explain** the observations".
+    - Among them, they are highly **"degenerate"** functions with **all reward values zero**.
+    - One solution is to impose **constraints** in the **optimization**.
+      - > "`mmp` makes the solution policy have **state-action visitations** that **align** with those in the expert’s demonstration."
+      - > "`maxent` distributes probability mass based on entropy but **under the constraint** of **feature expectation matching**."
+    - Other options include the use of **heuristics** and **prior domain knowledge**.
+  - `2-` Two incomplete models:
+    - `2.1-` _How to deal with incomplete/absent model of transition probabilities?_
+    - `2.2-` _How to select the_ **_reward features_**_?_
+      - > "_[One could]_ use **neural networks** as **function approximators** that avoid the **cumbersome hand-engineering** of appropriate reward features".
+    - > "These extensions share similarity with **`model-free RL`** where the `transition` model and `reward function` features are also unknown".
+  - `3-` How to deal with **noisy demonstrations**?
+    - Most approaches assume a Gaussian noise and therefore apply **Gaussian filters**.
+- _How to_ **_classify_** _`IRL` methods?_
+  - It can be useful to ask yourself **two questions**:
+    - `1-` What are the **parameters** of the **Hypothesis `R` function**`?
+      - Most approaches use the **_"linear approximation"_** and try to **estimate the weights** of the **linear combination of features**.
+    - `2-` What for **"Divergence Metric"**, i.e. how to evaluate the _discrepancy_ to the expert demonstrations?
+      - > "_[it boils down to]_ a **search** in **reward function space** that terminates when the behavior derived from the current solution **aligns** with the observed behavior."
+      - How to measure the **closeness** or the **similarity** to the expert?
+        - `1-` Compare the **policies** (i.e. the behaviour).
+          - E.g. how many <`state`, `action`> pairs are matching?
+          - > "A difference between the two policies in just one state could still have a significant impact."
+        - `2-` Compare the **value functions** (they are defined over **all states**).
+          - The authors mention the **`inverse learning error`** (`ILE`) = `||` `V`(`expert policy`) `-` `V`(`learnt policy`) `||` and the `value loss` (use as a **margin**).
+  - Classification:
+    - **`Margin-based` optimization**: Learn a reward function that explains the demonstrated policy **better than alternative policies** by a **`margin`** (address `IRL`'s **"solution ambiguity"**).
+    - **`Entropy-based` optimization**: Apply the [**"maximum entropy principle"**](https://en.wikipedia.org/wiki/Principle_of_maximum_entropy) (together with the **"feature expectations matching"** constraint) to obtain a **distribution over potential reward functions**.
+    - **`Bayesian` inference** to derive `P`(`^R`|`demonstration`).
+      - What for the **likelihood** `P`(<`s`, `a`> | `ˆR`)? This probability is proportional to the exponentiated **value function**: `exp`(`Q`[`s`, `a`]).
+    - **`Regression` and `classification`**.
+
+</details>
+
+---
+
 **`"Learning Reward Functions for Optimal Highway Merging"`**
 
 - **[** `2019` **]**
@@ -920,11 +1006,11 @@ Authors: Kuefler, A., Morton, J., Wheeler, T., & Kochenderfer, M.
 <details>
   <summary>Click to expand</summary>
 
-Authors: Weiss, E.
+Author: Weiss, E.
 
-| ![The **assumption-free** reward function that uses a **simple polynomial** form based on `state` and `action` values at each time step does better at **minimizing both `safety` and `mobility` objectives**, even though it **does not incorporate human knowledge** of typical reward function structures. About **Pareto optimum**: at these points, it becomes impossible to improve in the minimization of **one objective** without **worsening** our minimization of the **other objective**). [Source](https://arxiv.org/abs/1902.09068).](media/2019_weiss_1.PNG "The **assumption-free** reward function that uses a **simple polynomial** form based on `state` and `action` values at each time step does better at **minimizing both `safety` and `mobility` objectives**, even though it **does not incorporate human knowledge** of typical reward function structures. About **Pareto optimum**: at these points, it becomes impossible to improve in the minimization of **one objective** without **worsening** our minimization of the **other objective**). [Source](https://arxiv.org/abs/1902.09068).")  |
+| ![The **assumption-free** reward function that uses a **simple polynomial** form based on `state` and `action` values at each time step does better at **minimizing both `safety` and `mobility` objectives**, even though it **does not incorporate human knowledge** of typical reward function structures. About **Pareto optimum**: at these points, it becomes impossible to improve in the minimization of **one objective** without **worsening** our minimization of the **other objective**). [Source](https://web.stanford.edu/class/aa228/reports/2018/final101.pdf).](media/2019_weiss_1.PNG "The **assumption-free** reward function that uses a **simple polynomial** form based on `state` and `action` values at each time step does better at **minimizing both `safety` and `mobility` objectives**, even though it **does not incorporate human knowledge** of typical reward function structures. About **Pareto optimum**: at these points, it becomes impossible to improve in the minimization of **one objective** without **worsening** our minimization of the **other objective**). [Source](https://web.stanford.edu/class/aa228/reports/2018/final101.pdf).")  |
 |:--:|
-| *The **assumption-free** reward function that uses a **simple polynomial** form based on `state` and `action` values at each time step does better at **minimizing both `safety` and `mobility` objectives**, even though it **does not incorporate human knowledge** of typical reward function structures. About **Pareto optimum**: at these points, it becomes impossible to improve in the minimization of **one objective** without **worsening** our minimization of the **other objective**). [Source](https://arxiv.org/abs/1902.09068).* |
+| *The **assumption-free** reward function that uses a **simple polynomial** form based on `state` and `action` values at each time step does better at **minimizing both `safety` and `mobility` objectives**, even though it **does not incorporate human knowledge** of typical reward function structures. About **Pareto optimum**: at these points, it becomes impossible to improve in the minimization of **one objective** without **worsening** our minimization of the **other objective**). [Source](https://web.stanford.edu/class/aa228/reports/2018/final101.pdf).* |
 
 - _What?_
   - A Project from the Stanford course ([AA228/CS238 - Decision Making under Uncertainty](https://web.stanford.edu/class/aa228/cgi-bin/wp/)). Examples of student projects can be found [here](https://web.stanford.edu/class/aa228/cgi-bin/wp/old-projects/).
