@@ -1235,13 +1235,13 @@ Author: Sierra Gonzalez, D.
 <details>
   <summary>Click to expand</summary>
 
-| ![**Kernel functions** are used on the descrete state space to obtain a **smoother reward function** using **linear combination**. [Source](https://authors.library.caltech.edu/92021/1/1729881418817162.pdf).](media/2018_gao_2.PNG "**Kernel functions** are used on the descrete state space to obtain a **smoother reward function** using **linear combination**. [Source](https://authors.library.caltech.edu/92021/1/1729881418817162.pdf).")  |
+| ![**Kernel functions** are used on the descrete state space to obtain a **smooth reward function** using **linear combination**. [Source](https://authors.library.caltech.edu/92021/1/1729881418817162.pdf).](media/2018_gao_2.PNG "**Kernel functions** are used on the descrete state space to obtain a **smooth reward function** using **linear combination**. [Source](https://authors.library.caltech.edu/92021/1/1729881418817162.pdf).")  |
 |:--:|
-| ***Kernel functions** are used on the descrete state space to obtain a **smoother reward function** using **linear combination**. [Source](https://authors.library.caltech.edu/92021/1/1729881418817162.pdf).* |
+| ***Kernel functions** are used on the descrete state space to obtain a **smooth reward function** using **linear combination**. [Source](https://authors.library.caltech.edu/92021/1/1729881418817162.pdf).* |
 
-| ![As often, the **divergence metric** (to measure the "gap" between one candidate and the expert) is the **expected value function**. Example of how to use **`2` "other candidate" policies**: I am still **confused** that each of their decision is **based on a state seen by the expert**, i.e. they are not building their own full trajectory. [Source](https://authors.library.caltech.edu/92021/1/1729881418817162.pdf).](media/2018_gao_1.PNG "As often, the **divergence metric** (to measure the "gap" between one candidate and the expert) is the **expected value function**. Example of how to use **`2` "other candidate" policies**: I am still **confused** that each of their decision is **based on a state seen by the expert**, i.e. they are not building their own full trajectory. [Source](https://authors.library.caltech.edu/92021/1/1729881418817162.pdf).")  |
+| ![As often, the __divergence metric__ - to measure the `gap` between one candidate and the expert - is the __expected value function__. Example of how to use **`2` `other candidate` policies**. I am still __confused__ that each of their decision is __based on a state seen by the expert__, i.e. they are not building their own full trajectory. [Source](https://authors.library.caltech.edu/92021/1/1729881418817162.pdf).](media/2018_gao_1.PNG "As often, the __divergence metric__ - to measure the `gap` between one candidate and the expert - is the __expected value function__. Example of how to use **`2` `other candidate` policies**. I am still __confused__ that each of their decision is __based on a state seen by the expert__, i.e. they are not building their own full trajectory. [Source](https://authors.library.caltech.edu/92021/1/1729881418817162.pdf).")  |
 |:--:|
-| *As often, the **divergence metric** (to measure the "gap" between one candidate and the expert) is the **expected value function**. Example of how to use **`2` "other candidate" policies**: I am still **confused** that each of their decision is **based on a state seen by the expert**, i.e. they are not building their own full trajectory. [Source](https://authors.library.caltech.edu/92021/1/1729881418817162.pdf).* |
+| *As often, the __divergence metric__ (to measure the `gap` between one candidate and the expert) is the __expected value function__ estimated on **sampled trajectories**. Example of how to use **`2` `other candidate` policies**. I am still __confused__ that each of their decision is __based on a state seen by the expert__, i.e. they are not building their own **full trajectory**. [Source](https://authors.library.caltech.edu/92021/1/1729881418817162.pdf).* |
 
 Authors: Gao, H., Shi, G., Xie, G., & Cheng, B.
 
@@ -1249,37 +1249,45 @@ Authors: Gao, H., Shi, G., Xie, G., & Cheng, B.
   - Observe human behaviours during a "car following" task, **assume** his/her behaviour is optimal w.r.t. an **hidden reward function**, and try to **estimate** that function.
   - Strong assumption: `no lane-change`, `no overtaking`, `no traffic-light`. In other worlds, just concerned about the **longitudinal control**.
 - _Which `IRL` method?_
-  - `Maximum-margin` prediction aims to learn a reward function that **explains the demonstrated policy better than alternative policies** by a **margin**.
-  - This aims at addressing **IRL's** [**solution ambiguity**](https://arxiv.org/pdf/1806.06877.pdf).
+  - `Maximum-margin`. Prediction aim at learning a reward function that **explains the demonstrated policy better than alternative policies** by a **margin**.
+  - The **"margin"** is there to address **IRL's** [**solution ambiguity**](https://arxiv.org/pdf/1806.06877.pdf).
 - Steps:
   - `1-` Define a **simple `2d` state** space `s` = (`s0`, `s1`).
     - **`s0`** = **`ego-speed`** divided into **`15` intervals**.
     - **`s1`** = **`dist-to-leader`** divided into **`36` intervals**.
     - A **normalization** is additionally applied.
-  - `2-` Map the `2d` state with **kernel functions** (_in order to capture non-linearities ?_).
-    - **Gaussian radial kernel** functions are used.
+  - `2-` **Feature transformation**: Map the `2d` state with **kernel functions** (_in order to represent non-linearity between the `state` and the `reward`?_).
+    - I recommend this short [video](https://www.youtube.com/watch?v=RdkPVYyVOvU) about **feature transformation** using **kernel functions**.
+    - Here, **Gaussian radial kernel** functions are used:
+      - _Why "radial"?_. The **closer the state** to the **centre of the kernel**, the higher the **response of the function**. And the further you go, the larger **the response falls**.
+      - _Why "Gaussian"?_. Because the **standard deviation** defines how sharp that fall is.
     - `s0` and `s1` are **"one-hot" encoded**. And **one kernel** is computed for each **possible combination**.
     - One state `s` `=` (`s0`, `s1`) is therefore mapped to `15`*`36`=**`540`** **kernel features** **`f`**(`i`, `j`) = **K**(`s`, `s`(`i`, `j`)).
     - This represents **some distance** of the **current state** to each of the **`540` discrete states**.
   - `3-` The **one-step `reward`** is assumed to be **linear combination** of that features.
-    - A **trajectory** is a list of `states`. This can be map to a **list of `rewards`**. The discounted sum leads to the **`trajectory return`** (seen as **expected `Value function`**).
-    - One could also form **`540` lists of trajectory kernel features**. Then reduce them by **`discounted_sum()`**, leading to **`540` `s`(`i`, `j`)** per trajectory.
-      - The **`trajectory return`** is then simple the linear combination: **`theta`(`i`, `j`) `*` `f`(`i`, `j`)**.
+    - Given a policy, a **trajectory** can be constructed. This is a list of `states`. This list can be mapped to a **list of `rewards`**. The discounted sum leads to the **`trajectory return`** (seen as **expected `Value function`**).
+    - One could also form **`540` lists** for this trajectory (one per kernel features). Then reduce them by **`discounted_sum()`**, leading to **`540` `V_f`(`i`, `j`)** per trajectory.
+      - The **`trajectory return`** is then simple the linear combination: **`theta`(`i`, `j`) `*` `V_f`(`i`, `j`)**.
     - This can be computed for the **demonstrating expert**, as well as for many **policies**.
+    - Again, the task it to **tune the weights** so that the **expert results in the best values**, against all possible other policies.
   - `4-` The goal is now to find the `540` `theta`(`i`, `j`) **weights parameters** solution of the **`max-margin` objective**:
-    - Goal: [**`costly single-step deviation`**](https://ai.stanford.edu/~ang/papers/icml00-irl.pdf).
-      - Try to **maximize the smallest difference** one could find, i.e. selects the **best non-expert-policy action** and try to **maximize the difference to the expert-policy action** in each state.
+    - One goal: [**`costly single-step deviation`**](https://ai.stanford.edu/~ang/papers/icml00-irl.pdf).
+      - Try to **maximize the smallest difference** one could find.
+        - I.e. select the **best non-expert-policy action** and try to **maximize the difference to the expert-policy action** in each state.
         - **`max`**[over `theta`] **`min`**[over `π`] of the `sum`[over `i`, `j`] of **`theta`**(`i`, `j`) `*` [**`f_candidate`**(`i`, `j`) - **`f_expert`**(`i`, `j`)].
       - As often the `value function` serves as **"divergence metric"**.
-    - Side **heuristic** (to remove **_degenerate_** solutions): _"The reward functions with_ **_many small rewards_** are **_more natural_** _and should be preferred"._
-      - Hence a **regularization constraint** (_a constraint, not a loss!_) on the `theta`(`i`, `j`).
-    - The optimization problem with **strict constraint** is transformed into an optimization problem with **"inequality" constraint**. As I understood, that **relaxes the linear assumption**.
-    - an be solved by **Lagrange multiplier**
+    - One side **heuristic** to remove **_degenerate_** solutions:
+      - > _"The reward functions with_ **_many small rewards_** are **_more natural_** _and should be preferred"._ from [here](https://thinkingwires.com/posts/2018-02-13-irl-tutorial-1.html).
+      - Hence a **regularization constraint** (_a constraint, not a loss like `L1`!_) on the `theta`(`i`, `j`).
+    - The optimization problem with **strict constraint** is transformed into an optimization problem with **"inequality" constraint**.
+      - **Violating constraints** is allowed by **penalized**.
+      - As I understood from my [readings](https://thinkingwires.com/posts/2018-02-13-irl-tutorial-1.html), that **relaxes the linear assumption** in the case the true `reward function` cannot be expressed as a linear combination of the fixed basis functions.
+    - The resulting system of equations can be solved with **Lagrange multipliers**.
   - `5-` Once the `theta`(`i`, `j`) are estimated, the `R` can be expressed.
 - About the other **policy "candidates"**:
   - > "For each optimal car-following state, one of the other car-following **actions** is **randomly selected** for the solution".
   - In other words, in `V`(**`expert`**) `>` `V`(**`other_candidates`**) goal, "`other_candidates`" refers to **random policies**.
-  - It would have been interesting to have **"better" competitors**, for instance **optional w.r.t. the current estimate of `R` function**. E.g. **learnt with `RL`** algorithms.
+  - It would have been interesting to have **"better" competitors**, for instance policies that are **optional w.r.t. the current estimate of `R` function**. E.g. **learnt with `RL`** algorithms.
     - That would lead to an **iterative** process that stops when **`R` converges**.
 
 </details>
