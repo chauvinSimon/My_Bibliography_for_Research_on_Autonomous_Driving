@@ -944,9 +944,14 @@ Authors: Arora, S., & Doshi, P.
       - **Core assumption**: Each driver has an **internal reward function** and **acts optimally** w.r.t. it.
       - The main task it to learn that **reward function** (`IRL`), which captures the expert's preferences.
       - The second step consists in **deriving the optimal policy** for this derived reward function.
+        > As Ng and Russell put it: "The `reward function`, rather than the `policy`, is **the most succinct, robust, and transferable definition of the task**"
   - _What happens if some states are_ **_missing in the demonstration_**_?_
     - `1-` **Direct methods** will not know what to do. And will try to **interpolate** from similar states. This could be risky. (c.f. `distributional shift` problem and `DAgger`).
-    - `2-` `IRL` methods acts **optimally** w.r.t. the underlying reward function, which _could_ be better.
+      - > "If a policy is used to **describe a task**, it will be **less succinct** since **for each state** we have to give a description of what the behaviour should look like". From [this post](https://thinkingwires.com/posts/2018-02-13-irl-tutorial-1.html)
+    - `2-` `IRL` methods acts **optimally** w.r.t. the underlying reward function, which _could_ be better, since it is **more robust**.
+      - This is particularly useful if we have an expert policy that is **only approximately optimal**.
+      - In other words, a policy that is better than the "expert" can be derived, while having very **little exploration**. This **"minimal exploration"** property is useful for tasks such as `AD`.
+      - This is [sometimes](https://thegradient.pub/learning-from-humans-what-is-inverse-reinforcement-learning/) refers to as `Apprenticeship learning`.
 - One new concept I learnt: **`State-visitation frequency`** (it reminds me some concepts of _Markov chains_).
   - Take a **policy `π`**. Let run the agent with it. Count how **often it sees each state**. This is called the `state-visitation frequency` (note it is for **specific `π`**).
   - Two ideas from there:
@@ -962,9 +967,10 @@ Authors: Arora, S., & Doshi, P.
     - > "Many reward functions **could explain** the observations".
     - Among them, they are highly **"degenerate"** functions with **all reward values zero**.
     - One solution is to impose **constraints** in the **optimization**.
+      - For instance try to maximize the sum of **"value-margins"**, i.e. the difference between the value functions of the best and the second-best actions.
       - > "`mmp` makes the solution policy have **state-action visitations** that **align** with those in the expert’s demonstration."
       - > "`maxent` distributes probability mass based on entropy but **under the constraint** of **feature expectation matching**."
-    - Other options include the use of **heuristics** and **prior domain knowledge**.
+    - Another common constraint is to **encourage** the reward function to **be as simple as possible**,  similar to **`L1` regularization** in supervised learning.
   - `2-` Two incomplete models:
     - `2.1-` _How to deal with incomplete/absent model of transition probabilities?_
     - `2.2-` _How to select the_ **_reward features_**_?_
@@ -986,6 +992,7 @@ Authors: Arora, S., & Doshi, P.
           - The authors mention the **`inverse learning error`** (`ILE`) = `||` `V`(`expert policy`) `-` `V`(`learnt policy`) `||` and the `value loss` (use as a **margin**).
   - Classification:
     - **`Margin-based` optimization**: Learn a reward function that explains the demonstrated policy **better than alternative policies** by a **`margin`** (address `IRL`'s **"solution ambiguity"**).
+      - The intuition here is that we want a reward function that **clearly distinguishes** the optimal policy from other possible policies.
     - **`Entropy-based` optimization**: Apply the [**"maximum entropy principle"**](https://en.wikipedia.org/wiki/Principle_of_maximum_entropy) (together with the **"feature expectations matching"** constraint) to obtain a **distribution over potential reward functions**.
     - **`Bayesian` inference** to derive `P`(`^R`|`demonstration`).
       - What for the **likelihood** `P`(<`s`, `a`> | `ˆR`)? This probability is proportional to the exponentiated **value function**: `exp`(`Q`[`s`, `a`]).
@@ -1217,6 +1224,68 @@ Author: Sierra Gonzalez, D.
 
 ---
 
+**`"Car-following method based on inverse reinforcement learning for autonomous vehicle decision-making"`**
+
+- **[** `2018` **]**
+**[[:memo:](https://authors.library.caltech.edu/92021/1/1729881418817162.pdf)]**
+**[** :mortar_board: `Tsinghua University, California Institute of Technology, Hunan University` **]**
+
+- **[** _`maximum-margin IRL`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![**Kernel functions** are used on the descrete state space to obtain a **smoother reward function** using **linear combination**. [Source](https://authors.library.caltech.edu/92021/1/1729881418817162.pdf).](media/2018_gao_2.PNG "**Kernel functions** are used on the descrete state space to obtain a **smoother reward function** using **linear combination**. [Source](https://authors.library.caltech.edu/92021/1/1729881418817162.pdf).")  |
+|:--:|
+| ***Kernel functions** are used on the descrete state space to obtain a **smoother reward function** using **linear combination**. [Source](https://authors.library.caltech.edu/92021/1/1729881418817162.pdf).* |
+
+| ![As often, the **divergence metric** (to measure the "gap" between one candidate and the expert) is the **expected value function**. Example of how to use **`2` "other candidate" policies**: I am still **confused** that each of their decision is **based on a state seen by the expert**, i.e. they are not building their own full trajectory. [Source](https://authors.library.caltech.edu/92021/1/1729881418817162.pdf).](media/2018_gao_1.PNG "As often, the **divergence metric** (to measure the "gap" between one candidate and the expert) is the **expected value function**. Example of how to use **`2` "other candidate" policies**: I am still **confused** that each of their decision is **based on a state seen by the expert**, i.e. they are not building their own full trajectory. [Source](https://authors.library.caltech.edu/92021/1/1729881418817162.pdf).")  |
+|:--:|
+| *As often, the **divergence metric** (to measure the "gap" between one candidate and the expert) is the **expected value function**. Example of how to use **`2` "other candidate" policies**: I am still **confused** that each of their decision is **based on a state seen by the expert**, i.e. they are not building their own full trajectory. [Source](https://authors.library.caltech.edu/92021/1/1729881418817162.pdf).* |
+
+Authors: Gao, H., Shi, G., Xie, G., & Cheng, B.
+
+- One idea: A simple and "educationally relevant" application to `IRL`.
+  - Observe human behaviours during a "car following" task, **assume** his/her behaviour is optimal w.r.t. an **hidden reward function**, and try to **estimate** that function.
+  - Strong assumption: `no lane-change`, `no overtaking`, `no traffic-light`. In other worlds, just concerned about the **longitudinal control**.
+- _Which `IRL` method?_
+  - `Maximum-margin` prediction aims to learn a reward function that **explains the demonstrated policy better than alternative policies** by a **margin**.
+  - This aims at addressing **IRL's** [**solution ambiguity**](https://arxiv.org/pdf/1806.06877.pdf).
+- Steps:
+  - `1-` Define a **simple `2d` state** space `s` = (`s0`, `s1`).
+    - **`s0`** = **`ego-speed`** divided into **`15` intervals**.
+    - **`s1`** = **`dist-to-leader`** divided into **`36` intervals**.
+    - A **normalization** is additionally applied.
+  - `2-` Map the `2d` state with **kernel functions** (_in order to capture non-linearities ?_).
+    - **Gaussian radial kernel** functions are used.
+    - `s0` and `s1` are **"one-hot" encoded**. And **one kernel** is computed for each **possible combination**.
+    - One state `s` `=` (`s0`, `s1`) is therefore mapped to `15`*`36`=**`540`** **kernel features** **`f`**(`i`, `j`) = **K**(`s`, `s`(`i`, `j`)).
+    - This represents **some distance** of the **current state** to each of the **`540` discrete states**.
+  - `3-` The **one-step `reward`** is assumed to be **linear combination** of that features.
+    - A **trajectory** is a list of `states`. This can be map to a **list of `rewards`**. The discounted sum leads to the **`trajectory return`** (seen as **expected `Value function`**).
+    - One could also form **`540` lists of trajectory kernel features**. Then reduce them by **`discounted_sum()`**, leading to **`540` `s`(`i`, `j`)** per trajectory.
+      - The **`trajectory return`** is then simple the linear combination: **`theta`(`i`, `j`) `*` `f`(`i`, `j`)**.
+    - This can be computed for the **demonstrating expert**, as well as for many **policies**.
+  - `4-` The goal is now to find the `540` `theta`(`i`, `j`) **weights parameters** solution of the **`max-margin` objective**:
+    - Goal: [**`costly single-step deviation`**](https://ai.stanford.edu/~ang/papers/icml00-irl.pdf).
+      - Try to **maximize the smallest difference** one could find, i.e. selects the **best non-expert-policy action** and try to **maximize the difference to the expert-policy action** in each state.
+        - **`max`**[over `theta`] **`min`**[over `π`] of the `sum`[over `i`, `j`] of **`theta`**(`i`, `j`) `*` [**`f_candidate`**(`i`, `j`) - **`f_expert`**(`i`, `j`)].
+      - As often the `value function` serves as **"divergence metric"**.
+    - Side **heuristic** (to remove **_degenerate_** solutions): _"The reward functions with_ **_many small rewards_** are **_more natural_** _and should be preferred"._
+      - Hence a **regularization constraint** (_a constraint, not a loss!_) on the `theta`(`i`, `j`).
+    - The optimization problem with **strict constraint** is transformed into an optimization problem with **"inequality" constraint**. As I understood, that **relaxes the linear assumption**.
+    - an be solved by **Lagrange multiplier**
+  - `5-` Once the `theta`(`i`, `j`) are estimated, the `R` can be expressed.
+- About the other **policy "candidates"**:
+  - > "For each optimal car-following state, one of the other car-following **actions** is **randomly selected** for the solution".
+  - In other words, in `V`(**`expert`**) `>` `V`(**`other_candidates`**) goal, "`other_candidates`" refers to **random policies**.
+  - It would have been interesting to have **"better" competitors**, for instance **optional w.r.t. the current estimate of `R` function**. E.g. **learnt with `RL`** algorithms.
+    - That would lead to an **iterative** process that stops when **`R` converges**.
+
+</details>
+
+---
+
 **`"A Human-like Trajectory Planning Method by Learning from Naturalistic Driving Data"`**
 
 - **[** `2018` **]**
@@ -1228,8 +1297,6 @@ Author: Sierra Gonzalez, D.
 
 <details>
   <summary>Click to expand</summary>
-
-One figure:
 
 | ![[Source](https://ieeexplore.ieee.org/document/8500448).](media/2018_he.PNG "[Source](https://ieeexplore.ieee.org/document/8500448).")  |
 |:--:|
