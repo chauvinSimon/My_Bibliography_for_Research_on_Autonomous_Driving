@@ -909,6 +909,39 @@ Authors: Kuefler, A., Morton, J., Wheeler, T., & Kochenderfer, M.
 
 ---
 
+**`"Predicting vehicle trajectories with inverse reinforcement learning"`**
+
+- **[** `2019` **]**
+**[[:memo:](https://kth.diva-portal.org/smash/get/diva2:1366887/FULLTEXT01.pdf)]**
+**[** :mortar_board: `KTH` **]**
+- **[** _`max-margin`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+Author: Hjaltason, B.
+
+| ![The `φ` are **distances read from the origin of a vision field** and are represented by red dotted lines. They take value in [`0`, `1`], where `φi` = `1` means the dotted line does not hit any object and `φi` = `0` means it hits an object at origin. In this case, **two objects are inside the front vision field**. Hence `φ1` = `0.4` and `φ2` = `0.6`.. [Source](https://kth.diva-portal.org/smash/get/diva2:1366887/FULLTEXT01.pdf).](media/2019_hjaltason_1.PNG "The `φ` are **distances read from the origin of a vision field** and are represented by red dotted lines. They take value in [`0`, `1`], where `φi` = `1` means the dotted line does not hit any object and `φi` = `0` means it hits an object at origin. In this case, **two objects are inside the front vision field**. Hence `φ1` = `0.4` and `φ2` = `0.6`.. [Source](https://kth.diva-portal.org/smash/get/diva2:1366887/FULLTEXT01.pdf).")  |
+|:--:|
+| *About the **features**: The `φ` are **distances read from the origin of a vision field** and are represented by red dotted lines. They take value in [`0`, `1`], where `φi` = `1` means the dotted line does not hit any object and `φi` = `0` means it hits an object at origin. In this case, **two objects are inside the front vision field**. Hence `φ1` = `0.4` and `φ2` = `0.6`. [Source](https://kth.diva-portal.org/smash/get/diva2:1366887/FULLTEXT01.pdf).* |
+
+| ![Example of `max-margin` `IRL`. [Source](https://kth.diva-portal.org/smash/get/diva2:1366887/FULLTEXT01.pdf).](media/2019_hjaltason_2.PNG "Example of `max-margin` `IRL`. [Source](https://kth.diva-portal.org/smash/get/diva2:1366887/FULLTEXT01.pdf).")  |
+|:--:|
+| *Example of **`max-margin`** `IRL`. [Source](https://kth.diva-portal.org/smash/get/diva2:1366887/FULLTEXT01.pdf).* |
+
+- A good example of **max-margin `IRL`**:
+  - > "There are two classes: The **expert behaviour from data** gets a label of **`1`**, and the **"learnt" behaviours** a label of **`-1`**. The framework performs a **`max-margin` optimization** step to maximise the difference between both classes. The result is an **orthogonal vector `wi`** from the max margin hyperplane, **orthogonal to the estimated expert feature vector `µ(πE)`**".
+  - From this new `R=w*f`, an **optimal policy** is derived using `DDPG`.
+  - **Rollouts** are performed to get an **estimated feature vector** that is added to the set of "learnt" behaviours.
+  - The process is repeated until convergence (when the estimated values `w*µ(π)` are close enough).
+- Note about the reward function:
+  - Here, **r(`s, a, s'`)** is also function of the action and the next state.
+  - Here a [post](https://thinkingwires.com/posts/2018-02-11-reward-function-domain.html) about different forms of reward functions.
+
+</details>
+
+---
+
 **`"A Survey of Inverse Reinforcement Learning: Challenges, Methods and Progress"`**
 
 - **[** `2019` **]**
@@ -953,7 +986,7 @@ Authors: Arora, S., & Doshi, P.
       - In other words, a policy that is better than the "expert" can be derived, while having very **little exploration**. This **"minimal exploration"** property is useful for tasks such as `AD`.
       - This is [sometimes](https://thegradient.pub/learning-from-humans-what-is-inverse-reinforcement-learning/) refers to as `Apprenticeship learning`.
 - One new concept I learnt: **`State-visitation frequency`** (it reminds me some concepts of _Markov chains_).
-  - Take a **policy `π`**. Let run the agent with it. Count how **often it sees each state**. This is called the `state-visitation frequency` (note it is for **specific `π`**).
+  - Take a **policy `π`**. Let run the agent with it. Count how **often it sees each state**. This is called the `state-visitation frequency` (note it is for a **specific `π`**).
   - Two ideas from there:
     - **Iterating** until this `state-visitation frequency` **stops changing** yields the `converged frequency function`.
     - Multiplying that `converged state-visitation frequency` with `reward` gives another **perspective to the `value function`**.
