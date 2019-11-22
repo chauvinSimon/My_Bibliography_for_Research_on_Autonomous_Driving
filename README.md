@@ -909,6 +909,48 @@ Authors: Kuefler, A., Morton, J., Wheeler, T., & Kochenderfer, M.
 
 ---
 
+**`"Adversarial Inverse Reinforcement Learning for Decision Making in Autonomous Driving"`**
+
+- **[** `2019` **]**
+**[[:memo:](https://arxiv.org/abs/1911.08044)]**
+**[** :mortar_board: `Berkeley, Chalmers University, Peking University` **]**
+**[** :car: `Zenuity` **]**
+- **[** _`GAIL`, `AIRL`, `action-masking`, `augmented reward function`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+Author: Wang, P., Liu, D., Chen, J., & Chan, C.-Y.
+
+In Adversarial `IRL` (`AIRL`), the discriminator tries to distinguish learnt actions from demonstrated expert actions. Action masking is applied, removing some combinations that are not preferable, in order to reduce the **unnecessary exploration**. Finally, the reward function of the discriminator is extended with some manually-designed **semantic reward** to help the agent successfully complete the lane change and not to collide with other objects.
+
+| ![aaa. [Source](https://arxiv.org/abs/1911.08044).](media/2019_wang_1.PNG "aaa. [Source](https://arxiv.org/abs/1911.08044).")  |
+|:--:|
+| *aaa. [Source](https://arxiv.org/abs/1911.08044).* |
+
+- One related concept _(detailed further on this page)_: **Generative Adversarial Imitation Learning** (**`GAIL`**).
+  - An **imitation learning** method where the goal is to **learn a policy** against a **discriminator** that tries to distinguish learnt actions from expert actions.
+- Another concept used here: **Guided Cost Learning** (**`GCL`**).
+  - A **`Max-Entropy` `IRL` method** that makes use of **importance sampling** (`IS`) to approximate the **partition function** (the term in the gradient of the log-likelihood function that is **hard to compute** since it involves an **integral of over all possible trajectories**).
+- One concept introduced: **Adversarial Inverse Reinforcement Learning** (**`AIRL`**).
+  - It **combines `GAIL` with `GCL` formulation**.
+    - > "It uses a special form of the **discriminator** different from that used in `GAIL`, and **recovers a cost function and a policy simultaneously** as that in `GCL` but in an **adversarial way**."
+  - Another difference is the use of a **model-free `RL` method** to compute the new optimal policy, instead of **model-based** `guided policy search` (`GPS`) used in `GCL`:
+    - > "As the **dynamic driving environment** is too complicated to learn for the driving task, we instead use a **model-free** policy optimization method."
+  - One motivation of `AIRL` is therefore to cope with **changes in the dynamics** of environment and make the learnt policy **more robust** to **system noises**.
+- One idea: **Augment the learned reward** with some **_"semantic reward"_** term to improve **learning efficiency**.
+  - The motivation is to manually **embed some domain knowledge**, in the **generator reward function**.
+  - > "This should provide the agent **some informative guidance** and assist it to **learn fast**."
+- About the task:
+  - > "The task of our focus includes a `longitudinal` decision – the **selection of a target gap** - and a `lateral` decision – whether to **commit the lane change** right now."
+  - It is a rather **"high-level"** decision:
+    - A **low-level controller**, consisting of a `PID` for lateral control and `sliding-mode` for longitudinal control, is the use to **execute the decision**.
+  - The authors use some **`action-masking` technics** where only valid action pairs are allowed to reduce the **agent’s unnecessary exploration**.
+
+</details>
+
+---
+
 **`"Predicting vehicle trajectories with inverse reinforcement learning"`**
 
 - **[** `2019` **]**
