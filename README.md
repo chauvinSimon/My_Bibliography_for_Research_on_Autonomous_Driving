@@ -922,11 +922,9 @@ Authors: Kuefler, A., Morton, J., Wheeler, T., & Kochenderfer, M.
 
 Author: Wang, P., Liu, D., Chen, J., & Chan, C.-Y.
 
-In Adversarial `IRL` (`AIRL`), the discriminator tries to distinguish learnt actions from demonstrated expert actions. Action masking is applied, removing some combinations that are not preferable, in order to reduce the **unnecessary exploration**. Finally, the reward function of the discriminator is extended with some manually-designed **semantic reward** to help the agent successfully complete the lane change and not to collide with other objects.
-
-| ![aaa. [Source](https://arxiv.org/abs/1911.08044).](media/2019_wang_1.PNG "aaa. [Source](https://arxiv.org/abs/1911.08044).")  |
+| ![In Adversarial `IRL` (`AIRL`), the discriminator tries to distinguish learnt actions from demonstrated expert actions. Action masking is applied, removing some combinations that are not preferable, in order to reduce the **unnecessary exploration**. Finally, the reward function of the discriminator is extended with some manually-designed **semantic reward** to help the agent successfully complete the lane change and not to collide with other objects. [Source](https://arxiv.org/abs/1911.08044).](media/2019_wang_1.PNG "In Adversarial `IRL` (`AIRL`), the discriminator tries to distinguish learnt actions from demonstrated expert actions. Action masking is applied, removing some combinations that are not preferable, in order to reduce the **unnecessary exploration**. Finally, the reward function of the discriminator is extended with some manually-designed **semantic reward** to help the agent successfully complete the lane change and not to collide with other objects. [Source](https://arxiv.org/abs/1911.08044).")  |
 |:--:|
-| *aaa. [Source](https://arxiv.org/abs/1911.08044).* |
+| *In Adversarial `IRL` (`AIRL`), the **discriminator** tries to distinguish learnt actions from demonstrated expert actions. `Action-masking` is applied, removing some `action` combinations that are not preferable, in order to reduce the **unnecessary exploration**. Finally, the reward function of the discriminator is extended with some **manually-designed** **semantic reward** to help the agent successfully complete the lane change and not to collide with other objects. [Source](https://arxiv.org/abs/1911.08044).* |
 
 - One related concept _(detailed further on this page)_: **Generative Adversarial Imitation Learning** (**`GAIL`**).
   - An **imitation learning** method where the goal is to **learn a policy** against a **discriminator** that tries to distinguish learnt actions from expert actions.
