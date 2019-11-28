@@ -333,7 +333,7 @@ Authors: Chen, D., Zhou, B., Koltun, V. & Krähenbühl, P
   - Input: Monocular `RGB` image, current `speed`, and a high-level `navigation command`.
   - Output: A list of **waypoints**.
   - Goal: Imitate the **privileged agent**.
-- One idea: **"White-box_"** agent:
+- One idea: **"White-box"** agent:
   - The **internal state** of the `privileged` agent can be examined at will.
     - Based on that, one could **test different high-level commands**: _"What would you do now if the command was [`follow-lane`] [`go left`] [`go right`] [`go straight`]"_.
   - This relates to `conditional IL`: all **conditional** branches are **supervised** during training.
@@ -1134,7 +1134,7 @@ Authors: Tian, R., Li, N., Kolmanovsky, I., Yildiz, Y., & Girard, A.
 
 - Addressed problem: **unsignalized intersections** with **heterogenous driving styles** (`k` in [`0`, `1`, `2`])
   - The problem is formulated using the **level-`k`** game-theory formalism _(See analysed related works for more details)_.
-- One idea: use **imitation learning** (`IL`) to obtain an **explicit level-`k` control poli  cy**.
+- One idea: use **imitation learning** (`IL`) to obtain an **explicit level-`k` control policy**.
   - A level-`k` policy is a mapping `pi`: <**`ego state`**, **`other's states`**, **`ego k`**> `->` <**`sequence of ego actions`**>.
   - The ego-agent **maintains belief over the level `k`** of other participants. These estimates are updated using _maximum likelihood_ and _Bayes rule_.
   - A first attempt with **supervised learning on a fix dataset** (_`behavioural cloning`_) was not satisfying enough due to its **drift shortcomings**:
@@ -1278,7 +1278,7 @@ Author: Sierra Gonzalez, D.
 - Related work: there are close concepts to the approach of `(Kuderer et al., 2015)` referenced below.
 - One idea: **encode the driving preferences** of a human driver with a **reward function** (or **cost function**), mentioning a quote from Abbeel, Ng and Russell:
 
-> “The reward function, rather than the policy or the value function, is the most succinct, robust, and transferable definition of a task”.
+> “The reward function, rather than the policy or the value function, is the most **succinct**, **robust**, and **transferable** definition of a task”.
 
 - Other ideas:
   - Use IRL to **avoid the manual tuning** of the parameters of the reward model. Hence learn a cost/reward function from demonstrations.
@@ -1332,8 +1332,8 @@ Authors: Gao, H., Shi, G., Xie, G., & Cheng, B.
   - `2-` **Feature transformation**: Map the `2d` **continuous state** to a finite number of **features** using **kernel functions**.
     - I recommend this short [video](https://www.youtube.com/watch?v=RdkPVYyVOvU) about **feature transformation** using **kernel functions**.
     - Here, **Gaussian radial kernel** functions are used:
-      - _Why "radial"?_. The **closer the state** to the **centre of the kernel**, the higher the **response of the function**. And the further you go, the larger **the response "falls"**.
-      - _Why "Gaussian"?_. Because the **standard deviation** describes how sharp that "fall" is.
+      - _Why "radial"?_ The **closer the state** to the **centre of the kernel**, the higher the **response of the function**. And the further you go, the larger **the response "falls"**.
+      - _Why "Gaussian"?_ Because the **standard deviation** describes how sharp that "fall" is.
       - Note that this functions are **`2d`**: `mean` = (the **centre of one `speed` interval**, the **centre of one `dist` interval**).
     - The distance of the continuous state `s` `=` (`s0`, `s1`) to each of the `15`*`36`=**`540`** `means` `s`(`i`, `j`) can be computed.
     - This gives **`540`** **kernel features** **`f`**(`i`, `j`) = **K**(`s`, `s`(`i`, `j`)).
@@ -1766,7 +1766,7 @@ Author: Sierra Gonzalez, D.
 - As I understood, the main idea here is to **combine prediction techniques** (and their advantages).
   - The **driver-models** (i.e. the reward functions previously learnt with IRL) can be used to identify the most likely, risk-aversive, anticipatory manoeuvres. This is called the `model-based` prediction by the author since it relies on one _model_.
     - But relying only on **driver models** to predict the behaviour of surrounding traffic might fail to predict dangerous manoeuvres.
-    - As stated, _"the model-based method is not a reliable alternative for the_ **_short-term_** estimation of behaviour, since it cannot predict_ **_dangerous actions that deviate_** _from_ **_what is encoded in the model_**_"_.
+    - As stated, _"the model-based method is not a reliable alternative for the_ **_short-term_** _estimation of behaviour, since it cannot predict_ **_dangerous actions that deviate_** _from_ **_what is encoded in the model_**_"_.
     - One solution is to add a term that represents **how the observed movement of the target _matches_ a given maneuver**.
     - In other words, to **consider the noisy observation of the dynamics of the targets** and include these so-called `dynamic evidence` into the prediction.
 
@@ -2048,6 +2048,76 @@ Author: Noh, S.
 ---
 
 ## `Model-Free` `Reinforcement Learning`
+
+---
+
+**`"End-to-End Model-Free Reinforcement Learning for Urban Driving using Implicit Affordances"`**
+
+- **[** `2019` **]**
+**[[:memo:](https://arxiv.org/abs/1911.10868)]**
+**[[🎞️](https://www.youtube.com/watch?v=YlCJ84VO3cU)]**
+**[** :mortar_board: `Mines ParisTech` **]**
+**[** :car: `Valeo` **]**
+
+- **[** _`affordance learning`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![ An **encoder** is trained to predict **high-level information** (called **`affordances`**). The `RL` agent does not use directly them as input `state` but rather one layer before (hence **`implicit`** affordances). This **compact representation** offers benefits for **interpretability**, and for **training efficiency** (lighter to save in the replay buffer). A **command** {`follow lane`, turn `left`/`right`/`straight`, change lane `left`/`right`} for **direction at intersection** and **lane changes** is passed to the agent via a **conditional branch**. [Source](https://arxiv.org/abs/1911.10868).](media/2019_toromanoff_1.PNG " An **encoder** is trained to predict **high-level information** (called **`affordances`**). The `RL` agent does not use directly them as input `state` but rather one layer before (hence **`implicit`** affordances). This **compact representation** offers benefits for **interpretability**, and for **training efficiency** (lighter to save in the replay buffer). A **command** {`follow lane`, turn `left`/`right`/`straight`, change lane `left`/`right`} for **direction at intersection** and **lane changes** is passed to the agent via a **conditional branch**. [Source](https://arxiv.org/abs/1911.10868).")  |
+|:--:|
+| *An **encoder** is trained to predict **high-level information** (called **`affordances`**). The `RL` agent does not use directly them as input `state` but rather one layer before (hence **`implicit`** affordances). This **compact representation** offers benefits for **interpretability**, and for **training efficiency** (lighter to save in the replay buffer). A **command** {`follow lane`, turn `left`/`right`/`straight`, change lane `left`/`right`} for **direction at intersection** and **lane changes** is passed to the agent via a __conditional branch__. [Source](https://arxiv.org/abs/1911.10868).* |
+
+| ![ **Augmentation** is needed for robustness and generalization (to address the **distribution mismatch** - also in `IL`) (_left_). Here, the **camera is moved around** the autopilot. One main finding is the benefit of using **adaptive target speed** in the reward function (_right_). [Source](https://arxiv.org/abs/1911.10868).](media/2019_toromanoff_2.PNG " **Augmentation** is needed for robustness and generalization (to address the **distribution mismatch** - also in `IL`) (_left_). Here, the **camera is moved around** the autopilot. One main finding is the benefit of using **adaptive target speed** in the reward function (_right_). [Source](https://arxiv.org/abs/1911.10868).")  |
+|:--:|
+| *__Augmentation__ is needed for robustness and generalization (to address the **distribution mismatch** - also in `IL`) (_left_). Here, the **camera is moved around** the autopilot. One main finding is the benefit of using **adaptive target speed** in the reward function (_right_). [Source](https://arxiv.org/abs/1911.10868).* |
+
+Authors: Toromanoff, M., Wirbel, E., & Moutarde, F.
+
+- One quote:
+  - > "A promising way to solve both the **data efficiency** (particularly for DRL) and the **black box problem** is to use **privileged information** as **auxiliary losses**, also coined **"affordances"** in some recent papers."
+- One idea: The **`state`** of the `RL` agent are **affordance predictions** produced by a separated network.
+  - `1-` An **encoder** in trained in a **supervised way** to predict **high-level information**, using a **stack of images** as input.
+    - Two main losses for this supervised phase:
+      - `1-` **Traffic light state** (binary classification).
+      - `2-` **semantic segmentation**.
+    - Infordances inclues:
+      - Semantic segmentation maps _(ground-truth available directly in CARLA)_.
+      - Distance and state of the incoming traffic light.
+      - Whether the agent is at an intersection or not.
+      - Distance from the middle of the lane.
+      - Relative rotation to the road.
+    - Why **_"implicit"_** affordance?
+      - > "We coined this scheme as **"implicit affordances"** because the RL agent **implicit affordances** because the RL agent do not use the **_explicit_** predictions but have only access to the **_implicit_** features (i.e the features from which our initial supervised network predicts the explicit affordances)."
+      - Hence multiple affordances are predicted in order to **help the supervised training** (similar to `auxiliary learning`).
+    - This feature extractor is **frozen** while training the `RL` agent.
+  - `2-` These predicted affordances serve as **input** to a **model-free** `RL` agent.
+    - The dueling network of the `Rainbow- IQN Ape-X` architecture was removed (very big in size and no clear improvement).
+    - Training is **distributed**:
+      - > "CARLA is too slow for RL and cannot generate enough data if only one instance is used."
+    - Despite being limited to **discrete actions** (`4` for `throttle`/`brake` and `9`-`24` for `steering`), it shows very good results.
+      - > "We also use a really simple yet effective trick: we can reach **more fine-grained discrete actions** by using a **bagging of multiple** [_here `3` consecutive_] **predictions** and average them."
+    - **Frequency** of decision is not mentioned.
+  - Benefits of this architecture:
+    - Affordances features are way **lighter** compared to images, which enables the use of a **replay buffer** (off-policy).
+      - All the more, since the images are bigger than usual (`4` **`288`x`288`** frames are concatenated, compared to "classical" single `84`x`84` frames) in order to **capture the state of traffic lights**.
+    - This **decomposition** also brings some **interpretable feedback** on how the decision was taken (affordances could also be used as input of a _rule-based_ controller).
+  - This `2`-stage approach reminds me the concept **`"learn to see"` / `"learn to act"`** concept of (Chen et al. 2019) in `"Learning by Cheating"`.
+    - > "As expected, these experiments prove that **training a large network using only `RL` signal is hard**".
+
+- About **"model-free"** `RL`.
+  - As opposed to (Pan et al. 2019) where a network is also trained to predict high-level information. But these affordances rather relate to the **transition model**, such as **probability of collision** or **being off-road** in the near futures from a **sequence of observations and actions**.
+- About the **reward** function:
+  - It relies on `3` components:
+    - `1-` Desired **`lateral position`**.
+      - To stay in the **middle of the lane**.
+    - `2-` Desired **`rotation`**.
+      - To prevent **oscillations** near the center of lane.
+    - `3-` Desired **`speed`**, which is **adaptive**.
+      - > "When the agent arrives near a red traffic light, the **desired speed goes linearly to `0`** (the closest the agent is from the traffic light), and **goes back to maximum allowed speed when it turns green**. The same principle is used when arriving behind an **obstacle**, **pedestrian**, **bicycle** or **vehicle**."
+      - The authors find that **without this adaptation**, the agent **fails totally** at braking for both cases of red traffic light or pedestrian crossing.
+
+</details>
 
 ---
 
@@ -2658,7 +2728,7 @@ Authors: Tram, T., Batkovic, I., Ali, M., & Sjöberg, J.
 - Previous works:
   - [_"Learning Negotiating Behavior Between Cars in Intersections using Deep Q-Learning"_](http://arxiv.org/abs/1810.10469) - (Tram, Batkovic, Ali, & Sjöberg, 2019)
   - [_"Autonomous Driving in Crossings using Reinforcement Learning"_](https://pdfs.semanticscholar.org/fba5/6bac9a41b7baa2671355aa113462d2044fb7.pdf) - (Jansson & Grönberg, 2017)
-  - In particular they reused the concept of **_"actions as Short Term Goals (`STG`)"_**. e.g. _keep set speed or yield for crossing car_ instead of some numerical acceleration outputs.
+  - In particular they reused the concept of **_"actions as Short Term Goals (`STG`)"_**. e.g. _keep set speed_ or _yield for crossing car_ instead of some numerical acceleration outputs.
     - This allows for **comfort** on actuation and **safety** to be **tuned separately**, reducing the policy selection to a classification problem.
     - The use of such abstracted / high-level decisions could be a first step toward **hierarchical RL** techniques (`macro-action` and `option` framework).
   - Another contribution consists in replacing the **Sliding Mode** (**`SM`**) controller used previously by an `MPC`, allegedly to _"achieve safer actuation by using constraints"_.
@@ -3056,7 +3126,7 @@ Authors: Baheri, A., Kolmanovsky, I., Girard, A., Tseng, E., & Filev, D.
 - One idea about the **continuous** action space:
   - > "We combine the acceleration and brake commands into a **single value** between `−1` to `+1`, where the values between `−1` and `0` correspond to the brake command and the values between `0` and `1` correspond to the acceleration command".
   - The authors use the term _"acceleration command"_ for one of the actions. CARLA works with `throttle`, as human use the gas-pedal.
-  - I have realized that the mapping `acceleration` `->` `throttle` is very complex. Therefore I think the agent is leaning the `throttle` and considering the **single NN layer** used for the controller, this may be quite challenging.
+  - I have realized that the mapping `acceleration` `->` `throttle` is very complex. Therefore I think the agent is learning the `throttle` and considering the **single NN layer** used for the controller, this may be quite challenging.
 - About the [`CMA-ES`](https://en.wikipedia.org/wiki/CMA-ES):
   - `ES` means "Evolution Strategy", i.e. an optimization technique based on ideas of evolution, iterating between of `variation` (via `recombination` and `mutation`) and `selection`.
     - `ES` is easy to **implement**, easy to **scale**, very fast if **parallelized** and extremely **simple**.
@@ -3074,7 +3144,7 @@ Authors: Baheri, A., Kolmanovsky, I., Girard, A., Tseng, E., & Filev, D.
     - The **low-level** representation of the `VAE` (size `128`) may not capture the most difficult situations.
     - The authors suggest looking at **mid-level** representations such as the [**affordance** representation](http://deepdriving.cs.princeton.edu/paper.pdf) of [DeepDriving](http://deepdriving.cs.princeton.edu/) instead.
   - Here, the authors **strictly split** the two tasks: First learn a model. Then do planning.
-  - Why not ***keeping interacting from time to time with the `env`**, in order to vary the **sources of experience**?
+  - Why not **keeping interacting from time to time with the `env`**, in order to vary the **sources of experience**?
     - This should still be more **sample efficient** than model-free approaches while making sure the agent keep seeing **"correct" transitions**.
 
 </details>
