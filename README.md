@@ -2059,7 +2059,7 @@ Author: Noh, S.
 **[** :mortar_board: `Mines ParisTech` **]**
 **[** :car: `Valeo` **]**
 
-- **[** _`affordance learning`_ **]**
+- **[** _`affordance learning`, [`CARLA`](http://carla.org)_ **]**
 
 <details>
   <summary>Click to expand</summary>
@@ -2106,7 +2106,8 @@ Authors: Toromanoff, M., Wirbel, E., & Moutarde, F.
     - > "As expected, these experiments prove that **training a large network using only `RL` signal is hard**".
 
 - About **"model-free"** `RL`.
-  - As opposed to (Pan et al. 2019) where a network is also trained to predict high-level information. But these affordances rather relate to the **transition model**, such as **probability of collision** or **being off-road** in the near futures from a **sequence of observations and actions**.
+  - As opposed to "model-based", e.g. [(Pan et al. 2019)](https://ieeexplore.ieee.org/document/8794437) where a network is also trained to predict high-level information.
+  - But these affordances rather relate to the **transition model**, such as **probability of collision** or **being off-road** in the near futures from a **sequence of observations and actions**.
 - About the **reward** function:
   - It relies on `3` components:
     - `1-` Desired **`lateral position`**.
@@ -3095,6 +3096,65 @@ Author: Plessen, M. G.
 ---
 
 ## `Model Based` `Reinforcement Learning`
+
+---
+
+**`"Semantic predictive control for explainable and efficient policy learning"`**
+
+- **[** `2019` **]**
+**[[:memo:](https://ieeexplore.ieee.org/document/8794437)]**
+**[[🎞️](https://www.youtube.com/watch?v=FSrzyR8UhxM)]**
+**[[:octocat:](https://github.com/ucbdrive/spc)]**
+**[** :mortar_board: `UC Berkeley (DeepDrive Center), Shanghai Jiao Tong University, Nanjing University` **]**
+
+- **[** _`MPC`, `interpretability`, [`CARLA`](http://carla.org)_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![ `SPC`, inspired from `MPC`, is decomposed into one **feature extractor**, one **semantic and event predictor**, and a **guide for action selection**. [Source](https://github.com/ucbdrive/spc).](media/2019_pan_1.PNG "`SPC`, inspired from `MPC`, is decomposed into one **feature extractor**, one **semantic and event predictor**, and a **guide for action selection**. [Source](https://github.com/ucbdrive/spc).")  |
+|:--:|
+| *__`SPC`__, inspired from **`MPC`**, is composed of one **semantic feature extractor**, one **semantic and event predictor**, and one **guide for action selection**. [Source](https://github.com/ucbdrive/spc).* |
+
+Authors: Pan, X., Chen, X., Cai, Q., Canny, J., & Yu, F.
+
+- Motivations:
+  - `1-` **Sample efficiency**.
+  - `2-` **Interpretability**.
+  - Limitation of `behavioural cloning` methods:
+    - > "Direct imitative behaviors do not consider **future consequences of actions explicitly**. [...] These models are **reactive** and the methods do not incorporate reinforcement or prediction signals."
+  - Limitations of `model-free RL` methods:
+    - > "To **train** a reliable policy, an `RL` agent requires **orders of magnitude more training data** than a human does for the same task."
+    - > "An **unexplainable `RL` policy** is **undesirable** as a single bad decision can lead to a severe consequence without forewarning."
+- One term: **"Semantic Predictive Control"** (**`SPC`**).
+  - It is inspired by **_Model Predictive Control_** (`MPC`) in that it seeks an **optimal action sequence** over a finite horizon and **only executes the first action**.
+  - **_"Semantic"_** because the idea it to try to **predict future semantic maps**, conditionned on action sequences and current observation.
+  - `SPN` is trained on **rollout data sampled online** in the environment.
+- Structure:
+  - `1-` **Semantic estimation**.
+    - Multi-scale intermediate features are extracted from `RGB` observations, using **"Deep Layer Aggregation"** (`DLA`), a special type of **skip connections**.
+    - As noted:
+      - > "Using **semantic segmentation** as a **latent state representation** helps to improve data efficiency."
+    - This **multi-scale feature representation** is passed together with the **planned action** into the **prediction module** to iteratively produce **future feature maps**.
+  - `2-` **Representation prediction**.
+    - _What is predicted?_
+      - `2.1-` The **future scene segmentation**
+      - `2.2-` Some **task-dependent variables** (seen as _"future events"_) **conditioned** on _current observation_ and _action sequence_. This can include:
+        - `Collision` signal (binary).
+        - `Off-road` signal (binary).
+        - `Single-step travel distance` (scalar).
+        - `Speed` (scalar).
+        - `Driving angle` (scalar).
+        - Note: in their POC with [flappy bird](https://flappybird.io/), authors also predicted the discounted sum of rewards.
+  - `3-` **Action sampling guidance**.
+    - _How to select actions?_
+      - `3.1-` One possible solution is to perform **gradient descent** to optimize an action sequence.
+      - `3.2-` Another solution is to perform a **grid search** on the action space, and select the one with the **smallest cost**.
+      - `3.3-` Instead, the authors propose to use the **result of the `SMP`**:
+        - > "`SPN` outputs an **action guidance distribution** given a state input, indicating a **coarse action probability distribution**".
+        - Then, they **sample multiple action sequences** according to this **action guidance distribution**, then **evaluates their costs**, and finally **pick the best one**.
+
+</details>
 
 ---
 
