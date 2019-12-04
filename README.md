@@ -2051,6 +2051,50 @@ Author: Noh, S.
 
 ---
 
+**`"Social Attention for Autonomous Decision-Making in Dense Traffic"`**
+
+- **[** `2019` **]**
+**[[:memo:](https://arxiv.org/abs/1911.12250)]**
+**[[🎞️](https://eleurent.github.io/social-attention/)]**
+**[** :mortar_board: `Inria` **]**
+**[** :car: `Renault` **]**
+
+- **[** _`attention mechanism`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![ Weights in the **encoding linear** are shared between all vehicles. Each **encoding** contains **individual features** and has size `dx`. For each **head in the stack**, different **linear projections** (`Lq`, `Lk`, `Lv`) are applied on them. Results of projections are `key` and `values` (plus a `query` for the ego-agent). Based on the **similarity** between the ego-query `q0` and the `key`s, an **attention matrix** is built. This matrix should **select a subset of vehicles** that are important, depending on the context. It is multiplied with the concatenation of the individual `values features`, and then passed to a **decoder** where results from all heads are combined. The output are the estimated `q-values`.. [Source](https://arxiv.org/abs/1911.12250).](media/2019_leurent_1.PNG " Weights in the **encoding linear** are shared between all vehicles. Each **encoding** contains **individual features** and has size `dx`. For each **head in the stack**, different **linear projections** (`Lq`, `Lk`, `Lv`) are applied on them. Results of projections are `key` and `values` (plus a `query` for the ego-agent). Based on the **similarity** between the ego-query `q0` and the `key`s, an **attention matrix** is built. This matrix should **select a subset of vehicles** that are important, depending on the context. It is multiplied with the concatenation of the individual `values features`, and then passed to a **decoder** where results from all heads are combined. The output are the estimated `q-values`. [Source](https://arxiv.org/abs/1911.12250).")  |
+|:--:|
+| *Weights in the **encoding linear** are shared between all vehicles. Each **encoding** contains **individual features** and has size `dx`. For each **head in the stack**, different **linear projections** (`Lq`, `Lk`, `Lv`) are applied on them. Results of projections are `key` and `values` (plus a `query` for the ego-agent). Based on the **similarity** between the ego-query `q0` and the `key`s, an **attention matrix** is built. This matrix should **select a subset of vehicles** that are important, depending on the context. It is multiplied with the concatenation of the individual `values features`, and then passed to a **decoder** where results from all heads are combined. The output are the estimated `q-values`.. [Source](https://arxiv.org/abs/1911.12250).* |
+
+| ![ Example with a stack of **two heads**. Both direct their attention to **incoming vehicles** that are **likely to collide** with the ego-vehicle. Visualization of the **`attention matrix`**: The ego-vehicle is connected to every vehicle by a line whose width is proportional to the corresponding **attention weight**. The green head is only watching the vehicles coming **from the left**, while the blue head restricts itself to vehicles in the **front and right directions**.. [Source](https://arxiv.org/abs/1911.12250).](media/2019_leurent_2.PNG " Example with a stack of **two heads**. Both direct their attention to **incoming vehicles** that are **likely to collide** with the ego-vehicle. Visualization of the **`attention matrix`**: The ego-vehicle is connected to every vehicle by a line whose width is proportional to the corresponding **attention weight**. The green head is only watching the vehicles coming **from the left**, while the blue head restricts itself to vehicles in the **front and right directions**. [Source](https://arxiv.org/abs/1911.12250).")  |
+|:--:|
+| *Example with a stack of **two heads**. Both direct their attention to **incoming vehicles** that are **likely to collide** with the ego-vehicle. Visualization of the **`attention matrix`**: The ego-vehicle is connected to every vehicle by a line whose width is proportional to the corresponding **attention weight**. The green head is only watching the vehicles coming **from the left**, while the blue head restricts itself to vehicles in the **front and right directions**.. [Source](https://arxiv.org/abs/1911.12250).* |
+
+Authors: Leurent, E., & Mercat, J.
+
+- Question: About the **`MDP`** **`state`** (or **representation of driving scene**): **_how surrounding vehicles can be represented?_**
+- Motivations / requirements:
+  - `1-` Deal with a **varying number** of surrounding vehicles (problematic with **function approximation** which often expects **constant-sized** inputs).
+  - `2-` The driving policy should be **permutation-invariant** (invariant to the **ordering** chosen to describe them).
+  - `3-` Stay **accurate** and **compact**.
+- Current approaches:
+  - **List of features** representation (fails at `1` and `2`).
+    - `Zero-padding` can help for varying-size inputs.
+  - **Spatial grid** representation (suffers from accuracy-size trade-off).
+- One concept: **"Multi-head social attention mechanism"**.
+  - The `state` may contain many types of information. But the agent should only **pay attention** to vehicles that are **close or conflict** with the planned route.
+    - > "Out of a **complex scene description**, the model should be able to **filter information** and **consider only what is relevant for decision**."
+  - About **_"attention mechanism"_**:
+    - > "The **attention** architecture was introduced to enable neural networks to **discover interdependencies** within a **variable number of inputs**".
+    - For each head, a **stochastic matrix** called the `attention matrix` is derived.
+    - The visualisation of this **attention matrix** brings **interpretability**.
+
+</details>
+
+---
+
 **`"End-to-End Model-Free Reinforcement Learning for Urban Driving using Implicit Affordances"`**
 
 - **[** `2019` **]**
