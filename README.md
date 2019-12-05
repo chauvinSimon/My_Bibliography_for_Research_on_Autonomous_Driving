@@ -230,6 +230,83 @@ Note: I find very valuable to get insights from the **CMU** (Carnegie Mellon Uni
 
 ---
 
+**`"Urban Driving with Conditional Imitation Learning"`**
+
+- **[** `2019` **]**
+**[[:memo:](https://arxiv.org/abs/1912.00177)]**
+**[[🎞️](https://wayve.ai/blog/learned-urban-driving)]**
+**[** :car: `Wayve` **]**
+
+- **[** _`end-to-end`, `conditional IL`, `robust BC`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![The encoder is trained to reconstruct **`RGB`**, **`depth`** and **`segmentation`**, i.e. to **learn scene understanding**. It is augmented with **optical flow** for temporal information. As noted, such representations could be learned simultaneously with the driving policy, for example, through **distillation**. But for efficiency, this was pre-trained (Humans typically also have `~30` hours of driver training before taking the driving exam. But they start with huge prior knowledge). [Source](https://arxiv.org/abs/1912.00177).](media/2019_hawke_1.PNG "The encoder is trained to reconstruct **`RGB`**, **`depth`** and **`segmentation`**, i.e. to **learn scene understanding**. It is augmented with **optical flow** for temporal information. As noted, such representations could be learned simultaneously with the driving policy, for example, through **distillation**. But for efficiency, this was pre-trained (Humans typically also have `~30` hours of driver training before taking the driving exam. But they start with huge prior knowledge). [Source](https://arxiv.org/abs/1912.00177).")  |
+|:--:|
+| *The encoder is trained to reconstruct **`RGB`**, **`depth`** and **`segmentation`**, i.e. to **learn scene understanding**. It is augmented with **`optical flow`** for temporal information. As noted, such representations could be learned simultaneously with the driving policy, for example, through **distillation**. But for efficiency, this was pre-trained (Humans typically also have `~30` hours of driver training before taking the driving exam. But they start with huge prior knowledge). Interesting idea: the **navigation `command`** is injected as **multiple locations** of the `control` part. [Source](https://arxiv.org/abs/1912.00177).* |
+
+| ![Driving data is **inherently heavily imbalanced**, where most of the captured data will be driving **near-straight** in the middle of a lane. Any **naive training** will **collapse** to the dominant mode present in the data. **No data augmentation** is performed. Instead, during training, the authors **sample data uniformly** across **`lateral` and `longitudinal` control** dimensions. [Source](https://arxiv.org/abs/1912.00177).](media/2019_hawke_2.PNG "Driving data is **inherently heavily imbalanced**, where most of the captured data will be driving **near-straight** in the middle of a lane. Any **naive training** will **collapse** to the dominant mode present in the data. **No data augmentation** is performed. Instead, during training, the authors **sample data uniformly** across **`lateral` and `longitudinal` control** dimensions. [Source](https://arxiv.org/abs/1912.00177).")  |
+|:--:|
+| *Driving data is **inherently heavily imbalanced**, where most of the captured data will be driving **near-straight** in the middle of a lane. Any **naive training** will **collapse** to the dominant mode present in the data. **No data augmentation** is performed. Instead, during training, the authors **sample data uniformly** across **`lateral` and `longitudinal` control** dimensions. [Source](https://arxiv.org/abs/1912.00177).* |
+
+Authors: Hawke, J., Shen, R., Gurau, C., Sharma, S., Reda, D., Nikolov, N., Mazur, P., Micklethwaite, S., Griffiths, N., Shah, A. & Kendall, A.
+
+- Motivations:
+  - `1-` Learn **both** `steering` and `speed` via **Behavioural Cloning**.
+  - `2-` Use **raw sensor** (camera) inputs, rather than intermediate representations.
+  - `3-` Train and test on dense **urban environments**.
+- _Why "conditional"?_
+  - A **route command** (e.g. `turn left`, `go straight`) resolves the **ambiguity** of multi-modal behaviours (e.g. when coming at **an intersection**).
+  - > "We found that inputting the command **multiple times at different stages** of the network improves robustness of the model".
+- Some ideas:
+  - Provide **wider state observability** through **multiple camera views** (single camera disobeys navigation interventions).
+  - Add **temporal information** via **optical flow**.
+    - Another option would be to **stack frames**. But it did not work well.
+  - Train the **primary shared encoders** and **auxiliary independent decoders** for a number of **computer vision** tasks.
+    - > "In robotics, the **`test` data is the real-world**, not a **static dataset** as is typical in most `ML` problems. Every time our cars go out, the **world is new and unique**."
+- One concept: **_"Causal confusion"_**.
+  - > "**Spurious correlations** cannot be distinguished from **true causes in the demonstrations**. [...] For example, **inputting the current speed** to the policy causes it to learn a **trivial identity mapping**, making the car **unable to start from a static position**."
+  - Two ideas during training:
+    - Using **flow features** to make the model use explicit motion information **without learning the trivial solution** of an **identity mapping for speed and steering**.
+    - Add **random noise** and use dropout on it.
+  - One alternative is to explicitly **maintain a causal model**.
+  - Another alternative is to learn to **predict the speed**, as detailed in ["Exploring the Limitations of Behavior Cloning for Autonomous Driving"](https://arxiv.org/abs/1904.08980).
+- Output:
+  - The model decides of a **"motion plan"**, _i.e. not directly the low-level control?_
+  - Concretely, the network gives one prediction and one slope, for both `speed` and `steering`, leading to two **parameterised lines**.
+- Two types of tests:
+  - `1-` **Closed-loop** (i.e. go outside and drive).
+    - The number and type of safety-driver **interventions**.
+  - `2-` **Open-loop** (i.e., evaluating on an _offline_ dataset).
+    - The weighted mean absolute error for **`speed` and `steering`**.
+      - As noted, this can serve as a proxy for real world performance.
+  - > "As discussed by [34] and [35], the **correlation** between **`offline` `open-loop`** metrics and **`online` `closed-loop`** performance is **weak**."
+- About the training data:
+  - As stated, they are **two levers** to increase the performance:
+    - `1-` **Algorithmic innovation**.
+    - `2-` **Data**.
+  - For this `IL` approach, `30` hours of demonstrations.
+  - > "Re-moving a **quarter** of the data notably degrades performance, and models trained with less data are almost undriveable."
+- Next steps:
+  - I find the results already impressive. But as noted:
+    - > "The learned driving policies presented here need significant further work to be comparable to human driving".
+  - Ideas for improvements include:
+    - Add some **predictive long-term planning model**. At the moment, it does not have access to **long-term** dependencies and cannot _reason_ about the road scene.
+    - Learn not only from demonstration, but also **from mistakes**.
+      - This reminds me the concept of `ChauffeurNet` about **_"simulate the bad rather than just imitate the good"_**.
+    - **Continuous learning**: Learning from **corrective interventions** would also be beneficial.
+  - The last point goes in the direction of adding **learning signals**, which was already done here.
+    - **Imitation** of human expert drivers (`supervised` learning).
+    - Safety driver **intervention** data (`negative reinforcement` learning) and **corrective action** (`supervised` learning).
+    - Geometry, dynamics, motion and **future prediction** (`self-supervised` learning).
+    - Labelled **semantic** computer vision data (`supervised` learning).
+    - **Simulation** (`supervised` learning).
+
+</details>
+
+---
+
 **`"Application of Imitation Learning to Modeling Driver Behavior in Generalized Environments"`**
 
 - **[** `2019` **]**
