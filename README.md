@@ -1981,6 +1981,61 @@ Related works:
 
 ---
 
+**`"Trajectory Optimization and Situational Analysis Framework for Autonomous Overtaking with Visibility Maximization"`**
+
+- **[** `2019` **]**
+**[[:memo:](http://www.alonsomora.com/docs/19-andersen-t-iv.pdf)]**
+**[[🎞️](https://www.youtube.com/watch?v=qCcrjBfSKOU)]**
+**[** :mortar_board: `National University of Singapore, Delft University, MIT` **]**
+- **[** _`FSM`, `occlusion`, `partial observability`_  **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![Left: previous work [Source](http://people.csail.mit.edu/jalonsom/docs/17-andersen-ITSC.pdf). Right: The `BP` **`FSM`** consists in **`5` states** and **`11` transitions**. Each transition from one state to the other is triggered by specific **alphabet** unique to the state. For instance, `1` is `Obstacle to be overtaken in ego lane detected`. Together with the `MPC` set of parameters, a **guidance path** is passed to the **trajectory optimizer**. [Source](http://www.alonsomora.com/docs/19-andersen-t-iv.pdf).](media/2019_andersen_1.PNG "Left: previous work [Source](http://people.csail.mit.edu/jalonsom/docs/17-andersen-ITSC.pdf). Right: The `BP` **`FSM`** consists in **`5` states** and **`11` transitions**. Each transition from one state to the other is triggered by specific **alphabet** unique to the state. For instance, `1` is `Obstacle to be overtaken in ego lane detected`. Together with the `MPC` set of parameters, a **guidance path** is passed to the **trajectory optimizer**. [Source](http://www.alonsomora.com/docs/19-andersen-t-iv.pdf).")  |
+|:--:|
+| *Left: previous work [Source](http://people.csail.mit.edu/jalonsom/docs/17-andersen-ITSC.pdf). Right: The `BP` **`FSM`** consists in **`5` states** and **`11` transitions**. Each transition from one state to the other is triggered by specific **alphabet** unique to the state. For instance, `1` is `Obstacle to be overtaken in ego lane detected`. Together with the `MPC` set of parameters, a **guidance path** is passed to the **trajectory optimizer**. [Source](http://www.alonsomora.com/docs/19-andersen-t-iv.pdf).* |
+
+Authors: Andersen, H., Alonso-mora, J., Eng, Y. H., Rus, D., & Ang Jr, M. H.
+
+- Main motivation:
+  - Deal with **occlusions**, i.e. **_partial observability_**.
+  - Use case: a car is illegally parked on the vehicle’s ego lane. It may fully **occlude the visibility**. But has to be **overtaken**.
+- One related works:
+  - ["Trajectory Optimization for Autonomous Overtaking with Visibility Maximization"](http://people.csail.mit.edu/jalonsom/docs/17-andersen-ITSC.pdf) - (Andersen et al., 2017)
+  - **[[🎞️](https://www.youtube.com/watch?v=mHye5V1iC70)]**.
+  - **[[🎞️](https://www.youtube.com/watch?v=iKXvOs6Drw0)]**.
+  - **[[🎞️](https://www.youtube.com/watch?v=iwnlYLaQWLI)]**.
+- About the **hierarchical** structure.
+  - `1-` A high-level **behaviour planner** (`BP`).
+    - It is structured as a **deterministic finite state machine** (`FSM`).
+    - States include:
+      - `Follow ego-lane`
+      - `Visibility Maximization`
+      - `Overtake`
+      - `Merge back`
+      - `Wait`
+    - Transition are based on some **_deterministic_** **`risk assessment`**.
+      - The authors argue that the **_deterministic_** methods (e.g. _formal verification_ of trajectory using `reachability analysis`) are **simpler** and computationally more efficient than **_probabilistic_** versions, while being very adapted for this **information maximization**:
+      - > This is due to the fact that the designed behaviour planner **explicitly breaks the traffic rule** in order to progress along the vehicle’s course.
+  - Interface `1-` > `2-`:
+    - Each state correspond to specific **set of parameters** that is used in the **trajectory optimizer**.
+    - > "In case of `Overtake`, a suggested **guidance path** is given to both the `MPC` and `**backup trajectory generator**".
+  - `2-` A trajectory **optimizer**.
+    - The problem is formulated as **receding horizon planner** and the task is to solve, in real-time, the non-linear **constrained optimization**.
+      - **Cost** include `guidance path deviation`, `progress`, `speed deviation`, `size of blind spot` (visible area) and `control inputs`.
+      - **Constraints** include, among other, `obstacle avoidance`.
+      - The **prediction horizon** of this **`MPC`** is `5s`.
+    - Again (_I really like this idea_), `MPC` **parameters** are set by the `BP`.
+      - For instance, the **cost for `path deviation`** is high for `Follow ego-lane`, while it can be reduced for `Visibility Maximization`.
+      - > "Increasing the **visibility maximization** cost resulted in the **vehicle deviating from the path** earlier and more abrupt, leading to **frequent wait or merge back** cases when an oncoming car comes into the vehicle’s sensor range. Reducing visibility maximization resulted in **later and less abrupt deviation**, leading to **overtaking** trajectories that are **too late to be aborted**. We tune the costs for a good trade-off in performance."
+      - Hence, depending on the state, the task might be to maximize the **amount of information** that the autonomous vehicle **gains along its trajectory**.
+  - > "Our method considers **visibility** as a part of both `decision-making` and `trajectory generation`".
+
+</details>
+
+---
+
 **`"Jointly Learnable Behavior and Trajectory Planning for Self-Driving Vehicles"`**
 
 - **[** `2019` **]**
