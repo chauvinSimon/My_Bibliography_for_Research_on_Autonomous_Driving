@@ -230,6 +230,57 @@ Note: I find very valuable to get insights from the **CMU** (Carnegie Mellon Uni
 
 ---
 
+---
+
+**`"Learning from Interventions using Hierarchical Policies for Safe Learning"`**
+
+- **[** `2019` **]**
+**[[:memo:]()]**
+**[** :mortar_board: `University of Rochester, University of California San Diego` **]**
+- **[** _`hierarchical`, `sampling efficiency`, `safe imitation learning`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![The main idea is to use **Learning from Interventions** (**`LfI`**) in order to ensure **safety** and improve **data efficiency**, by **intervening on sub-goals** rather than trajectories. Both `top-level` policy (that generates **sub-goals**) and `bottom-level` policy are **jointly learnt**. [Source](https://arxiv.org/abs/1912.02241).](media/2019_bi_1.PNG "The main idea is to use **Learning from Interventions** (**`LfI`**) in order to ensure **safety** and improve **data efficiency**, by **intervening on sub-goals** rather than trajectories. Both `top-level` policy (that generates **sub-goals**) and `bottom-level` policy are **jointly learnt**. [Source](https://arxiv.org/abs/1912.02241).")  |
+|:--:|
+| *The main idea is to use **Learning from Interventions** (**`LfI`**) in order to ensure **safety** and improve **data efficiency**, by **intervening on sub-goals** rather than trajectories. Both `top-level` policy (that generates **sub-goals**) and `bottom-level` policy are **jointly learnt**. [Source](https://arxiv.org/abs/1912.02241).* |
+
+Authors: Bi, J., Dhiman, V., Xiao, T., & Xu, C.
+
+- Motivations:
+  - `1-` Improve **data-efficiency**.
+  - `2-` Ensure **safety**.
+- One term: **_"Learning from Interventions"_** (**`LfI`**).
+  - One way to classify the _"learning from expert"_ techniques is to use the frequency of **expert’s engagement**.
+    - `High frequency`    -> Learning from **Demonstrations**.
+    - `Medium frequency`  -> learning from **Interventions**.
+    - `Low frequency`     -> Learning from **Evaluations**.
+  - Ideas of `LfI`:
+    - > "When an **undesired state** is detected, another policy is activated to **take over actions** from the agent when necessary."
+    - Hence the expert overseer only intervenes when it suspects that an unsafe action is about to be taken.
+  - Two issues:
+    - `1-` `LfI` (as for `LfD`) learn **reactive behaviours**.
+      - > "Learning a supervised policy is known to have **'myopic' strategies**, since it **ignores the temporal dependence** between consecutive states".
+      - Maybe one option could be to **stack frames** or to include the **current speed** in the `state`. But that makes the state space larger.
+    - `2-` The expert only signals after a **non-negligible amount of delay**.
+- One idea to solve both issues: **Hierarchy**.
+  - The idea is to split the policy into **two hierarchical levels**, one that generates **`sub-goals`** for the future and another that generates **`actions`** to reach those desired sub-goals.
+  - The motivation is to **intervene on sub-goals rather than trajectories**.
+  - One important parameter: `k`
+    - The **top-level policy** predicts a sub-goal to be achieved **`k` steps ahead** in the future.
+    - It represents a trade-off between:
+      - The ability for the `top-level` policy to **predict sub-goals far** into the future.
+      - The ability for the `bottom-level` policy to **follow** it correctly.
+  - One question: _How to deal with the_ **_absence of ground- truth sub-goals_** _?_
+    - One solution is **_"Hindsight Experience Replay"_**, i.e. **consider an achieved goal** as a **desired goal for past observations**.
+    - The authors present additional **interpolation** techniques.
+    - They also present a `Triplet Network` to train goal-embeddings (_I did not understand everything_).
+
+</details>
+
+---
+
 **`"Urban Driving with Conditional Imitation Learning"`**
 
 - **[** `2019` **]**
