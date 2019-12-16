@@ -1641,6 +1641,56 @@ Authors: Kuderer, M., Gulati, S., & Burgard, W.
 
 ---
 
+**`"Multi-Modal Simultaneous Forecasting of Vehicle Position Sequences using Social Attention"`**
+
+- **[** `2019` **]**
+**[[:memo:](https://arxiv.org/abs/1910.03650)]**
+**[** :mortar_board: `Ecole CentraleSupelec` **]**
+**[** :car: `Renault` **]**
+
+- **[** _`multi-modality prediction`, `attention mechanism`_  **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![Two **multi-head** **`attention`** layers are used to account for **`social` interactions** between all vehicles. They are combined with `LSTM` layers to offer **joint**, **long-range** and **multi-modal** forecasts. [Source](https://arxiv.org/abs/1910.03650).](media/2019_mercat_2.PNG "Two **multi-head** **`attention`** layers are used to account for **`social` interactions** between all vehicles. They are combined with `LSTM` layers to offer **joint**, **long-range** and **multi-modal** forecasts. [Source](https://arxiv.org/abs/1910.03650).")  |
+|:--:|
+| *Two **multi-head** **`attention`** layers are used to account for **`social` interactions** between all vehicles. They are combined with `LSTM` layers to offer **joint**, **long-range** and **multi-modal** forecasts. [Source](https://arxiv.org/abs/1910.03650).* |
+
+| ![[Source](https://arxiv.org/abs/1910.03650).](media/2019_mercat_1.PNG "[Source](https://arxiv.org/abs/1910.03650).")  |
+|:--:|
+| *[Source](https://arxiv.org/abs/1910.03650).* |
+
+Authors: Mercat, J., Gilles, T., Zoghby, N. El, Sandou, G., Beauvois, D., & Gil, G. P.
+
+- Previous work: `"Social Attention for Autonomous Decision-Making in Dense Traffic"` by (Leurent, & Mercat, 2019), detailed on this page as well.
+- Motivations:
+  - `1-` **`joint`** - Considering interactions between all vehicles.
+  - `2-` **`flexible`** - Independant of the number/order of vehicles.
+  - `3-` **`multi-modal`** - Considering uncertainty.
+  - `4-` **`long-horizon`** - Predicting over a long range. Here **`5s`** on simple highway scenarios.
+  - `5-` **`interpretable`** - E.g. using the **social attention coefficients**.
+  - `6-` **`long distance interdependencies`** - The authors decide to exclude the **spatial grid representations** that _"limit the zone of interest to a predefined fixed size and the spatial relation precision to the grid cell size"_.
+- Main idea: Stack **`LSTM` layers** with **`social`** **`multi-head`** **`attention`** layers.
+  - More precisely, the model is broken into four parts:
+    - `1-` An **`Encoder`** processes the sequences of all vehicle **positions** (no information about `speed`, `orientation`, `size` or `blinker`).
+    - `2-` A **`Self-attention`** layer captures interactions between all vehicles using "dot product attention". It has **"multiple head"**, each specializing on different **interaction patterns**, e.g. `"closest front vehicle in any lane"`.
+    - `3-` A **`Predictor`**, using `LSTM` cells, **forecasts** the positions.
+    - A second multi-head self-attention layer is placed here.
+    - `4-` A final **`Decoder`** produces sequences of **Gaussians mixtures** for each vehicle.
+      - > "What is forecast is not a **mixture of trajectory density functions** but a sequence of **position mixture density functions**. There is a dependency between forecasts at time `tk` and at time `tk+1` but **no explicit link between the modes** at those times."
+- Two quotes about multi-modality prediction:
+  - > "When considering multiple modes, there is a **challenging trade-off** to find between **anticipating a wide diversity** of modes and **focusing on realistic ones**".
+  - > "**`VAE` and `GANs`** are only able to generate an **output distribution** with **sampling** and **do not express a `PDF`**".
+- Baselines used to compare the presented **"Social Attention Multi-Modal Prediction"** approach:
+  - **Constant velocity** (`CV`), that uses Kalman filters (_hence single modality_).
+  - **Convolutional Social Pooling** ([`CSP`](https://arxiv.org/abs/1805.05499)), that uses convolutional social pooling on a **coarse spatial grid**. Six mixture components are used.
+  - **Graph-based Interaction-aware Trajectory Prediction** ([`GRIP`](https://arxiv.org/abs/1907.07792)), that uses a **`spatial`** and **`temporal` graph** representation of the scene.
+
+</details>
+
+---
+
 **`"MultiPath : Multiple Probabilistic Anchor Trajectory Hypotheses for Behavior Prediction"`**
 
 - **[** `2019` **]**
