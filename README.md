@@ -232,10 +232,65 @@ Note: I find very valuable to get insights from the **CMU** (Carnegie Mellon Uni
 
 ---
 
+**`"End-to-end Interpretable Neural Motion Planner"`**
+
+- **[** `2019` **]**
+**[[:memo:](http://www.cs.toronto.edu/~wenjie/papers/cvpr19/nmp.pdf)]**
+**[** :mortar_board: `University of Toronto` **]**
+**[** :car: `Uber` **]**
+
+- **[** _`interpretability`, `trajectory sampling`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![The visualization of `3D` detection, **motion forecasting** as well as learned **cost-map volume** offers interpretability. A set of **candidate trajectories** is **sampled**, first considering the geometrical **path** and then then **speed** profile. The trajectory with the **minimum learned cost** is selected. [Source](http://www.cs.toronto.edu/~wenjie/papers/cvpr19/nmp.pdf).](media/2019_zeng_1.PNG "The visualization of `3D` detection, **motion forecasting** as well as learned **cost-map volume** offers interpretability. A set of **candidate trajectories** is **sampled**, first considering the geometrical **path** and then then **speed** profile. The trajectory with the **minimum learned cost** is selected. [Source](http://www.cs.toronto.edu/~wenjie/papers/cvpr19/nmp.pdf).")  |
+|:--:|
+| *The visualization of `3D` detection, **motion forecasting** as well as learned **cost-map volume** offers interpretability. A set of **candidate trajectories** is **sampled**, first considering the geometrical **path** and then then **speed** profile. The trajectory with the **minimum learned cost** is selected. [Source](http://www.cs.toronto.edu/~wenjie/papers/cvpr19/nmp.pdf).* |
+
+| ![[Source](http://www.cs.toronto.edu/~wenjie/papers/cvpr19/nmp.pdf).](media/2019_zeng_2.PNG "[Source](http://www.cs.toronto.edu/~wenjie/papers/cvpr19/nmp.pdf).")  |
+|:--:|
+| *[Source](http://www.cs.toronto.edu/~wenjie/papers/cvpr19/nmp.pdf).* |
+
+Authors: Zeng W., Luo W., Suo S., Sadat A., Yang B., Casas S. & Urtasun R.
+
+- Motivation is to **bridge the gap** between the `traditional engineering stack` and the `end-to-end driving` frameworks.
+  - `1-` Develop a **learnable** motion planner, avoiding the costly parameter tuning.
+  - `2-` Ensure **interpretability** in the motion decision. This is done by offering an **intermediate representation**.
+  - `3-` Handle **uncertainty**. This is allegedly achieved by using a learnt, non-parametric **cost function**.
+  - `4-` Handle **multi-modality** in possible trajectories (e.g `changing lane` vs `keeping lane`).
+
+- One quote about `RL` and `IRL`:
+  - > "It is unclear if `RL` and `IRL` can **scale** to more realistic settings. Furthermore, these methods do not produce **interpretable representations**, which are desirable in safety critical applications".
+
+- Architecture:
+  - `Input`: raw LIDAR data and a HD map.
+  - `1st intermediate result`: An **_"interpretable"_** bird’s eye view representation that includes:
+    - `3D` detections.
+    - Predictions of **future trajectories** (planning horizon of `3` seconds).
+    - Some **spatio-temporal** **cost volume** defining the **goodness of each position** that the self-driving car can take within the planning horizon.
+  - `2nd intermediate result`: A set of diverse physically possible trajectories (candidates).
+    - They are `Clothoid` curves being **sampled**. First building the `geometrical path`. Then the `speed profile` on it.
+    - > "Note that **`Clothoid` curves** can not handle circle and **straight line trajectories** well, thus we sample them separately."
+  - `Final output`: The trajectory with the **minimum learned cost**.
+
+- Multi-objective:
+  - `1-` **`Perception`** Loss - to **predict** the position of vehicles at every time frame.
+    - _Classification_: Distinguish a vehicle from the **background**.
+    - _Regression_: Generate precise object **bounding boxes**.
+  - `2-` **`Planning`** Loss.
+    - > "Learning a reasonable **cost volume** is challenging as we do not have **ground-truth**. To overcome this difficulty, we minimize the **`max-margin` loss** where we use the **ground-truth trajectory as a _positive_ example**, and **randomly sampled trajectories** as **_negative_ examples**."
+    - As stated, the intuition behind is to **encourage** the demonstrated trajectory to have the **minimal cost**, and others to have higher costs.
+    - The model hence **learns a cost volume** that **discriminates good trajectories from bad ones**.
+
+</details>
+
+---
+
 **`"Learning from Interventions using Hierarchical Policies for Safe Learning"`**
 
 - **[** `2019` **]**
-**[[:memo:]()]**
+**[[:memo:](https://arxiv.org/abs/1912.02241)]**
 **[** :mortar_board: `University of Rochester, University of California San Diego` **]**
 - **[** _`hierarchical`, `sampling efficiency`, `safe imitation learning`_ **]**
 
