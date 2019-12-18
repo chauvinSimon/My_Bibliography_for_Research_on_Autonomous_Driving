@@ -3541,6 +3541,81 @@ Author: Plessen, M. G.
 
 ---
 
+**`"ReQueST: Learning Human Objectives by Evaluating Hypothetical Behavior"`**
+
+- **[** `2019` **]**
+**[[:memo:](https://arxiv.org/abs/1912.05652)]**
+**[[🎞️](https://deepmind.com/blog/article/learning-human-objectives-by-evaluating-hypothetical-behaviours)]**
+**[[:octocat:](https://github.com/rddy/ReQueST)]**
+**[** :mortar_board: `UC Berkeley` **]**
+**[** :car: `DeepMind` **]**
+
+- **[** _`safe exploration`, `reward learning`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![ Right: Procedure to learn the **hidden reward function**: Using an **offline-learnt `generative model`**, query trajectories are produced for each **acquisition function** (`AF`).  **Transitions** of these trajectories are **labelled by the user**. The reward model ensemble is retrained on the **updated training data** using maximum-likelihood estimation. [Source](https://arxiv.org/abs/1912.05652).](media/2019_reddy_1.PNG "Right: Procedure to learn the **hidden reward function**: Using an **offline-learnt `generative model`**, query trajectories are produced for each **acquisition function** (`AF`).  **Transitions** of these trajectories are **labelled by the user**. The reward model ensemble is retrained on the **updated training data** using maximum-likelihood estimation. [Source](https://arxiv.org/abs/1912.05652).")  |
+|:--:|
+| *Right: Procedure to learn the **hidden reward function**: Using an **offline-learnt `generative model`**, query trajectories are produced for each **acquisition function** (`AF`).  **Transitions** of these trajectories are **labelled by the user**. The reward model ensemble is retrained on the **updated training data** using maximum-likelihood estimation. [Source](https://arxiv.org/abs/1912.05652).* |
+
+| ![ Four acquisition functions: `Maximize predicted rewards` makes the car drive **fast** and **far**. `Maximize reward model uncertainty` makes the car drive **close to the border**. `Minimize predicted rewards` makes the car drives **off-road**. `Maximize the novelty of training data` makes the car **stay still** _(since most training examples show cars in motion)_. Animated figure [here](https://sites.google.com/berkeley.edu/request).](media/2019_reddy_2.PNG "Four acquisition functions: `Maximize predicted rewards` makes the car drive **fast** and **far**. `Maximize reward model uncertainty` makes the car drive **close to the border**. `Minimize predicted rewards` makes the car drives **off-road**. `Maximize the novelty of training data` makes the car **stay still** _(since most training examples show cars in motion)_. Animated figure [here](https://sites.google.com/berkeley.edu/request).")  |
+|:--:|
+| *Four acquisition functions: `Maximize predicted rewards` makes the car drive **fast** and **far**. `Maximize reward model uncertainty` makes the car drive **close to the border**. `Minimize predicted rewards` makes the car drives **off-road**. `Maximize the novelty of training data` makes the car **stay still** _(since most training examples show cars in motion)_. Animated figure [here](https://sites.google.com/berkeley.edu/request).* |
+
+Authors: Reddy, S., Dragan, A. D., Levine, S., Legg, S., & Leike, J.
+
+- One quote:
+  - > "We **align** agent behavior with a **user’s objectives** by learning a model of the **user’s reward function** and training the agent via (`model-based`) `RL`."
+- One term: **_"reward query synthesis via trajectory optimization"_** (`ReQueST`)
+  - `synthesis`:
+    - The model first learns a **generative model**, i.e. a **transition** or **forward dynamics** function.
+    - It is trained using **off-policy** data and **maximum-likelihood** estimation, i.e. **unsupervised learning**.
+    - It is used to **produce synthetic trajectories** (instead of using the default training environment).
+    - Note: _building a forward dynamics model for cars in_ **interactive environments**_ _looks very challenging_.
+  - `reward query`:
+    - The user labels each **transition** in the synthetic trajectories based on some reward function (unknown to the agent).
+    - Based on these signals, the agent learns a reward model `r`(`s`, `a`, `s'`), i.e. **unsupervised learning**.
+    - The task can be regression or classification, for instance:
+      - `good` - the car drives onto a new patch of road.
+      - `unsafe` - off-road.
+      - `neutral` - in a previously-visited road patch.
+    - > "We use an ensemble method to model uncertainty."
+  - `trajectory optimization`:
+    - Once the reward model has converged, a **model-based `RL`** agent that optimizes the learned rewards is deployed.
+    - It combines **planning** with **model-predictive control** (`MPC`).
+- One concept: **_"acquisition function"_** (`AF`).
+  - It answers the question: _how to generate_ **_"useful" query_** _trajectories?_
+    - One option is to **sample random trajectories** from the learnt generative model.
+    - > "The user knows the rewards and unsafe states, but **querying the user is expensive**." So it has to be done **efficiently**.
+    - To generate useful queries, trajectories are **synthesized** so as to **maximize** so-called **_"acquisition functions"_** (`AF`).
+  - The authors explain (_I did not understand everything_) that these `FA` serve (but not all) as **proxy** for the **_"value of information"_** (`VOI`):
+    - > "The `AF` evaluates how **useful** it would be to **elicit reward labels** for trajectory `τ`".
+  - The maximization of each of the `4` `FA` is intended to produce **different types of hypothetical behaviours**, and get **more diverse** training data and a **more accurate** reward model:
+    - `1-` **Maximize** reward model **uncertainty**.
+      - It is based on `ensemble disagreement`, i.e. generation of trajectories that **maximize the disagreement** between ensemble members.
+      - The car is found to drive to **the edge** of the road and **slowing down**.
+    - `2-` **Maximize** predicted **rewards**.
+      - The agent tries to **act optimally** when trying to maximize this term.
+      - It should detect when the reward model **incorrectly** outputs **high rewards** (**`reward hacking`**).
+    - `3-` **Minimizes** predicted **rewards**.
+      - > "Reward-minimizing queries elicit labels for **unsafe states**, which are **rare** in the training environment unless you explicitly seek them out."
+      - The car is going **off-road** as quickly as possible.
+    - `4-` Maximize the **novelty** of training data.
+      - It produces novel trajectories that **differ** from those already in the training data, **regardless of their predicted reward**.
+      - > "The car is **staying still**, which makes sense since the training data tends to contain **mostly trajectories of the car in motion**."
+  - More precisely, the trajectory generation targets **two objectives** (balanced with some regularization constant):
+    - `1-` Produce **informative** queries, i.e. maximize the `AFs`.
+    - `2-` Produce **realistic** queries, i.e. maximize the probability of the **generative model** (staying **on the distribution** of states in the training environment).
+- About **safe exploration**.
+  - Via `AF-3`, the reward model learns to **detect unsafe states**.
+  - > "One of the benefits of our method is that, since it learns from **synthetic trajectories instead of real trajectories**, it only has to **imagine visiting unsafe states**, instead of actually visiting them."
+  - In addition (_to decide when the model has learnt enough_), the user observes **query trajectories**, which reveals what the reward model has learned.
+
+</details>
+
+---
+
 **`"Semantic predictive control for explainable and efficient policy learning"`**
 
 - **[** `2019` **]**
