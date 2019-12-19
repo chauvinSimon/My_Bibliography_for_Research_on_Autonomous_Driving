@@ -2449,6 +2449,36 @@ Author: Noh, S.
 
 ---
 
+**`"Learning to Drive using Waypoints"`**
+
+- **[** `2019` **]**
+**[[:memo:](https://ml4ad.github.io/files/papers/Learning%20to%20Drive%20using%20Waypoints.pdf)]**
+**[** :mortar_board: `Carnegie Mellon University` **]**
+
+- **[** _`PPO`, `waypoint-based navigation`, [`CARLA`](http://carla.org)_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![The communication of **navigation goals** at intersection is not done using **high-level commands** (c.f. `conditional RL`), but rather by giving the `PPO` agent a **list of predefined waypoints** to follow. [Source](https://ml4ad.github.io/files/papers/Learning%20to%20Drive%20using%20Waypoints.pdf).](media/2019_agarwal_1.PNG "The communication of **navigation goals** at intersection is not done using **high-level commands** (c.f. `conditional RL`), but rather by giving the `PPO` agent a **list of predefined waypoints** to follow. [Source](https://ml4ad.github.io/files/papers/Learning%20to%20Drive%20using%20Waypoints.pdf).")  |
+|:--:|
+| *The communication of **navigation goals** at intersection is not done using **high-level commands** (c.f. `conditional RL`), but rather by giving the `PPO` agent a **list of predefined waypoints** to follow. [Source](https://ml4ad.github.io/files/papers/Learning%20to%20Drive%20using%20Waypoints.pdf).* |
+
+Authors: Agarwal, T., Arora, H., Parhar, T., Deshpande, S., & Schneider, J.
+
+- One idea (**alternative to `conditional learning`**):
+  - > "Past approaches have used a **higher-level planner** that directs the agent using **high-level commands** on turning. Instead of this, we propose to use **trajectory waypoints to guide navigation**, which are readily available in real world autonomous vehicles."
+  - Using such a **predefined path** probably constrains applications to **single-lane scenarios**, and relies on an **up-to-date HD map**.
+  - > "We acknowledge that both the baseline methods use **higher level navigation features** and **RGB images** in contrast to richer **low-level waypoint** features and simpler **semantically segmented** images used in our approach."
+- The agent policy network (`PPO`) takes two inputs:
+  - `1-` The bottleneck embedding of an **auto-encoder** applied on **semantically segmented images**.
+  - `2-` The **coming `n` waypoints** to follow. They are `2m`-spaced and are extracted from an offline map.
+  - Both are independant of the realistism of the simulator it has trained on. One could therefore expect the approach to **transfer well to real-world**.
+
+</details>
+
+---
+
 **`"Social Attention for Autonomous Decision-Making in Dense Traffic"`**
 
 - **[** `2019` **]**
