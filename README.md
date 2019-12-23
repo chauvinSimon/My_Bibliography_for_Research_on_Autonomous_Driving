@@ -230,6 +230,66 @@ Note: I find very valuable to get insights from the **CMU** (Carnegie Mellon Uni
 
 ---
 
+**`"Robust Imitative Planning : Planning from Demonstrations Under Uncertainty"`**
+
+- **[** `2019` **]**
+**[[:memo:](https://ml4ad.github.io/files/papers/Robust%20Imitative%20Planning:%20Planning%20from%20Demonstrations%20Under%20Uncertainty.pdf)]**
+**[** :mortar_board: `University of Oxford, UC Berkeley, Carnegie Mellon University` **]**
+
+- **[** _`epistemic uncertainty`, `risk-aware decision-making`, [`CARLA`](http://carla.org/)_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![Illustration of the **`state distribution shift`** in behavioural cloning (`BC`) approaches. The models (e.g. neural networks) usually fail to generalize and instead **extrapolate confidently yet incorrectly**, resulting in arbitrary outputs and **dangerous** outcomes. Not to mention the **compounding (or cascading) errors**, inherent to the **sequential** decision making. [Source](https://ml4ad.github.io/files/papers/Robust%20Imitative%20Planning:%20Planning%20from%20Demonstrations%20Under%20Uncertainty.pdf).](media/2019_tigas_1.PNG "Illustration of the **`state distribution shift`** in behavioural cloning (`BC`) approaches. The models (e.g. neural networks) usually fail to generalize and instead **extrapolate confidently yet incorrectly**, resulting in arbitrary outputs and **dangerous** outcomes. Not to mention the **compounding (or cascading) errors**, inherent to the **sequential** decision making. [Source](https://ml4ad.github.io/files/papers/Robust%20Imitative%20Planning:%20Planning%20from%20Demonstrations%20Under%20Uncertainty.pdf).")  |
+|:--:|
+| *Illustration of the **`state distribution shift`** in behavioural cloning (`BC`) approaches. The models (e.g. neural networks) usually fail to generalize and instead **extrapolate confidently yet incorrectly**, resulting in arbitrary outputs and **dangerous** outcomes. Not to mention the **compounding (or cascading) errors**, inherent to the **sequential** decision making. [Source](https://ml4ad.github.io/files/papers/Robust%20Imitative%20Planning:%20Planning%20from%20Demonstrations%20Under%20Uncertainty.pdf).* |
+
+| ![Testing behaviours on scenarios such as **roundabouts** that are **not present in the training set**. [Source](https://ml4ad.github.io/files/papers/Robust%20Imitative%20Planning:%20Planning%20from%20Demonstrations%20Under%20Uncertainty.pdf).](media/2019_tigas_2.PNG "Testing behaviours on scenarios such as **roundabouts** that are **not present in the training set**. [Source](https://ml4ad.github.io/files/papers/Robust%20Imitative%20Planning:%20Planning%20from%20Demonstrations%20Under%20Uncertainty.pdf).")  |
+|:--:|
+| *Testing behaviours on scenarios such as **roundabouts** that are **not present in the training set**. [Source](https://ml4ad.github.io/files/papers/Robust%20Imitative%20Planning:%20Planning%20from%20Demonstrations%20Under%20Uncertainty.pdf).* |
+
+| ![Above - in their previous work, the authors introduced **`Deep imitative models`** (`IM`). The _imitative planning_ objective is the **log posterior probability** of a state trajectory, **conditioned** on satisfying some goal `G`. The state trajectory that has the **highest likelihood** w.r.t. the **expert model** `q`(`S` given `φ`; `θ`) is selected, i.e.  maximum a posteriori probability (**`MAP`**) estimate of how an expert would drive to the goal. This captures any inherent **`aleatoric` stochasticity** of the human behaviour (e.g., multi-modalities), but only uses a **point-estimate** of `θ`, thus `q`(`s` given `φ`;`θ`) **does not quantify model** (i.e. `epistemic`) uncertainty. `φ` denotes the **contextual information** (`3` previous states and current LIDAR observation) and `s` denotes the agent’s future states (i.e. the **trajectory**). Bottom - in this works, an ensemble of models is used: `q`(`s` given `φ`; `θk`) where `θk` denotes the **parameters** of the `k`-th model (neural network). The **`Aggregation Operator`** operator is applied on the posterior p(`θ` given `D`). The previous work is one example of that, where a single `θi` is selected. [Source](https://ml4ad.github.io/files/papers/Robust%20Imitative%20Planning:%20Planning%20from%20Demonstrations%20Under%20Uncertainty.pdf).](media/2019_tigas_4.PNG "Above - in their previous work, the authors introduced **`Deep imitative models`** (`IM`). The _imitative planning_ objective is the **log posterior probability** of a state trajectory, **conditioned** on satisfying some goal `G`. The state trajectory that has the **highest likelihood** w.r.t. the **expert model** `q`(`S` given `φ`; `θ`) is selected, i.e.  maximum a posteriori probability (**`MAP`**) estimate of how an expert would drive to the goal. This captures any inherent **`aleatoric` stochasticity** of the human behaviour (e.g., multi-modalities), but only uses a **point-estimate** of `θ`, thus `q`(`s` given `φ`;`θ`) **does not quantify model** (i.e. `epistemic`) uncertainty. `φ` denotes the **contextual information** (`3` previous states and current LIDAR observation) and `s` denotes the agent’s future states (i.e. the **trajectory**). Bottom - in this works, an ensemble of models is used: `q`(`s` given `φ`; `θk`) where `θk` denotes the **parameters** of the `k`-th model (neural network). The **`Aggregation Operator`** operator is applied on the posterior p(`θ` given `D`). The previous work is one example of that, where a single `θi` is selected. [Source](https://ml4ad.github.io/files/papers/Robust%20Imitative%20Planning:%20Planning%20from%20Demonstrations%20Under%20Uncertainty.pdf).")  |
+|:--:|
+| *Above - in their previous work, the authors introduced **`Deep imitative models`** (`IM`). The _imitative planning_ objective is the **log posterior probability** of a state trajectory, **conditioned** on satisfying some goal `G`. The state trajectory that has the **highest likelihood** w.r.t. the **expert model** `q`(`S` given `φ`; `θ`) is selected, i.e.  maximum a posteriori probability (**`MAP`**) estimate of how an expert would drive to the goal. This captures any inherent **`aleatoric` stochasticity** of the human behaviour (e.g., multi-modalities), but only uses a **point-estimate** of `θ`, thus `q`(`s` given `φ`;`θ`) **does not quantify model** (i.e. `epistemic`) uncertainty. `φ` denotes the **contextual information** (`3` previous states and current LIDAR observation) and `s` denotes the agent’s future states (i.e. the **trajectory**). Bottom - in this works, an ensemble of models is used: `q`(`s` given `φ`; `θk`) where `θk` denotes the **parameters** of the `k`-th model (neural network). The **`Aggregation Operator`** operator is applied on the posterior p(`θ` given `D`). The previous work is one example of that, where a single `θi` is selected. [Source](https://ml4ad.github.io/files/papers/Robust%20Imitative%20Planning:%20Planning%20from%20Demonstrations%20Under%20Uncertainty.pdf).* |
+
+| ![To **save computation** and improve runtime to real-time, the authors use a trajectory library: they perform `K-means` clustering of the expert plan’s from the training distribution and keep `128` of the centroids. I see that as a way **restrict the search in the trajectory space**, similar to injecting _expert_ knowledge about the feasibility of cars trajectories. [Source](https://ml4ad.github.io/files/papers/Robust%20Imitative%20Planning:%20Planning%20from%20Demonstrations%20Under%20Uncertainty.pdf).](media/2019_tigas_3.PNG "To **save computation** and improve runtime to real-time, the authors use a trajectory library: they perform `K-means` clustering of the expert plan’s from the training distribution and keep `128` of the centroids. I see that as a way **restrict the search in the trajectory space**, similar to injecting _expert_ knowledge about the feasibility of cars trajectories. [Source](https://ml4ad.github.io/files/papers/Robust%20Imitative%20Planning:%20Planning%20from%20Demonstrations%20Under%20Uncertainty.pdf).")  |
+|:--:|
+| *To **save computation** and improve runtime to real-time, the authors use a trajectory library: they perform `K-means` clustering of the expert plan’s from the training distribution and keep `128` of the centroids, allegedly reducing the planning time by a factor of `400`. During optimization, the `trajectory space` is limited to **only that trajectory library**. I also see that as a way **restrict the search in the trajectory space**, similar to injecting _expert_ knowledge about the feasibility of cars trajectories. [Source](https://ml4ad.github.io/files/papers/Robust%20Imitative%20Planning:%20Planning%20from%20Demonstrations%20Under%20Uncertainty.pdf).* |
+
+| ![__Estimating__ the uncertainty is **not enough**. One should then **forward** that estimate to the `planning` module. This reminds me an idea of [(McAllister et al., 2017)](https://www.ijcai.org/proceedings/2017/0661.pdf) about the key benefit of **propagating uncertainty** throughout the AV framework. [Source](https://www.ijcai.org/proceedings/2017/0661.pdf).](media/2017_mc_allister_1.PNG "__Estimating__ the uncertainty is **not enough**. One should then **forward** that estimate to the `planning` module. This reminds me an idea of [(McAllister et al., 2017)](https://www.ijcai.org/proceedings/2017/0661.pdf) about the key benefit of **propagating uncertainty** throughout the AV framework. [Source](https://www.ijcai.org/proceedings/2017/0661.pdf).")  |
+|:--:|
+| *__Estimating__ the uncertainty is **not enough**. One should then **forward** that estimate to the `planning` module. This reminds me an idea of [(McAllister et al., 2017)](https://www.ijcai.org/proceedings/2017/0661.pdf) about the key benefit of **propagating uncertainty** throughout the AV framework. [Source](https://www.ijcai.org/proceedings/2017/0661.pdf).* |
+
+Authors: Tigas, P., Filos, A., Mcallister, R., Rhinehart, N., Levine, S., & Gal, Y.
+
+- Previous work: [`"Deep Imitative Models for Flexible Inference, Planning, and Control"`](https://arxiv.org/abs/1810.06544v4) (see below).
+  - The idea was to combine the benefits of **`imitation learning`** (**`IL`**) and **`goal-directed planning`** such as `model-based RL` (**`MBRL`**).
+    - In other words, to complete **planning** based on some **imitation prior**, by combining **generative modelling** from demonstration data with **planning**.
+    - One key idea of this **generative model of expert behaviour**: perform context-conditioned **density estimation** of the distribution over future expert trajectories, i.e. score the **"expertness"** of any plan of future positions.
+  - Limitations:
+    - It **only** uses a **point-estimate** of `θ`. Hence it fails to capture **epistemic uncertainty** in the model’s density estimate.
+    - > "Plans can be **risky** in scenes that are **out-of-training-distribution** since it **confidently extrapolates** in novel situations and lead to catastrophes".
+- Motivations here:
+  - `1-` Develop a model that captures **epistemic uncertainty**.
+  - `2-` Estimating uncertainty is not a goal at itself: one also need to provide a mechanism for **taking low-risk actions** that are likely to recover in uncertain situations.
+    - I.e. both `aleatoric` and `epistemic` uncertainty should be taken into account in the **planning objective**.
+    - This reminds me the figure of [(McAllister et al., 2017)](https://www.ijcai.org/proceedings/2017/0661.pdf) about the key benefit of **propagating uncertainty** throughout the AV framework.
+- One quote about behavioural cloning (`BC`) that suffers from **state distribution shift** (`co-variate shift`):
+  - > "Where high capacity parametric models (e.g. neural networks) usually **fail to generalize**, and instead **extrapolate confidently yet incorrectly**, resulting in arbitrary outputs and dangerous outcomes".
+- One quote about **_model-free_ `RL`**:
+  - > "The specification of a **reward function** is as hard as solving the original control problem in the first place."
+- About `epistemic` and `aleatoric` uncertainties:
+  - > "**Generative models** can provide a **measure** of their uncertainty in different situations, but **robustness** in novel environments requires estimating **`epistemic uncertainty`** (e.g., _have I been in this state before?_), where conventional density estimation models only capture **`aleatoric uncertainty`** (e.g., _what’s the frequency of times I ended up in this state?_)."
+
+- _How to_ **_capture uncertainty_** _about previously unseen scenarios?_
+  - Using an **ensemble** of **density estimators** and **aggregate operators** over the models’ outputs.
+    - > "By using demonstration data to learn **density models** over human-like driving, and then estimating its uncertainty about these densities using an **ensemble** of imitative models".
+  - The idea it to **take the disagreement** between the models into consideration and **inform planning**.
+    - > "When a trajectory that **was never seen before** is selected, the model’s **high `epistemic` uncertainty** pushes us away from it. During planning, the **disagreement between the most probable trajectories** under the ensemble of imitative models is used to inform planning."
+
+</details>
+
 ---
 
 **`"End-to-end Interpretable Neural Motion Planner"`**
