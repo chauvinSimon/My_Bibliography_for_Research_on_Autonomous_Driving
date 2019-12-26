@@ -1152,6 +1152,65 @@ Authors: Kuefler, A., Morton, J., Wheeler, T., & Kochenderfer, M.
 
 ---
 
+**`"Accelerated Inverse Reinforcement Learning with Randomly Pre-sampled Policies for Autonomous Driving Reward Design"`**
+
+- **[** `2019` **]**
+**[[:memo:](URL)]**
+**[** :mortar_board: `UC Berkeley`, `Tsinghua University, Beijin` **]**
+- **[** _`max-entropy`_  **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](URL).](media/2019_xin_1.PNG "[Source](URL).")  |
+|:--:|
+| *Instead of the **costly `RL` optimisation** step at each iteration of the **vanilla `IRL`**, the idea is to **randomly sample a massive of policies in advance** and then to **pick one** of them as the optimal policy. In case the **sampled policy set does not contain** the optimal policy, **exploration** of policy is introduced as well for supplement. [Source](URL).* |
+
+| ![[Source](URL).](media/2019_xin_2.PNG "[Source](URL).")  |
+|:--:|
+| *The **approximation** used in [**Kuderer et al. (2015)**](http://ais.informatik.uni-freiburg.de/publications/papers/kuderer15icra.pdf) is applied here to compute the second term of gradient about the **expected feature values**. [Source](URL).* |
+
+Authors: Xin, L., Li, S. E., Wang, P., Cao, W., Nie, B., Chan, C., & Cheng, B.
+
+- Reminder: Goal of `IRL` = **Recover the reward function** of an expert from demonstrations (here _trajectories_).
+- Motivations, here:
+  - `1-` Improve the **efficiency** of **"weights updating"** in the **iterative** routine of `IRL`.
+    - More precisely: generating **optimal policy** using `model-free RL` suffers from **low sampling efficiency** and should therefore be avoided.
+    - Hence the term **_"accelerated"_** **`IRL`**.
+  - `2-` Embed **human knowledge** where restricting the **search space** (policy space).
+- One idea: **"Pre-designed policy subspace"**.
+  - > "An intuitive idea is to **randomly sample a massive of policies in advance** and then to **pick** one of them as the **optimal policy** instead of finding it via `RL` optimisation."
+- _How to construct the_ **_policies sub-space_**_?_
+  - **Human knowledge** about vehicle controllers is used.
+  - Parametrized **linear controllers** are implemented:
+    - **`acc`** = `K1`*`∆d` + `K2`*`∆v` + `K3`*`∆a`, where `∆` are **relative to the leading vehicle**.
+    - By **sampling** tuples of **<`K1`, `K2`, `K3`> coefficients**, `1 million` (_candidates_) policies are generated to **form the sub-space**.
+- Section about `Max-Entropy IRL` (_btw. very well explained, as for the section introducing `IRL`_):
+  - > "Ziebart et al. (2008) employed the principle of `maximum entropy` to **resolve ambiguities** in choosing trajectory distributions. This principle **maximizes the uncertainty** and leads to the **distribution** over behaviors **constrained to matching feature expectations**, while being **no more committed** to any particular trajectory than this constraint requires".
+  - > "**Maximizing the entropy of the distribution over trajectories** subject to the feature constraints from expert’s trajectories implies to **maximize the likelihood** under the maximum entropy (exponential family) distributions. The problem is **convex for `MDPs`** and the optima can be obtained using **gradient-based optimization** methods".
+  - > "The **gradient** [of the Lagrangian] is the difference between **empirical feature expectations** and the **learners expected feature expectations**."
+- _How to compute the_ *_second term_* _of this gradient?_
+  - It implies **integrating over all possible trajectories**, which is infeasible.
+  - As [Kuderer et al. (2015)](http://ais.informatik.uni-freiburg.de/publications/papers/kuderer15icra.pdf), one can compute the feature values of the **most likely trajectory** as an **approximation of the feature expectation**.
+  - > "With this approximation, only the **optimal trajectory** associated to the **optimal policy** is needed, in contrast to regarding the **generated trajectories** as a **probability distribution**."
+- About the **features**.
+  - As noted in my [experiments about `IRL`](https://www.youtube.com/watch?v=wBfd2Kn-IgU), they serve **two purposes** (in `feature-matching`-based `IRL` methods):
+    - `1-` In the **reward function**: they should represent _"things we want"_ and _"things we do not want"_.
+    - `2-` In the **feature-match**: to **compare two policies** based on their sampled trajectories, they should **capture relevant properties** of driving behaviours.
+  - Three features for this _longitudinal acceleration_ task:
+    - `front-veh time headway`.
+    - `long. acc`.
+    - `deviation to speed limit`.
+- _Who was the expert?_
+  - Expert followed a **modified linear car-following** (`MLCF`) model.
+- Results.
+  - **Iterations** are stopped after `11` loops.
+  - It would have been interesting for **comparison** to test a _"classic"_ `IRL` method where `RL` optimizations are applied.
+
+</details>
+
+---
+
 **`"Jointly Learnable Behavior and Trajectory Planning for Self-Driving Vehicles"`**
 
 - **[** `2019` **]**
