@@ -255,7 +255,7 @@ Note: I find very valuable to get insights from the **CMU** (Carnegie Mellon Uni
 
 | ![To **save computation** and improve runtime to real-time, the authors use a trajectory library: they perform `K-means` clustering of the expert plan’s from the training distribution and keep `128` of the centroids. I see that as a way **restrict the search in the trajectory space**, similar to injecting _expert_ knowledge about the feasibility of cars trajectories. [Source](https://ml4ad.github.io/files/papers/Robust%20Imitative%20Planning:%20Planning%20from%20Demonstrations%20Under%20Uncertainty.pdf).](media/2019_tigas_3.PNG "To **save computation** and improve runtime to real-time, the authors use a trajectory library: they perform `K-means` clustering of the expert plan’s from the training distribution and keep `128` of the centroids. I see that as a way **restrict the search in the trajectory space**, similar to injecting _expert_ knowledge about the feasibility of cars trajectories. [Source](https://ml4ad.github.io/files/papers/Robust%20Imitative%20Planning:%20Planning%20from%20Demonstrations%20Under%20Uncertainty.pdf).")  |
 |:--:|
-| *To **save computation** and improve runtime to real-time, the authors use a trajectory library: they perform `K-means` clustering of the expert plan’s from the training distribution and keep `128` of the centroids, allegedly reducing the planning time by a factor of `400`. During optimization, the `trajectory space` is limited to **only that trajectory library**. I also see that as a way **restrict the search in the trajectory space**, similar to injecting _expert_ knowledge about the feasibility of cars trajectories. [Source](https://ml4ad.github.io/files/papers/Robust%20Imitative%20Planning:%20Planning%20from%20Demonstrations%20Under%20Uncertainty.pdf).* |
+| *To **save computation** and improve runtime to real-time, the authors use a trajectory library: they perform `K-means` clustering of the expert plan’s from the training distribution and keep `128` of the centroids, allegedly reducing the planning time by a factor of `400`. During optimization, the `trajectory space` is limited to **only that trajectory library**. It makes me think of `templates` sometimes used for **path-planning**. I also see that as a way **restrict the search in the trajectory space**, similar to injecting _expert_ knowledge about the feasibility of cars trajectories. [Source](https://ml4ad.github.io/files/papers/Robust%20Imitative%20Planning:%20Planning%20from%20Demonstrations%20Under%20Uncertainty.pdf).* |
 
 | ![__Estimating__ the uncertainty is **not enough**. One should then **forward** that estimate to the `planning` module. This reminds me an idea of [(McAllister et al., 2017)](https://www.ijcai.org/proceedings/2017/0661.pdf) about the key benefit of **propagating uncertainty** throughout the AV framework. [Source](https://www.ijcai.org/proceedings/2017/0661.pdf).](media/2017_mc_allister_1.PNG "__Estimating__ the uncertainty is **not enough**. One should then **forward** that estimate to the `planning` module. This reminds me an idea of [(McAllister et al., 2017)](https://www.ijcai.org/proceedings/2017/0661.pdf) about the key benefit of **propagating uncertainty** throughout the AV framework. [Source](https://www.ijcai.org/proceedings/2017/0661.pdf).")  |
 |:--:|
@@ -2506,6 +2506,65 @@ Author: Noh, S.
 ---
 
 ## `Model-Free` `Reinforcement Learning`
+
+---
+
+**`"Multi-lane Cruising Using Hierarchical Planning and Reinforcement Learning"`**
+
+- **[** `2019` **]**
+**[[:memo:](https://ieeexplore.ieee.org/document/8916928/)]**
+**[** :car: `Huawei` **]**
+
+- **[** _`hierarchical planning`, [`SUMO`](https://sumo.dlr.de/docs/index.html)_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![The high-level behavioural planner (`BP`) selects a `lane` while the underlying motion planner (`MoP`) select a `corridor`. [Source](https://ieeexplore.ieee.org/document/8916928/).](media/2019_rezaee_1.PNG "The high-level behavioural planner (`BP`) selects a `lane` while the underlying motion planner (`MoP`) select a `corridor`. [Source](https://ieeexplore.ieee.org/document/8916928/).")  |
+|:--:|
+| *The high-level behavioural planner (`BP`) selects a `lane` while the underlying motion planner (`MoP`) select a `corridor`. [Source](https://ieeexplore.ieee.org/document/8916928/).* |
+
+| ![The decision-making is **hierarchically divided** into three levels. The first two (`BP` and `MoP`) are **learning-based** while the last module that decides of low-level commands such as `throttle` and `steering` is left **rule-based** since it is car-specific. [Source](https://ieeexplore.ieee.org/document/8916928/).](media/2019_rezaee_2.PNG "The decision-making is **hierarchically divided** into three levels. The first two (`BP` and `MoP`) are **learning-based** while the last module that decides of low-level commands such as `throttle` and `steering` is left **rule-based** since it is car-specific. [Source](https://ieeexplore.ieee.org/document/8916928/).")  |
+|:--:|
+| *The decision-making is **hierarchically divided** into three levels. The first two (`BP` and `MoP`) are **learning-based**. The `keep-lane` and `switch-lane` tasks are achieved using a **shared `MoP` agent**. The last module that decides of low-level commands such as `throttle` and `steering` is left **rule-based** since it is car-specific. [Source](https://ieeexplore.ieee.org/document/8916928/).* |
+
+Authors: Rezaee, K., Yadmellat, P., Nosrati, M. S., Abolfathi, E. A., Elmahgiubi, M., & Luo, J.
+
+- Motivation:
+  - **Split** the decision-making process based on **different levels of abstraction**. I.e. **hierarchical** planning.
+- About the **_hierarchical_** nature of **"driving"** and the concept of **_"symbolic punctuation"_**:
+  - > "Different from regular robotic problems, _driving_ is heavily **symbolically punctuated** by _signs_ and _rules_ (e.g. _`lane markings`_, _`speed limit signs`_, _`fire truck sirens`_, _`turning signals`_, _`traffic lights`_) on top of what is largely a **continuous control task**."
+  - In other words, `higher level` decisions on **discrete state transitions** should be coordinated with `lower level` motion planning and control in continuous state space.
+- About the use of **_learning-based_** methods for **low-level** control:
+  - The authors mentioned, among other, the [work](https://www.mobileye.com/wp-content/uploads/2016/01/Long-term-Planning-by-Short-term-Prediction.pdf) of `Mobileye`, where `RL` is used in the **planning phase** to model the **vehicle’s `acceleration`** given results from the prediction module.
+    - > "Given well-established controllers such as `PID` and `MPC`, we believe that **learning-based methods** are more effective in the **high** and **mid-level** decision making (e.g. `BP` and `Motion Planning`) rather than **low-level controllers**."
+- Another concept: **_"`skill`-based"_** planning:
+  - It means that planning submodules are **specialized** for a driving **sub-task** (e.g. `lane keeping`, `lane switching`).
+  - The authors introduce a **road abstraction**: a **`lane`** (selected by the `BP`) is divided into (`5`) **`corridors`** (selected by the `MoP`).
+    - Corridor selection is equivalent to **selecting a path** among a set of **predefined paths**.
+- Proposed structure:
+  - `1-` The **Behavioural planner** (**`BP`**) outputs a **high-level decisions** in {`keep lane`, `switch to the left lane`, `switch to the right lane`}.
+    - _Also, some target speed??? No, apparently a separated module sets some `target speed set-point` based on the `BP` desire and the physical boundaries, such as heading cars, or any interfering objects on the road - Not clear to me._
+  - `2-` The **Motion planners** (**`MoP`**) outputs a `target corridor` and a `target speed`.
+  - `3-` A **separated** and _non-learnt_ **trajectory controller** converts that into **low-level** commands (`throttle` and `acceleration`)
+- About the high-level **_`Option`_**: _How to define `termination`?_
+  - > "The typical solution is to assign a **fixed expiration time** to each option and penalize the agent if execution time is expired."
+  - According the authors, `BP` **should not wait** until its command gets executed (since any **fixed lifetime for `BP` commands is dangerous**).
+    - > "BP should be able to **update its earlier decisions**, at every time step, according to the new states."
+- _How to train the two modules?_
+  - > "We design a **coarse-grained reward** function and avoid any **fine-grained rules** in our reward feedback."
+  - The reward function of the `MoP` depends on the `BP` objective:
+    - Reward `+1` is given to the `MoP` agent if being in the middle corridor (_ok, but is the target lane considered?? Not clear to me_), `AND`:
+      - `EITHER` the speed of the ego vehicle is within a threshold of the **`BP` target speed**,
+      - `OR` the **minimum front gap** is within a threshold of the **safe distance** `d` (computed based on `TTC`).
+  - The `MoP` is first trained with random `BP` commands (_target lanes are sampled every `20s`_). Then the `BP` agent is trained: its gets positive rewards for driving above a threshold while being penalized at each lane change.
+  - Main limitation:
+    - **Training** is done **separately** (both `BP` and `MoP` agents cannot adapt to each other, hence the final decision might be sub-optimal).
+- Another advantage: _alleged_ easy **`sim-to-real` transfer**.
+  - > "In practice, **low-level policies** may result in oscillatory or undesirable behaviours when deployed on **real-world** vehicles due to imperfect sensory inputs or **unmodeled kinematic** and **dynamic** effects."
+    - > "Our state-action **space abstraction** allows **transferring** of the trained models from a simulated environment with virtually no dynamics to the one with **significantly more realistic dynamics** without a need for retraining."
+
+</details>
 
 ---
 
