@@ -42,6 +42,34 @@ Looking forward your reading suggestions!
 
 ---
 
+**`"A Survey of Deep Learning Applications to Autonomous Vehicle Control"`**
+
+- **[** `2019` **]**
+**[[:memo:](http://arxiv.org/abs/1912.10773)]**
+**[** :mortar_board: `University of Surrey` **]**
+**[** :car: `Jaguar Land Rover` **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![__Challenges__ for **learning-based** control methods. [Source](http://arxiv.org/abs/1912.10773).](media/2019_kuutti_1.PNG "__Challenges__ for **learning-based** control methods. [Source](http://arxiv.org/abs/1912.10773).")  |
+|:--:|
+| *__Challenges__ for **learning-based** control methods. [Source](http://arxiv.org/abs/1912.10773).* |
+
+Authors: Kuutti, S., Bowden, R., Jin, Y., Barber, P., & Fallah, S.
+
+- Three categories are examined:
+  - **`lateral`** control alone.
+  - **`longitudinal`** control alone.
+  - **`longitudinal`** and **`lateral`** control combined.
+- Two quotes:
+  - > "While **lateral control** is typically achieved through **`vision`**, the **longitudinal control** relies on measurements of relative velocity and distance to the preceding/following vehicles. This means that ranging sensors such as **`RADAR` or `LIDAR`** are more commonly used in **longitudinal control** systems.".
+  - > "While **lateral control** techniques favour **`supervised learning`** techniques trained on labelled datasets, **longitudinal control** techniques favour **`reinforcement learning`** methods which learn through **interaction** with the environment."
+
+</details>
+
+---
+
 **`"Longitudinal Motion Planning for Autonomous Vehicles and Its Impact on Congestion: A Survey"`**
 
 - **[** `2019` **]**
