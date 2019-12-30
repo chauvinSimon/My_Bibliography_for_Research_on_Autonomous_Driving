@@ -3755,16 +3755,14 @@ Author: Plessen, M. G.
 **[[:memo:](https://ieeexplore.ieee.org/document/8916847)]**
 **[** :mortar_board: `Delft University` **]**
 
-- **[** _`dyna-q`_ **]**
+- **[** _`Dyna-2`, `Dyna-Q`_ **]**
 
 <details>
   <summary>Click to expand</summary>
 
-| ![ aaa. [Source](https://ieeexplore.ieee.org/document/8916847).](media/2019_dabiri_1.PNG "aaa. [Source](https://ieeexplore.ieee.org/document/8916847).")  |
+| ![ The proposed algorithm **learns the cyclist’s behaviour** in **reaction** to the **advised `speed`**. It is used to make **prediction about the next state**, allowing for a **search** that help to plan the best next move of the cyclist **on-the-fly**. A **`look-up table`** is used to model `F`. [Source](https://ieeexplore.ieee.org/document/8916847).](media/2019_dabiri_1.PNG "The proposed algorithm **learns the cyclist’s behaviour** in **reaction** to the **advised `speed`**. It is used to make **prediction about the next state**, allowing for a **search** that help to plan the best next move of the cyclist **on-the-fly**. A **`look-up table`** is used to model `F`. [Source](https://ieeexplore.ieee.org/document/8916847).")  |
 |:--:|
-| *aaa. [Source](https://ieeexplore.ieee.org/document/8916847).* |
-
-The proposed algorithm **learns the cyclist’s behaviour** in **reaction** to the **advised `speed`**. It is used to make **prediction about the next state**, allowing for a **search** that help to plan the best next move of the cyclist **on-the-fly**. A **`look-up table`** is used to model `F`.
+| *The proposed algorithm **learns the cyclist’s behaviour** in **reaction** to the **advised `speed`**. It is used to make **prediction about the next state**, allowing for a **search** that help to plan the best next move of the cyclist **on-the-fly**. A **`look-up table`** is used to model `F`. [Source](https://ieeexplore.ieee.org/document/8916847).* |
 
 Authors: Dabiri, A., Hegyi, A., & Hoogendoorn, S.
 
@@ -3783,8 +3781,12 @@ Authors: Dabiri, A., Hegyi, A., & Hoogendoorn, S.
   - Use a **second search procedure** to obtain a **local approximation** of the action-value function, i.e. to help the agent to **select its next action**.
   - Hence:
     - > "Combine **learning** and **planning** to decide of the `speed` of a cyclist at an intersection".
+- One strong inspiration: [**`Dyna-2`**](http://www0.cs.ucl.ac.uk/staff/D.Silver/web/Applications_files/dyna2.pdf) (Silver & Sutton, 2007).
+  - > "The **value function** is a linear combination of the **transient** and **permanent** memories, such that the transient memory **tracks a local correction** to the permanent memory".
+  - Without _transient_ memory, it reduces to `linear Sarsa`.
+  - Without _permanent_ memory, it reduces to a **sample-based search** algorithm.
 - One idea: use **`2` search** procedures:
-  - > "Similar to [`Dyna-2`](http://www0.cs.ucl.ac.uk/staff/D.Silver/web/Applications_files/dyna2.pdf) algorithm, `Dyna-c` [_`c` for `cyclist`_], **learns from the past and the future**:"
+  - > "Similar to [`Dyna-2`](http://www0.cs.ucl.ac.uk/staff/D.Silver/web/Applications_files/dyna2.pdf), `Dyna-c` [_`c` for `cyclist`_], **learns from the past and the future**:"
   - `1-` **`Search I`**: The **_long-term_** action-value is updated from what **has happened** in real world.
     - `Q`(`s`,`a`), which is updated from **real experience**.
     - This _long-term_ memory is used to represent **general knowledge** about the domain.
