@@ -3749,6 +3749,61 @@ Author: Plessen, M. G.
 
 ---
 
+**`"Automatic learning of cyclist’s compliance for speed advice at intersections - a reinforcement learning-based approach"`**
+
+- **[** `2019` **]**
+**[[:memo:](https://ieeexplore.ieee.org/document/8916847)]**
+**[** :mortar_board: `Delft University` **]**
+
+- **[** _`dyna-q`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![ aaa. [Source](https://ieeexplore.ieee.org/document/8916847).](media/2019_dabiri_1.PNG "aaa. [Source](https://ieeexplore.ieee.org/document/8916847).")  |
+|:--:|
+| *aaa. [Source](https://ieeexplore.ieee.org/document/8916847).* |
+
+The proposed algorithm **learns the cyclist’s behaviour** in **reaction** to the **advised `speed`**. It is used to make **prediction about the next state**, allowing for a **search** that help to plan the best next move of the cyclist **on-the-fly**. A **`look-up table`** is used to model `F`.
+
+Authors: Dabiri, A., Hegyi, A., & Hoogendoorn, S.
+
+- Motivation:
+  - `1-` Advise a cyclist what speed to adopt when **approaching traffic lights** with uncertainty in the timing.
+    - _To me, it looks like the opposite of numerous works that_ **_control traffic lights_**_, assuming behaviours of vehicles, in order to_ **_optimize the traffic flow_**_. Here, it may be worth for cyclists to speed up to catch a green light and avoid stopping._
+    - Note that this is not a _global_ optimization for a _group_ of cyclists (e.g. on crossing lanes). Only one **single cyclist** is considered.
+    - Note that the so-called "`agent`" is not the cyclist, but rather the module that **provides** the cyclist a **speed advice**.
+  - `2-` Do not assume **full compliance** of the cyclist to the given advice, i.e. take into account the effect of **disregarding the advice**.
+- Challenges:
+  - `1-` There is no advanced knowledge on **how the cyclist may react** to the advice he/she receives.
+    - The other **dynamics** (or _transition_) models (**deterministic** kinematics of the bike and **stochastic** evolution of the traffic light state) are assumed to be known.
+  - `2-` The **computation time** available at each decision step is **limited**: we **cannot afford** to **wait for `next-state` to be known before starting to "search"**.
+- Main ideas:
+  - **Learn a model of the reaction** of cyclist to the advice (using a **`look-up table`**), on real-time (_it seems `continuous learning` to me_).
+  - Use a **second search procedure** to obtain a **local approximation** of the action-value function, i.e. to help the agent to **select its next action**.
+  - Hence:
+    - > "Combine **learning** and **planning** to decide of the `speed` of a cyclist at an intersection".
+- One idea: use **`2` search** procedures:
+  - > "Similar to [`Dyna-2`](http://www0.cs.ucl.ac.uk/staff/D.Silver/web/Applications_files/dyna2.pdf) algorithm, `Dyna-c` [_`c` for `cyclist`_], **learns from the past and the future**:"
+  - `1-` **`Search I`**: The **_long-term_** action-value is updated from what **has happened** in real world.
+    - `Q`(`s`,`a`), which is updated from **real experience**.
+    - This _long-term_ memory is used to represent **general knowledge** about the domain.
+    - `Search I` can benefit from a _local_ approximation provided by `Search II`. _How? is I a real search or just argmax()?_
+  - `2-` **`Search II`**: The **_short-term_** action-value is updated from what **could happen** in the future.
+    - `Q¯`(`s`,`a`), which uses **simulated experience** for its update and focuses on **generating a local approximation** of the action-value function.
+    - Based on the **learnt model** and the selected action, the agent **predicts the state in the next time step**.
+    - It can **simulate experiences** (search procedure) that start from this "imagined" state and update `Q¯` accordingly.
+- Difference with `dyna-q`. Time constrain: we can neither afford to wait for the next observation nor to take too long to think after observing it (as opposed to e.g. GO).
+  - **`Search II`** has **exactly one timestep** to perform its searches:
+    - > "Just after the action is taken and before reaching to the next time step, the agent has **`Ts` = `∆t` seconds** to perform `Search II`."
+- One take-away:
+  - > "Proper **initialisation of `Q`** can significantly **improve the performance** of the algorithm [_I note the logically equivalent contrapositive_]; the closer the algorithm starts to the real optimal action-value, the better."
+  - > "Here, `Q` is **initialised** with its optimal value in case of **full compliance of the cyclist** [`next-observed speed` `=` `advised speed`]. Stochastic Dynamic Programming (`SDP`) is used for such initialisation."
+
+</details>
+
+---
+
 **`"ReQueST: Learning Human Objectives by Evaluating Hypothetical Behavior"`**
 
 - **[** `2019` **]**
