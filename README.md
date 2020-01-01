@@ -2628,6 +2628,67 @@ Author: Noh, S.
 
 ---
 
+**`"End-to-end Reinforcement Learning for Autonomous Longitudinal Control Using Advantage Actor Critic with Temporal Context"`**
+
+- **[** `2019` **]**
+**[[:memo:](http://personal.ee.surrey.ac.uk/Personal/R.Bowden/publications/2019/Kuutti_ITSC2019pp.pdf)]**
+**[** :mortar_board: `University of Surrey` **]**
+**[** :car: `Jaguar Land Rover` **]**
+
+- **[** _`sampling efficiency`, `switching actions`_  **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![In the reward function, the `time headway` term encourages the agent to **maintain a `headway` close to `2s`**, while the `headway-derivative` term rewards the agent for taking actions which **bring it closer** to the ideal headway. [Source](http://personal.ee.surrey.ac.uk/Personal/R.Bowden/publications/2019/Kuutti_ITSC2019pp.pdf).](media/2019_kuutti_2.PNG "In the reward function, the `time headway` term encourages the agent to **maintain a `headway` close to `2s`**, while the `headway-derivative` term rewards the agent for taking actions which **bring it closer** to the ideal headway. [Source](http://personal.ee.surrey.ac.uk/Personal/R.Bowden/publications/2019/Kuutti_ITSC2019pp.pdf).")  |
+|:--:|
+| *In the reward function, the `time headway` term encourages the agent to **maintain a `headway` close to `2s`**, while the `headway-derivative` term rewards the agent for taking actions which **bring it closer** to the ideal headway. [Source](http://personal.ee.surrey.ac.uk/Personal/R.Bowden/publications/2019/Kuutti_ITSC2019pp.pdf).* |
+
+| ![Using **recurrent units** in the actor net leads to a **smoother driving style** and maintains a closer headway to the `2s` target. [Source](http://personal.ee.surrey.ac.uk/Personal/R.Bowden/publications/2019/Kuutti_ITSC2019pp.pdf).](media/2019_kuutti_3.PNG "Using **recurrent units** in the actor net leads to a **smoother driving style** and maintains a closer headway to the `2s` target. [Source](http://personal.ee.surrey.ac.uk/Personal/R.Bowden/publications/2019/Kuutti_ITSC2019pp.pdf).")  |
+|:--:|
+| *Using **recurrent units** in the actor net leads to a **smoother driving style** and maintains a closer headway to the `2s` target. [Source](http://personal.ee.surrey.ac.uk/Personal/R.Bowden/publications/2019/Kuutti_ITSC2019pp.pdf).* |
+
+Authors: Kuutti, S., Bowden, R., Joshi, H., Temple, R. De, & Fallah, S.
+
+- Motivations for **"headway-keeping"**, i.e. _longitudinal_ control, using model-free `RL`:
+  - `1-` Address inherent **sampling inefficiency**.
+  - `2-` Address common **jerky driving behaviours**, i.e. aim at _smoother_ longitudinal trajectories.
+    - > "Without any **temporal context** given, the agent has to decide the current action without any **consideration for the previous actions**, sometimes leading to **rapid switching** between the `throttle` and `brake` pedals."
+- The task: keep a **`2s` time headway** from the lead vehicle in [`IPG CarMaker`](https://ipg-automotive.com/products-services/simulation-software/carmaker/).
+  - The `state` consists in:
+    - `ego-speed`
+    - `ego-acc`
+    - `delta speed to leader`
+    - `time headway to leader`
+  - _Personal note_: Since the `longitudinal` control of the ego-car has no influence on the speed of the leading vehicle, the `transition` function of this `MDP` should be **stochastic**.
+- One idea for sampling efficiency: **_"Proxy Network for Vehicle Dynamics"_**.
+  - For training, the simulator was **constrained** to running at **real-time** (timestep = `40ms`). At the same time, model-free methods require many samples.
+  - One idea is to learn the **"ego-dynamics"**, i.e. one part of the `transition` function.
+    - `input` = [`ego-speed`, `ego-acc`, `previous pedal action`, `current pedal action`, `road coefficient of friction`]
+    - `output` = `ego-speed` at the next time-step.
+  - The authors claim that this model (derived with _supervised learning_), can be used to replace the simulator when training the `RL` agent:
+    - > "The training was completed using the proxy network in under `19` hours."
+    - _As noted above, this `proxy net`_ **_does not capture the full transition_**. _Therefore, I do not understand how it can substitute the simulator and_ **_"self-generate"_** _samples, except if assuming_ **_constant speed_** _of the leading vehicle - which would boil down to some `target-speed-tracking` task instead._"
+      - In addition, one could apply `planning` techniques instead of `learning`.
+- One idea again **jerky action switch**:
+  - The authors add a **`16` `LSTM` units** to the **actor** network.
+  - Having a **recurrent cell** provides a **temporal context** and leads to **smoother predictions**.
+- _How to deal with_ **_continuous actions_**_?_
+  - `1-` The actor network estimates the action value **mean** `µ` and the estimated **variance** `σ`.
+  - `2-` This transformed into a **Gaussian probability distribution**, from which the control action is then **sampled**.
+- About the **"Sequenced"** **experience replay**:
+  - The `RL` agent is train `off-policy`, i.e. the experience tuples used for updating the policy were not collected from the currently-updated policy, but rather **drawn from a replay buffer**.
+  - Because the `LSTM` has an internal state, experience tuples <`s`, `a`, `r`, `s'`> cannot be sampled individually.
+  - > "Since the network uses `LSTMs` for **temporal context**, these minibatches are sampled as **sequenced trajectories** of experiences."
+- About the **"Trauma memory"**:
+  - A **second set of experiences** is maintained and used during training.
+  - This **"Trauma memory"** stores trajectories which **lead to collisions**.
+  - The ratio of `trauma memory` samples to experience `replay samples` is set to `1/64`.
+
+</details>
+
+---
+
 **`"Multi-lane Cruising Using Hierarchical Planning and Reinforcement Learning"`**
 
 - **[** `2019` **]**
