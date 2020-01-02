@@ -4187,6 +4187,126 @@ Authors: Zhu, Y., & Zhao, D.
 
 ---
 
+**`"DESPOT-α: Online POMDP Planning With Large State And Observation Spaces"`**
+
+- **[** `2019` **]**
+**[[:memo:](http://www.roboticsproceedings.org/rss15/p06.pdf)]**
+**[** :mortar_board: `National University Of Singapore` **]**
+
+- **[** _`POMDP`, `online solver`, `DESPOT`, `parallelization`, `large observation space`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![Unlike standard **belief tree**, some **`observation` branches** are removed in a `DESPOT`. [Source](https://arxiv.org/abs/1609.03250).](media/2017_ye_1.PNG "Unlike standard **belief tree**, some **`observation` branches** are removed in a `DESPOT`. [Source](https://arxiv.org/abs/1609.03250).")  |
+|:--:|
+| *Unlike standard **belief tree**, some **`observation` branches** are removed in a `DESPOT`. [Source](https://arxiv.org/abs/1609.03250).* |
+
+| ![Top - Illustration of the **`particle divergence` problem**: When **`observation` space** is large, particles quickly diverge into **separate belief nodes** in the belief tree, each of which contains only a **single particle**. This causes **over-optimistic** behaviours. Bottom - In a `DESPOT-α`, each node has the **same number of particles as the root** of the tree and weighting is performed based on the `observation`s. This **prevents the over-optimistic evaluation** of **value** of the belief. [Source](http://www.roboticsproceedings.org/rss15/p06.pdf).](media/2019_garg_1.PNG "Top - Illustration of the **`particle divergence` problem**: When **`observation` space** is large, particles quickly diverge into **separate belief nodes** in the belief tree, each of which contains only a **single particle**. This causes **over-optimistic** behaviours. Bottom - In a `DESPOT-α`, each node has the **same number of particles as the root** of the tree and weighting is performed based on the `observation`s. This **prevents the over-optimistic evaluation** of **value** of the belief. [Source](http://www.roboticsproceedings.org/rss15/p06.pdf).")  |
+|:--:|
+| *Top - Illustration of the **`particle divergence` problem**: When **`observation` space** is large, particles quickly diverge into **separate `belief` nodes** in the belief tree, each of which contains only a **single particle**. This causes **over-optimistic** behaviours. Bottom - In a `DESPOT-α`, each node has the **same number of particles as the root** of the tree and **weighting** is performed based on the `observation`s. This **prevents the over-optimistic evaluation** of **value** of the `belief`. [Source](http://www.roboticsproceedings.org/rss15/p06.pdf).* |
+
+Authors: Garg, N. P., Hsu, D., & Lee, W. S.
+
+- Previous work: **"Determinized Sparse Partially Observable Tree" (`DESPOT`)** by [(Ye, Somani, Hsu & Lee. 2017)](https://arxiv.org/abs/1609.03250).
+- About **`DESPOT`**:
+  - _Why_ `Partially Observable` _?_
+    - As the `state` is **not fully observable**, the agent must **reason** (_and maintain_) **with `belief`s**, which are **probability distributions over the `state`s** given history h.
+    - The `belief` is a **sufficient statistic** that contains all the information from the **history** of **`action`s** and **`observation`s** (`a1`, `z1`, `a2`, `z2`, ... , `at`, `zt`).
+    - > "By reasoning in `belief` space, `POMDP`s are able to maintain a balance between **_exploration_** and **_exploitation_** and hence provide a principled framework for [sequential] decision making **under uncertainty**."
+
+  - _Why_ `Tree` _?_
+    - Because a **search tree of histories** is constructed, online.
+    - The **_"belief tree search"_** aspect has to do with the **`online`** nature of the solver _(as opposed to `offline` methods that_ **_compute a policy beforehand_**_)_:
+      - > "At each time step, it plans **locally** and chooses an optimal `action` for the **current `belief` only**, by performing **lookahead search** in the **neighborhood** of the **current `belief`**. It then **executes the chosen `action`** immediately."
+    - > "Many `POMDP` solvers do **online planning** by doing **forward search** from the **current `belief`**, constructing a tree which **branches** each time an `action` is required, and also each time an `observation` may be observed".
+      - Each **node** implicitly represents a `belief`.
+        - **_"Implicitly"_** since it contains a **particle set** that approximates the `belief`. This contrasts with other approaches that **_explicitly_** represent the `belief` as a **probability distribution** over the `state` space, e.g. with exact updates using Bayes' theorem.
+        - Planning is only performed from the **current `belief`**, which is the _root_ node.
+      - Each **node branches** into `|A|` `action` edges.
+      - Each **action edge** further branches into `|Z|` **observation edges**.
+    - A `DESPOT` is built through **trials**, consisting of `exploration` and `backup` on **sampled** scenarios.
+
+  - _Why_ `Determinized` _?_ _(why the "non-determinism" is incrementally removed from the tree?)_
+    - Because the search is focused on a **set of randomly _sampled_ "scenarios"**.
+      - They are sampled _a priori_. Hence _"determinized"_.
+      - > "A **small number of sampled scenarios** is **sufficient** to give a good estimate of the true value of any policy."
+      - Scenarios are _"abstract simulation trajectories"_ (_not yet clear to me_).
+      - These determinized scenarios make `DESPOT` differ from [`POMCP`](https://papers.nips.cc/paper/4031-monte-carlo-planning-in-large-pomdps.pdf) which performs **`MCTS` on a belief tree using `UCT`**.
+    - > "Like `DESPOT`, `DESPOT-α` uses the **"particle belief approximation"** and searches a **determinized** sparse belief tree".
+
+  - _Why_ `Sparse` _?_
+    - It is related to the question: _How to represent a `belief`?_
+      - `DESPOT` represents the `belief` as a **set of particles** (particles are **sampled `state`s**), as for **[`POMCP`](https://papers.nips.cc/paper/4031-monte-carlo-planning-in-large-pomdps.pdf)**.
+        - This enables to overcome the issue of **large `state` space**.
+      - > "While a **standard belief tree** captures the execution of all policies under **_all_ possible scenarios**, a `DESPOT` captures the execution of all policies **under _a set of_ sampled scenarios**."
+      - Because some **observation branches** are removed, a `DESPOT` can be viewed as a **_sparse_ approximation** of the **standard belief tree**:
+        - The tree contains **all the action branches**, but only the **observation branches** under the **sampled scenarios**.
+        - This also implies that `DESPOT` does not perform **belief update** over the **entire `state` space** (addressing the `curse of dimensionality`).
+    - In other words, a `DESPOT` is structurally similar to **standard belief trees**, but contains only `belief` nodes **reachable under the `K` sampled scenarios**.
+      - Size of `SparseSampling`: `|A|^D`.`C^D` (_sparse_ because only **`C` observations** are sampled for each action branch, and `D` is the **depth**).
+      - Size of `DESPOT`: `|A|^D`.`K` (for `K` sampled **scenarios**).
+
+- Additional notes about `DESPOT`:
+  - Motivations: Address two **curses**.
+    - `1-` Curse of **dimensionality**: the `state` space, and correspondingly the dimensionality of the `belief` size, grows exponentially with the number of `state` variables.
+    - `2-` Curse of **history**: the `belief` tree grows exponentially with `depth`.
+    - **`DESPOT`** (as for **[`POMCP`](https://papers.nips.cc/paper/4031-monte-carlo-planning-in-large-pomdps.pdf)**) breaks the two **curses** through **`sampling`**:
+      - > "It alleviates the `curse of dimensionality` by **sampling `state`s from a `belief`** and alleviates the `curse of history` by **sampling `observation`s**."
+  - `DESPOT` contains all the main [ideas](https://www.aaai.org/Papers/JAIR/Vol32/JAIR-3217.pdf) for **online planning** via **belief tree search**:
+    - `1-` **Heuristic search**: The tree is incrementally constructed under the **guidance of a heuristic**.
+    - `2-` **Branch-and-bound pruning**: `Upper bounds` _(computed from state-based heuristics)_ and `lower bounds` _(computed from default policies)_ on the value at each `belief` node are used to **prune suboptimal subtrees**.
+      - Note that the **gap** between the `lower bound` and `upper bound` can represent the **uncertainty** at the `belief` node.
+    - `3-` **Monte Carlo sampling**: Only a randomly **sampled subset of observation** branches is explored at each node.
+  - **Regularization**.
+    - Since many scenarios are not sampled, and because the chosen policy optimizes for **the sampled scenarios**, it can happen that the policy does not perform well.
+    - _Regularization_ can be used to address that **overfitting**.
+
+- More about "`1- heuristic search`": **Search-guidance** based on the **value function**.
+  - > "To make sure that even the partially constructed tree is able to compute a good policy, **heuristics** based on **`upper bound`** and **`lower bound`** on the **value of `belief` nodes** are used to **guide** the search".
+  - Note that this requires the **computation** of the `value` of `belief` nodes: `V(b)`.
+  - _How to estimate the value?_ Using `α`-vectors.
+- One concept: **`α`-vectors**.
+  - One important property:
+    - > "The **value function** of a `POMDP` can be approximated arbitrarily well by a **convex piece-wise linear** function of the `belief`".
+    - `V`(`b`) = `max over α` [`∑ over s` (`b(s)`.`α(s)`)]
+  - > "An `α`-vector is associated with a **conditional plan** and, for each `state` `s`, captures the reward of executing the plan starting from `state` `s`."
+  - Note that the number of components in an `α`-vector correspond to the **number of states** and hence can be **exponentially large**.
+  - In a `DESPOT-α`, **`α`-vectors** will be efficiently approximated to reduce computation, to approximate the `lower bound` on value of `belief` nodes.
+  - Hence the name `Determinized Sparse Partially Observable Tree` **`With α-Vector Update`**.
+
+---
+
+- Main **motivation** for **`DESPOT-α`**:
+  - Address the problem **`particle divergence`** to scale to **large `observation` spaces**.
+  - > "When the **`observation` space is large**, particles quickly diverge into **separate `belief` nodes** in the belief tree, each of which contains only a **single particle**."
+  - The **uncertainty can be underestimated** by the derived policy, leading to poor and **over-optimistic actions**.
+- Main idea of `DESPOT-α`:
+  - To prevent the **over-optimistic evaluation** of value of the `belief`, the idea is to keep a **constant number of particles**, and **weight** them (as for [`POMCPOW` and `PFT-DPW`](https://arxiv.org/abs/1709.06196) that extend `POMCP`).
+  - > "Instead of propagating **only the particles producing the same observation** to the child of a `belief`-`action` node, we **propagate _all_ the particles** to the child nodes and update the weights of particles according to relative **likelihood of observation** `p`(`z`|`s`, `a`)."
+  - This is similar to **`particle filters`**.
+- New issue: when computing the **heuristics**, propagating each particle to **every child `belief` node** impacts the **computational efficiency**.
+  - > "Always having `C` child `belief` nodes **prevents over optimistic evaluation of value** of `belief` but also makes the **tree size** (`C.|A|`)`^D`".
+- Solution (not in [`POMCPOW` and `PFT-DPW`](https://arxiv.org/abs/1709.06196)):
+  - **Share the value function calculation** among different (but similar) `belief` nodes, by **grouping observations** together.
+    - > "We can **merge the observations**, when the value of the resulting `belief`s is maximized by the same **`α`-vector**."
+    - > "We can use `α-vectors` to **share the computation** done for one trial among _"sibling"_ `belief` nodes for **improving `lower bounds`**".
+  - This leads to the concept of **"_sibling_ `belief` nodes"**: Nodes which **differ** from each other only in **last observation**.
+    - > "We are _implicitly_ **grouping `belief`s** whose values are maximised by same `α`-vector by **sharing `α`-vectors between sibling `belief` nodes**."
+    - > "As sibling `belief` nodes **share the same set of scenarios** with different weights, `α`-vector calculated for one `belief` node **can be used to calculate approximate lower bound for the sibling `belief` nodes** by simply doing an inner product of weights of the particles and the `α`-vector".
+
+---
+
+- To sum up - Contributions:
+  - `1-` Sample a **fixed number of observations** for each action branch like in `sparse sampling`, while still using **determinized scenarios** like `DESPOT` (it still contains only the `observation` branches reachable by **sampled scenarios**).
+  - `2-` Introduce a **particle approximation** of the **`α`-vector** to improve the **efficiency** of online policy search.
+  - `3-` Further **speed-up** the search by leveraging `CPU` and `GPU` **parallelization** introduced in [`HyP-DESPOT`](https://arxiv.org/abs/1802.06215).
+    - Here **`K` particles** can be **expanded** in parallel, which is efficient since **each node contains all the particles**.
+
+</details>
+
+---
+
 **`"Risk-Aware Reasoning for Autonomous Vehicles"`**
 
 - **[** `2019` **]**
