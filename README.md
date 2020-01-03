@@ -4217,7 +4217,7 @@ Authors: Garg, N. P., Hsu, D., & Lee, W. S.
 
   - _Why_ `Tree` _?_
     - Because a **search tree of histories** is constructed, online.
-    - The **_"belief tree search"_** aspect has to do with the **`online`** nature of the solver _(as opposed to `offline` methods that_ **_compute a policy beforehand_**_)_:
+    - The **_"belief tree search"_** aspect has to do with the **`online`** nature of the solver _(as opposed to `offline` methods that compute an approximately optimal policy _ **_over the entire `belief` space_**_, prior to execution)_:
       - > "At each time step, it plans **locally** and chooses an optimal `action` for the **current `belief` only**, by performing **lookahead search** in the **neighborhood** of the **current `belief`**. It then **executes the chosen `action`** immediately."
     - > "Many `POMDP` solvers do **online planning** by doing **forward search** from the **current `belief`**, constructing a tree which **branches** each time an `action` is required, and also each time an `observation` may be observed".
       - Each **node** implicitly represents a `belief`.
@@ -4604,8 +4604,6 @@ Authors: Weingertner, P., Autef, A., & Le Cleac’h, S.
 <details>
   <summary>Click to expand</summary>
 
-One figure:
-
 | ![Four parameters introduced in a TD-Tree Search (`TDTS`) algorithm related to `forgetting`, `first-visit updating`, `discounting` and `initial bias`. [Source](https://pdfs.semanticscholar.org/3d78/317f8aaccaeb7851507f5256fdbc5d7a6b91.pdf).](media/2017_vodopivec_1.PNG "Four parameters introduced in a TD-Tree Search (`TDTS`) algorithm related to `forgetting`, `first-visit updating`, `discounting` and `initial bias`. [Source](https://pdfs.semanticscholar.org/3d78/317f8aaccaeb7851507f5256fdbc5d7a6b91.pdf).")  |
 |:--:|
 | *Four parameters introduced in a TD-Tree Search (`TDTS`) algorithm related to `forgetting`, `first-visit updating`, `discounting` and `initial bias`. [Source](https://pdfs.semanticscholar.org/3d78/317f8aaccaeb7851507f5256fdbc5d7a6b91.pdf).* |
@@ -4677,5 +4675,52 @@ Author: Vodopivec, T., Samothrakis, S., & Ster, B.
       - V(`s'`): **afterstate value** of **arriving** at state `s'` and thereafter following policy `π`.
       - Q(`s`, `a`): **action value** of **being** in state `s`, taking action `a` and thereafter following policy `π`.
     - This is used in the presented Sarsa-UCT(λ) algorithm.
+
+</details>
+
+---
+
+**`"Online decision-making for scalable autonomous systems"`**
+
+- **[** `2017` **]**
+**[[:memo:](https://www.aaai.org/ocs/index.php/FSS/FSS15/paper/view/11645/11515)]**
+**[[🎞️](https://pdfs.semanticscholar.org/1df1/8e66c9117852468f8e327a67622b5738558a.pdf) (slides)]**
+**[** :mortar_board: `University of Massachusetts` **]**
+**[** :car: `Nissan` **]**
+
+- **[** _`POMDP`, `scaling`, `scene decomposition`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![Two **solvers** have been developed `offline`: one to deal with **one `vehicle`** (Decision-Problem 1 (`DP1`)), and another that can deal with **one `pedestrian`** (`DP2`). `DP`s are instantiated for each **detected entity**: here **two cars** and **one pedestrian**. At each timestep, three **recommendations** are issued. The **most conservative** one is kept and implemented (here `stop`). [Source](https://www.aaai.org/ocs/index.php/FSS/FSS15/paper/view/11645/11515).](media/2017_wray_1.PNG "Two **solvers** have been developed `offline`: one to deal with **one `vehicle`** (Decision-Problem 1 (`DP1`)), and another that can deal with **one `pedestrian`** (`DP2`). `DP`s are instantiated for each **detected entity**: here **two cars** and **one pedestrian**. At each timestep, three **recommendations** are issued. The **most conservative** one is kept and implemented (here `stop`). [Source](https://www.aaai.org/ocs/index.php/FSS/FSS15/paper/view/11645/11515).")  |
+|:--:|
+| *Two **solvers** have been developed `offline`: one to deal with **one `vehicle`** (Decision-Problem `P1`), and another that can deal with **one `pedestrian`** (`P2`). `DP`s are instantiated for each **detected entity**: here **two cars** and **one pedestrian**. Therefore, at each timestep, three **recommendations** are issued. The **most conservative** one is kept and implemented (here `stop`). [Source](https://www.aaai.org/ocs/index.php/FSS/FSS15/paper/view/11645/11515).* |
+
+| ![The proposed solution offers number advantages over the direct use of a **massive monolithic `POMDP`** for planning and learning. First, it remains tractable by **growing linearly** in the number of decision-making problems encountered. Secondly, its component-based form **simplifies the design** and **analysis** and offers **easier interpretability**. [Source](https://www.aaai.org/ocs/index.php/FSS/FSS15/paper/view/11645/11515).](media/2017_wray_2.PNG "The proposed solution offers number advantages over the direct use of a **massive monolithic `POMDP`** for planning and learning. First, it remains tractable by **growing linearly** in the number of decision-making problems encountered. Secondly, its component-based form **simplifies the design** and **analysis** and offers **easier interpretability**. [Source](https://www.aaai.org/ocs/index.php/FSS/FSS15/paper/view/11645/11515).")  |
+|:--:|
+| *The proposed solution offers number advantages over the direct use of a **massive monolithic `POMDP`** for planning and learning. First, it remains tractable by **growing linearly** in the number of decision-making problems encountered. Secondly, its component-based form **simplifies the design** and **analysis** and offers **easier interpretability**. [Source](https://www.aaai.org/ocs/index.php/FSS/FSS15/paper/view/11645/11515).* |
+
+| ![The authors consider that **urban** deployment of AVs requires **mid-level** decision-making. Hence both `state` and `action` are rather abstract. [Source](https://www.aaai.org/ocs/index.php/FSS/FSS15/paper/view/11645/11515).](media/2017_wray_3.PNG "The authors consider that **urban** deployment of AVs requires **mid-level** decision-making. Hence both `state` and `action` are rather abstract. [Source](https://www.aaai.org/ocs/index.php/FSS/FSS15/paper/view/11645/11515).")  |
+|:--:|
+| *The authors consider that **urban** deployment of AVs requires **mid-level** decision-making. Hence both `state` and `action` are rather abstract. [Source](https://www.aaai.org/ocs/index.php/FSS/FSS15/paper/view/11645/11515).* |
+
+Author: Wray, K. H., Witwicki, S. J., & Zilberstein, S.
+
+- Motivation:
+  - **Scale!**
+  - More precisely, provide a **general solution** to **intersection** decision-making that can cope with **complex real-world scenarios**, with varying **number of lanes** and **number of entities** (e.g. `car` and `pedestrian`).
+- One option: a **single (big) policy**.
+  - > "A **single all-encompassing `POMDP`** with these state factors quickly becomes **utterly infeasible**, and will vary greatly among intersections."
+  - Instead, the authors suggest **decomposing the problem**.
+- Main idea:
+  - `1-` **Decompose** the **scene** into **_canonical_** simple scenarios.
+  - `2-` Solve each instance separately with solvers that have been learnt **offline**. It leads to one **recommendation** per instance.
+  - `3-` Aggregate all the recommendations using some (_conservative_) **_"aggregation operator"_**.
+    - It could have been **`min()`** if the action were about the **`acceleration`**.
+    - Here, the action is more **abstract** (**`go`**, **`stop`**) and the operator uses **lexicographic preference** for safest action (concept called **`LEAF`**): `stop` > `go`.
+- About the **`POMDP` `offline` solver**:
+  - The authors parallelize the **Point-Based Value Iteration** (`PBVI`) algorithm using `GPU`.
+  - They called it **`nova`**: [`paper`](https://www.aaai.org/ocs/index.php/FSS/FSS15/paper/view/11645/11515) [`slides`](https://pdfs.semanticscholar.org/6f86/9e895cc9205b0497697bc230398df95d0888.pdf).
 
 </details>
