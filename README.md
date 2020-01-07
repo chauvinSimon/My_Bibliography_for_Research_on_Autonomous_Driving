@@ -4227,12 +4227,18 @@ Authors: Garg, N. P., Hsu, D., & Lee, W. S.
       - Each **action edge** further branches into `|Z|` **observation edges**.
     - A `DESPOT` is built through **trials**, consisting of `exploration` and `backup` on **sampled** scenarios.
 
-  - _Why_ `Determinized` _?_ _(why the "non-determinism" is incrementally removed from the tree?)_
-    - Because the search is focused on a **set of randomly _sampled_ "scenarios"**.
-      - They are sampled _a priori_. Hence _"determinized"_.
+  - _Why_ `Determinized` _?_
+    - Because the search is focused on a **set of randomly _sampled_ "scenarios"** that are sampled **_a priori_**.
+      - A set of **random numbers** are generated in advance, as the first belief is given.
+        - As I understood, they are called `scenarios` (_"abstract simulation trajectories"_).
       - > "A **small number of sampled scenarios** is **sufficient** to give a good estimate of the true value of any policy."
-      - Scenarios are _"abstract simulation trajectories"_ (_not yet clear to me_).
-      - These determinized scenarios make `DESPOT` differ from [`POMCP`](https://papers.nips.cc/paper/4031-monte-carlo-planning-in-large-pomdps.pdf) which performs **`MCTS` on a belief tree using `UCT`**.
+        - These determinized scenarios make `DESPOT` differ from [`POMCP`](https://papers.nips.cc/paper/4031-monte-carlo-planning-in-large-pomdps.pdf) which performs **`MCTS` on a belief tree using `UCT`**.
+    - Here is **my interpretation**:
+      - Imagine you are playing a **game** where your motion relies on the outcome of some dice, e.g. [`Monopoly`](https://en.wikipedia.org/wiki/Monopoly_(game)) or [`game of snakes and ladders`](https://en.wikipedia.org/wiki/Snakes_and_Ladders)
+        - `Option 1-` At **each timestep**, you roll the dice and move accordingly.
+        - `Option 2-` **Before starting**, you roll the dice `x` times. You then **put the dice away** and start playing: at each timestep, you move according to the `i`-th generated number.
+      - Here, these generated numbers (_`scenarios`_) are used to decide the **`noise` injected** in the evaluation of the **two models** used for the **tree expansion**: `measurement` and `transition` functions.
+        - That means it is known in advance, before starting building the tree, that the `n`-th `belief`-leaf will be generated from the `measurement` function using the **`n`-th sampled number** as **`noise` parameter**.
     - > "Like `DESPOT`, `DESPOT-α` uses the **"particle belief approximation"** and searches a **determinized** sparse belief tree".
 
   - _Why_ `Sparse` _?_
