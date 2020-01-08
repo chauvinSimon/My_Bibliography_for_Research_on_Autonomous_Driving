@@ -1875,6 +1875,84 @@ Authors: Kuderer, M., Gulati, S., & Burgard, W.
 
 ---
 
+**`"Deep Learning-based Vehicle Behaviour Prediction For Autonomous Driving Applications: A Review"`**
+
+- **[** `2019` **]**
+**[[:memo:](https://arxiv.org/abs/1912.11676)]**
+**[** :mortar_board: `University of Warwick` **]**
+**[** :car: `Jaguar Land Rover` **]**
+
+- **[** _`multi-modality prediction`_  **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![The author propose **new classification** of behavioural prediction methods. Only **deep learning approaches** are considered and `physics`-based approaches are excluded. The criteria are about the **`input`**, **`ouput`** and **deep learning `method`**. [Source](https://arxiv.org/abs/1912.11676).](media/2019_mozaffari_1.PNG "The author propose **new classification** of behavioural prediction methods. Only **deep learning approaches** are considered and `physics`-based approaches are excluded. The criteria are about the **`input`**, **`ouput`** and **deep learning `method`**. [Source](https://arxiv.org/abs/1912.11676).")  |
+|:--:|
+| *The author propose **new classification** of behavioural prediction methods. Only **deep learning approaches** are considered and `physics`-based approaches are excluded. The criteria are about the **`input`**, **`ouput`** and **deep learning `method`**. [Source](https://arxiv.org/abs/1912.11676).* |
+
+| ![First criterion is about the **input**: What is the prediction based on? Important is to capture **road structure** and **interactions** while staying **flexible** in the **representation** (e.g. describe different types of intersections and work with varying numbers of `target vehicles` and `surrounding vehicles`). **Partial observability** should be considered by design. [Source](https://arxiv.org/abs/1912.11676).](media/2019_mozaffari_2.PNG "First criterion is about the **input**: What is the prediction based on? Important is to capture **road structure** and **interactions** while staying **flexible** in the **representation** (e.g. describe different types of intersections and work with varying numbers of `target vehicles` and `surrounding vehicles`). **Partial observability** should be considered by design. [Source](https://arxiv.org/abs/1912.11676).")  |
+|:--:|
+| *First criterion is about the **input**: What is the prediction based on? Important is to capture **road structure** and **interactions** while staying **flexible** in the **representation** (e.g. describe different types of intersections and work with varying numbers of `target vehicles` and `surrounding vehicles`). **Partial observability** should be considered by design. [Source](https://arxiv.org/abs/1912.11676).* |
+
+| ![Second criterion is about the **output**: What is predicted? Important is to propagate the uncertainty from the input and **consider multiple options** (**multi-modality**). Therefore to reason with **probabilities**. Bottom - why **`multi-modality`** is important. [Source](https://arxiv.org/abs/1912.11676).](media/2019_mozaffari_3.PNG "Second criterion is about the **output**: What is predicted? Important is to propagate the uncertainty from the input and **consider multiple options** (**multi-modality**). Therefore to reason with **probabilities**. Bottom - why **`multi-modality`** is important. [Source](https://arxiv.org/abs/1912.11676).")  |
+|:--:|
+| *Second criterion is about the **output**: What is predicted? Important is to propagate the uncertainty from the input and **consider multiple options** (**multi-modality**). Therefore to reason with **probabilities**. Bottom - why **`multi-modality`** is important. [Source](https://arxiv.org/abs/1912.11676).* |
+
+Authors: Mozaffari, S., Al-Jarrah, O. Y., Dianati, M., Jennings, P., & Mouzakitis, A.
+
+- One mentioned review: [(Lefevre et al.)](https://hal.inria.fr/hal-01053736/document) classifies vehicle **(behaviour) prediction models** to three groups:
+  - `1-` `physics`-based
+    - Use **dynamic** or **kinematic models** of vehicles, e.g. a constant velocity (`CV`) Kalman Filter model.
+  - `2-` `manoeuvre`-based
+    - Predict vehicles' manoeuvres, i.e. a **classification** problem from a defined **set**.
+  - `3-` `interaction`-aware
+    - Consider **interaction** of vehicles in the input.
+- About the terminology:
+  - **_"Target Vehicles"_** (`TV`) are vehicles whose behaviour we are **interested** in predicting.
+  - The other are **_"Surrounding Vehicles"_** (`SV`).
+  - The **_"Ego Vehicle"_** (`EV`) can be also considered as an `SV`, if it is close enough to `TV`s.
+- Here, the authors ignore the `physics`-based methods and propose three criteria for comparison:
+  - `1-` **Input**.
+    - Track history of `TV` only.
+    - Track history of `TV` and `SV`s.
+    - Simplified **bird’s eye view**.
+    - Raw sensor data.
+  - `2-` **Output**.
+    - **Intention** `class`: From a set of pre-defined _discrete classes_, e.g. `go straight`, `turn left`, and `turn right`.
+    - **Unimodal** `trajectory`: Usually the one with _highest likelihood_ or the _average_).
+    - **Intention-based** `trajectory`: Predict the trajectory that corresponds to the _most probable intention_ (first case).
+    - **Multimodal** `trajectory`: Combine the previous ones. Two options, depending if the **intention set** is fixed or dynamically learnt:
+      - `static` **intention set**: predict for _each_ member of the set _(an extension to intention-based trajectory prediction approaches)_.
+      - `dynamic` **intention set**: due to dynamic definition of manoeuvres, they are prone to _converge to a single manoeuvre_ or not being able to explore all the existing manoeuvres.
+  - `3-` In-between (**deep learning method**).
+    - `RNN` are used because of their **temporal feature** extracting power.
+    - `CNN` are used for their **spatial feature extracting ability (especially with **bird’s eye views**).
+- Important **considerations** for **behavioural prediction**:
+  - **Traffic rules**.
+  - **Road geometry**.
+  - **Multimodality**: there may exist more than one possible future behaviour.
+  - **Interaction**.
+  - **Uncertainty**: both `aleatoric` (measurement noise) and `epistemic` (partial observability). Hence the prediction should be **probabilistic**.
+  - **Prediction horizon**: approaches can serve **different purposes** based on how far in the future they predict (`short-term` or `long-term` future motion).
+- Two methods I would like to learn more about:
+  - **[`social pooling` layers](http://cvgl.stanford.edu/papers/CVPR16_Social_LSTM.pdf)**, e.g. used by [(Deo & Trivedi, 2019)](https://arxiv.org/pdf/1805.06771):
+    - > "A **social tensor** is a **spatial grid** around the target vehicle that the **occupied cells** are filled with the **processed temporal data** (e.g., `LSTM` hidden state value) of the corresponding vehicle. It contains both the **temporal dynamic** of vehicles represented and **spatial inter-dependencies** among them."
+  - **`graph` neural networks**, e.g. [(Diehl et al., 2019)](https://arxiv.org/abs/1903.01254) or [(Li et al., 2019)](https://arxiv.org/abs/1907.07792):
+    - **Graph Convolutional Network** (`GCN`).
+    - **Graph Attention Network** (`GAT`).
+- Comments:
+  - Contrary to the _object detection_ task, there is **no benchmark** for **systematically evaluating** previous studies on vehicle behaviour prediction.
+    - **Urban scenarios** are excluded in the comparison since `NGSIM I-80` and `US-101 highway` driving datasets are used.
+    - _Maybe the [INTERACTION Dataset​](http://interaction-dataset.com/) could be used._
+  - The authors suggest **embedding domain knowledge** in the prediction, and call for **practical considerations** (**industry**-supported research).
+    - > "Factors such as **environment conditions** and set of **traffic rules** are not directly inputted to the prediction model."
+    - > "Practical limitations such as **sensor impairments** and **limited computational** resources have not been fully taken into account."
+
+</details>
+
+---
+
 **`"Multi-Modal Simultaneous Forecasting of Vehicle Position Sequences using Social Attention"`**
 
 - **[** `2019` **]**
