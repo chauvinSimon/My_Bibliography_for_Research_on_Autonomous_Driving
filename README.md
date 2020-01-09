@@ -1875,6 +1875,62 @@ Authors: Kuderer, M., Gulati, S., & Burgard, W.
 
 ---
 
+**`"Learning Predictive Models From Observation and Interaction"`**
+
+- **[** `2019` **]**
+**[[:memo:](https://arxiv.org/abs/1912.12773)]**
+**[[🎞️](https://sites.google.com/view/lpmfoai)]**
+**[** :mortar_board: `Honda Research Institute` **]**
+**[** :car: `University of Pennsylvania`, `Stanford University`, `UC Berkeley` **]**
+
+- **[** _`visual prediction`, `domain transfer`, `nuScenes`, `BDD100K`_  **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![The idea is to learn a **latent representation** **`z`** that corresponds to the **true `action`**. The model can then perform **joint training** on the **two kinds of data**: it optimizes the **likelihood** of the **`interaction`** data, for which the **`action`s are available**, and **`observation`** data, for which the **`action`s are missing**. Hence the visual predictive model can **predict the next frame** `xt+1` conditioned on the **current frame** `xt` and **action learnt representation** `zt`. [Source](https://arxiv.org/abs/1912.12773).](media/2019_schmeckpeper_1.PNG "The idea is to learn a **latent representation** **`z`** that corresponds to the **true `action`**. The model can then perform **joint training** on the **two kinds of data**: it optimizes the **likelihood** of the **`interaction`** data, for which the **`action`s are available**, and **`observation`** data, for which the **`action`s are missing**. Hence the visual predictive model can **predict the next frame** `xt+1` conditioned on the **current frame** `xt` and **action learnt representation** `zt`. [Source](https://arxiv.org/abs/1912.12773).")  |
+|:--:|
+| *The idea is to learn a **latent representation** **`z`** that corresponds to the **true `action`**. The model can then perform **joint training** on the **two kinds of data**: it optimizes the **likelihood** of the **`interaction`** data, for which the **`action`s are available**, and **`observation`** data, for which the **`action`s are missing**. Hence the visual predictive model can **predict the next frame** `xt+1` conditioned on the **current frame** `xt` and **action learnt representation** `zt`. [Source](https://arxiv.org/abs/1912.12773).* |
+
+| ![The visual prediction model is trained using two driving sets: **`action`-conditioned videos** from **Boston** and **`action`-free videos** from the **Singapore**. Frames from both subsets come from **[`BDD100K`](https://arxiv.org/abs/1805.04687)** or **[`nuScenes`](https://arxiv.org/abs/1903.11027)** datasets.. [Source](https://sites.google.com/view/lpmfoai).](media/2019_schmeckpeper_1.gif "The visual prediction model is trained using two driving sets: **`action`-conditioned videos** from **Boston** and **`action`-free videos** from the **Singapore**. Frames from both subsets come from **[`BDD100K`](https://arxiv.org/abs/1805.04687)** or **[`nuScenes`](https://arxiv.org/abs/1903.11027)** datasets.. [Source](https://sites.google.com/view/lpmfoai).")  |
+|:--:|
+| *The visual prediction model is trained using two driving sets: **`action`-conditioned videos** from **Boston** and **`action`-free videos** from the **Singapore**. Frames from both subsets come from **[`BDD100K`](https://arxiv.org/abs/1805.04687)** and **[`nuScenes`](https://arxiv.org/abs/1903.11027)** datasets. [Source](https://sites.google.com/view/lpmfoai).* |
+
+Authors: Schmeckpeper, K., Xie, A., Rybkin, O., Tian, S., Daniilidis, K., Levine, S., & Finn, C.
+
+- On concrete **industrial use-case**:
+  - > "Imagine that a self-driving car company has data from **a fleet of cars** with sensors that record both `video` and the driver’s `actions` in one city, and a **second fleet of cars** that **only record dashboard `video`**, **without `action`s**, in a second city."
+  - > "If the goal is to train an `action`-conditioned model that can be utilized to **predict the outcomes of steering `action`s**, our method allows us to train such a **model using data from both cities**, even though only one of them has `action`s."
+- Motivations (_mainly for robotics, but also AD_):
+  - Generate **predictions** for complex tasks and **new environments**, without **costly expert demonstrations**.
+  - More precisely, learn an `action`-conditioned **video predictive model** from **two kinds of data**:
+    - `1-` **_passive_ observations**: [`x0`, `a1`, `x1` ... `aN`, `xN`].
+      - Videos of **another agent**, e.g. **a human**, might show the robot how to use a tool.
+      - Observations represent a powerful **source of information** about the world and how actions lead to outcomes.
+      - A learnt model could also be used for `planning` and `control`, i.e. to **plan** coordinated sequences of actions to bring about **desired outcomes**.
+      - But may suffer from **large domain shifts**.
+    - `2-` **_active_ interactions**: [`x0`, `x1` ... `xN`].
+      - Usually more **expensive**.
+- Two challenges:
+  - `1-` Observations are **not annotated** with suitable **`action`s**: e.g. only access to the dashcam, not the `throttle` for instance.
+    - In other words, `action`s are **only observed** in a **subset** of the data.
+    - The goal is to **learn from videos without `action`s**, allowing it to **leverage videos** of agents for which the actions are unknown (**unsupervised** manner).
+  - `2-` **Shift** in the **"embodiment"** of the agent: e.g. _robots'_ arms and _humans'_ ones have **physical differences**.
+    - The goal is to **bridge the gap** between the **two domains** (e.g., `human arms` vs. `robot arms`).
+- _What is learnt?_
+  - `p`(`xc+1:T`|`x1:c`, `a1:T`)
+  - I.e. **prediction** of **future frames** conditioned on a set of **`c` context frames** and **sequence of actions**.
+- _What tests?_
+  - `1-` **Different environment** within the **same underlying dataset**: driving in `Boston` and `Singapore`.
+  - `2-` **Same environment** but **different embodiment**: `humans` and `robots` manipulate objects with different arms.
+- _What is assessed?_
+  - `1-` **Prediction** quality (`AD` test).
+  - `2-` **Control** performance (`robotics` test).
+
+</details>
+
+---
+
 **`"Deep Learning-based Vehicle Behaviour Prediction For Autonomous Driving Applications: A Review"`**
 
 - **[** `2019` **]**
