@@ -4686,6 +4686,63 @@ Author: Sierra Gonzalez, D.
 
 ---
 
+**`"Value Sensitive Design for Autonomous Vehicle Motion Planning"`**
+
+- **[** `2018` **]**
+**[[:memo:](https://ddl.stanford.edu/publications/value-sensitive-design-autonomous-vehicle-motion-planning)]**
+**[** :mortar_board: `Stanford University` **]**
+**[** :car: `Ford` **]**
+
+- **[** _`POMDP`, `QMDP`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![The `POMDP` policy **better deals with uncertainties** in the detection of the pedestrian. It accounts for the possible **transition** between `detected` and `not detected` cases, leading to **smoother `action`s** across the `state` space. [Source](https://ddl.stanford.edu/publications/value-sensitive-design-autonomous-vehicle-motion-planning).](media/2018_thornton_1.PNG "The `POMDP` policy **better deals with uncertainties** in the detection of the pedestrian. It accounts for the possible **transition** between `detected` and `not detected` cases, leading to **smoother `action`s** across the `state` space. [Source](https://ddl.stanford.edu/publications/value-sensitive-design-autonomous-vehicle-motion-planning).")  |
+|:--:|
+| *The `POMDP` policy **better deals with uncertainties** in the detection of the pedestrian. It accounts for the possible **transition** between `detected` and `not detected` cases, leading to **smoother `action`s** across the `state` space. [Source](https://ddl.stanford.edu/publications/value-sensitive-design-autonomous-vehicle-motion-planning).* |
+
+Authors: Thornton, S. M., Lewis, F. E., Zhang, V., Kochenderfer, M. J., & Christian Gerdes, J.
+
+- Motivation:
+  - Apply the **`VSD` methodology** / **formalism** to the problem of **speed control** for the scenario of an **occluded pedestrian crosswalk**.
+- About [Value Sensitive Design](https://en.wikipedia.org/wiki/Value_sensitive_design) (`VSD`):
+  - > "[Wikipedia]: A theoretically grounded approach to the **design** of technology that **accounts for human values** in a principled and comprehensive manner."
+  - In **(`PO`)`MDP`s**, engineers account for some **"human values"** in the **design of the reward function**.
+  - **Values** are converted to **specifications**:
+    - `safety`: harm reduction or collision avoidance.
+    - `legality`: care when approaching a crosswalk.
+    - `mobility`: efficiency.
+    - `smoothness`: comfort.
+  - **Stakeholders** are also identified:
+    - the **AV** and its occupants.
+    - the obstructing **vehicle parked**.
+    - the **pedestrian** potentially crossing the street.
+    - the **authority** of traffic laws.
+- About the `POMDP` formulation:
+  - The `belief` of **a pedestrian crossing** is tracked with some Bayesian filter.
+    - The pedestrian detection is a **Boolean value** because the pedestrian is **either crossing or not**.
+    - > "There is `observation` uncertainty for the pedestrian crossing with a **false positive of `5%` for detecting** and a **false positive of `5%` for not detecting** the pedestrian, which **captures sensor uncertainty**.
+    - > "When the pedestrian is detected, there is a `90%` probability the pedestrian will **continue to be detected** at the next time step. When the pedestrian is not detected, then there is a `50%` chance he or she will **continue to not be detected**, which captures the **uncertainty due to the occlusion**.
+  - The **[`QMDP`](http://www-anw.cs.umass.edu/~barto/courses/cs687/Cassandra-etal-POMDP.pdf)** [solver](https://github.com/JuliaPOMDP/QMDP.jl) from **[`JuliaPOMDP`](http://juliapomdp.github.io/POMDPs.jl/latest/)** is used.
+    - > "Although `QMDP` assumes that at **the next time step the state will be fully observable**, it is well suited for this problem because the actions are **not information gathering**, meaning the actions do not directly reduce the uncertainty of the scenario."
+    - _I do not agree with that statement: information gathering is key in this scenario to resolve the ambiguity in the detection._
+  - `state` and `action` spaces are **discrete**.
+    - But **_"continuousness"_** is maintained using **_"multilinear grid interpolations"_** for the state transitions, as in [(Davies 1997)](https://pdfs.semanticscholar.org/5ee0/d2ccbda910b32876754da4ce6f32b2e0c3d6.pdf).
+- Benefits of `POMDP`:
+  - > "A **stochastic optimization** problem can account for **modeled uncertainty** present in the driving scenario while balancing the **identified values** through the objective function."
+  - The baseline on the other hand is **reactive**:
+    - `if` detection, `then` decelerate to stop at crosswalk.
+    - `else` target the desired velocity with a proportional controller.
+  - For this scenario where the **detection is key** but **uncertain**, one need to **anticipate `transitioning`** from one set of logic to the other.
+    - When the pedestrian is detected: the baseline is **safe**, but it **lacks efficiency**.
+    - When the pedestrian is not detected: the baseline is **efficient**, but **not safe**.
+  - This **rule-based dichotomy** makes the baseline control have **full speed** when the pedestrian appears and prevents it from to **legally yielding** to the pedestrian.
+
+</details>
+
+---
+
 **`"Decision Making Under Uncertainty for Urban Driving"`**
 
 - **[** `2018` **]**
