@@ -1957,7 +1957,7 @@ Authors: Schmeckpeper, K., Xie, A., Rybkin, O., Tian, S., Daniilidis, K., Levine
 
 Authors: Mozaffari, S., Al-Jarrah, O. Y., Dianati, M., Jennings, P., & Mouzakitis, A.
 
-- One mentioned review: [(Lefevre et al.)](https://hal.inria.fr/hal-01053736/document) classifies vehicle **(behaviour) prediction models** to three groups:
+- One mentioned review: [(Lefèvre et al.)](https://hal.inria.fr/hal-01053736/document) classifies vehicle **(behaviour) prediction models** to three groups:
   - `1-` `physics`-based
     - Use **dynamic** or **kinematic models** of vehicles, e.g. a constant velocity (`CV`) Kalman Filter model.
   - `2-` `manoeuvre`-based
@@ -4318,6 +4318,94 @@ Authors: Zhu, Y., & Zhao, D.
 ---
 
 ## `Planning` and `Monte Carlo Tree Search`
+
+---
+
+**`"Crossing of Road Intersections : Decision-Making Under Uncertainty for Autonomous Vehicles"`**
+
+- **[** `2019` **]**
+**[[:memo:](https://hal.inria.fr/tel-02424655/document)]**
+**[** :mortar_board: `INRIA` **]**
+**[** :car: `Renault` **]**
+
+- **[** _`POMCP`, `interaction-aware`, [`SCANeR`](https://www.avsimulation.fr/)_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![The author calls for a **probabilistic** framework to reason and make decision, due to the inherent `perception` **uncertainty** and `behaviour` (`interaction`) **uncertainty**. Also, learning-based methods are avoided due to their susceptibility to **over-fit** if the dataset is not balanced. [Source](https://hal.inria.fr/tel-02424655/document).](media/2019_barbier_3.PNG "The author calls for a **probabilistic** framework to reason and make decision, due to the inherent `perception` **uncertainty** and `behaviour` (`interaction`) **uncertainty**. Also, learning-based methods are avoided due to their susceptibility to **over-fit** if the dataset is not balanced. [Source](https://hal.inria.fr/tel-02424655/document).")  |
+|:--:|
+| *The author calls for a **probabilistic** framework to reason and make decision, due to the inherent `perception` **uncertainty** and `behaviour` (`interaction`) **uncertainty**. Also, learning-based methods are avoided due to their susceptibility to **over-fit** if the dataset is not balanced. [Source](https://hal.inria.fr/tel-02424655/document).* |
+
+| ![The author prefers **probabilistic methods**, in order to deal with **uncertainties** while trying to offer some **interpretability**. The navigation module outputs a **single action** to be implemented. Another option would have been to deliver some `policy` which could be followed for several steps, limiting inconsistent transitions (especially for **comfort**) and favouring **long-horizon reasoning**. [Source](https://hal.inria.fr/tel-02424655/document).](media/2019_barbier_25.PNG "The author prefers **probabilistic methods**, in order to deal with **uncertainties** while trying to offer some **interpretability**. The navigation module outputs a **single action** to be implemented. Another option would have been to deliver some `policy` which could be followed for several steps, limiting inconsistent transitions (especially for **comfort**) and favouring **long-horizon reasoning**. [Source](https://hal.inria.fr/tel-02424655/document).")  |
+|:--:|
+| *The author prefers **probabilistic methods**, in order to deal with **uncertainties** while trying to offer some **interpretability**. The navigation module outputs a **single action** to be implemented. Another option would have been to deliver some `policy` which could be followed for several steps, limiting inconsistent transitions (especially for **comfort**) and favouring **long-horizon reasoning**. [Source](https://hal.inria.fr/tel-02424655/document).* |
+
+| ![The **intended manoeuvre** is **inferred** based on observed `speed`, `acceleration` and heading - no `position` term - and will be treated as an **observation** in the `POMDP`. [Source](https://hal.inria.fr/tel-02424655/document).](media/2019_barbier_13.PNG "The **intended manoeuvre** is **inferred** based on observed `speed`, `acceleration` and heading - no `position` term - and will be treated as an **observation** in the `POMDP`. [Source](https://hal.inria.fr/tel-02424655/document).")  |
+|:--:|
+| *The **intended manoeuvre** is **inferred** based on observed `speed`, `acceleration` and heading - no `position` term - and will be treated as an **observation** in the `POMDP`. [Source](https://hal.inria.fr/tel-02424655/document).* |
+
+| ![As noted in my [report of `IV19`](https://github.com/chauvinSimon/IV19), **risk assessment** can be performed by comparing the **expectated behaviour** (`expectation`) to the **inferred behaviour** (`intention`), i.e. what **should be done** in the situation and what is **actually observed**. A discrepancy can detect some **misinterpretation** of the scene. [Source](https://hal.inria.fr/tel-02424655/document).](media/2019_barbier_6.PNG "As noted in my [report of `IV19`](https://github.com/chauvinSimon/IV19), **risk assessment** can be performed by comparing the **expectated behaviour** (`expectation`) to the **inferred behaviour** (`intention`), i.e. what **should be done** in the situation and what is **actually observed**. A discrepancy can detect some **misinterpretation** of the scene. [Source](https://hal.inria.fr/tel-02424655/document).")  |
+|:--:|
+| *As noted in my [report of `IV19`](https://github.com/chauvinSimon/IV19), **risk assessment** can be performed by comparing the **expectated behaviour** (`expectation`) to the **inferred behaviour** (`intention`), i.e. what **should be done** in the situation and what is **actually observed**. A discrepancy can detect some **misinterpretation** of the scene. [Source](https://hal.inria.fr/tel-02424655/document).* |
+
+| ![Decomposition of the probabilistic **transition** function. Only the longitudinal control via discrete `acceleration` is considered. The state `x` consists of **physical** and **behavioural** parts. In particular, it includes the `behaviour expectation` for each vehicle, i.e. what **should be done** according to the traffic rules. It also come with a `behavioural intention` for which is the **inferred manoeuvre** followed by the **observed vehicle**. `intention continuation` is used to describe the transition about `intention`, while [`gap acceptance model`](https://www.sciencedirect.com/science/article/pii/S0191261501000248) are used for the transition about expected behaviour. Finally, note that the selected `acceleration` action only influences the **physical term** of the ego vehicle. [Source](https://hal.inria.fr/tel-02424655/document).](media/2019_barbier_23.PNG "Decomposition of the probabilistic **transition** function. Only the longitudinal control via discrete `acceleration` is considered. The state `x` consists of **physical** and **behavioural** parts. In particular, it includes the `behaviour expectation` for each vehicle, i.e. what **should be done** according to the traffic rules. It also come with a `behavioural intention` for which is the **inferred manoeuvre** followed by the **observed vehicle**. `intention continuation` is used to describe the transition about `intention`, while [`gap acceptance model`](https://www.sciencedirect.com/science/article/pii/S0191261501000248) are used for the transition about expected behaviour. Finally, note that the selected `acceleration` action only influences the **physical term** of the ego vehicle. [Source](https://hal.inria.fr/tel-02424655/document).")  |
+|:--:|
+| *Decomposition of the probabilistic **transition** function. Only the longitudinal control via discrete `acceleration` is considered. The state `x` consists of **physical** and **behavioural** parts. In particular, it includes the `behaviour expectation` for each vehicle, i.e. what **should be done** according to the traffic rules. It also come with a `behavioural intention` for which is the **inferred manoeuvre** followed by the **observed vehicle**. `intention continuation` is used to describe the transition about `intention`, while [`gap acceptance model`](https://www.sciencedirect.com/science/article/pii/S0191261501000248) are used for the transition about expected behaviour. Finally, note that the selected `acceleration` action only influences the **physical term** of the ego vehicle. [Source](https://hal.inria.fr/tel-02424655/document).* |
+
+| ![One contribution is called `Functional Discretisation`. So-called `motion patterns` are stored within an HD-map as **polygon delimiting the intersection entrance and crossing zones**. This discrete `crossing` and `merging` zones are not manually defined but learnt based on simulated vehicle trajectories. The continuous intersection space is therefore divided into non-uniform discrete areas. Top-right: three **crossing scenarios** are considered, with different **pairs of priorities**. [Source](https://hal.inria.fr/tel-02424655/document).](media/2019_barbier_24.PNG "One contribution is called `Functional Discretisation`. So-called `motion patterns` are stored within an HD-map as **polygon delimiting the intersection entrance and crossing zones**. This discrete `crossing` and `merging` zones are not manually defined but learnt based on simulated vehicle trajectories. The continuous intersection space is therefore divided into non-uniform discrete areas. Top-right: three **crossing scenarios** are considered, with different **pairs of priorities**. [Source](https://hal.inria.fr/tel-02424655/document).")  |
+|:--:|
+| *One contribution is called `Functional Discretisation`. So-called `motion patterns` are stored within an HD-map as **polygon delimiting the intersection entrance and crossing zones**. This discrete `crossing` and `merging` zones are not manually defined but learnt based on simulated vehicle trajectories. The continuous intersection space is therefore divided into non-uniform discrete areas. Top-right: three **crossing scenarios** are considered, with different **pairs of priorities**. [Source](https://hal.inria.fr/tel-02424655/document).* |
+
+| ![The **`trust` KPI** is based the `time gap`, i.e. the delta in **predicted time** of when each vehicle will **reach the crossing point**. This should be **''maintained''** over `4s` over all the approach. Hence the use of **''temporal''** logic. The **`unsafe stop` KPI** states that the vehicle should never be stand still within the unsafe area. [Source](https://hal.inria.fr/tel-02424655/document).](media/2019_barbier_21.PNG "The **`trust` KPI** is based the `time gap`, i.e. the delta in **predicted time** of when each vehicle will **reach the crossing point**. This should be **''maintained''** over `4s` over all the approach. Hence the use of **''temporal''** logic. The **`unsafe stop` KPI** states that the vehicle should never be stand still within the unsafe area. [Source](https://hal.inria.fr/tel-02424655/document).")  |
+|:--:|
+| *The **`trust` KPI** is based the `time gap`, i.e. the delta in **predicted time** of when each vehicle will **reach the crossing point**. This should be **''maintained''** over `4s` over all the approach. Hence the use of **''temporal''** logic. The **`unsafe stop` KPI** states that the vehicle should never be stand still within the unsafe area. [Source](https://hal.inria.fr/tel-02424655/document).* |
+
+Author: Barbier M.
+
+- _What?_
+  - A **PhD thesis**.
+- Motivation:
+  - **Interaction-aware** and **uncertainty-aware** handling of a _signed_ intersection.
+- _How to capture and deal with_ **_interaction_** _in the decision?_
+  - The **intended manoeuvre** is **inferred** (`behavioural classification`) and subsequently treated as an **`observation`**.
+  - By comparing it with the **expected manoeuvre**, the agent should determine **how to interact** with the other vehicle.
+- About the **behavioural classification**.
+  - `lateral` part: {`Turn right`, `Turn left`, `Go straight`}.
+  - `longitudinal` part: {`Stop`, `Yield`, `Cross`}.
+  - Six **features** are used:
+    - `max` and `min` **speed**.
+    - `max` and `min` **acceleration**
+    - Maximum `right` and `left` **deviation** from the mean heading angle.
+  - _I would be afraid that maximum and minimum values could_ **_come from outliers_** _and would rather have worked with quantiles (e.g. `10%` and `90%`)._
+- About **risk assessment**:
+  - > "The `intended` manoeuvre represents what the driver **is doing**, whereas the `expected` manoeuvre represents what the **situation requires**."
+  - One idea to compute the **difference** between what the **other driver `IS DOING`** (called `intention`) and what **one driver `SHOULD DO`** (called `expectation`)
+    - The `expected` behaviour can be derived e.g. according to **priority rules** or to [gap acceptance models](https://www.sciencedirect.com/science/article/pii/S0191261501000248).
+  - This discrepancy is useful for **risk assessment** since it can detect some **_misinterpretation_** of the scene:
+    - Situations where `intention` and `expectation` do not match could result in a **risky interaction**.
+  - By penalizing states with a large difference, the **reward function** incorporates feedbacks about **interaction** and encourages the agent to select actions that **reduce this risk**.
+- About the **(large) search horizon**:
+  - > "The configuration with `γ = 0.85` and `C = 30` is chosen as it meets these characteristics. The discount value results in a search horizon of **`12` seconds**".
+- About the **online `POMDP` solver**:
+  - [`POMCP`](https://papers.nips.cc/paper/4031-monte-carlo-planning-in-large-pomdps.pdf).
+  - **`action continuation`** is used as **rollout policy**.
+  - > "[One could] include **imitation learning** to initiate `V`(`ha`) with **knowledge** obtained by looking at **human drivers**."
+  - > "A **memory** could be used to initialize the value function from previous exploration, **accelerating the search** for the optimal policy."
+- _How to_ **_evaluate_** _the decision-making framework?_
+  - The author argues that evaluation should **be decorrelated from the reward crafting**, hence having **separated `KPI`s**:
+    - The reason is that systems that used their **performances indicators** in their **value estimation** are likely to **over-fit**.
+    - > "[Goodhart's law](https://en.wikipedia.org/wiki/Goodhart%27s_law) stating that **'when a metric is used as a target, it ceases to be a good metric'**"
+  - Another idea to avoid **reward hacking**: the reward function is designed with multiple objectives: trade-off between `performances`, `risks` and `interactions`.
+- _How to decide the threshold in `KPI`s?_
+  - **Statistical Model Checking** is applied to vary the **_bound_** of **KPIs**.
+    - **Bounded Linear Temporal Logic** (`BLTL`) allows to **state conditions** that will **_eventually_** be true.
+  - The author works for instance with the `probability of crossing the intersection in less than a given time`.
+- About [`ENABLE-S3`](https://www.enable-s3.eu/domains/automotive/):
+  - The author uses the **validation and verification** architecture of this European project.
+  - > From [`ENABLE-S3` website](https://www.enable-s3.eu/about-project/): "**Pure simulation** cannot cover physics in detail due to its limitations in modelling and computation. **Real-world tests** are too expensive, too time consuming and potentially dangerous. Thus, `ENABLE-S3` aims at developing an innovative solution capable of combining both worlds in an optimized manner [...] and facilitate the market introduction of automated systems in **Europe**."
+
+</details>
 
 ---
 
