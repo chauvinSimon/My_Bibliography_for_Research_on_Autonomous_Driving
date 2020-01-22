@@ -2762,6 +2762,88 @@ Author: Noh, S.
 
 ---
 
+**`"Interpretable End-to-end Urban Autonomous Driving with Latent Deep Reinforcement Learning"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://arxiv.org/abs/2001.08726)]**
+**[** :mortar_board: `UC Berkeley`, `Tsinghua University` **]**
+
+- **[** _`probabilistic graphical models`, `MaxEnt RL`, `mid-to-end`, [`CARLA`](http://carla.org)_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![The `RL` problem is formulated with a **probabilistic graphical model** (**`PGM`**). `zt` represents for the **latent state**, i.e. the hidden state. `xt` is the **observation** sensor inputs. `at` is the action. `Ot` denotes the **optimality variable**. The authors introduce a **`mask`** variable `mt` and learn its **probability of emission** conditioned on `z`. [Source](https://arxiv.org/abs/2001.08726).](media/2020_chen_1.PNG "The `RL` problem is formulated with a **probabilistic graphical model** (**`PGM`**). `zt` represents for the **latent state**, i.e. the hidden state. `xt` is the **observation** sensor inputs. `at` is the action. `Ot` denotes the **optimality variable**. The authors introduce a **`mask`** variable `mt` and learn its **probability of emission** conditioned on `z`. [Source](https://arxiv.org/abs/2001.08726).")  |
+|:--:|
+| *The `RL` problem is formulated with a **probabilistic graphical model** (**`PGM`**). `zt` represents for the **latent state**, i.e. the hidden state. `xt` is the **observation** sensor inputs. `at` is the action. `Ot` denotes the **optimality variable**. The authors introduce a **`mask`** variable `mt` and learn its **probability of emission** conditioned on `z`. [Source](https://arxiv.org/abs/2001.08726).* |
+
+| ![The `mask` is a _semantic_ representation of the scene, helpful for **interpretation of the `perception`** part (not for `decision`). The learnt **transition** function (from `z` to `z'` conditioned on `a`) can be used for **prediction**. [Source](https://arxiv.org/abs/2001.08726).](media/2020_chen_2.PNG "The `mask` is a _semantic_ representation of the scene, helpful for **interpretation of the `perception`** part (not for `decision`). The learnt **transition** function (from `z` to `z'` conditioned on `a`) can be used for **prediction**. [Source](https://arxiv.org/abs/2001.08726).")  |
+|:--:|
+| *The `mask` is a _semantic_ representation of the scene, helpful for **interpretation of the `perception`** part (not directly applicable to understand the `decision`). The learnt **transition** function (from `z` to `z'` conditioned on `a`) can be used for **prediction**. [Source](https://arxiv.org/abs/2001.08726).* |
+
+Authors: Chen, J., Li, S. E., & Tomizuka, M.
+
+- Motivations:
+  - `1-` Offer more **interpretability** to end-to-end model-free `RL` methods.
+  - `2-` Reduce the **sample complexity** of model-free `RL` (_actually not really addressed_).
+
+- Properties of the **environment**:
+  - `1-` High-dimensional **observations**: `camera` frame and `lidar` point cloud.
+  - `2-` **Time-sequence** probabilistic dynamics.
+  - `3-` **Partial observability**.
+
+- One first idea: formulate the `RL` problem as a **probabilistic graphical model** (**`PGM`**):
+  - A binary random variable (`Ot`), called **_optimality variable_**, is introduced to indicate whether the agent is **acting optimally** at time step `t`.
+    - It turn out that its conditional probability is **exponentially proportional** to the **one-step reward**: `p`(`Ot=1` | `zt`, `at`) = `exp`(`r`(`zt`, `at`))
+    - The stochastic exploration strategy has therefore the form of a **`Boltzmann`-like distribution**, with the `Q`-function acting as the **negative energy**.
+  - Then, the task is to make sure that the **most probable trajectory** corresponds to the trajectory from the **optimal policy**.
+  - > "`MaxEnt RL` can be interpreted as learning a `PGM`."
+    - `MaxEnt RL` is then used to **maximize the likelihood** of **optimality variables** in the `PGM`.
+    - More precisely, the original log-likelihood is maximized by maximizing the `ELBO` (c.f. `variational methods`).
+- About **`MaxEnt RL`**:
+  - The standard `RL` is modified by adding an **entropy regularization** term `H`(`π`) = `−log`(`π`) to the **reward**.
+  - `MaxEnt RL` has a **_stochastic_** policy by default, thus the policy itself includes the **exploration** strategy.
+  - Intuitively, the goal is to learn a policy that acts **as randomly as possible** (encouraging _uniform_ action probability) while is still aiming at succeeding at the task.
+  - About **soft actor critic** ([`SAC`](https://arxiv.org/abs/1801.01290)):
+    - This is an example of `MaxEnt RL` algorithm: it incorporates the **entropy measure** of the policy into the **reward to encourage exploration**.
+    - _Why "soft"?_
+      - For small values of `Q`, the approximation `V`=`log`(`exp`(`Q`)) ~= `max`(`Q`) is loose and the **maximum is said _soft_**, leading to an **optimistic `Q`-function**.
+- One reference about the **duality `RL`/`PGM`** and **`MaxEnt RL`**:
+  - ["Reinforcement learning and control as probabilistic inference: Tutorial and review"](https://arxiv.org/abs/1805.00909) by (Levine, 2018).
+  > "In this article, we will discuss how a generalization of the `RL` or optimal control problem, which is sometimes termed **`MaxEnt RL`**, is equivalent to exact **probabilistic inference** in the case of deterministic dynamics, and **variational inference** in the case of stochastic dynamics."
+
+- Another idea: add a **second generated / emitted variable**.
+  - So far, the `observation` variable is generated/emitted from the `hidden state`. Here observations are `camera` and `lidar` scans.
+  - Here, a **second variable is emitted** (_"decoded"_ is the term used by the authors): a **semantic bird-eye _mask_**, noted `mt`.
+  - It contains **semantic meanings** of the environment in a _human_ understandable way:
+    - Drivable areas and lane markings.
+    - `Waypoints` on the desired route.
+    - Detected objects (**bounding boxes**) and their history.
+    - Ego bounding box.
+  - It makes me think of the _image-like_ scene representations used in **`mid-to-end` approaches**. E.g. [`chaufferNet`](https://arxiv.org/abs/1812.03079).
+  - > "At training time we need to provide the **ground truth labels of the mask**, but at test time, the mask can be **decoded from the latent state**, showing how the system is understanding the environment semantically."
+- One note:
+  - The author call **"`latent` variable"** what is sometimes referred to as `hidden state` in `PGM` (e.g. in `HMM`).
+- _Why_ **_"joint"_** _model learning?_
+  - The policy is learned jointly with the **other `PGM` models**.
+    - `1-` **`policy`**: `π`(`at`|`zt`) - _I would have conditioned it on the `observation` variable since the `hidden` state is by definition not observable_.
+    - `2-` **`inference`**: of the current latent state: `p`(`zt+1`|`x1:t+1`, `a1:t`).
+    - `3-` **`latent dynamics`**: `p`(`zt+1`|`zt`, `at`). This is then used for **prediction**.
+    - `4-` **`generative model`** for `observation`: `p`(`xt`|`zt`), i.e. the **emission** of probability from the latent space to the **`observation`** space.
+    - `5-` **`generative model`** for `mask`: `p`(`mt`|`zt`), i.e. the generation of the **semantic mask** from the `hidden state`, to provide **interpretability**.
+- _Why calling it "sequential"?_
+  - > "Historical high-dimensional raw observations [`camera` and `lidar` frames] are **compressed** into this **low-dimensional latent space** with a **"sequential"** latent environment model."
+  - Actually I am not sure. Because they learn the transition function and are therefore able to estimate how the hidden state evolves.
+- One limitation:
+  - This intermediate representation shows how the model **understands** the scene.
+  - > "[but] it **does not provide any intuition about how it makes the decisions**, because the driving policy is obtained in a `model-free` way."
+  - In this context, `model-based` `RL` is deemed as a promising direction.
+  - It reminds me the distinction between **`learn to see`** (_controlled by the presented `mask`_) and **`learn to decide`**.
+
+</details>
+
+---
+
 **`"End-to-end Reinforcement Learning for Autonomous Longitudinal Control Using Advantage Actor Critic with Temporal Context"`**
 
 - **[** `2019` **]**
