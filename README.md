@@ -4321,6 +4321,102 @@ Authors: Zhu, Y., & Zhao, D.
 
 ---
 
+**`"Point-Based Methods for Model Checking in Partially Observable Markov Decision Processes"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://arxiv.org/abs/2001.03809)]**
+**[[:octocat:](https://github.com/sisl/POMDPModelChecking.jl)]**
+**[** :mortar_board: `Stanford University` **]**
+**[** :car: `Honda` **]**
+
+- **[** _`probabilistic garanties`, `safety checkers`, `POMDP`, `SARSOP`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![POMDP Model Checker. Source: author provided - taken during the SIPD workshop.](media/2020_bouton_1.PNG "POMDP Model Checker. Source: author provided - taken during the SIPD workshop.")  |
+|:--:|
+| *__`POMDP` quantitative model checker__. Three parts are followed: `1-` Creation of a `product POMDP`. `2-` **Reduction to reachability** (From `LTL` Satisfaction to **Reachability**). `3-` Solving the **reachability problem**. Source: author provided - taken during the `IV19` `SIPD` workshop - see my report [here](https://github.com/chauvinSimon/IV19#risk-assessment-and-safety-checkers).* |
+
+| ![A **reachability problem** can be interpreted as a **planning problem** where the goal is to **reach the set `B`**. In `LTL` terminology, `F` means 'eventually'. [Source](https://arxiv.org/abs/2001.03809).](media/2020_bouton_2.PNG "A **reachability problem** can be interpreted as a **planning problem** where the goal is to **reach the set `B`**. In `LTL` terminology, `F` means 'eventually'. [Source](https://arxiv.org/abs/2001.03809).")  |
+|:--:|
+| *A **reachability problem** can be interpreted as a **planning problem** where the goal is to **reach the set `B`**. In `LTL` terminology, the temporal operator `F` means 'eventually'. [Source](https://arxiv.org/abs/2001.03809).* |
+
+Authors: Bouton, M., Tumova, J., & Kochenderfer, M. J.
+
+- Motivations:
+  - `1-` Synthesize **policies** that satisfy a **linear temporal logic** (`LTL`) formula in a **`POMDP`**, i.e. make `POMDP` policies exhibit **guarantees on their performance**.
+    - **_"Policy synthesis"_** means that some _good_ policy is derived, as opposed to just the **evaluation** of a given policy (computation of the probability of satisfaction for an objective).
+  - `2-` **Scale** to larger problem than previous `belief`-`state` techniques (note that only finite **discrete `state` spaces** are considered here).
+    - For instance, [`Norman et al.`](https://arxiv.org/abs/1506.06419) addressed the problem of `belief`-`state` planning with `LTL` specifications by **discretizing the belief space** and formulating an **`MDP`** over this space.
+    - But when the `state` space has more than a few dimensions, **discretizing the `belief` space** becomes **intractable**.
+
+- About **model checking**:
+  - 1- **`Quantitative`** model checking: Compute the maximum **probability** of satisfying a desired logical formula (and compute the associated `belief`-`state` **policy**).
+  - 2- **`Qualitative`** model checking: Find a policy satisfying the formula with **probability `1`**.
+  - It makes me think of the **_strict_ action masking** methods and masking approaches that consider [**statistical** model checking](https://github.com/chauvinSimon/IV19#risk-assessment-and-safety-checkers), such as **_probabilistic_ reachable sets**.
+- About `LTL` formulas:
+  - `LTL` is used as a language to **specify the objective** of the problem.
+  - Examples:
+    - `¬A` `U` `B` means "**avoid** state `A` and **reach** state `B`" (**safe-reachability** objective).
+    - `G` `¬C` means "the agent must **never visit** state `C`" (_the temporal operator `G` means "globally"_).
+- About **_"reachability problems"_**:
+  - > "[the goal is to] Compute the **maximum probability** of **reaching** a given set of `state`s."
+- About **_"labelling functions"_** for states of the `POMDP` in the context of `LTL` formulas:
+  - The **`labels`** are **atomic propositions** that evaluate to true or false at a given `state`.
+  - A **labelling function** maps each `state` of the environment to the set of atomic propositions **holding in that `state`**.
+  - > "We do not assume that the labels constituting the **`LTL` formula** are observable. The agent should **infer the labels** from the observations."
+  - Concretely, the agent cannot observe whether it has **reached an end component or not**, but the `belief state` characterizes the confidence on whether or not it is in an end component. Therefore, it maintains a belief on **both** the `state` of the environment and the **`state` of the automaton**.
+
+- One major idea: formulate **_"reachability problems"_** (_quantitative_ model checking problem) as **reward maximization** problems.
+  - > "We show that the problem of finding a policy **maximizing the satisfaction of the objective** can be formulated as a **reward maximization** problem. This consideration allows us to benefit from **efficient approximate `POMDP` solvers**, such as `SARSOP`."
+  - In other words, a **reachability** problem can be interpreted as a **planning** problem where the **goal** is to reach the set `B` (the set of states where the propositional formula expressed by `B` **holds true**).
+  - For instance, the **reward function** gives `1` if `s` in `B`.
+- Steps of the approach:
+  - `1-` Creation of a **`product POMDP`**.
+    - > "We define a **new `POMDP`** such that solving the original quantitative model checking problem reduces to a reachability problem in this model."
+    - The new `POMDP` is called **`product POMDP`**:
+      - The **`state` space** is the **Cartesian product** of the state space of the original `POMDP` and the **deterministic rabin automaton** (`DRA`, representing the `LTL` formula).
+        - > "The construction of the `product POMDP` can be interpreted as a principled way to **augment the `state` space** in order to **account for temporal objective**."
+        - > "For formulas involving only a single **until (`U`)** or **eventually (`F`)** temporal operators, the problem can be **directly expressed as a reachability problem** and does **not require a state space augmentation**".
+      - A **new `transition` function** is also defined, using the fact that any `LTL` formula can be represented by a _deterministic Rabin automaton_ (resulting in a finite state machine).
+  - `2-` **Reduction to reachability** (i.e. go from `LTL` satisfaction to **reachability**).
+    - Solving the **original quantitative model checking problem** reduces to a **reachability problem** in this **`product POMDP`** model.
+      - Reaching a `state` in this **set** guarantees the **satisfaction of the formula**.
+    - _What is to be done_:
+      - `First` find the **_"end components"_**.
+      - `Then` identify the **_success_ `state`s**.
+    - The **computation** of the **maximal end components** is one of the two **bottlenecks** of the presented approach (together with the choice of the planning algorithms).
+  - `3-` Solving the **reachability problem**.
+    - Here, the `state` uncertainty will play a role (distinguishing `MDP`s from `POMDP`s).
+
+- About the **solver** used: [`SARSOP`](http://www.roboticsproceedings.org/rss04/p9.pdf).
+  - The idea is to restrict the `policy` space (hence an **approximation**), using `alpha vector`s.
+    - `alpha vector`s are `|state space|`-dimensional vectors defining a **linear function** over the `belief` space.
+    - They are used to represent **both** the `policy` and the `value function`.
+      - Hence, they can serve to approximate the **quantitative model checking** problem and **not only** the **policy synthesis** problem.
+  - About **point-based value iteration** (`PBVI`) algorithms.
+    - This is a family of `POMDP` solvers that involves applying a **Bellman backup** (hence _"value iteration"_) to a set of **`alpha vectors`** in order to **approximate** the optimal value function.
+    - _Why it is said "point-based"?_
+      - Vanilla value iteration (`VI`) algorithms cannot scale for `POMDP`s.
+      - In **`PBVI`** algorithms, the `belief` space is **sampled**.
+      - An `alpha vector` associated to **each belief _point_** is then computed to approximate the value function at **that _point_**.
+  - _What is the specificity of `SARSOP`?_
+    - It stands for _"Successive Approximations of the_ _**Reachable Space**_ _under Optimal Policies"_.
+    - It relies on a **tree search** to explore the `belief` space.
+      - It maintains **_upper_ and _lower_ bounds** on the **value function**, which are used to **guide the search** close to optimal trajectories (i.e. only exploring relevant regions).
+      - In other words, it focuses on regions that can be **reached** from the **initial belief point** under optimality conditions.
+    - This makes `SARSOP` one of the most **scalable** **_offline_** `POMDP` planners.
+
+- Another major idea: use the _upper_ and _lower_ bounds of `SARSOP` to estimate the **probability of satisfaction of the `LTL` formula**.
+  - In `PBVI` algorithms, **convergence guarantees** are offered, specified in _upper_ and _lower_ bound on the **value function** (e.g. one can **control the convergence** of the value function by controlling the **depth of the tree** in `SARSOP`).
+  - > "For a given **precision parameter**, we can directly **translate the bounds** on the **value function** in the `product POMDP` in terms of **probability of success** for our problem of **_quantitative_ model checking**".
+  - The user can specify the **precision parameter**.
+
+</details>
+
+---
+
 **`"Crossing of Road Intersections : Decision-Making Under Uncertainty for Autonomous Vehicles"`**
 
 - **[** `2019` **]**
@@ -4348,6 +4444,10 @@ Authors: Zhu, Y., & Zhao, D.
 | ![As noted in my [report of `IV19`](https://github.com/chauvinSimon/IV19), **risk assessment** can be performed by comparing the **expectated behaviour** (`expectation`) to the **inferred behaviour** (`intention`), i.e. what **should be done** in the situation and what is **actually observed**. A discrepancy can detect some **misinterpretation** of the scene. [Source](https://hal.inria.fr/tel-02424655/document).](media/2019_barbier_6.PNG "As noted in my [report of `IV19`](https://github.com/chauvinSimon/IV19), **risk assessment** can be performed by comparing the **expectated behaviour** (`expectation`) to the **inferred behaviour** (`intention`), i.e. what **should be done** in the situation and what is **actually observed**. A discrepancy can detect some **misinterpretation** of the scene. [Source](https://hal.inria.fr/tel-02424655/document).")  |
 |:--:|
 | *As noted in my [report of `IV19`](https://github.com/chauvinSimon/IV19), **risk assessment** can be performed by comparing the **expectated behaviour** (`expectation`) to the **inferred behaviour** (`intention`), i.e. what **should be done** in the situation and what is **actually observed**. A discrepancy can detect some **misinterpretation** of the scene. [Source](https://hal.inria.fr/tel-02424655/document).* |
+
+| ![The problem is formulated as a `POMDP`. [Source](https://hal.inria.fr/tel-02424655/document).](media/2019_barbier_22.PNG "The problem is formulated as a `POMDP`. [Source](https://hal.inria.fr/tel-02424655/document).")  |
+|:--:|
+| *The problem is formulated as a `POMDP`. [Source](https://hal.inria.fr/tel-02424655/document).* |
 
 | ![Decomposition of the probabilistic **transition** function. Only the longitudinal control via discrete `acceleration` is considered. The state `x` consists of **physical** and **behavioural** parts. In particular, it includes the `behaviour expectation` for each vehicle, i.e. what **should be done** according to the traffic rules. It also come with a `behavioural intention` for which is the **inferred manoeuvre** followed by the **observed vehicle**. `intention continuation` is used to describe the transition about `intention`, while [`gap acceptance model`](https://www.sciencedirect.com/science/article/pii/S0191261501000248) are used for the transition about expected behaviour. Finally, note that the selected `acceleration` action only influences the **physical term** of the ego vehicle. [Source](https://hal.inria.fr/tel-02424655/document).](media/2019_barbier_23.PNG "Decomposition of the probabilistic **transition** function. Only the longitudinal control via discrete `acceleration` is considered. The state `x` consists of **physical** and **behavioural** parts. In particular, it includes the `behaviour expectation` for each vehicle, i.e. what **should be done** according to the traffic rules. It also come with a `behavioural intention` for which is the **inferred manoeuvre** followed by the **observed vehicle**. `intention continuation` is used to describe the transition about `intention`, while [`gap acceptance model`](https://www.sciencedirect.com/science/article/pii/S0191261501000248) are used for the transition about expected behaviour. Finally, note that the selected `acceleration` action only influences the **physical term** of the ego vehicle. [Source](https://hal.inria.fr/tel-02424655/document).")  |
 |:--:|
