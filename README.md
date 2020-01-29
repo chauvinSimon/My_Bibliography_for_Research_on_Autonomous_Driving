@@ -492,6 +492,7 @@ Authors: Hawke, J., Shen, R., Gurau, C., Sharma, S., Reda, D., Nikolov, N., Mazu
   - Train the **primary shared encoders** and **auxiliary independent decoders** for a number of **computer vision** tasks.
     - > "In robotics, the **`test` data is the real-world**, not a **static dataset** as is typical in most `ML` problems. Every time our cars go out, the **world is new and unique**."
 - One concept: **_"Causal confusion"_**.
+  - A good [video](https://www.youtube.com/watch?v=_dh2-2b1jmU) about [Causal Confusion in Imitation Learning](https://arxiv.org/abs/1905.11979) showing that **"access to more information leads to worse generalisation under distribution shift"**.
   - > "**Spurious correlations** cannot be distinguished from **true causes in the demonstrations**. [...] For example, **inputting the current speed** to the policy causes it to learn a **trivial identity mapping**, making the car **unable to start from a static position**."
   - Two ideas during training:
     - Using **flow features** to make the model use explicit motion information **without learning the trivial solution** of an **identity mapping for speed and steering**.
@@ -934,6 +935,7 @@ Authors: Codevilla, F., Santana, E., Antonio, M. L., & Gaidon, A.
 - One Q&A: _How to include in E2E learning information about the destination, i.e. to disambiguate imitation around multiple types of intersections?_
   - Add a high-level `navigational command` (e.g. _take the next right_, _left_, or _stay in lane_) to the tuple <`observation`, `expert action`> when building the dataset.
 - One idea: learn to predict the ego speed ([`mediated perception`](http://deepdriving.cs.princeton.edu/paper.pdf)) to address the _inertia problem_ stemming from [**causal confusion**](https://arxiv.org/pdf/1905.11979.pdf) (**biased correlation** between _low speed_ and _no acceleration_ - when the ego vehicle is stopped, e.g. at a red traffic light, the probability it stays static is indeed overwhelming in the training data).
+  - A good [video](https://www.youtube.com/watch?v=_dh2-2b1jmU) about [Causal Confusion in Imitation Learning](https://arxiv.org/abs/1905.11979) showing that **"access to more information leads to worse generalisation under distribution shift"**.
 - Another idea: The off-policy (expert) driving demonstration is not produced by a human, but rather generated from an **omniscient "AI" agent**.
 - One quote:
 
@@ -5189,5 +5191,115 @@ Author: Wray, K. H., Witwicki, S. J., & Zilberstein, S.
 - About the **`POMDP` `offline` solver**:
   - The authors parallelize the **Point-Based Value Iteration** (`PBVI`) algorithm using `GPU`.
   - They called it **`nova`**: [`paper`](https://www.aaai.org/ocs/index.php/FSS/FSS15/paper/view/11645/11515) [`slides`](https://pdfs.semanticscholar.org/6f86/9e895cc9205b0497697bc230398df95d0888.pdf).
+
+</details>
+
+---
+
+**`"Planning under Uncertainties for Autonomous Driving on Urban Road"`**
+
+- **[** `2016` **]**
+**[[:memo:](https://scholarbank.nus.edu.sg/handle/10635/126233)]**
+**[[🎞️](https://www.youtu.be/W37haHhfU34)]**
+**[** :mortar_board: `National University of Singapore` **]**
+
+- **[** _`POMDP`, `DESPOT`, `urban driving`, `intention estimation`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![The author prefers the **`reaction`**-based over **`goal`**-based **`motion intention` estimation**. It relies on **_deviation measurement_** between the **observed behaviour** and some **reference vehicle state**. [Source](https://scholarbank.nus.edu.sg/handle/10635/126233).](media/2016_wei_1.PNG "The author prefers the **`reaction`**-based over **`goal`**-based **`motion intention` estimation**. It relies on **_deviation measurement_** between the **observed behaviour** and some **reference vehicle state**. [Source](https://scholarbank.nus.edu.sg/handle/10635/126233).")  |
+|:--:|
+| *The author prefers the **`reaction`**-based over the **`goal+motion`**-based **`motion intention` estimation**. It relies on **_deviation measurement_** between the **observed behaviour** and some **reference vehicle state**. [Source](https://scholarbank.nus.edu.sg/handle/10635/126233).* |
+
+| ![The agent **maintains a belief** over the **`motion intention`** of the other vehicles to decide of the **longitudinal discrete `action`** in {`accelerate`, `maintain speed`, `decelerate`}. The **`motion intention`** is in {`stopping`, `hesitation`, `normal`, `aggressive`}. [Source](https://scholarbank.nus.edu.sg/handle/10635/126233).](media/2016_wei_4.PNG "The agent **maintains a belief** over the **`motion intention`** of the other vehicles to decide of the **longitudinal discrete `action`** in {`accelerate`, `maintain speed`, `decelerate`}. The **`motion intention`** is in {`stopping`, `hesitation`, `normal`, `aggressive`}. [Source](https://scholarbank.nus.edu.sg/handle/10635/126233).")  |
+|:--:|
+| *The agent **maintains a belief** over the **`motion intention`** of the other vehicles to decide of the **longitudinal discrete `action`** in {`accelerate`, `maintain speed`, `decelerate`}. The **`motion intention`** is in {`stopping`, `hesitation`, `normal`, `aggressive`}. [Source](https://scholarbank.nus.edu.sg/handle/10635/126233).* |
+
+| ![[Source](http://youtu.be/W37haHhfU34).](media/2016_wei_1.gif "[Source](http://youtu.be/W37haHhfU34).")  |
+|:--:|
+| *[Source](http://youtu.be/W37haHhfU34).* |
+
+| ![The `observation` model can be factorized. Then, the **emission probability** depends on both the **hidden intention** and **physical** state. [Source](https://scholarbank.nus.edu.sg/handle/10635/126233).](media/2016_wei_7.PNG "The `observation` model can be factorized. Then, the **emission probability** depends on both the **hidden intention** and **physical** state. [Source](https://scholarbank.nus.edu.sg/handle/10635/126233).")  |
+|:--:|
+| *The `observation` model can be factorized. Then, the **emission probability** depends on both the **hidden intention** and **physical** state. Question: **can someone explain me the decomposition, and what to take for the marginal probability?** [Source](https://scholarbank.nus.edu.sg/handle/10635/126233).* |
+
+| ![Construction of the `transition` model: The **`speed action` of the other vehicles** depends on both their `motion intention` and the **correlations** with the other vehicles. [Source](https://scholarbank.nus.edu.sg/handle/10635/126233).](media/2016_wei_8.PNG "Construction of the `transition` model: The **`speed action` of the other vehicles** depends on both their `motion intention` and the **correlations** with the other vehicles. [Source](https://scholarbank.nus.edu.sg/handle/10635/126233).")  |
+|:--:|
+| *Construction of the `transition` model: The **`speed action` of the other vehicles** depends on both their `motion intention` and the **correlations** with the other vehicles. [Source](https://scholarbank.nus.edu.sg/handle/10635/126233).* |
+
+| ![In the `POMDP`, the `transition model` for the other vehicle works as followed: an **acceleration `action`** is computed based on both its `motion intention` and its **correlations** with the other vehicles, which means that it wants to **avoid a potential collision** with **any other vehicles**. [Source](https://scholarbank.nus.edu.sg/handle/10635/126233).](media/2016_wei_2.PNG "In the `POMDP`, the `transition model` for the other vehicle works as followed: an **acceleration `action`** is computed based on both its `motion intention` and its **correlations** with the other vehicles, which means that it wants to **avoid a potential collision** with **any other vehicles**. [Source](https://scholarbank.nus.edu.sg/handle/10635/126233).")  |
+|:--:|
+| *In the `POMDP`, the `transition model` for the other vehicle works as followed: an **acceleration `action`** is computed based on both its `motion intention` and its **correlations** with the other vehicles, which means that it wants to **avoid a potential collision** with **any other vehicles**. A `reference state` `rc` (containing among others a **reference speed `vref`** that the observed vehicle **should follow**) is also derived - more precisely sampled - which enables the computation of an expected `action` for each observed vehicle. [Source](https://scholarbank.nus.edu.sg/handle/10635/126233).* |
+
+| ![A **risk-aware** motion planning algorithm `CC-RRT*-D` is proposed to address the **internal motion uncertainty**. It leverages the **RRT\* algorithm** for space exploring and utilized the **chance-constrained** approach to evaluate the trajectories' collision risks. In each planning loop, the decision-maker will call the **motion planner** first with a **goal** being provided. It then will proceed to decide a **proper acceleration command** and select **which trajectory** to commit. The `control frequency` is set at `1Hz` while the `planning task time` is fixed to `0.1s`. [Source](https://scholarbank.nus.edu.sg/handle/10635/126233).](media/2016_wei_5.PNG "A **risk-aware** motion planning algorithm `CC-RRT*-D` is proposed to address the **internal motion uncertainty**. It leverages the **RRT\* algorithm** for space exploring and utilized the **chance-constrained** approach to evaluate the trajectories' collision risks. In each planning loop, the decision-maker will call the **motion planner** first with a **goal** being provided. It then will proceed to decide a **proper acceleration command** and select **which trajectory** to commit. The `control frequency` is set at `1Hz` while the `planning task time` is fixed to `0.1s`. [Source](https://scholarbank.nus.edu.sg/handle/10635/126233).")  |
+|:--:|
+| *A **risk-aware** motion planning algorithm `CC-RRT*-D` is proposed to address the **internal motion uncertainty**. It leverages the **RRT\* algorithm** for space exploring and utilized the **chance-constrained** approach to evaluate the trajectories' collision risks. In each planning loop, the decision-maker will call the **motion planner** first with a **goal** being provided. It then will proceed to decide a **proper acceleration command** and select **which trajectory** to commit. The `control frequency` is set at `1Hz` while the `planning task time` is fixed to `0.1s`. [Source](https://scholarbank.nus.edu.sg/handle/10635/126233).* |
+
+| ![The `action` space is extended to **coordinate the `speed` and `steering` control**. While choosing the **acceleration**, the agent selects either the **reference path** or a path **proposed by the motion planner**. [Source](https://scholarbank.nus.edu.sg/handle/10635/126233).](media/2016_wei_6.PNG "The `action` space is extended to **coordinate the `speed` and `steering` control**. While choosing the **acceleration**, the agent selects either the **reference path** or a path **proposed by the motion planner**. [Source](https://scholarbank.nus.edu.sg/handle/10635/126233).")  |
+|:--:|
+| *The `action` space is extended to **coordinate the `speed` and `steering` control**. While choosing the **acceleration**, the agent selects either the **reference path** or a path **proposed by the motion planner**. [Source](https://scholarbank.nus.edu.sg/handle/10635/126233).* |
+
+Author: Wei L.
+
+- The quote in this **PhD thesis**:
+  - > "As far as the laws of mathematics refer to reality, they are not certain; and as far as they are certain, they do not refer to reality." - Albert Einstein, 1922
+- Motivations / main ideas:
+  - Propose an **interaction**-aware and **uncertainty**-aware decision making for **urban scenarios**.
+  - Have a **general** and **scalable method**, with a focus on **real-time applicability**.
+  - Cope with both `internal motion uncertainty` and `external situation uncertainty`.
+  - Consider both `road context` and the obstacle vehicle's `motion intention` in the decision-making.
+- About **_motion intention_** estimation:
+  - > "The most popular strategy is to define the `motion intention` as their **hidden destinations**."
+  - > "Instead of relying on the **hidden goals**, this study aims at employing the **obstacle vehicle’s** **_reaction_** to model the `motion intention`."
+  - Compared to the **hidden goal method**, employing the **reactions** to model the `motion intention` is **more general and scalable**. The measurement of deviation is not restricted to any specific _region of interest_ (`ROI`).
+  - _How to model the reaction?_
+    - Using a **_deviation measurement_** of the observed vehicle state from the corresponding **reference vehicle state**.
+    - For that purpose, some `reference state` containing the **reference speed `vref`** that the observed vehicle **should follow** is derived.
+  - _What are the intentions for crossing in urban driving?_
+    - Four intentions are abstracted from human driving behaviours and **evidences** are based on `speed deviation`:
+    - `1-` **`Stopping` intention**: The `obstacle vehicle's speed` is close to zero, while the `reference speed` is much higher.
+    - `2-` **`Hesitating` intention**: The `obstacle vehicle's speed` is lower than the `reference speed` but not close to zero.
+    - `3-` **`Normal` intention**: The `obstacle vehicle's speed` matches well with the `reference speed`.
+    - `4-` **`Aggressive` intention**: The `obstacle vehicle's current` speed is much higher than the `reference speed`.
+
+- About the **`POMDP` formulation**:
+  - The episode is not **episodic** but continuous: there is no termination `state` such as _"exit of intersection"_ in other approaches.
+    - That makes this method very **general**, addressing `junctions`, `leader-following` and `round-about` scenarios with a **single `POMDP` formulation**.
+    - _What is the discount rate?_
+  - `state`:
+    - It contains:
+      - `1-` **Physical** (or _metric_) information: **`pose`** and **`speed`** (`x`, `y`, `θ`, `v`), which is assumed to be **fully observed**.
+      - `2-` **Intention** information: `i`, which is **non-observable**. Obviously this is not applicable for the ego-vehicle.
+    - The author explains that the **`reference state`** (containing the `reference speed`) should not be part of the `state`:
+    - > "The **road context** can be employed as a **reference knowledge**, and is consequently **excluded from the vehicle state**".
+  - `action`:
+    - The action space is about **longitudinal control** and is made **discrete**: `accelerate`, `decelerate` or `maintain current speed`.
+      - Values are set to **`±0.25 m/s2`** in simulation and **`±0.5 m/s2`** in the real-world experiment.
+    - > "The `steering` control of the ego vehicle, on the other hand, is accomplished by tracking the reference routes closely."
+    - The author proposes a modification to include the **lateral control** as well, e.g. for **`overtaking`** or **`lane-changing` manoeuvres** and a strategy to properly **coordinate the `speed` and `steering` control**.
+      - > "An improperly extended action space can break down the **real-time applicability** of our situation-aware decision making algorithm. As an alternative, the **_trajectory selection_** strategy is employed in this study".
+      - The `steering action` space includes **two trajectory candidates** to be selected: [`Commit`, `NewPlan`] and the agent decides whether or not the **trajectory planned by the motion planner** should be **committed** in each planning loop.
+  - `transition model`:
+    - The **behaviour** of other vehicles is driven by both the **road context** and their **motion intentions**.
+    - An `action` about the acceleration is derived for each vehicle.
+      - It depends on both the **motion intention** and the **correlations with the other vehicles** to avoid a potential collision with any other vehicles:
+      - `1-` If the **collision risk** with other vehicles is low, the `action` is mapped from the **motion intention** only as `P`(`a`|`intention`).
+      - `2-` Otherwise, the obstacle vehicle would either follow the **inferred motion intention** or choose the `decelerate` action: the higher the speed of the nearest vehicle, the higher the probability to decide to decelerate.
+  - `observation model`:
+    - > "Obstacle vehicles' observation functions are **more complicated** due to the **inclusion of their motion intentions**".
+    - > "Given the `reference speed` vref(zi), the **observation function** for each `motion intention` **`ι`** `∈` `I` is modeled as a **Gaussian** with **mean `m(vref(zi), ι)`** and **covariance `vref(zi)/σ`**."
+  - `reward function`:
+    - The reward `R`(`a`, `s`) obtained by executing action `a` in state `s` balances the **driving efficiency** and **safety**.
+    - _What is weighting between the different terms?_
+
+- Another topic: learning the **road context** to perform **vehicle behaviour analysis**.
+  - The **inference** over the **road context** is divided into three stages:
+    - `1-` The topology learning to model the road network.
+    - `2-` The motion learning to generalize the typical vehicle motion pattern.
+    - `3-`The rule learning for traffic rules reasoning.
+  - > "Given the **road context** and the **vehicle behavior analysis**, a **situation-aware** decision making algorithm was introduced to address the **situation uncertainty**."
+
+- It provides the **reference speed `vref`** that the observed vehicle **should follow**.
 
 </details>
