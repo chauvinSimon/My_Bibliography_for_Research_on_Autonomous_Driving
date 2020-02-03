@@ -5250,6 +5250,7 @@ Author: Wei L.
   - Cope with both `internal motion uncertainty` and `external situation uncertainty`.
   - Consider both `road context` and the obstacle vehicle's `motion intention` in the decision-making.
 - About **_motion intention_** estimation:
+  - To cope with the **lack of an `intention` sensor**.
   - > "The most popular strategy is to define the `motion intention` as their **hidden destinations**."
   - > "Instead of relying on the **hidden goals**, this study aims at employing the **obstacle vehicle’s** **_reaction_** to model the `motion intention`."
   - Compared to the **hidden goal method**, employing the **reactions** to model the `motion intention` is **more general and scalable**. The measurement of deviation is not restricted to any specific _region of interest_ (`ROI`).
@@ -5300,6 +5301,15 @@ Author: Wei L.
     - `3-`The rule learning for traffic rules reasoning.
   - > "Given the **road context** and the **vehicle behavior analysis**, a **situation-aware** decision making algorithm was introduced to address the **situation uncertainty**."
 
-- It provides the **reference speed `vref`** that the observed vehicle **should follow**.
+- The corresponding paper: [Situation-aware decision making for autonomous driving on urban road using online POMDP](https://www.researchgate.net/publication/307904751_Situation-aware_Decision_Making_for_Autonomous_Driving_on_Urban_Road_using_Online_POMDP) by (Liu, Kim, Pendleton, & Ang, 2015).
+  - It emphasises the need for a proper **environment representation**, integrating both the **road context** and the **obstacle vehicle's motion intention**, leading to the definition of **`Urban Road Situation`**:
+    - > "The **road context** should comprise not only the **road network** and **traffic rules**, but also the **typical vehicle motion patterns**."
+  - It also explains the **intention estimation** based on motion rather than **target destinations** (more _general_ and _scalable_, because the **measurement of deviation** is not restricted to any specific `ROI`):
+    - > "The **motion intention** is inferred from the **vehicle reactions**, i.e., the **deviation** of the observed vehicle states to the reference vehicle behaviors [here the **`reference speed`** and transition probabilities between regions] that are represented by the **road context**."
+    - > "The **urban road situation** (`URS`) features not only the **motion intention** and the **road context**, but also the **implicit correlations** between them. [...] The **motion intention** is abstracted as the **conditional distribution over the reactions**, where the implicit correlations between the **road context** and **motion intention** are acknowledged."
+  - It also details the two most complicated components of the `POMDP` - the `transition` and `observation` models - and explains how to **learn reference behaviours** from data.
+  - Finally, it compare the approach so to **classic rule-based policies**:
+    - The `ROS`-based **[`Stage`](http://wiki.ros.org/stage) simulator** is employed for evaluation.
+    - > [About _frozen robot_ problem] "While the **reactive approach** seems able to maintain a nice success rate, the **efficiency is scarified**. For most of the trials using the reactive approach, the ego vehicle always passively decided to wait, even when the gap between itself and the obstacle vehicles is large enough for safe merging."
 
 </details>
