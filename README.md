@@ -2570,7 +2570,7 @@ Authors: Sadat, A., Ren, M., Pokrovsky, A., Lin, Y., Yumer, E., & Urtasun, R.
 **[[🎞️](http://rulebooks.tech/)]**
 **[[🎞️](https://video.ethz.ch/events/2019/rsl/28a0302b-64eb-4ebe-a609-1dc05fcdb038.html)]**
 **[** :mortar_board: `ETH Zurich` **]**
-**[** :car: `nuTonomy, Aptiv` **]**
+**[** :car: `nuTonomy`, `Aptiv` **]**
 
 - **[** _`sampling-based planning`, `safety validation`, `reward function`, `RSS`_  **]**
 
@@ -2761,6 +2761,58 @@ Author: Noh, S.
 ---
 
 ## `Model-Free` `Reinforcement Learning`
+
+A robotic agent capable of controlling 6-degrees of freedom (DOF) is said to be holonomic, while an agent with fewer controllable DOFs than its total DOF is said to be non-holonomic
+
+---
+
+**`"Deep Reinforcement Learning for Autonomous Driving: A Survey"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://arxiv.org/abs/2002.00444)]**
+**[** :mortar_board: `ENSTA ParisTech`, `National University of Ireland` **]**
+**[** :car: `Navya`, `Valeo` **]**
+
+- **[** _`review`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://arxiv.org/abs/2002.00444).](media/2020_kiran_1.PNG "[Source](https://arxiv.org/abs/2002.00444).")  |
+|:--:|
+| *[Source](https://arxiv.org/abs/2002.00444).* |
+
+Authors: Ravi Kiran, B., Sobh, I., Talpaert, V., Mannion, P., Sallab, A. A. Al, Yogamani, S., & Pérez, P.
+
+- _Not too much to report. A rich literature overview and some useful reminders about general `RL` concepts._
+  - _Considering the support of serious companies (`Navya`, `Valeo`), I was surprised not to see any section about_ **_"`RL` that works in reality"_**.
+- Miscellaneous notes about **decision-making** methods for `AD`:
+  - One term: **_"holonomic"_** _(I often met this term without any definition)_
+    - > "A robotic agent capable of controlling `6`-degrees of freedom (`DOF`) is said to be **_holonomic_**, while an agent with **fewer controllable `DOF`s** than its total `DOF` is said to be **non-holonomic**."
+    - Cars are **_non-holonomic_** (addressed by `RRT` variants but not by `A*` or `Djisktra` ones).
+  - About `optimal control` (I would have mentioned **`planning`** rather than `model-based RL`):
+    - > "`Optimal control` and `RL` are intimately related, where `optimal control` can be viewed as a **model-based `RL`** problem where the dynamics of the vehicle/environment are modeled by well defined differential equations."
+  - About **`GAIL`** to generate a policy, as an alternative to `apprenticeship learning` (`IRL`+ `RL`):
+    - > "The theory behind `GAIL` is an **equation simplification**: qualitatively, if `IRL` is going from **demonstrations** to a **cost function** and `RL` from a **cost function** to a **policy**, then we should altogether be able to go from **demonstration to policy** in a single equation while **avoiding the cost function estimation**."
+  - Some mentioned challenges:
+    - **Validation** and **safety**.
+    - **Sample efficiency** and **training stability** in general.
+    - **`MDP` definition**, e.g. space _discretization_ or not, level of _abstraction_.
+    - **Simulation-reality gap** (_domain transfer_), mentioning **domain adaptation** solutions:
+      - `feature`-level
+      - `pixel`-level
+      - `real-to-sim`: **adapting the real camera streams to the synthetic modality**, so as to map the unfamiliar or unseen features of real images **back into the simulated style**.
+    - **Reward shaping**. Mentioning **intrinsic** rewards:
+      - > "In the absence of an _explicit_ reward shaping and expert demonstrations, agents can use **intrinsic rewards** or **intrinsic motivation**."
+      - `curiosity`: the **error** in an agent’s ability to **predict the consequence** of its own actions in a visual feature space learned by a self-supervised **inverse dynamics model**.
+    - **Reproducibility**. Multiple frameworks are mentioned:
+      - [OpenAI Baselines](https://github.com/openai/baselines).
+      - [TF-Agents](https://github.com/tensorflow/agents).
+      - [Coach](https://github.com/NervanaSystems/coach) by [Intel AI Lab](https://www.intel.ai/rl-coach-new-release/).
+      - [rlpyt](https://github.com/astooke/rlpyt) by [bair.berkeley](https://bair.berkeley.edu/blog/2019/09/24/rlpyt/).
+      - [bsuite](https://github.com/deepmind/bsuite) by [DeepMind](https://deepmind.com/research/open-source/bsuite).
+
+</details>
 
 ---
 
