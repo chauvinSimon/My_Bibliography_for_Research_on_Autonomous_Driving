@@ -2785,7 +2785,7 @@ A robotic agent capable of controlling 6-degrees of freedom (DOF) is said to be 
 Authors: Ravi Kiran, B., Sobh, I., Talpaert, V., Mannion, P., Sallab, A. A. Al, Yogamani, S., & Pérez, P.
 
 - _Not too much to report. A rich literature overview and some useful reminders about general `RL` concepts._
-  - _Considering the support of serious companies (`Navya`, `Valeo`), I was surprised not to see any section about_ **_"`RL` that works in reality"_**.
+  - _Considering the support of serious industrial companies (`Navya`, `Valeo`), I was surprised not to see any section about_ **_"`RL` that works in reality"_**.
 - Miscellaneous notes about **decision-making** methods for `AD`:
   - One term: **_"holonomic"_** _(I often met this term without any definition)_
     - > "A robotic agent capable of controlling `6`-degrees of freedom (`DOF`) is said to be **_holonomic_**, while an agent with **fewer controllable `DOF`s** than its total `DOF` is said to be **non-holonomic**."
@@ -5363,5 +5363,59 @@ Author: Wei L.
   - Finally, it compare the approach so to **classic rule-based policies**:
     - The `ROS`-based **[`Stage`](http://wiki.ros.org/stage) simulator** is employed for evaluation.
     - > [About _frozen robot_ problem] "While the **reactive approach** seems able to maintain a nice success rate, the **efficiency is scarified**. For most of the trials using the reactive approach, the ego vehicle always passively decided to wait, even when the gap between itself and the obstacle vehicles is large enough for safe merging."
+
+</details>
+
+---
+
+**`"Probabilistic Decision-Making under Uncertainty for Autonomous Driving using Continuous POMDPs"`**
+
+- **[** `2014` **]**
+**[[:memo:](https://www.researchgate.net/publication/267040968_Probabilistic_Decision-Making_under_Uncertainty_for_Autonomous_Driving_using_Continuous_POMDPs)]**
+**[** :mortar_board: `KIT` **]**
+
+- **[** _`state representation`, `occlusion`, `offline solver`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![A **physical `transition model`** is defined for all vehicles: **p(`x'`** given **`x`, `a`)**. The **`ego-action`** is known. For the other road users, the **action is inferred / estimated**, using the **`situational context`** `Cj`, the map knowledge and an **estimated `planned route`** `Pj` (derived from the latter two). This `p`(`aj` given `cj`, `pj`) inference / estimation is motivated by the fact that other drivers usually follow the course of the road and **interact** with each other and the ego car. The authors introduce a **context-dependent** term for the **ego-action** too: `p`(`ae` given `a`, `ce`). It should account for **interaction with other road users** such as ''hold the velocity of the car in front''. Should not the **`policy`** be responsible for that?. [Source](https://www.researchgate.net/publication/267040968_Probabilistic_Decision-Making_under_Uncertainty_for_Autonomous_Driving_using_Continuous_POMDPs).](media/2014_brechtel_1.PNG "A **physical `transition model`** is defined for all vehicles: **p(`x'`** given **`x`, `a`)**. The **`ego-action`** is known. For the other road users, the **action is inferred / estimated**, using the **`situational context`** `Cj`, the map knowledge and an **estimated `planned route`** `Pj` (derived from the latter two). This `p`(`aj` given `cj`, `pj`) inference / estimation is motivated by the fact that other drivers usually follow the course of the road and **interact** with each other and the ego car. The authors introduce a **context-dependent** term for the **ego-action** too: `p`(`ae` given `a`, `ce`). It should account for **interaction with other road users** such as ''hold the velocity of the car in front''. Should not the **`policy`** be responsible for that?. [Source](https://www.researchgate.net/publication/267040968_Probabilistic_Decision-Making_under_Uncertainty_for_Autonomous_Driving_using_Continuous_POMDPs).")  |
+|:--:|
+| *A **physical `transition model`** is defined for all vehicles: **p(`x'`** given **`x`, `a`)**. The **`ego-action`** is known. For the other road users, the **action is inferred / estimated**, using the **`situational context`** `Cj`, the map knowledge and an **estimated `planned route`** `Pj` (derived from the latter two). This `p`(`aj` given `cj`, `pj`) inference / estimation is motivated by the fact that other drivers usually follow the course of the road and **interact** with each other and the ego car. The authors introduce a **context-dependent** term for the **ego-action** too: `p`(`ae` given `a`, `ce`). It should account for **interaction with other road users** such as ''hold the velocity of the car in front''. Should not the **`policy`** be responsible for that?. [Source](https://www.researchgate.net/publication/267040968_Probabilistic_Decision-Making_under_Uncertainty_for_Autonomous_Driving_using_Continuous_POMDPs).* |
+
+| ![Up: **intersection** scenario, considering **noise in measurement** as well as **occlusion**. Bottom: Instead of **a priori (equidistant) state discretization**, the state representation is **learnt** offline, while performing value iteration. It offers a **more appropriate description** of the **current scene**, deducing what is relevant to the decision-making and what is not. For instance, state when the other car is far away can be **aggregated**, while **finer distinctions** are required when driving close.. [Source](https://www.researchgate.net/publication/267040968_Probabilistic_Decision-Making_under_Uncertainty_for_Autonomous_Driving_using_Continuous_POMDPs).](media/2014_brechtel_2.PNG "Up: **intersection** scenario, considering **noise in measurement** as well as **occlusion**. Bottom: Instead of **a priori (equidistant) state discretization**, the state representation is **learnt** offline, while performing value iteration. It offers a **more appropriate description** of the **current scene**, deducing what is relevant to the decision-making and what is not. For instance, state when the other car is far away can be **aggregated**, while **finer distinctions** are required when driving close.. [Source](https://www.researchgate.net/publication/267040968_Probabilistic_Decision-Making_under_Uncertainty_for_Autonomous_Driving_using_Continuous_POMDPs).")  |
+|:--:|
+| *Up: **intersection** scenario, considering **noise in measurement** as well as **occlusion**. Bottom: Instead of **a priori (equidistant) state discretization**, the state representation is **learnt** offline, while performing value iteration. It offers a **more appropriate description** of the **current scene**, deducing what is relevant to the decision-making and what is not. For instance, state when the other car is far away can be **aggregated**, while **finer distinctions** are required when driving close. [Source](https://www.researchgate.net/publication/267040968_Probabilistic_Decision-Making_under_Uncertainty_for_Autonomous_Driving_using_Continuous_POMDPs).* |
+
+Authors: Brechtel, S., Gindele, T., & Dillmann, R.
+
+- Motivations:
+  - Adopt an **appropriate _state representation_** to solve a **`POMDP`**-formulated intersection problem.
+  - **Equidistant discretization** or any **_a priori_** discretization of the `state` space are to be avoided.
+    - Instead, the problem should be formulated and solved directly in its natural **continuous space**.
+    - More precisely, the idea is to **Learn** a **discrete** representation of the **continuous `state` space** to solve the integrals in continuous POMDPs.
+
+- `POMDP` formulation:
+  - The ego-car interacts with **`2` other cars** at an **intersection**.
+    - Each vehicle is described by `4` continuous variables: `speed`, global **`pose`** (`x`, `y`, `ψ`).
+    - Leading to a **continuous `state`** of **size `12`**.
+  - **Occlusions** are detected by checking if there is a **direct line of sight** to the road user that does not intersect with other objects, which are represented as polygons.
+    - _To be honnest, I did not understand where the `occlusion` random variable is used/considered. The authors mention a probability of beeing occluded. But where/how is that tracked by the belief tracker?_
+- **Learning** the state representation:
+  - > [Idea is to] "Apply a **learning algorithm** during **value iteration** in order to only **distinguish states** if the discrimination is necessary to represent the optimal decision."
+  - > "The **`value function`** serves as a mathematically sound basis to **deduce what is relevant to the decision-making and what is not**. [In discrete `POMDP`s, `state`s with same value can be **aggregated** without influencing the `policy`.]"
+  - The **problem-specific _compression_** is refined during the solving process:
+    - The `POMDP` solver learned a **decision tree** with **`442` leaves**.
+    - **`4 million` continuous state samples**, collected from `1000` simulations, are used to learn the state representation, i.e. the **assignment of an index** to a state vector (`12` continuous values).
+  - Plotting the **histogram of "situations per state index"**, it can be seen that:
+    - Particles that **do need not be differentiated** can be **aggregated**.
+    - **Refinements** are performed for states that **model critical situations**, where **accuracy** in the information is important.
+
+- Some previous work by the authors:
+  - **"Solving Continuous POMDPs: Value Iteration with Incremental Learning of an Efficient Space Representation"** - [(Brechtel, Gindele, & Dillmann, 2013)](http://proceedings.mlr.press/v28/brechtel13.pdf).
+  - **"Probabilistic MDP-behavior planning for cars"** - [(Brechtel, Gindele, & Dillmann, 2011)](https://www.researchgate.net/publication/256079154_Probabilistic_MDP-Behavior_Planning_for_Cars).
+
+- One quote I like:
+  - > "The `process` [`transition`] and `observation` models and the `reward` function can be seen as the **_glue_** between the **spaces**, as they define the meaning of the spaces for the decision process."
 
 </details>
