@@ -4457,6 +4457,96 @@ Authors: Zhu, Y., & Zhao, D.
 
 ---
 
+**`"Integrating Planning and Interpretable Goal Recognition for Autonomous Driving"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://arxiv.org/abs/2002.02277)]**
+**[** :mortar_board: `University of Edinburgh` **]**
+**[** :car: `FiveAI` **]**
+
+- **[** _`goal recognition`, `intention-aware motion planning`, `inverse planning`, `MCTS`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![Example of scenario (note: **left-hand drive**) where prediction based on goal-recognition can inform the planning. It enables a **less conservative behaviour** (entering the intersection earlier) while **offering interpretability**. [Source](https://arxiv.org/abs/2002.02277).](media/2020_albrecht_1.PNG "Example of scenario (note: **left-hand drive**) where prediction based on goal-recognition can inform the planning. It enables a **less conservative behaviour** (entering the intersection earlier) while **offering interpretability**. [Source](https://arxiv.org/abs/2002.02277).")  |
+|:--:|
+| *Example of scenario (note: **left-hand drive**) where prediction based on goal-recognition can inform the planning. It enables a **less conservative behaviour** (entering the intersection earlier) while **offering interpretability**. [Source](https://arxiv.org/abs/2002.02277).* |
+
+| ![The main ideas are to **couple `prediction` and `planning`**, try to **infer the `goals`** followed by the other vehicles and use **high-level abstraction** of `manoeuvres` via **`macro actions`**. [Source](https://arxiv.org/abs/2002.02277).](media/2020_albrecht_2.PNG "The main ideas are to **couple `prediction` and `planning`**, try to **infer the `goals`** followed by the other vehicles and use **high-level abstraction** of `manoeuvres` via **`macro actions`**. [Source](https://arxiv.org/abs/2002.02277).")  |
+|:--:|
+| *The main ideas are to **couple `prediction` and `planning`**, try to **infer the `goals`** followed by the other vehicles and use **high-level abstraction** of `manoeuvres` via **`macro actions`**. [Source](https://arxiv.org/abs/2002.02277).* |
+
+| ![The ego-agent **updates its belief** on the goal follow by the other vehicles (left). As noted below, the **ablation study** (right) raises question about **what really offers benefits** for the time-efficiency of the driving policy. [Source](https://arxiv.org/abs/2002.02277).](media/2020_albrecht_3.PNG "The ego-agent **updates its belief** on the goal follow by the other vehicles (left). As noted below, the **ablation study** (right) raises question about **what really offers benefits** for the time-efficiency of the driving policy. [Source](https://arxiv.org/abs/2002.02277).")  |
+|:--:|
+| *The ego-agent **updates its belief** on the goal follow by the other vehicles (left). As noted below, the **ablation study** (right) raises question about **what really offers benefits** for the time-efficiency of the driving policy. [Source](https://arxiv.org/abs/2002.02277).* |
+
+Authors: Albrecht, S. V., Brewitt, C., Wilhelm, J., Eiras, F., Dobre, M., & Ramamoorthy, S.
+
+- Motivations:
+  - `1-` Improve the **_anticipation_ ability** and hence the **_efficiency_** of driving behaviour at **urban intersections**.
+  - `2-` Provide **intuitive interpretations** of the predictions to justify the ego-agent's decisions.
+  - `3-` Keep **computational efficiency** low.
+- The main **ingredients** to achieve that are:
+  - Couple **`planning`** and **`prediction`**.
+  - Infer the **goals** (here specifying **target locations**) of other vehicles.
+  - Use of **high-level** manoeuvres and **macro actions**.
+- Two assumptions:
+  - `1-` Each vehicle **seeks to reach some (unknown) goal location** from a set of **possible goals**, and behaves **_rationally_** by driving optimally to achieve goals.
+    - Note: for that second point, the definition of the likelihood `p`(`trajectory | goal-i`) still allows for a degree of deviation.
+  - `2-` At any time, each vehicle is executing one of **`manoeuvre`** among a **finite set**:
+    - `lane-follow`
+    - `lane-change-left`/`right`
+    - `turn-left`/`right`
+    - `give-way`
+    - `stop`
+- About **goad recognition**:
+  - The idea is to **recognise the goals** of other vehicles, in order to perform **rational inverse planning**, i.e. made better _(better informed)_ decisions.
+  - > "We must **reason about _why_** – that is, _to what end_ – the vehicle performed its current and past manoeuvres, which will **yield clues as to its intended goal**."
+  - > "_[Limitation of the_ **_optimality assumption_**_]_ An important future direction is to account for **human irrational biases**."
+- _How to plan ego-action?_ **By leveraging recognition and prediction**.
+  - Both **`goal probabilities`** and **`trajectory predictions`** are used to **inform** a **Monte Carlo Tree Search (`MCTS`)** algorithm.
+- _How to reduce the search depth?_ **Using `macro actions`**.
+  - > "To keep the required **search depth shallow** and hence **efficient**, both `inverse planning` and `MCTS` plan over **macro actions**."
+  - In hierarchical `RL`, `macro actions` are sometimes defined by a tuple <`applicability condition`, `termination condition`, `primitive policy`>.
+  - Here _(I am a little bit confused)_:
+    - Each _manoeuvre_ also specifies **applicability conditions** (`lane-change-left` is only **_applicable_** if there is a lane in same driving direction on the _left_ of the vehicle) and **termination conditions**.
+    - > "Macro actions concatenate one or more manoeuvres, [and] automatically set the **parameters** in manoeuvres [e.g. `driving distance` for `lane-follow` or `lane-id`s in `give-way`] based on **context information** (usually **road layout**)".
+    - But no underlying _primitive policy_ is used:
+    - > "`Macro actions` as used in this work **do not define a hierarchy** of decomposable actions; they simply define sequences of actions."
+  - By reasoning on a **high level of abstraction**, `macro actions` offer a **temporal abstraction** that relieves the planner and ensures a low computational cost.
+- Main steps of the approach:
+  - `1-` **Goal Generation**: Only consider locations that are **reachable**.
+  - `2-` **Manoeuvre Detection**: Compute the posterior **probabilities over each goal** for each manoeuvre.
+  - `3-` **Inverse Planning**: Using `A*` search over **macro actions**, derive an optimal plan.
+  - `4-` **Trajectory Prediction**:  Predict **_multiple_ plausible trajectories** for a given vehicle and goal, rather than a single optimal trajectory.
+    - Hence accounting for the **multi-modal** nature of the **future prediction**: given the same context, future may vary.
+    - It assumes that trajectories which are **closer to optimal** are **more likely**.
+- About `close-loop` / `open-loop` forward simulation:
+  - > "The ego vehicle’s motion always uses closed-loop mode, while other vehicles can be simulated in either closed-loop or open-loop mode."
+  - `closed-loop` simulation: it uses a combination of **proportional control** and **adaptive cruise control** (`ACC`), based on `IDM`.
+  - `open-loop` simulation: **no automatic distance keeping** is used.
+    - The vehicle's position and velocity directly are set as specified in trajectory.
+- About the **experiment** settings:
+  - > "For each _[of the four]_ scenario, we generate `100` instances with **randomly offset initial longitudinal positions** (offset ∼ [`−10`, `+10`] `m`) and **initial speed sampled** from range [`5`, `10`] `m/s` for each vehicle including ego vehicle."
+  - Frequency of `MCTS`: **`1 Hz`**.
+  - Number of simulations: `D` `=` `30`.
+  - Maximum search depth: `d-max` `=` `5`.
+  - **Prior** probabilities for **achievable goals**: `uniform`.
+- Benefits of the approach:
+  - One of the baselines implements `MCTS` **without goal recognition**: the prediction instead assumes on **constant-velocity** lane-following.
+    - This candidate suffers from a limited prediction horizon, but **still performs well** in term of **driving time** required to complete scenario.
+  - Another baseline also uses `CV` models, together with a **"conservative give-way manoeuvre"** which **waits** until all oncoming vehicles on priority lanes have passed.
+    - Hence **no `MCTS`**.
+    - This one is **not able to infer goal** and anticipate behaviour, preventing them to safely **enter the road earlier**, for instance when a car is detected to exit the roundabout.
+  - Based on this **ablation study**, it is not clear to me _what improves the efficiency of the driving policy_:
+    - `1-` Is it the consideration of goals?
+    - `2-` Or just the **coupling of `prediction` + `planning`** which gets rid of the conservative **_"wait until clear"_** condition?
+
+</details>
+
+---
+
 **`"Point-Based Methods for Model Checking in Partially Observable Markov Decision Processes"`**
 
 - **[** `2020` **]**
