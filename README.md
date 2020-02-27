@@ -4643,6 +4643,60 @@ Authors: Bouton, M., Tumova, J., & Kochenderfer, M. J.
 
 ---
 
+**`"Self-Driving Under Uncertainty - aa228 Course Project"`**
+
+- **[** `2020` **]**
+**[[:memo:](http://files.coldattic.info/stanford/aa228/AA228_Final.pdf)]**
+**[[:octocat:](https://github.com/pshved/aa228)]**
+**[** :mortar_board: `Stanford University` **]**
+
+- **[** _`POMCPOW`, `JuliaPOMDP`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![On the **graphical model**, it can be seen that only the **position of the obstacle** `b-xy` is **not fully observable**. One contribution is the use of **second reward model** to help. It first encourages high speed. And also linearly reward the **approaching of the goal** to address the limitation of **depth-bounded** online tree search methods. [Source](http://files.coldattic.info/stanford/aa228/AA228_Final.pdf).](media/2019_shved_1.PNG "On the **graphical model**, it can be seen that only the **position of the obstacle** `b-xy` is **not fully observable**. One contribution is the use of **second reward model** to help. It first encourages high speed. And also linearly reward the **approaching of the goal** to address the limitation of **depth-bounded** online tree search methods. [Source](http://files.coldattic.info/stanford/aa228/AA228_Final.pdf).")  |
+|:--:|
+| *On the **graphical model**, it can be seen that only the **position of the obstacle** `b-xy` is **not fully observable**. One contribution is the use of **second reward model** to help. It first encourages high speed. And also linearly reward the **approaching of the goal** to address the limitation of **depth-bounded** online tree search methods. [Source](http://files.coldattic.info/stanford/aa228/AA228_Final.pdf).* |
+
+Author: Shved, P.
+
+- A university project completed for the **[aa228 - Decision Making under Uncertainty](https://web.stanford.edu/class/aa228/cgi-bin/wp/)** course at Stanford.
+  - The scenario is a simple straight road with **single moving obstacle** (whose behaviour is **non-adversarial** and **does not change** in response to the actions taken by the ego-agent).
+  - Results were not very brilliant, but the author proposes a good analysis:
+    - > "We find that with **certain fine-tuning**, `POMCPOW` produces driving decisions that result in mission completion albeit sub-optimally. However, for more complicated scenarios, the quality of planning decisions degrades and the **agent gets stuck** without completing the mission."
+- Initial motivation:
+  - Evaluate the **robustness** of the planner, i.e. study its performance while **varying the perception precision**.
+  - That means the **`observation` model is stochastic** (_Gaussian_) while the `transition` model is kept deterministic.
+- Some elements about the `POMDP` formulation:
+  - The `state` space is continuous and not discretized.
+  - The task is **episodic**: A `state` is **terminal** if
+    - `1-`_(either)_ The **end of the road** is reached.
+    - `2-` _(or)_ A **collision** occurs.
+- One idea: use a **second `reward` model**.
+  - `1-` The **first** reward model evaluates the driving behaviours: _rewarding reaching the goal_, _penalizing collisions_ and _encouraging progress_.
+    - > "However, the solvers used were unable to attain good results on that model directly. We **augment** this reward model and use model `R2`."
+  - `2-` The second was added after testing the **online search** and serves two purposes:
+    - > "In the challenge model, the **large positive reward** for **mission completion** is **_spread out_** across the state space, and we **reward high velocity**."
+    - Concretely, it adds a term proportional to `r-mission-completion`*`dist-to-goal`.
+- About the [`POMCPOW`](https://github.com/JuliaPOMDP/POMCPOW.jl) solver:
+  - > "It is a **fixed-depth tree search** algorithm that uses **Double Progressive Widening** to explore **continuous `actions` space**, and **observation binning** to constrain the **continuous `observation` space**."
+  - This is an **_online_** solver, which may not be the best option for this **simple scenario**:
+    - > "Inability to **learn from prior experience** and produce an _offline_ policy which results in **unnecessary computation** in **simple situations**."
+- Another idea: use **two rollout policies** for the tree search.
+  - > "The **default priors** (e.g. random rollouts) were not sufficient to achieve high rewards."
+  - > "We addressed this problem by using **two rollout policies**: `always brake` and `always maintain`, comparing the _expected_ `rewards`, and choosing the `action` produced by the **highest policy**."
+- **Findings**. Key ingredients for the method to work:
+  - `1-` **Tuning** of the reward function.
+  - `2-` Carefully **craft the rollout policy** for the tree search.
+  - `3-` **Spreading the rewards** across the world.
+  - It all results in a lot of **manual tuning**:
+    - > "We find that the agent behavior depends more on the **domain knowledge embedded** into the **policy algorithm** that on the **sensor quality**, but detailed exploration of this effect is left to future work."
+
+</details>
+
+---
+
 **`"Crossing of Road Intersections : Decision-Making Under Uncertainty for Autonomous Vehicles"`**
 
 - **[** `2019` **]**
