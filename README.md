@@ -1214,6 +1214,81 @@ Authors: Kuefler, A., Morton, J., Wheeler, T., & Kochenderfer, M.
 
 ---
 
+**`"Modeling pedestrian-cyclist interactions in shared space using inverse reinforcement learning"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://www.researchgate.net/publication/339568981_Modeling_pedestrian-cyclist_interactions_in_shared_space_using_inverse_reinforcement_learning)]**
+**[** :mortar_board: `University of British Columbia, Vancouver` **]**
+- **[** _`max-entropy`, `feature matching`_  **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://www.researchgate.net/publication/339568981_Modeling_pedestrian-cyclist_interactions_in_shared_space_using_inverse_reinforcement_learning).](media/2020_alsaleh_1.PNG "[Source](https://www.researchgate.net/publication/339568981_Modeling_pedestrian-cyclist_interactions_in_shared_space_using_inverse_reinforcement_learning).")  |
+|:--:|
+| *Left: The contribution of each `feature` in the **linear `reward` model** differs between the **Maximum Entropy** (`ME`) and the **Feature Matching** (`FM`) algorithms. The `FM` algorithm is **inconsistent across levels** and has a **higher `intercept to parameter weight ratio`** compared with the estimated weights using the `ME`. Besides, why does it penalize all lateral distances and all speeds in these `overtaking` scenarios? Right: good idea how to visualize `reward` function for `state` of **dimension `5`**. [Source](https://www.researchgate.net/publication/339568981_Modeling_pedestrian-cyclist_interactions_in_shared_space_using_inverse_reinforcement_learning).* |
+
+Authors: Alsaleh, R., & Sayed, T.
+
+- In short: A simple but good illustration of `IRL` concepts using **Maximum Entropy** (`ME`) and **Feature Matching** (`FM`) algorithms.
+  - It reminds me some experiments I talk about in this video: ["From RL to Inverse Reinforcement Learning: Intuitions, Concepts + Applications to Autonomous Driving"](https://www.youtube.com/watch?v=wBfd2Kn-IgU).
+- Motivations, here:
+  - `1-` Work in **non-motorized shared spaces**, in this case a _cyclist-pedestrian_ zone.
+    - It means **high degrees of freedom** in motions for all participants.
+    - And offers **complex road-user interactions** (behaviours different than on conventional streets).
+  - `2-` Model the behaviour of cyclists in this share space using **_agent-based_** modelling.
+    - _`agent-based`_ as opposed to **physics-based prediction** models such as `social force model` (`SFM`) or `cellular automata` (`CA`).
+    - The agent is trying to maximize an unknown **`reward` function**.
+    - The **recovery of that reward function** is the core of the paper.
+- First, **`2` interaction types** are considered:
+  - The cyclist `following` the pedestrian.
+  - The cyclist `overtaking` the pedestrian.
+  - This **distinction** avoids the search for a _1-size-fits-all_ model.
+- About the `MDP`:
+  - The **_cyclist_** is the **`agent`**.
+  - **`state`** (absolute for the _cyclist_ or relative compared to the _pedestrian_):
+    - `longitudinal distance`
+    - `lateral distance`
+    - `angle difference`
+    - `speed difference`
+    - `cyclist speed`
+  - `state` discretization:
+    - > "Discretized for each interaction type by dividing **each state feature into `6` levels** based on **equal frequency observation** in each level."
+    - This **non-constant bin-width** partially addresses the **imbalanced dataset**.
+    - `6^5` = `7776` states.
+  - `action`:
+    - `acceleration`
+    - `yaw rate`
+  - `action` discretization:
+    - > "Dividing the acceleration into five levels based on **equal frequency observation** in each level."
+    - `5^2` = `25` actions.
+  - `discount factor`:
+    - > "A discount factor of `0.975` is used assuming **`10%` effect of the reward at a state `3 sec` later** (`90` time steps) from the current state."
+- About the dataset.
+  - Videos of two streets in Vancouver, for a total of `39` hours.
+  - `228` cyclist and `276` pedestrian trajectories are extracted.
+- `IRL`.
+  - The two methods assume that the `reward` is a **linear combination of `features`**. Here `features` are `state` components.
+  - `1-` **Feature Matching** (`FM`).
+    - It **matches the feature counts** of the expert trajectories.
+    - The authors do not details the `max-margin` part of the algorithm.
+  - `2-` **Maximum Entropy** (`ME`).
+    - It estimates the `reward` function parameters by **maximizing the likelihood of the expert demonstrations** under the **maximum entropy distribution**.
+    - Being probabilistic, it can account for **non-optimal observed behaviours**.
+- The recovered reward model can be used for **prediction** - _How to measure the similarity between two trajectories?_
+  - `1-` `Mean Absolute Error` (`MAE`).
+    - It compares elements of same indices in the two sequences.
+  - `2-` [`Hausdorff Distance`](https://en.wikipedia.org/wiki/Hausdorff_distance).
+    - > "It computes the largest distance between the simulated and the true trajectories while **ignoring the time step alignment**".
+- Current limitations:
+  - **`1-to-1` interactions**, i.e. a **single pedestrian/cyclist pair**.
+  - **Low-density** scenarios.
+  - > "[in future works] **neighbor condition** (i.e. other pedestrians and cyclists) and **shared space density** can be explicitly considered in the model."
+
+</details>
+
+---
+
 **`"Accelerated Inverse Reinforcement Learning with Randomly Pre-sampled Policies for Autonomous Driving Reward Design"`**
 
 - **[** `2019` **]**
