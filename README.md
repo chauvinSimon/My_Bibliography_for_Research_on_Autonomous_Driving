@@ -288,6 +288,59 @@ Note: I find very valuable to get insights from the **CMU** (Carnegie Mellon Uni
 
 ## `Behavioural Cloning` `End-To-End` and `Imitation Learning`
 
+**`"Efficient Latent Representations using Multiple Tasks for Autonomous Driving"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://arxiv.org/abs/2003.00695)]**
+**[** :mortar_board: `Aalto University` **]**
+
+- **[** _`latent space representation`, `multi-head decoder`, `auxiliary tasks`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://arxiv.org/abs/2003.00695).](media/2020_kargar_1.PNG "[Source](https://arxiv.org/abs/2003.00695).")  |
+|:--:|
+| *The `latent representation` is enforced to predict the **trajectories of both the ego vehicle and other vehicles** in addition to the input image, using a **multi-head** network structure. [Source](https://arxiv.org/abs/2003.00695).* |
+
+Authors: Kargar, E., & Kyrki, V.
+
+- Motivations:
+  - `1-` Reduce the **dimensionality** of the `feature representation` of the scene - used as input to some `IL` / `RL` policy.
+    - This is to improve most **`mid-to-x` approaches** that encode and process a vehicle’s environment as **multi-channel** and quite **high-dimensional bird view images**.
+    - `->` The idea here is to learn an `encoder-decoder`.
+    - The **latent space has size `64`** _(way smaller than common `64 x 64 x N` bird-views)_.
+  - `2-` Learn a `latent representation` faster / with fewer data.
+    - A single head decoder would just consider `reconstruction`.
+    - `->` The idea here is to use have **multiple heads** in the decoder, i.e. make prediction of **multiple auxiliary** application relevant factors.
+    - > "The **multi-head model** can reach the single-head model’s performance in `20` epochs, **one-fifth of training time** of the **single-head** model, with full dataset."
+    - > "In general, the **multi-heal** model, using **only `6.25%`** of the dataset, **converges faster** and perform better than single head model trained on the full dataset."
+  - `3-` Learn a `policy` faster / with fewer data.
+- Two components to train:
+  - `1-` An **`encoder-decoder`** learns to produce a latent representation (`encoder`) coupled with a **multiple-prediction-objective (`decoder`)**.
+  - `2-` A `policy` use the **latent representation** to predict **low-level controls**.
+- About the **`encoder-decoder`**:
+  - `inputs`: **bird-view** image containing:
+    - **Environment info**, built from `HD Maps` and `perception`.
+    - **Ego trajectory**: `10` past poses.
+    - **Other trajectory**: `10` past poses.
+    - It forms a `256 x 256` image, which is resized to `64 x 64` to feed them into the models
+  - `outputs`: multiple **auxiliary tasks**:
+    - `1-` **Reconstruction head**: reconstructing the **input bird-view image**.
+    - `2-` **Prediction head**: `1s`-**motion-prediction** for **other** agents.
+    - `3-` **Planning head**: `1s`-**motion-prediction** for the **ego** car.
+- About the `policy`:
+  - In their example, the authors implement **`behaviour cloning`**, i.e. _supervised learning_ to reproduce the decision of `CARLA autopilot`.
+  - `1-` `steering` prediction.
+  - `2-` `acceleration` classification - `3` classes.
+- _How to deal with the_ **_unbalanced dataset_**_?_
+  - First, the authors note that **no manual labelling is required** to collect training data.
+  - But the recorded `steering` angle is **zero most of the time** - leading to a **highly imbalanced** dataset.
+  - Solution (_no further detail_):
+    - > "Create a new dataset and balance it using **_sub-sampling_**".
+
+</details>
+
 ---
 
 **`"Robust Imitative Planning : Planning from Demonstrations Under Uncertainty"`**
