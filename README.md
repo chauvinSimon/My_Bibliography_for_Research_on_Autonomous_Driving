@@ -40,6 +40,92 @@ Looking forward your reading suggestions!
 
 ## `Architecture` and `Map`
 
+**`"Decision-making for automated vehicles using a hierarchical behavior-based arbitration scheme"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://arxiv.org/abs/2003.01149)]**
+**[** :mortar_board: `FZI`, `KIT` **]**
+
+- **[** _`hierarchical behavioural planning`, `cost-based arbitration`, `behaviour components`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://arxiv.org/abs/2003.01149).](media/2020_orzechowski_1.PNG "[Source](https://arxiv.org/abs/2003.01149).")  |
+|:--:|
+| *Both **`urban`** and **`highway` behaviour options** are combined using a **`cost-based arbitrator`**. Together with `Parking` and `AvoidCollisionInLastResort`, these four **arbitrators** and the `SafeStop` fallback are **composed together** to the **top-most priority-based `AutomatedDriving` arbitrator**. [Source](https://arxiv.org/abs/2003.01149).* |
+
+| ![[Source](https://arxiv.org/abs/2003.01149).](media/2020_orzechowski_2.PNG "[Source](https://arxiv.org/abs/2003.01149).")  |
+|:--:|
+| *Top-right: two possible options. The arbitrator generally prefers the `follow lane behaviour` as long as it **matches the route**. Here, a lane change is necessary and selected by the **cost-based arbitration**: `ChangeLaneRight` has lower cost than `FollowEgoLane`, mainly due to the **`routing` term** in the cost expression. Bottom: the resulting **`behaviour` selection** over time. [Source](https://arxiv.org/abs/2003.01149).* |
+
+Authors: Orzechowski, P. F., Burger, C., & Lauer, M.
+
+- Motivation:
+  - Propose an **alternative to `FSM`s (finite state machines)** and `behaviour`-based systems (e.g. _voting systems_) in **hierarchical architectures**.
+  - In particular, `FSM`s can suffer from:
+    - **poor interpretability**: _why is one `behaviour` executed?_
+    - **maintainability**: effort to refine existing behaviour.
+    - **scalability**: effort to achieve a high number of `behaviour`s and to combine a **large variety of scenarios**.
+    - **options selection**: _"multiple behaviour options are applicable but have no clear and consistent priority against each other."_
+      - > _"_**_How_** _and_ **_when_** _should an automated vehicle_ **_switch_** _from a regular `ACC` controller to a lane change, cooperative zip merge or parking planner?"_
+    - **multiple planners**: Each `behaviour` component can compute its **manoeuvre command** with any preferred state-of-the-art method.
+      - > _"How can we support `POMDPs`, `hybrid A*` and any other_ **_planning method_** _in our behaviour generation?"._
+
+- Main idea:
+  - **`cost-based arbitration`** between so-called **"`behaviour` components"**.
+  - The **modularity** of these components brings several advantages:
+    - Various scenarios can be handled within a single framework: `four-way intersections`, `T-junctions`, `roundabout`, `multilane bypass roads`, `parking`, etc.
+    - Hierarchically combining behaviours, **complex `behaviour`** emerges from **simple components**.
+    - Good **efficiency**: the **atomic structure** allows to **evaluate** `behaviour` options **in parallel**.
+
+- About `arbitration`:
+  - > "An `arbitrator` contains a list of behavior options to choose from. A specific **selection logic** determines which **option** is chosen based on **abstract** information, e.g., **expected utility** or **priority**."
+  - > [about `cost`] "The **`cost`-based** `arbitrator` selects the **behavior option** with the **lowest expected cost**."
+  - Each **behaviour option** is **evaluated** based on its expected **average travel velocity**, incorporating **routing costs** and penalizing **lane changes**.
+    - The resulting behaviour can thus be **well explained**:
+    - > "The **selection logic** of arbitrators is **comprehensive**."
+  - About hierarchy:
+    - > "To generate even more complex `behaviour`s, an `arbitrator` can also be a `behaviour` option of a **hierarchically higher `arbitrator`**."
+
+- About **`behaviour` components**.
+  - There are the **smallest building blocks**, representing **basic _tactical_ driving manoeuvres**.
+  - Example of **atomic behaviour components** for **simple tasks** in _urban_ scenarios:
+    - `FollowLead`
+    - `CrossIntersection`
+    - `ChangeLane`
+  - They can be **specialized**:
+    - **Dense** scenarios behaviours: `ApproachGap`, `IndicateIntention` and `MergeIntoGap` to refine `ChangeLane` _(multi-phase behaviour)_.
+      - _Note:_ an alternative could be to use **one single** integrated **interaction-aware behaviour** such as `POMDP`.
+    - **Highway** behaviours (_structured_ but _high speed_): `MergeOntoHighway`, `FollowHighwayLane`, `ChangeHighwayLane`, `ExitFromHighway`.
+    - **Parking** behaviours: `LeaveGarage`, `ParkNearGoal`.
+    - Fail-safe **emergency** behaviours: `EmergenyStop`, `EvadeObject`, `SafeStop`.
+  - For a `behaviour` to be selected, it should be **_applicable_**. Hence a `behaviour` is defined together with:
+    - **`invocation` condition**: when does it become _applicable_.
+      - > "[example:] The `invocation` condition of `CrossIntersection` is true as long as the current ego lane intersects other lanes within its planning horizon."
+    - **`commitment` condition**: when does it stay _applicable_.
+  - This reminds me the concept of **`macro actions`**, sometimes defined by a tuple <**`applicability condition`**, `termination condition`, `primitive policy`>.
+  - It also makes me think of [`MODIA`](http://rbr.cs.umass.edu/shlomo/papers/WWZijcai17.pdf) framework and other **scene-decomposition** approaches.
+- A `mid-to-mid` approach:
+  - > "[input] The **input** is an **abstract environment model** that contains a _fused_, _tracked_ and _filtered_ representation of the world."
+  - [output] The selected **high-level decision** is passed to a **trajectory planner** or **controller**.
+  - _What does the "decision" look like?_
+    - **_One-size-fits-all_ is not an option**.
+    - It is distinguished between maneuvers in a _structured_ or _unstructured_ environment:
+    - `1- unstructured`: a trajectory, directly passed to a **trajectory planner**.
+    - `2- structured`: a corridor-based driving command, i.e. a tuple <`maneuver corridor`, `reference line`, `predicted objects`, `maneuver variant`>. It requires both a _trajectory planner_ and a _controller_.
+
+- One distinction:
+  - `1-` **top-down `knowledge`-based** systems.
+    - > "The `action selection` in a **centralized**, in a **_top-down_ manner** using a knowledge database."
+    - > "The engineer designing the **action selection** module (in `FSM`s the **state transitions**) has to be **aware** of the conditions, _effects_ and possible interactions of all behaviors at hand."
+  - `2-` **bottom-up `behaviour`-based** systems.
+    - > "**Decouple** actions into **atomic simple `behaviour` components** that should be aware of their conditions and _effects_."
+    - E.g. `voting systems`.
+  - Here the authors combine **atomic behaviour components** (`bottom`/`down`) with **more complex behaviours** using **generic arbitrators** (`top`/`up`).
+
+</details>
+
 ---
 
 **`"A Review of Motion Planning for Highway Autonomous Driving"`**
@@ -2810,7 +2896,7 @@ Some figures from this related presentation:
 **[[:memo:](https://www.mrt.kit.edu/z/publ/download/2019/Naumann2019LaneChange.pdf)]**
 **[[:octocat:](https://github.com/coincar-sim)]**
 **[[🎞️](https://www.mrt.kit.edu/z/publ/download/2019_LaneChange_Naumann.mp4)]**
-**[** :mortar_board: `FZI & KIT` **]**
+**[** :mortar_board: `FZI`, `KIT` **]**
 
 - **[** _`path-velocity decomposition`, `IDM`, `RSS`_ **]**
 
