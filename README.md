@@ -4671,6 +4671,58 @@ Authors: Zhu, Y., & Zhao, D.
 
 ---
 
+**`"Autonomous Driving at Intersections: A Critical-Turning-Point Approach for Left Turns"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://arxiv.org/abs/2003.02409)]**
+**[** :mortar_board: `University of Waterloo`, `Tsinghua University` **]**
+**[** :car: `Tencent` **]**
+
+- **[** _`intention-aware motion planning`, `ABT`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://arxiv.org/abs/2003.02409).](media/2020_shu_1.PNG "[Source](https://arxiv.org/abs/2003.02409).")  |
+|:--:|
+| *[Source](https://arxiv.org/abs/2003.02409).* |
+
+| ![[Source](https://arxiv.org/abs/2003.02409).](media/2020_shu_2.PNG "[Source](https://arxiv.org/abs/2003.02409).")  |
+|:--:|
+| *The ego vehicle **updates its beliefs** on the **`route`-intention** of the oncoming vehicle. At start, actions share the same pattern. But when the **`left-turn` intention becomes highly likely**, an `acceleration` action is performed (up) while a `braking` action is preferred in the `straight`-intention case since the future path is blocked by the oncoming traffic. [Source](https://arxiv.org/abs/2003.02409).* |
+
+Authors: Shu, K., Yu, H., Chen, X., Chen, L., Wang, Q., Li, L., & Cao, D.
+
+- Motivations:
+  - Replicate **_human-like_ efficient behaviour** for a **left-turn** at an unsignalized intersection, trading off between **safety** and **conservatism**, without explicit hand-written rules:
+    - "Before merging into the intersection, the ego vehicle drives into the intersection with high speed. Then **it decelerates to a lower speed and creeps forward**, considering the **potential of collision** with the oncoming vehicle while **waiting for the oncoming vehicle’s intention to become certain**. The ego vehicle then performs **more confident** actions on a proper route when the intention of the oncoming vehicles becomes clear."
+- Architecture:
+  - `1-` [high-level] Paths generation using `CTP`s.
+  - `2-` [low-level] Path selection and speed planning using a `POMDP`.
+- One term: **"critical turning point" (`CTP`)**.
+  - > "The starting points where the vehicle **makes hard steering** (**sharp turning**) are identified and extracted as **'turn points'**."
+  - They are computed based on the critical zone extraction (`CZE`) which is generated from road geometry.
+  - Path candidates are then generated from the `CTP` and sent to the lower-level planner for path selection and speed planning.
+  - [Benefits of `CTP`s]
+    - > "Our **candidate paths planned with `CTP`** gives the ego vehicle an option to **keep moving forward** to reach the next `CTP` when one of the paths is blocked by the oncoming traffic."
+    - > "The proposed method spends about **`1.5s` less time to pass** through the intersection than the one that does not use `CTP`s."
+    - > "When the oncoming vehicle is driving with a **higher speed**, the **shortest and the most aggressive path** is chosen since the **waiting time is shorter**."
+- About the **`POMDP`** formulation:
+  - [hidden part of state] Oncoming vehicles have unknown intentions: either `straight` or `left-turn`.
+    - The other vehicle is assume to **ignore the ego-car** and the uncertainty is about the **chosen route**.
+    - Other approaches include the **yield reaction** of the other's, e.g. {`stopping`, `hesitation`, `normal`, `aggressive`}.
+  - [observation] speeds and positions - _I think an `orientation` would also be useful to infer which route is taken + give a sense to the `speed` scalar._
+  - [action] It is **`2`-dimensional**:
+    - `1-` (speed planning) - The **`ego-acceleration` along the current path** in [`-4 m/s2`, `4 m/s2`] with a step of `1 m/s2`.
+    - `2-` (path selection) - A **`left-turn` Boolean variable** which _"conveys sharp turn instructions"_. - _I understand it as a change in selected path_
+  - [transition model] All vehicles are assumed to move at **constant speed** on predefined routes.
+  - [solver] [Adaptive Belief Tree](http://robotics.itee.uq.edu.au/dokuwiki/papers/isrr13_abt.pdf) (`ABT`).
+    - "Instead of **trimming the entire policy tree** after an action is selected, the `ABT` algorithm **only modifies parts** of the tree that are influenced by the updated belief after executing the selected action".
+
+</details>
+
+---
+
 **`"Integrating Planning and Interpretable Goal Recognition for Autonomous Driving"`**
 
 - **[** `2020` **]**
