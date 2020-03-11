@@ -4671,6 +4671,58 @@ Authors: Zhu, Y., & Zhao, D.
 
 ---
 
+**`"Efficient Uncertainty-aware Decision-making for Autonomous Vehicles Using Guided Branching"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://arxiv.org/abs/2003.02746)]**
+**[[:octocat:](https://github.com/HKUST-Aerial-Robotics/eudm_planner)]**
+**[** :mortar_board: `Hong Kong University`**]**
+
+- **[** _`guided branching`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://arxiv.org/abs/2003.02746).](media/2020_zhang_2.PNG "[Source](https://arxiv.org/abs/2003.02746).")  |
+|:--:|
+| *The **Domain-specific Closed-loop Policy Tree** (`DCP-Tree`) provides a **guided branching mechanism** in the action space. For efficiency, this **semantic-level policy tree** is updated based on the previous best policy. Each `node` in the policy tree is a **finite-horizon semantic behaviour** of the ego car. From the **ongoing action**, each policy sequence will contain **at most one change of action** in one planning cycle. Compared to `MPDM`, this offers the possibility to **change decision in the planning horizon** while, as **humans**, not frequently changing the driving policy back and forth in a single decision cycle. [Source](https://arxiv.org/abs/2003.02746).* |
+
+| ![[Source](https://arxiv.org/abs/2003.02746).](media/2020_zhang_1.PNG "[Source](https://arxiv.org/abs/2003.02746).")  |
+|:--:|
+| *Decision-making using **domain-specific expert knowledge** to **guide branching**, inspired by [`MPDM`](https://ieeexplore.ieee.org/document/7139412). Branching in the `action` domain is guided by the **`DCP`-Tree**. Branching in the `intention` domain is done by the **`CFB` mechanism** to **pick out risky hidden intentions** of nearby vehicles. [Source](https://arxiv.org/abs/2003.02746).* |
+
+Authors: Zhang, L., Ding, W., Chen, J., & Shen, S.
+
+- Motivations: Propose a simpler alternative to existing online `POMDP` solvers (`DESPOT`, `ABT`, `POMCP`), with focus on **efficiency**.
+  - > "The key idea is utilizing **domain-specific expert knowledge** to **guide the branching** in both `(1) action` and `(2) intention` space."
+  - The goal is to consider **as few branches as possible**. The **most critical** ones, potentially leading to **risky outcomes**.
+- Two related works:
+  - ["Multipolicy Decision-Making for AutonomousDriving via Changepoint-based Behavior Prediction"](http://roboticsproceedings.org/rss11/p43.pdf)
+  - ["MPDM: Multipolicy decision-making in dynamic, uncertain environments for autonomous driving"](https://ieeexplore.ieee.org/document/7139412)
+  - **`MPDM` is extended** here and used as a benchmark.
+  - > "`MPDM` approximates the `POMDP` process into the `(1)` **closed-loop simulation** of predefined `(2)` **semantic-level** driving policies (e.g., `LC`, `LK`, etc.). The incorporation of **domain knowledge** greatly **accelerates** the problem-solving."
+    - `(1)` The exploration of the state space is guided by **simple** **_closed-loop controllers_**, i.e. **domain knowledge**.
+    - `(2)` **Semantic-level policies** instead of traditional "`state`"-level actions such as **discretized accelerations or velocities**
+  - > "One major limitation of `MPDM` is that the semantic-level policy of the ego vehicle is **not allowed to change in the planning horizon**."
+- Differences with the original `MPDM`:
+  - `1-` The **policy** of the ego vehicle is allowed to **change in the planning horizon** according to the `DCP-Tree`.
+  - `2-` Focused branching is applied to pick out the **risky scenarios**, even given totally uncertain behaviour prediction, which enhances the **safety** of the framework.
+    - > "The `CFB` mechanism is applied to **pick out risky hidden intentions of nearby vehicles** and achieves **guided branching** in **intention** space."
+- About formulation:
+  - [hidden part of the state] The **intention** about lateral behaviours in {`LK`, `LCL`, `LCR`}.
+  - [belief tracker] A **"rule-based lightweight belief tracking module"** generates a probability distribution over these **intentions**. _No much details about this module._
+  - [transition model] Two driver models: `intelligent driving model` and `pure pursuit controller`.
+  - [action] Longitudinal {} and lateral semantic-level decisions.
+- Some terms:
+  - **`MPDM`** = multipolicy decision-making.
+  - **`EUDM`** = uncertainty-aware decision-making.
+  - **`DCP-Tree`** = domain-specific closed-loop policy tree.
+  - **`CFB`** = conditional focused branching.
+
+</details>
+
+---
+
 **`"Autonomous Driving at Intersections: A Critical-Turning-Point Approach for Left Turns"`**
 
 - **[** `2020` **]**
