@@ -2976,7 +2976,74 @@ Author: Noh, S.
 
 ## `Model-Free` `Reinforcement Learning`
 
-A robotic agent capable of controlling 6-degrees of freedom (DOF) is said to be holonomic, while an agent with fewer controllable DOFs than its total DOF is said to be non-holonomic
+---
+
+**`"Safe Reinforcement Learning for Autonomous Vehicles through Parallel Constrained Policy Optimization"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://arxiv.org/abs/2003.01303)]**
+**[** :mortar_board: `Tsinghua University`, `University of Michigan` **]**
+**[** :car: `Toyota` **]**
+
+- **[** _`safe RL`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://arxiv.org/abs/2003.01303).](media/2020_wen_1.PNG "[Source](https://arxiv.org/abs/2003.01303).")  |
+|:--:|
+| *Risk-Actor-Critic: Similar to the **`critic`** which estimates the **expectation** of the `value function` (cumulated `reward`s), the **`risk` network** estimates the sum of coming **`risk` signals**, i.e. signals received when **moving to unsafe states**. In this case  `PCPO` considers this **`risk` function** and **bounds the expected risk** within **predefined hard constraints**. [Source](https://arxiv.org/abs/2003.01303).* |
+
+| ![[Source](https://arxiv.org/abs/2003.01303).](media/2020_wen_2.PNG "[Source](https://arxiv.org/abs/2003.01303).")  |
+|:--:|
+| *Note that what is wanted is **`approximate safety`** during the **TRAINING phase** - not just the **testing** one. `PCPO` is compared to `CPO` and `PPO`. All three methods can eventually learn a **safe lane-keeping policy**, however, the vehicle deviates from the lane multiple times **during the learning process** of the `PPO`. [Source](https://arxiv.org/abs/2003.01303).* |
+
+Authors: Wen, L., Duan, J., Eben, Li, S., Xu, S., & Peng, H.
+
+- Motivations:
+  - `1-` Ensure the policy is **_safe_** in the **learning process**.
+    - > "Existing RL algorithms are **rarely applied to real vehicles** for two predominant problems: (1) behaviors are **unexplainable**, (2) they **cannot guarantee safety** under **new scenarios**."
+    - > "**Safety** is the **most basic requirement** for autonomous vehicles, so a training process that **only looks at `reward`**, and not **potential risk**, is **not acceptable**."
+  - `2-` Improve the convergence speed.
+
+- About `safe RL`:
+  - > "Observing **safety constraints** and getting **high rewards** are **adversarial**."
+  - `safe RL` could be divided into being **_strictly_ safe** and **_approximately_ safe**.
+  - Two approaches:
+    - `1-` Modifying the **optimization criterion**.
+      - `1-a.` **`maxi-min`**: consider a policy to be optimal if it has the **maximum worst-case `return`**.
+      - `1-b.` **`risk-sensitive`**: includes the notion of risk and return variance in the long term `reward` **maximization objective**, e.g. probability of entering an error state.
+      - `1-c.` **`constrained`**: ensure that the expectation of return is subject to one or more constraints, e.g. the **variance of the `return` must not exceed a given threshold**.
+    - `2-` Modifying the **exploration process**.
+      - `2-a.` Incorporating **external knowledge**.
+        - E.g. **post-posed shielding**: the shield monitors the agent's action and **corrects them** if the chosen action causes a **violation**.
+      - `2-b.` Risk directed exploration.
+        - Encourage the agent to explore **controllable regions** of environment by introducing **`risk` metric as an exploration bonus**.
+- About **_Parallel Constrained Policy Optimization_** (**`PCPO`**). Three ingredients:
+  - `1-` **Constrained** policy optimization (`CPO`).
+    - > "Besides the **`reward` signal `r`**, the vehicle will also observe a **scalar risk signal `˜r`** at each step."
+    - It is designed by human experts and is usually assigned a large value when the vehicle moves into an **unsafe state**.
+    - Similar to the **value function `Vπ`** that estimate the discounted cumulated rewards, the **risk function J˜(π)** of policy `π` estimates the **sum of coming risks**.
+      - Similar to the **`critic`** net, a **`risk` net** is introduced.
+    - The idea of `CPO`:
+      - > "**Bound this expected risk** within **predefined hard constraints**."
+  - `2-` **Trust-region** constraint.
+    - **Monotonic improvement** condition can be guaranteed only when the policy changes are not very large.
+    - The author go through the derivation of the **surrogate objective function** with **importance sampling**.
+  - `3-` Synchronous **parallel** agents learning.
+    - Multiple agents (`4` cars in the experiment) are **exploring different state spaces** in parallel.
+    - It helps to **reduce the correlation** and **increase the coverage** of all collected samples, which increases the possibility of **finding feasible states** - i.e. better **exploration**.
+- About the `MDP` formulation for the **_intersection-crossing_ problem**:
+  - `S` = {`l1`, `v1`, `l2`, `v2`, `l3`, `v3`}, where `l` denotes the **distance of the vehicle to the middle point of its track**, and `v ∈ [6, 14] (m/s)` denotes the `velocity`."
+  - `A` = {`a1`, `a2`, `a3`}, where `a ∈ [−3, 3] (m/s2)`.
+    - > "We adopt a **stochastic policy**, the output of which is the `mean` and `standard deviation` of the Gaussian distribution."
+  - `reward` model:
+    - The agents receive a reward of `10` for every passing vehicle, as well as a reward of `-1` for every time step and an additional reward of `10` for **terminal success**.
+    - The agents are given a **risk of `50`** when a **collision occurs**.
+  - That means **"collision"** is **not part of the `reward`**. Rather in the **`risk`**.
+    - _Ok, but how can it be_ **ensured to be _safe_ during training** _if it has never encountered any collision and does not event know what it means (no "model")?_ This is not clear to me.
+
+</details>
 
 ---
 
