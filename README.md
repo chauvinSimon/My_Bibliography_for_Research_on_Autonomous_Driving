@@ -40,7 +40,62 @@ Looking forward your reading suggestions!
 
 ## `Architecture` and `Map`
 
-**`"Decision-making for automated vehicles using a hierarchical behavior-based arbitration scheme"`**
+**`"Overview of Tools Supporting Planning for Automated Driving"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://arxiv.org/abs/2003.04081)]**
+**[** :car: [`virtual vehicle research`](https://www.v2c2.at/) **]**
+
+- **[** _`development tools`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://arxiv.org/abs/2003.04081).](media/2020_tong_3.PNG "[Source](https://arxiv.org/abs/2003.04081).")  |
+|:--:|
+| *The authors group **tools** that support **`planning`** in sections: `maps`, `communication`, `traffic rules`, `middleware`, `simulators` and `benchmarks`. [Source](https://arxiv.org/abs/2003.04081).* |
+
+| ![[Source](https://arxiv.org/abs/2003.04081).](media/2020_tong_1.PNG "[Source](https://arxiv.org/abs/2003.04081).")  |
+|:--:|
+| *About `simulators` and `dataset`. And how to **couple between tools**, either with co-simulation software or open interfaces. [Source](https://arxiv.org/abs/2003.04081).* |
+
+| ![[Source](https://arxiv.org/abs/2003.04081).](media/2020_tong_2.PNG "[Source](https://arxiv.org/abs/2003.04081).")  |
+|:--:|
+| *About maps. ''The planning tasks with different targets entail map models with different level of details. `HD map` provides the most sufficient information and can be generally categorized into **three layers**: **`road` model, `lane` model and `localization` model**''. [Source](https://arxiv.org/abs/2003.04081).* |
+
+Authors: Tong, K., Ajanovic, Z., & Stettinger, G.
+
+- Motivations:
+  - `1-` Help **researchers** to make full use of open-source resources and **reduce effort of setting up a software platform** that suites their needs.
+    - > [example] "It is a good option to choose open-source [`Autoware`](https://www.autoware.org/) as **software stack** along with **[`ROS`](https://www.ros.org/) middleware**, as `Autoware` can be further transferred to a **real vehicle**. During the development, he or she can use [`Carla`](http://carla.org/) as a **simulator**, to get its benefits of **graphic rendering and sensor simulation**. To make the simulation **more realistic**, he or she might adopt commercial software [`CarMaker`](https://ipg-automotive.com/products-services/simulation-software/carmaker/) for sophisticated **vehicle dynamics** and open-source [`SUMO`](https://sumo.dlr.de/docs/index.html) for large-scale traffic flow simulation. **[`OpenDRIVE`](http://www.opendrive.org/) map** can be used as a source and converted into the map format of `Autoware`, `Carla` and `SUMO`. Finally, [`CommonRoad`](https://commonroad.in.tum.de/) can be used to **evaluate** the developed algorithm and **benchmark** it against other approaches."
+  - `2-` **Avoid reinventing the wheel**.
+    - _Algorithms_ are available/adapted from **robotics**.
+    - _Simulators_ are available/adapted from **gaming**.
+- Mentioned **software libraries** for `motion planning`:
+  - `ROS` (from _robotics_):
+    - [Open Motion Planning Library](https://ompl.kavrakilab.org/) (`OMPL`)
+    - [`MoveIt`](https://moveit.ros.org/)
+    - [navigation package](http://wiki.ros.org/navigation)
+    - [`teb`](http://wiki.ros.org/teb_local_planner) local planner.
+  - `Python`: [`PythonRobotics`](https://github.com/AtsushiSakai/PythonRobotics)
+  - `CPP`: [`CppRobotics`](https://github.com/onlytailei/CppRobotics)
+- _How to express_ **_traffic rules_** _in a form understandable by an algorithm?_
+  - `1-` Traffic rules can be formalized in **higher order logic** (e.g. using the [Isabelle theorem prover](https://isabelle.in.tum.de/)) to **check the compliance of traffic rules** unambiguously and formally for **trajectory validation**.
+  - `2-` Another approach is to **represent traffic rules geometrically as obstacles** in a configuration space of motion planning problem.
+  - >"In some occasions, it is necessary to **violate some rules** during driving for **achieving higher goals** (i.e. _avoiding collision_) [... e.g. with] a **rule book** with **hierarchical arrangement** of different rules."
+
+- _About data visualization?_
+  - **[`RViz`](http://wiki.ros.org/rviz/)** is a popular tool in `ROS` for visualizing data flow, as I also [`realized`](https://github.com/chauvinSimon/IV19) at `IV19`.
+  - Apart from that, it seems each team is having its **own specific visualization tool**, sometimes released, as **[`AVS`](https://avs.auto/#/)** from `UBER` and `GM Cruise`.
+- _What is missing for the research community?_
+  - Evaluation tools for **quantitative comparison**.
+  - Evaluation tools incorporating **human judgment**, not only from the vehicle occupants but also from other road users.
+  - A **standard format** for **motion datasets**.
+- I am surprised [`INTERACTION`](http://interaction-dataset.com/) dataset was not mentioned.
+
+</details>
+
+---
 
 - **[** `2020` **]**
 **[[:memo:](https://arxiv.org/abs/2003.01149)]**
