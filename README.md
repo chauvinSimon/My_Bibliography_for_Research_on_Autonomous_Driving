@@ -2146,13 +2146,78 @@ Authors: Kuderer, M., Gulati, S., & Burgard, W.
 
 ---
 
+**`"Efficient Behavior-aware Control of Automated Vehicles at Crosswalks using Minimal Information Pedestrian Prediction Model"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://www.researchgate.net/publication/339784634_Efficient_Behavior-aware_Control_of_Automated_Vehicles_at_Crosswalks_using_Minimal_Information_Pedestrian_Prediction_Model)]**
+**[** :mortar_board: `University of Michigan`, `University of Massachusetts` **]**
+
+- **[** _`interaction-aware decision-making`, `probabilistic hybrid automaton`_  **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://www.researchgate.net/publication/339784634_Efficient_Behavior-aware_Control_of_Automated_Vehicles_at_Crosswalks_using_Minimal_Information_Pedestrian_Prediction_Model).](media/2020_jayaraman_3.PNG "[Source](https://www.researchgate.net/publication/339784634_Efficient_Behavior-aware_Control_of_Automated_Vehicles_at_Crosswalks_using_Minimal_Information_Pedestrian_Prediction_Model).")  |
+|:--:|
+| *The **pedestrian crossing behaviour** is modelled as a **probabilistic hybrid automaton**. [Source](https://www.researchgate.net/publication/339784634_Efficient_Behavior-aware_Control_of_Automated_Vehicles_at_Crosswalks_using_Minimal_Information_Pedestrian_Prediction_Model).* |
+
+| ![[Source](https://www.researchgate.net/publication/339784634_Efficient_Behavior-aware_Control_of_Automated_Vehicles_at_Crosswalks_using_Minimal_Information_Pedestrian_Prediction_Model).](media/2020_jayaraman_2.PNG "[Source](https://www.researchgate.net/publication/339784634_Efficient_Behavior-aware_Control_of_Automated_Vehicles_at_Crosswalks_using_Minimal_Information_Pedestrian_Prediction_Model).")  |
+|:--:|
+| *The **interaction** is captured inside a **gap-acceptance model**: the pedestrian evaluates the **available time gap to cross the street** and either **accept the gap** by starting to cross or **reject the gap by waiting** at the crosswalk. [Source](https://www.researchgate.net/publication/339784634_Efficient_Behavior-aware_Control_of_Automated_Vehicles_at_Crosswalks_using_Minimal_Information_Pedestrian_Prediction_Model).* |
+
+| ![[Source](https://www.researchgate.net/publication/339784634_Efficient_Behavior-aware_Control_of_Automated_Vehicles_at_Crosswalks_using_Minimal_Information_Pedestrian_Prediction_Model).](media/2020_jayaraman_1.PNG "[Source](https://www.researchgate.net/publication/339784634_Efficient_Behavior-aware_Control_of_Automated_Vehicles_at_Crosswalks_using_Minimal_Information_Pedestrian_Prediction_Model).")  |
+|:--:|
+| *The **baseline controller** used for comparison is a **finite state machine** (`FSM`) with four states. Whenever a pedestrian **starts walking to cross the road**, the controller always tries to stop, either by `yielding` or through `hard stop`. [Source](https://www.researchgate.net/publication/339784634_Efficient_Behavior-aware_Control_of_Automated_Vehicles_at_Crosswalks_using_Minimal_Information_Pedestrian_Prediction_Model).* |
+
+Authors: Jayaraman, S. K., Jr, L. P. R., Yang, X. J., Pradhan, A. K., & Tilbury, D. M.
+
+- Motivations:
+  - Scenario: interaction with a pedestrian `approaching`/`crossing`/`waiting` at a **crosswalk**.
+  - `1-` A (`1.1`) **simple** and (`1.2`) **interaction-aware** pedestrian **`prediction` model**.
+    - That means no requirement of extensive amounts of data.
+    - >  "The **crossing model** as a **hybrid system** with a **gap acceptance model** that required **minimal information**, namely pedestrian's `position` and `velocity`".
+      - It **does not require information** about pedestrian `actions` or `pose`.
+      - It builds on ["Analysis and prediction of pedestrian crosswalk behavior during automated vehicle interactions"](https://deepblue.lib.umich.edu/handle/2027.42/154053) by (Jayaraman, Tilbury, Yang, Pradhan, & Jr, 2020).
+  - `2-` Effectively incorporating these **`predictions`** in a **`control`** framework
+    - The idea is to first **forecast the position** of the pedestrian using a pedestrian model, and then **react accordingly**.
+  - `3-` Be efficient on both `waiting` and `approaching` pedestrian scenarios.
+    - Assuming always a `crossing` may lead to **over-conservative policies**.
+    - > "[in simulation] only a fraction of pedestrians (`80%`) are **randomly assigned the intention** to **cross the street**."
+
+- _Why are **`CV`** and **`CA`** **prediction models** not applicable?_
+  - > "At crosswalks, pedestrian behavior is **much more unpredictable** as they have to wait for an opportunity and decide when to cross."
+  - **Longer durations** are needed.
+    - `1-` **Interaction** must be taken into account.
+    - `2-` The authors decide to **model pedestrians** as a **hybrid automaton** that **switches between discrete actions**.
+- One term: **Behavior-aware Model Predictive Controller** (**`B-MPC`**)
+  - `1-` The pedestrian **crossing behaviour** is modelled as a **probabilistic hybrid automaton**:
+    - Four **states**: `Approach Crosswalk`, `Wait`, `Cross`, `Walk away`.
+    - Probabilistic **transitions**: using **pedestrian's `gap acceptance`** - hence **capturing interactions**.
+      - > "_What is the probability of accepting the current traffic gap?_
+      - > "Pedestrians evaluate the **available time gap to cross the street** and either **accept the gap** by starting to cross or **reject the gap by waiting** at the crosswalk."
+  - `2-` The problem is formulated as a **constrained quadratic optimization** problem:
+    - Cost: `success` (passing the crosswalk), `comfort` (penalize jerk and sudden changes in acceleration), `efficiency` (deviation from the reference speed).
+    - Constraints: respect `motion model`, restrict `velocity`, `acceleration`, as well as `jerk`, and ensure **`collision avoidance`**.
+    - Solver: standard **quadratic program solver** in `MATLAB`.
+- Performances:
+  - **Baseline controller**:
+    - **Finite state machine** (`FSM`) with four states: `Maintain Speed`, `Accelerate`, `Yield`, and `Hard Stop`.
+    - > "Whenever a pedestrian **starts walking to cross the road**, the controller always tries to stop, either by _`yielding`_ or through _`hard stop`_."
+    - > "The **Boolean variable `InCW`**, denotes the pedestrian’s crossing activity: `InCW=1` from the time the pedestrian **started moving laterally** to cross until they completely crossed the `AV` lane, and `InCW=0` otherwise."
+    - That means the baseline controller **does not react** at all to "non-crossing" cases since it never sees the pedestrian crossing laterally.
+  - > "It can be seen that the **`B-MPC` is more aggressive, efficient, and comfortable** than the baseline as observed through the **higher average velocity**, lower average acceleration effort, and lower average jerk respectively."
+
+</details>
+
+---
+
 **`"Learning Predictive Models From Observation and Interaction"`**
 
 - **[** `2019` **]**
 **[[:memo:](https://arxiv.org/abs/1912.12773)]**
 **[[🎞️](https://sites.google.com/view/lpmfoai)]**
-**[** :mortar_board: `Honda Research Institute` **]**
-**[** :car: `University of Pennsylvania`, `Stanford University`, `UC Berkeley` **]**
+**[** :mortar_board: `University of Pennsylvania`, `Stanford University`, `UC Berkeley` **]**
+**[** :car: `Honda Research Institute` **]**
 
 - **[** _`visual prediction`, `domain transfer`, `nuScenes`, `BDD100K`_  **]**
 
