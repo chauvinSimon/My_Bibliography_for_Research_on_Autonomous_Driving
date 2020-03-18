@@ -3098,6 +3098,76 @@ Author: Noh, S.
 
 ---
 
+**`"Learning hierarchical behavior and motion planning for autonomous driving"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://jingk.wang/uploads/wjk3.pdf)]**
+**[** :mortar_board: `Zhejiang University`, `Arizona State University` **]**
+
+- **[** _`hierarchical RL`, `transfer`, `PPO`, `DAgger`, [`CARLA`](http://carla.org), [`SUMO`](https://sumo.dlr.de/docs/index.html)_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://jingk.wang/uploads/wjk3.pdf).](media/2020_wang_1.PNG "[Source](https://jingk.wang/uploads/wjk3.pdf).")  |
+|:--:|
+| *To achieve **transfer**, the authors develop a **sharable representation** for input sensory data **across simulation platforms** and **real-world environment**. Left: **static**. Right: **dynamic** information. [Source](https://jingk.wang/uploads/wjk3.pdf).* |
+
+| ![[Source](https://jingk.wang/uploads/wjk3.pdf).](media/2020_wang_2.PNG "[Source](https://jingk.wang/uploads/wjk3.pdf).")  |
+|:--:|
+| *Left - The `behaviour` layer makes a decision based on the current observation, e.g. `lane change`, while the **`motion planning`** layer yields the **trajectory** to complete this decision. More precisely, the output of the `PPO` actor-network is the **distribution over the `behaviour`s**. The `motion planner` is **conditioned over this high-level decision**. If you are also wondering: `traffic light state` and `speed limit` are represented probably since they are part of the **`road profile`** (static information) - surprising to limit a `3`-lanes highway at `30mps`? [Source](https://jingk.wang/uploads/wjk3.pdf).* |
+
+Authors: Wang, J., Wang, Y., Zhang, D., Yang, Y., & Xiong, R.
+
+- Motivations:
+  - `1-` **Jointly optimize** both the `behaviour` and `motion` planning modules. I.e. **do not treat them independently**.
+    - Methods that use `RL` to decide low-level commands such as `throttle` and `steering` often lead to weak **_tactical_ decision-making**.
+    - > "To demonstrate a similar level of driving as the **conventional modular pipeline**, a **SINGLE `RL` network** has to model the `perception`, `behavior` and `motion planner` altogether. Given the **low dimensional control commands** as supervision in `IL` or handcrafted rewards in `RL`, it is likely that the network **only learns the route tracking with limited _tactical_ decision-making ability**."
+  - `2-` Apply **learning-based** methods (model-free `RL` and `IL`) to derive the _decision_ policies.
+  - `3-` Address the issues of **sampling complexity** and **sparse reward** in **model free `RL`**.
+    - > "**Reward engineering** for `RL` is challenging, especially for **long-horizon tasks**."
+  - `4-` Do not use any **"_explicit handcrafted_** _representation"_ for traffic situation.
+    - > "[not clear to me] We follow the idea of `HBMP` in order to **learn a representation** of traffic situation **_implicitly_** and improve the tactical driving in learning-based solution."
+    - > "[is it what they mean by _'not explicit handcrafted representation'_?] Note that **no cyclist recognition** is utilized in the whole pipeline, but **only occupied map** directly extracted from lidar data."
+
+- One concept: **hierarchical behaviour and motion planning** (`HBMP`).
+  - The **`behaviour` layer** makes a decision based on the current observation, e.g. `lane change`, while the **`motion planning` layer` yields the **trajectory to complete this decision**.
+  - > "our idea is to introduce the **hierarchical modeling** of `behavior` and `motion` in the **conventional modular pipeline** to the **learning-based** solution."
+- About the size of search spaces in `hierarchical RL`:
+  - When **coupling the two `action` spaces** (`behaviour` and `motion`), the **search complexity** becomes a challenge, especially in the **long-horizon driving task**. The `HRL` is therefore re-formulated:
+    - > "[solution:] `RL` is applied to solve an **equivalent `behavior` learning problem** whose **`reward`s** are assigned by the `cost` from the `motion planner`."
+    - > "The key insight is **assigning the optimal costs** from **low-level motion planner**, i.e. a classical **sampling-based planner**, as `reward`s for learning behavior."
+    - The **ablation study** shows the importance of `hierarchical` modelling to **reduce the `action` space**.
+- Improving the **_sampling complexity_** and **_sparse reward_** issues:
+  - `1-` The above-mentionned **Hierarchy**: Implement a **temporal abstraction for `action`s**.
+    - > "To **reduce the complexity**, behaviour planning is introduced to **restrict the search space**."
+    - > "As the **high-level** `behaviour` `bk` is a **tactical decision for a longer horizon** than `control` command, each `bk` is **fixed for a time interval**".
+    - The **low-level** policy is **conditioned** on `bk`: `ut` = `πbu`(`xt`,`bk`).
+    - The behaviour planner choses a **`behaviour`** a `bk` in {`speed up`, `speed down`, `change left`, `change right`, `keep lane`}.
+    - A **_Behaviour-Conditioned_ motion planner** produces a trajectory for this behaviour, implemented by a subsequent `PID` controller.
+      - Here it is **sampling-based**, i.e. **optimal without training**.
+      - The `cost` includes terms about `speed deviation`, `lateral deviation` to some reference path as well as `distances to obstacles`.
+  - `2-` Good **policy inititialization**.
+    - > "We **initialize** the `RL` policy network trained on `CARLA` using **`IL`-based** policy (`DAgger`) trained on `SUMO` by presenting a **sharable sensory data representation**, further accelerating `RL` training".
+    - The key ingredient for the **transfer** between the two simulators is the **`state` representation**, among other the **deformed _grid map_ `Mt`**.
+- _How to deal with sparse rewards?_
+  - > "Obviously, such `reward` design [_sparse rewards_] gives **extremely sparse guidance** only in the final stage, thus **lots of trials** may have almost the **same rewards**, causing the **inefficiency** of `RL` solver."
+  - The above-mentioned **Hierarchy**: add **`dense reward`s**.
+  - The low-level motion planner offers **denser rewards** than relying on the far-away `reward` of `termination state`s.
+- **Generalization** to real-world.
+  - Again, the **sharable representation** for input sensory data **across simulation platforms** and **real-world environment** is key for **transfer**.
+  - It consist of
+    - `1-` the `vehicle-centric grid map` for _dynamic_ information
+      - > "Note that **no detection and recognition** is utilized to parse the sensory data but only geometric transform calculation."
+    - `2-` the **`road profile`** that contains _static_ information:
+    - The **existence** and **direction** of left and right lanes.
+    - The next **traffic lights** and the distance to the **stop line** of intersection.
+    - The current **speed limit**.
+
+</details>
+
+---
+
 **`"Safe Reinforcement Learning for Autonomous Vehicles through Parallel Constrained Policy Optimization"`**
 
 - **[** `2020` **]**
