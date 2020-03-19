@@ -429,6 +429,114 @@ Note: I find very valuable to get insights from the **CMU** (Carnegie Mellon Uni
 
 ## `Behavioural Cloning` `End-To-End` and `Imitation Learning`
 
+**`"A Survey of End-to-End Driving: Architectures and Training Methods"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://arxiv.org/abs/2003.06404)]**
+**[** :mortar_board: `University of Tartu` **]**
+
+- **[** _`review`, `distribution shift problem`, `domain adaptation`, `mid-to-mid`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://arxiv.org/abs/2003.06404).](media/2020_tampuu_3.PNG "[Source](https://arxiv.org/abs/2003.06404).")  |
+|:--:|
+| *Left: example of `end-to-end` architecture with key terms. Right: difference `open-loop` / `close-loop` evaluation. [Source](https://arxiv.org/abs/2003.06404).* |
+
+| ![[Source](https://arxiv.org/abs/2003.06404).](media/2020_tampuu_2.PNG "[Source](https://arxiv.org/abs/2003.06404).")  |
+|:--:|
+| *[Source](https://arxiv.org/abs/2003.06404).* |
+
+| ![[Source](https://arxiv.org/abs/2003.06404).](media/2020_tampuu_1.PNG "[Source](https://arxiv.org/abs/2003.06404).")  |
+|:--:|
+| *[Source](https://arxiv.org/abs/2003.06404).* |
+
+Authors: Tampuu, A., Semikin, M., Muhammad, N., Fishman, D., & Matiisen, T.
+
+- _A rich literature overview and some useful reminders about general `IL` and `RL` concepts with focus to `AD` applications._
+  - It constitutes a good complement to the **_"Related trends in research"_** part of **my video ["From RL to Inverse Reinforcement Learning: Intuitions, Concepts + Applications to Autonomous Driving"](https://youtu.be/wBfd2Kn-IgU?t=8688)**.
+- I especially like the structure of the document: It shows **what one should consider when starting an `end-to-end` / `IL` project for `AD`**:
+  - _I have just noted here some ideas I find interesting. In no way an exhaustive summary!_
+
+- `1-` **Learning methods**: working with `rewards` (`RL`) or with `losses` (`behavioural cloning`).
+  - About **`distribution shift problem`** in `behavioural cloning`:
+    - > "If the driving decisions lead to **unseen situations** (not present in the training set), the model might no longer know how to behave".
+    - Most solutions try to **diversify the training data** in some way - either by **_collecting_** or **_generating_** additional data:
+      - `data augmentation`: e.g. one can place **two additional cameras pointing forward-left and forward-right** and associate the images with commands to `turn right` and `turn left` respectively.
+      - `data diversification`: addition of **temporally correlated noise** and synthetic **trajectory perturbations**. Easier on "semantic" inputs than on camera inputs.
+      - `on-policy learning`: **recovery annotation** and **`DAgger`**. The **expert provides examples** how to solve situations the model-driving leads to. Also ["Learning by cheating"](http://vladlen.info/papers/learning-by-cheating.pdf) by (Chen et al. 2019).
+      - `balancing the dataset`: by **upsampling the rarely** occurring angles, **downsampling the common ones** or by **weighting** the samples.
+        - > "Commonly, the collected datasets contain large amounts of **repeated traffic situations** and only few of those **rare events**."
+        - The authors claim that only the **_joint_ distribution** of `inputs` and `outputs` defines the **rarity of a data point**.
+        - > "Using more training data from `CARLA` `Town1` decreases generalization ability in `Town2`. This illustrates that **more data without more _diversity_ is not useful**."
+        - Ideas for augmentation can be taken from the field of `supervised Learning` where it is already an largely-addressed topic.
+  - About `RL`:
+    - Policies can be first trained with IL and then fine-tuned with RL methods.
+    - > "This approach reduces the long training time of RL approaches and, as the RL-based fine-tuning happens online, also helps overcome the problem of IL models learning off-policy".
+  - About **`domain adaptation`** and **`transfer`** from simulation to real world (`sim2real`).
+    - Techniques from `supervised` learning, such as `fine tuning`, i.e. **adapting the driving model** to the new distribution, are rarely used.
+    - Instead, one can instead **adapt the incoming data** and **keep the driving model fixed**.
+      - A first idea is to **transform _real_ images** into _simulation-like_ images (the opposite - generating **real-looking images** - is challenging).
+      - One can also extract the **semantic segmentation** of the scene from both the **real** and the **simulated images** and use it as the input for the driving policy.
+
+- `2-` **Inputs**.
+  - In short:
+    - `Vision` is key.
+    - `Lidar` and `HD-map` are nice to have but expensive / tedious to maintain.
+    - Additional inputs from independent modules (`semantic segmentation`, `depth map`, `surface normals`, `optical flow` and `albedo`) can improve the robustness.
+  - About the **`inertia problem`** / **`causal confusion`** when for instance **predicting the next `ego-speed`**.
+    - > "As in the vast majority of samples the **current** _[observed]_ and next **speeds** _[to be predicted]_ are **highly correlated**, the model learns to base its **speed prediction** exclusively on **current speed**. This leads to the model being **reluctant to change its speed**, for example to **start moving again** after stopping behind another car or a at traffic light."
+  - About **`affordances`**:
+    - > "Instead of parsing all the objects in the driving scene and performing robust localization (as **modular approach**), the system focuses on a **small set of crucial indicators**, called `affordances`."
+
+- `3-` **Outputs**.
+  - > "The outputs of the model define the **level of understanding** the model is expected to achieve."
+  - Also related to the **`time horizon`**:
+    - > "When predicting **instantaneous low-level commands**, we are not explicitly forcing the model to **plan a long-term trajectory**."
+  - Three types of **predictions**:
+    - `3-1` **_Low-level_** commands.
+      - > "The majority of end-to-end models yield as output the **`steering angle` and `speed`** (or `acceleration` and `brake` commands) for the next timestep".
+      - Low-level commands may be **car-specific**. For instance vehicles answer differently to the same `throttle` / `steering` commands.
+        - > "The function between **steering wheel angle** and the **resulting turning radius** depends on the car's geometry, making this measure specific to the car type used for recording."
+      - > [About the regression loss] "Many authors have recently optimized `speed` and `steering` commands using **`L1` loss** (mean absolute error, `MAE`) instead of `L2` loss (mean squared error, `MSE`)".
+    - `3-2` Future **waypoints** or desired **trajectories**.
+      - This **higher-level** output modality is **independent of car geometry**.
+    - `3-3` **Cost map**, i.e. information about where it is safe to drive, leaving the **trajectory generation** to another module.
+  - About **multitask learning** and **auxiliary tasks**:
+    - The idea is to **simultaneously train** a separate set of networks to predict for instance `semantic segmentation`, `optical flow`, `depth` and other **human-understandable representations** from the camera feed.
+    - > "Based on the **same extracted visual features** that are fed to the decision-making branch (_main_ task), one can also predict `ego-speed`, `drivable area` on the scene, and `positions` and `speeds` of other objects".
+    - It offers **more learning signals** - at least for the shared layers.
+    - And can also help **understand the mistakes** a model makes:
+      - > "A failure in an **auxiliary task** (e.g. object detection) might suggest that necessary information was **not present already in the intermediate representations** (layers) that it shared with the main task. Hence, also the main task did not have access to this information and might have **failed for the same reason**."
+
+- `4-` **Evaluation**: the difference between **`open-loop`** and **`close-loop`**.
+  - `4-1` `open-loop`: like in `supervised` learning:
+    - _one question = one answer_.
+    - Typically, a dataset is split into **training** and **testing data**.
+    - Decisions are compared with the **recorded actions** of the demonstrator, assumed to be the **ground-truth**.
+  - `4-2` `close-loop`: like in **decision _processes_**:
+    - The problem consists in a **multi-step** **interaction** with some environment.
+    - It directly measures the model's ability to **drive on its own**.
+  - Interesting facts: Good **`open-loop` performance** does not necessarily lead to good driving ability in **`closed-loop` settings**.
+    - > "Mean squared error (`MSE`) **correlates with `closed-loop` success rate only weakly** (correlation coefficient `r = 0.39`), so `MAE`, `quantized classification error` or `thresholded relative error` should be used instead (`r > 0.6` for all three)."
+    - About the **`balanced-MAE` metric** for `open-loop` evaluation, which **correlates better** with `closed-loop` performance than simple `MAE`.
+      - > "`Balanced-MAE` is computed by **averaging the mean values** of **unequal-length bins** according to `steering angle`. Because most data lies in the region around steering angle `0`, equally weighting the bins grows the importance of **rarely occurring** (higher) `steering angle`s."
+
+- `5-` **Interpretability**:
+  - `5-1` Either on the `trained` model ...
+    - > "**Sensitivity analysis** aims to determine the **parts of an input** that a model is most sensitive to. The most common approach involves computing the **gradients** with respect to the input and using the magnitude as the **measure of sensitivity**."
+    - `VisualBackProp`: which **input pixels** influence the cars driving decision the most.
+  - `5-2` ... or already during `training`.
+    - > "`visual attention` is a built-in mechanism present **already when learning**. Where to attend in the next timestep (the **attention mask**), is predicted as additional output in the current step and can be made to depend on additional sources of information (e.g. textual commands)."
+
+- About `end-to-end` neural nets and humans:
+  - > "[`StarCraft`, `Dota 2`, `Go` and `Chess` solved with `NN`]. Many of these solved tasks are in many aspects **more complex than driving a car**, a task that a large proportion of **people successfully perform even when tired or distracted**. A person can later recollect nothing or very little about the route, suggesting the task needs **very little conscious attention** and might be a **simple behavior reflex task**. It is therefore reasonable to believe that in the near future an `end-to-end` approach is also capable to autonomously control a vehicle."
+
+</details>
+
+---
+
 **`"Efficient Latent Representations using Multiple Tasks for Autonomous Driving"`**
 
 - **[** `2020` **]**
