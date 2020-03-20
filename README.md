@@ -3206,6 +3206,53 @@ Author: Noh, S.
 
 ---
 
+**`"Review, Analyse, and Design a Comprehensive Deep Reinforcement Learning Framework"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://arxiv.org/abs/2002.11883)]**
+**[** :mortar_board: `Deakin University`, `Notheastern University` **]**
+**[[:octocat:](https://github.com/garlicdevs/Fruit-API)]**
+
+- **[** _`RL software framework`, [`FruitAPI`](https://github.com/garlicdevs/Fruit-API)_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://arxiv.org/abs/2002.11883).](media/2020_nguyen_3.PNG "[Source](https://arxiv.org/abs/2002.11883).")  |
+|:--:|
+| *The `API` is based on three **core concepts**: `policy network`, `network configuration`, and `learner`. Besides, the `monitor` is used to manage **multiple learners** (if multi-threading is used) and collect any data from the learners during training while `factory` components can offer **higher abstraction**. No need to reinvent the wheel: **`Plugins` are gateways that extract learners** from **other libraries** such as `PyTorch`, `Tensorflow`, `Keras` and plug them into our proposed framework. [Source](https://arxiv.org/abs/2002.11883).* |
+
+| ![[Source](https://arxiv.org/abs/2002.11883).](media/2020_nguyen_1.PNG "[Source](https://arxiv.org/abs/2002.11883).")  |
+|:--:|
+| *[Source](https://arxiv.org/abs/2002.11883).* |
+
+| ![[Source](https://arxiv.org/abs/2002.11883).](media/2020_nguyen_2.PNG "[Source](https://arxiv.org/abs/2002.11883).")  |
+|:--:|
+| *[Source](https://arxiv.org/abs/2002.11883).* |
+
+Authors: Nguyen, N. D., Nguyen, T. T., Nguyen, H., & Nahavandi, S.
+
+- **_`FruitAPI`: Yet another `RL` framework?_**
+  - _Whatever! Some useful reminders about `RL` concepts and good insights about how_ **_software can be structured_** _for `RL` applications._
+- Motivations:
+  - > "Our ultimate goal is to build an **educational software platform** for deep `RL`."
+    - For instance, they plan to develop a **GUI application** that can configure the neural network, modify the learner, and visualize the `RL` workflow.
+  - `1-` The API should work with any deep learning libraries such as `PyTorch`, `Tensorflow`, `Keras`, etc.
+    - > "Instead of implementing a lot of deep `RL` algorithms, we provide a flexible way to integrate existing deep RL libraries by introducing **`plugins`**. Plugins **extract learners** from other deep RL libraries and plug into **`FruitAPI`**."
+  - `2-` Support different disciplines in `RL` such as **multiple objectives**, **multiple agents**, and **human-agent interaction**.
+- Mentioned frameworks:
+  - [`TensorForce`](https://github.com/tensorforce/tensorforce).
+    - > "It is an ambitious project that targets both **industrial applications** and **academic research**. The library has the **best modular architecture** we have reviewed so far. However, the framework has a deep **software stack** (“pyramid” model) that includes many **abstraction layers**. This hinders **novice readers** from prototyping a new deep RL method."
+  - [`OpenAI Baselines`](https://github.com/openai/baselines).
+  - [`RLLib`](https://ray.readthedocs.io/en/latest/rllib.html). For scalable `RL`. Built on top of [`ray`](https://github.com/ray-project/ray).
+  - [`RLLab`](https://github.com/rll/rllab). Now [`garage`](https://github.com/rlworkgroup/garage). A toolkit for reproducible reinforcement learning research.
+  - [`Keras-RL`](https://github.com/keras-rl/keras-rl).
+  - [`Chainer`](https://chainer.org).
+
+</details>
+
+---
+
 **`"Learning hierarchical behavior and motion planning for autonomous driving"`**
 
 - **[** `2020` **]**
