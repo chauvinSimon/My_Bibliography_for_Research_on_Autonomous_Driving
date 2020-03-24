@@ -1094,7 +1094,7 @@ Authors: Buhet, T., Wirbel, E., & Perrotton, X.
   - ["Imitation Learning for End to End Vehicle Longitudinal Control with Forward Camera"](https://arxiv.org/abs/1812.05841) - (George, Buhet, Wirbel, Le-Gall, & Perrotton, 2018).
   - ["End to End Vehicle Lateral Control Using a Single Fisheye Camera"](https://arxiv.org/abs/1808.06940) (Toromanoff, M., Wirbel, E., Wilhelm, F., Vejarano, C., Perrotton, X., & Moutarde, F. 2018).
 - One term: **_"End-To-Middle"_**.
-  - It is opposed to **_"End-To-End"_**, i.e. it **does not output "end" control signals** such as throttle or steering but rather some **desired trajectory**, i.e. a mid-level representation.
+  - It is opposed to **_"End-To-End"_**, i.e. it **does not output "end" control signals** such as `throttle` or `steering` but rather some **desired trajectory**, i.e. a mid-level representation.
     - Each trajectory is described by **two polynomial functions** (one for `x`, the other for `y`), therefore the network has to **predict a vector** (`x0`, ..., `x4`, `y0`, ..., `y4`) for each vehicle.
     - The desired ego-trajectory is then implemented by an **external controller** (`PID`). Therefore, **not `end-to-end`**.
   - Advantages of `end-to-mid`: **interpretability** for the control part + less to be learnt by the net.
@@ -2254,6 +2254,85 @@ Authors: Kuderer, M., Gulati, S., & Burgard, W.
 
 ---
 
+**`"PLOP: Probabilistic poLynomial Objects trajectory Planning for autonomous driving"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://arxiv.org/abs/2003.08744)]**
+**[[🎞️](TO COME)]**
+**[** :car: `Valeo` **]**
+
+- **[** _`Gaussian mixture`, `multi-trajectory prediction`, [`nuScenes`](https://arxiv.org/abs/1903.11027), [`A2D2`](https://www.audi-electronics-venture.de/aev/web/en/driving-dataset.html), `auxiliary loss`_  **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://arxiv.org/abs/2003.08744).](media/2020_buhet_1.PNG "[Source](https://arxiv.org/abs/2003.08744).")  |
+|:--:|
+| *The architecture has two main sections: an **`encoder`** to synthesize information and the **`predictor`** where we exploit it. Note that `PLOP` does not use the **classic `RNN` decoder scheme** for trajectory generation, preferring a **single step** version which predicts the **coefficients of a polynomial function** instead of the **consecutive points**. Also note the **`navigation command`** that conditions the ego prediction. [Source](https://arxiv.org/abs/2003.08744).* |
+
+| ![[Source](https://arxiv.org/abs/2003.08744).](media/2020_buhet_2.PNG "[Source](https://arxiv.org/abs/2003.08744).")  |
+|:--:|
+| *`PLOP` uses **multimodal sensor** data input: **`Lidar` and `camera`**. The map is accumulated over the **past `2s`**, so `20` frames. It produces a **multivariate gaussian mixture** for a **fixed number of `K`** possible trajectories over a **`4s` horizon**. **Uncertainty** and **variability** are handled by predicting vehicle trajectories as a **probabilistic Gaussian Mixture models**, constrained by a **polynomial** formulation. [Source](https://arxiv.org/abs/2003.08744).* |
+
+Authors: Buhet, T., Wirbel, E., & Perrotton, X.
+
+- Motivations:
+  - The goal is to predicte **multiple** feasible future trajectories **both** for the ego vehicle and neighbors through a **probabilistic** framework.
+    - In addition in an **`end-to-end` trainable** fashion.
+  - It builds on a previous work: ["Conditional vehicle trajectories prediction in carla urban environment"](https://arxiv.org/abs/1909.00792) - (Buhet, Wirbel, & Perrotton, 2019). _See analysis further below._
+    - The trajectory prediction based on **polynomial** representation is upgraded from **deterministic output** to **multimodal probabilistic output**.
+    - It re-uses the **navigation command** input for the **conditional part** of the network, e.g. `follow`, `left`, `straight`, `right`.
+    - One main difference is the introduction of a new input sensor: **Lidar**.
+    - And adding a **semantic segmentation auxiliary loss**.
+  - The authors also reflect about _what_ **_metrics_** _is relevant for trajectory prediction_:
+    - > "We suggest to use two additional criteria to evaluate the predictions errors, one based on the **most confident prediction**, and one **weighted by the confidence** [_how alternative trajectories with non maximum weights compare to the most confident trajectory_]."
+- One term: **"Probabilistic poLynomial Objects trajectory Planning"** = **`PLOP`**.
+
+- I especially like their **review on related works** about data-driven predictions (section taken from the paper):
+  - **[`SocialLSTM`](http://cvgl.stanford.edu/papers/CVPR16_Social_LSTM.pdf)**: encodes the relations between close agents introducing a **social pooling layer**.
+  - -**Deterministic** approaches derived from `SocialLSTM`:
+    - [`SEQ2SEQ`](https://arxiv.org/abs/1802.06338) presents a new **`LSTM`-based encoder-decoder** network to predict trajectories into an **occupancy grid map**.
+    - [`SocialGAN`](https://arxiv.org/abs/1803.10892) and [`SoPhie`](https://arxiv.org/abs/1806.01482) use **generative adversarial networks** to tackle uncertainty in future paths and augment the original set of samples.
+      - `CS-LSTM` extends `SocialLSTM` using **convolutional layers** to encode the **relations between the different agents**.
+    - `ChauffeurNet` uses a sophisticated neural network with a **complex high level scene representation** (`roadmap`, `traffic lights`, `speed limit`, `route`, `dynamic bounding boxes`, etc.) for **deterministic** ego vehicle trajectory prediction.
+  - Other works use a **_graph representation_** of the **interactions between the agents** in combination with **neural networks** for trajectory planning.
+  - **Probabilistic** approaches:
+    - Many works like **[`PRECOG`](https://arxiv.org/abs/1905.01296)**, [`R2P2`](http://openaccess.thecvf.com/content_ECCV_2018/papers/Nicholas_Rhinehart_R2P2_A_ReparameteRized_ECCV_2018_paper.pdf), [`Multiple Futures Prediction`](https://arxiv.org/abs/1911.00997), `SocialGAN` include probabilistic estimation by adding a **probabilistic framework at the end** of their architecture producing **multiple trajectories** for ego vehicle, nearby vehicles or both.
+    - In **[`PRECOG`](https://arxiv.org/abs/1905.01296)**, `Rhinehart et al.` build a **probabilistic model** that **explicitly models interactions** between agents, using **latent variables** to model the **plausible reactions** of agents to each other, with a possibility to **pre-condition the trajectory** of the ego vehicle by **a goal**.
+    - `MultiPath` also reuses an idea from **object detection** algorithms using **trajectory anchors** extracted from the training data for ego vehicle prediction.
+
+- About the **auxiliary** semantic segmentation task.
+  - Teaching the network to **represent such semantic** in its features improves the prediction.
+  - > "Our objective here is to make sure that in the `RGB` image **encoding**, there is **information about the road position and availability**, the applicability of the **traffic rules** (traffic sign/signal), the **vulnerable road users** (pedestrians, cyclists, etc.) position, etc. This information is useful for **trajectory planning** and brings some **explainability** to our model."
+
+- About **interactions** with other vehicles.
+  - The prediction for each vehicle does **not have direct access** to the sequence of history positions of others.
+  - > "The encoding of the interaction between vehicles is implicitly computed by the **birdview encoding**."
+  - The number of predicted trajectories is **fixed** in the network architecture. **`K=12`** is chosen.
+    - > "It allows our architecture to be **agnostic to the number** of considered neighbors."
+
+- **Multi-trajectory** prediction in a **probabilistic** framework.
+  - > "We want to predict a **fixed number `K`** of possible trajectories for each vehicle, and associate them to a **probability distribution** over `x` and `y`:  `x` is the **longitudinal** axis, `y` the **lateral** axis, pointing left."
+  - About the **Gaussian Mixture**.
+    - Vehicle trajectories are predicted as **probabilistic Gaussian Mixture models**, constrained by a **polynomial formulation**: The **mean** of the distribution is expressed using a **polynomial** of **degree `4` of time**.
+    - > "In the end, this representation can be interpreted as **predicting `K` trajectories**, each associated with a **confidence `πk`** [_mixture weights shared for all sampled points belonging to the same trajectory_], with **sampled points** following a **Gaussian distribution** centered on (`µk,x,t`, `µk,y,t`) and with **standard deviation** (`σk,x,t`, `σk,y,t`)."
+    - > "`PLOP` does not use the **classic `RNN` decoder** scheme for trajectory generation, preferring a **single step version** which predicts the **coefficients of a polynomial function** instead of the **consecutive points**."
+    - This offers a measure of **uncertainty** on the predictions.
+    - For the ego car, the probability distribution is **conditioned by the navigation command**.
+  - About the **loss**:
+    - `negative log-likelihood` over **all sampled points** of the **ground truth** ego and neighbour vehicles trajectories.
+    - There is also the **auxiliary** `cross entropy loss` for segmentation.
+
+- Some findings:
+  - The presented model seems very robust to the **varying number of neighbours**.
+    - Finally, for **`5` agents or more**, `PLOT` outperforms by a large margin all `ESP` and `PRECOG`, on authors-defined metrics.
+    - > "This result might be explained by our **interaction encoding** which is robust to the variations of `N` using only **multiple birdview projections** and our **non-iterative single step** trajectory generation."
+  - > "Using `K = 1` approach yields very **poor results**, also visible in the training loss. It was an anticipated outcome due to the **ambiguity of human behavior**."
+
+</details>
+
+---
+
 **`"Probabilistic Future Prediction for Video Scene Understanding"`**
 
 - **[** `2020` **]**
@@ -2270,17 +2349,15 @@ Authors: Kuderer, M., Gulati, S., & Burgard, W.
 
 | ![[Source](https://arxiv.org/abs/2003.06409).](media/2020_hu_1.PNG "[Source](https://arxiv.org/abs/2003.06409).")  |
 |:--:|
-| *[Source](https://arxiv.org/abs/2003.06409).* |
+| *One main **motivation** is to supply the **`Control`** module (e.g. policy learnt via `IL`) with a **representation** capable of **modelling probability of future events**. The `Dynamics` module produces such **spatio-temporal representation**, not directly from images but from learnt **scene features**. That embeddings, that are used by the `Control` in order to learn driving policy, can be explicitly decoded to future `semantic segmentation`, `depth`, and `optical flow`. Note that the **stochasticity of the future** is modelled with a conditional variational approach minimises the divergence between the **`present distribution`** (what could happen given what we have seen) and the **`future distribution`** (what we observe actually happens). During inference, **diverse futures** are generated by sampling from the `present distribution`. [Source](https://arxiv.org/abs/2003.06409).* |
 
-One main **motivation** is to supply the **`Control`** module (e.g. policy learnt via `IL`) with a **representation** capable of **modelling probability of future events**. The `Dynamics` module produces such **spatio-temporal representation**, not directly from images but from learnt **scene features**. That embeddings, that are used by the `Control` in order to learn driving policy, can be explicitly decoded to future `semantic segmentation`, `depth`, and `optical flow`. Note that the **stochasticity of the future** is modelled with a conditional variational approach minimises the divergence between the **`present distribution`** (what could happen given what we have seen) and the **`future distribution`** (what we observe actually happens). During inference, **diverse futures** are generated by sampling from the `present distribution`.
-
-| ![[Source](https://arxiv.org/abs/2003.06409).](media/2020_hu_1.gif "[Source](https://arxiv.org/abs/2003.06409).")  |
+| ![[Source](https://wayve.ai/blog/predicting-the-future).](media/2020_hu_1.gif "[Source](https://wayve.ai/blog/predicting-the-future).")  |
 |:--:|
-| *There are **many possible futures** approaching this four-way intersection. Using **`4` different noise vectors** makes the model imagine **different driving manoeuvres** at an intersection: `driving straight`, `turning left` or `turning right`. These samples predict `10` frames, or **`2` seconds** into the future. [Source](https://arxiv.org/abs/2003.06409).* |
+| *There are **many possible futures** approaching this four-way intersection. Using **`3` different noise vectors** makes the model imagine **different driving manoeuvres** at an intersection: `driving straight`, `turning left` or `turning right`. These samples predict `10` frames, or **`2` seconds** into the future. [Source](https://wayve.ai/blog/predicting-the-future).* |
 
-| ![[Source](https://arxiv.org/abs/2003.06409).](media/2020_hu_2.gif "[Source](https://arxiv.org/abs/2003.06409).")  |
+| ![[Source](https://www.youtube.com/watch?v=EwEfs2R4RIA).](media/2020_hu_2.gif "[Source](https://www.youtube.com/watch?v=EwEfs2R4RIA).")  |
 |:--:|
-| *The **differential entropy** of the **present distribution**, characterizing **how unsure the model is about the future** is used. As we approach the intersection, it increases. [Source](https://arxiv.org/abs/2003.06409).* |
+| *The **differential entropy** of the **present distribution**, characterizing **how unsure the model is about the future** is used. As we approach the intersection, it increases. [Source](https://www.youtube.com/watch?v=EwEfs2R4RIA).* |
 
 Authors: Hu, A., Cotter, F., Mohan, N., Gurau, C., & Kendall, A.
 
@@ -2300,7 +2377,7 @@ Authors: Hu, A., Cotter, F., Mohan, N., Gurau, C., & Kendall, A.
     - For instance by **jointly predicting** ego-motion and motion of other dynamic agents.
   - `5-` Do not rely on any `HD-map` to predict the static scene, to stay **resilient to `HD-map` errors** due to e.g. roadworks.
 
-- The loss used to train the **latent representation** is composed of **three terms** (c.f. motivation `3-`):
+- **`auxiliary learning`**: The loss used to train the **latent representation** is composed of **three terms** (c.f. motivation `3-`):
   - **`future-prediction`**: weighted sum of future `segmentation`, `depth` and `optical flow` losses.
   - **`probabilistic`**: `KL`-divergence between the `present` and the `future` distributions.
   - **`control`**: **regression** for future time-steps up to some `Future control horizon`.
@@ -2359,6 +2436,7 @@ Authors: Hu, A., Cotter, F., Mohan, N., Gurau, C., & Kendall, A.
 
 - One exciting future direction:
   - For the moment, the `control` module takes the **representation learned from dynamics models**. And **ignores the predictions** themselves.
+    - _By the way, why are predictions, especially for the ego trajectories, not conditionned on possible actions?_
   - It could use these **probabilistic embedding** capable of predicting multi-modal and plausible futures to **generate imagined experience** to train a policy in a model-based `RL`.
   - The design of the **`reward` function** from the **latent space** looks challenging at first sight.
 
