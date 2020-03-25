@@ -5617,10 +5617,12 @@ Author: Shved, P.
 
 ---
 
-**`"SUMMIT : A Simulator for Urban Driving in Massive Mixed Traffic"`**
+**`"SUMMIT: A Simulator for Urban Driving in Massive Mixed Traffic"`**
 
 - **[** `2019` **]**
 **[[:memo:](https://arxiv.org/abs/1911.04074)]**
+**[[:octocat:](https://github.com/AdaCompNUS/summit)]**
+**[[:octocat:](https://adacompnus.github.io/summit/)]**
 **[[🎞️](https://www.youtube.com/watch?v=dNiR0z2dROg)]**
 **[** :mortar_board: `National University of Singapore` **]**
 
@@ -5629,19 +5631,19 @@ Author: Shved, P.
 <details>
   <summary>Click to expand</summary>
 
-| ![[Source](https://arxiv.org/abs/1911.04074).](media/2020_cai_2.PNG "[Source](https://arxiv.org/abs/1911.04074).")  |
+| ![[Source](https://arxiv.org/abs/1911.04074).](media/2019_cai_2.PNG "[Source](https://arxiv.org/abs/1911.04074).")  |
 |:--:|
 | *`SUMMIT` has been developed to simulate realistic **dense**, **unregulated** urban traffic for **heterogeneous agents** at any **worldwide locations**. [Source](https://arxiv.org/abs/1911.04074).* |
 
-| ![[Source](https://www.youtube.com/watch?v=dNiR0z2dROg).](media/2020_cai_1.gif "[Source](https://www.youtube.com/watch?v=dNiR0z2dROg).")  |
+| ![[Source](https://www.youtube.com/watch?v=dNiR0z2dROg).](media/2019_cai_1.gif "[Source](https://www.youtube.com/watch?v=dNiR0z2dROg).")  |
 |:--:|
 | *[Source](https://www.youtube.com/watch?v=dNiR0z2dROg).* |
 
-| ![[Source](https://arxiv.org/abs/1911.04074).](media/2020_cai_1.PNG "[Source](https://arxiv.org/abs/1911.04074).")  |
+| ![[Source](https://arxiv.org/abs/1911.04074).](media/2019_cai_1.PNG "[Source](https://arxiv.org/abs/1911.04074).")  |
 |:--:|
 | *The motion model used is `Context-GAMMA` that applies **`velocity`-space optimization** under **kinematic** (e.g. non-holonomic motion of car), **geometric** (collision avoidance with nearby agents) and context-related constraints to generate sophisticated, unregulated **crowd behaviors**. [Source](https://arxiv.org/abs/1911.04074).* |
 
-| ![[Source](https://www.youtube.com/watch?v=dNiR0z2dROg).](media/2020_cai_2.gif "[Source](https://www.youtube.com/watch?v=dNiR0z2dROg).")  |
+| ![[Source](https://www.youtube.com/watch?v=dNiR0z2dROg).](media/2019_cai_2.gif "[Source](https://www.youtube.com/watch?v=dNiR0z2dROg).")  |
 |:--:|
 | *[Source](https://www.youtube.com/watch?v=dNiR0z2dROg).* |
 
@@ -5670,7 +5672,10 @@ Authors: Cai P., Lee Y., Luo Y., & Hsu D.
   - > "`SUMMIT` is based on `CARLA` to benefits from its desirable features such as **high-fidelity physics**, **realistic rendering**, weather control, and rich sensors".
 
 - _What decision-making module?_
-  - A **context-aware `POMDP`** is proposed and compared to **`TTC`**-based **reactive** system.
+  - A **context-aware `POMDP`** is proposed and compared to **`TTC`**-based **reactive** system. Two components:
+  - `1-` The **belief tracker** for the **hidden `state` variables**.
+    - > "At each time step, it uses a **motion model** to compute the likelihood of transitions and observations, and **updates the posterior belief** using the Bayes rule."
+  - `2-` The **online solver** **[`hyp-DESPOT`](https://arxiv.org/abs/1802.06215)** that takes the **current belief** and computes the **optimal driving action**.
   - About the `state` space:
     - **_observable_ ego** (**continuous**): `position`, `speed`, and `heading`.
     - **_observable_ other** (**discrete**): `position`, `speed`
@@ -5678,11 +5683,7 @@ Authors: Cai P., Lee Y., Luo Y., & Hsu D.
     - **_hidden_ other**:
       - `type`: An agent can be either **`distracted`**, thus **not interacting** with the ego-vehicle, or be **`attentive`**, thus cooperatively **avoid collision** with the ego-vehicle.
       - `intention` wrt. a set of path candidates.
-  - > "We assume that the ego-vehicle can observe its **own `state`** and **discretized values** of the **observable `state`s** of **exo-agents**. The **hidden `state`s** of exo-agents can only be **inferred and modelled with `belief`s**."
-  - Two components:
-  - `1-` The **belief tracker** for the **hidden `state` variables**.
-    - > "At each time step, it uses a **motion model** to compute the likelihood of transitions and observations, and **updates the posterior belief** using the Bayes rule."
-  - `2-` The **online solver** **[`hyp-DESPOT`](https://arxiv.org/abs/1802.06215)** that takes the **current belief** and computes the **optimal driving action**.
+    - > "We assume that the ego-vehicle can observe its **own `state`** and **discretized values** of the **observable `state`s** of **exo-agents**. The **hidden `state`s** of exo-agents can only be **inferred and modelled with `belief`s**."
   - About the `action` space:
     - **Path-velocity decomposition**:
       - > "We restrict the `POMDP` to compute the **acceleration along the intended path**, while the steering angle is generated using a **pure-pursuit algorithm**."
@@ -5693,7 +5694,7 @@ Authors: Cai P., Lee Y., Luo Y., & Hsu D.
     - To model **stochastic transitions** of exo-agents, their motion is perturbed by **Gaussian noises on the displacement**.
   - About the `reward` model:
     - Multi-objective: `safety`, `efficiency`, and `smoothness` of driving.
-- Baseline for comparison:
+- Baseline and evaluation:
   - > "We compare `Context-GAMMA` with a **_reactive_ model** that moves agents along lane center-curves and uses **time-to-collision** (`TTC`) to calculate the vehicle’s speed."
   - Criteria:
     - `average speed` of traffic agents.
