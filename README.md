@@ -5617,6 +5617,95 @@ Author: Shved, P.
 
 ---
 
+**`"SUMMIT : A Simulator for Urban Driving in Massive Mixed Traffic"`**
+
+- **[** `2019` **]**
+**[[:memo:](https://arxiv.org/abs/1911.04074)]**
+**[[🎞️](https://www.youtube.com/watch?v=dNiR0z2dROg)]**
+**[** :mortar_board: `National University of Singapore` **]**
+
+- **[** _`simulator`, `dense traffic`, `Hyp-DESPOT`, [`SUMO`](https://sumo.dlr.de/docs/index.html), [`CARLA`](http://carla.org/)_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://arxiv.org/abs/1911.04074).](media/2020_cai_2.PNG "[Source](https://arxiv.org/abs/1911.04074).")  |
+|:--:|
+| *`SUMMIT` has been developed to simulate realistic **dense**, **unregulated** urban traffic for **heterogeneous agents** at any **worldwide locations**. [Source](https://arxiv.org/abs/1911.04074).* |
+
+| ![[Source](https://www.youtube.com/watch?v=dNiR0z2dROg).](media/2020_cai_1.gif "[Source](https://www.youtube.com/watch?v=dNiR0z2dROg).")  |
+|:--:|
+| *[Source](https://www.youtube.com/watch?v=dNiR0z2dROg).* |
+
+| ![[Source](https://arxiv.org/abs/1911.04074).](media/2020_cai_1.PNG "[Source](https://arxiv.org/abs/1911.04074).")  |
+|:--:|
+| *The motion model used is `Context-GAMMA` that applies **`velocity`-space optimization** under **kinematic** (e.g. non-holonomic motion of car), **geometric** (collision avoidance with nearby agents) and context-related constraints to generate sophisticated, unregulated **crowd behaviors**. [Source](https://arxiv.org/abs/1911.04074).* |
+
+| ![[Source](https://www.youtube.com/watch?v=dNiR0z2dROg).](media/2020_cai_2.gif "[Source](https://www.youtube.com/watch?v=dNiR0z2dROg).")  |
+|:--:|
+| *[Source](https://www.youtube.com/watch?v=dNiR0z2dROg).* |
+
+Authors: Cai P., Lee Y., Luo Y., & Hsu D.
+
+- > "Driving in **unregulated**, **crowded** urban environments, like in **uncontrolled roads** or **unsignalized intersections** in less-developed countries remains an open problem."
+- Motivation for a new simulator:
+  - Simulates realistic **dense**, **unregulated** urban traffic for **heterogeneous agents** at any **worldwide locations**.
+  - Driving simulators already exist. But here the idea is:
+    - To **scale up** from **complex interactions** between agents to **crowded urban** scenes.
+    - Not to be restricted to **predefined maps**.
+    - To simulate **large crowds**, but with the quality of **interactions**.
+    - To closely represent **real-world** scenarios and generate **high-fidelity** interactive data.
+- _How to work on any worldwide locations?_
+  - With **`OpenStreetMaps`**.
+  - `SUMMIT` relies on **[`SUMO`](https://sumo.dlr.de/docs/index.html)** to automatically convert **`OSM` maps** to **lane networks**.
+  - > "`SUMMIT` fetches real-world maps from the `OpenStreetMap`, and constructs **two topological graphs**: a **`lane network`** for vehicles, and a `sidewalk network` for pedestrians."
+- _How to generate complex and realistic crowd interactions? What crowd behaviour model?_
+  - The authors present a model: **`Context-GAMMA`**, built on top from **[`GAMMA`](https://arxiv.org/abs/1906.01566)** (Luo & Cai, 2019) ([video](https://www.youtube.com/watch?v=5xAB0-8XceQ)), a "General **Agent Motion Prediction** Model".
+  - It uses **`velocity`-space optimization** to generate sophisticated, unregulated **crowd behaviours**.
+  - > "`GAMMA` assumes that each traffic agent **optimizes its velocity** based on the **navigation goal**, while being **constrained** by **kinematic constraints** (e.g. non-holonomic motion of car) and **geometric constraints** (collision avoidance with nearby agents)."
+  - `Context-GAMMA` introduce a **third constraint** and another objective about the **road context**.
+    - > "We suggest that algorithms should leverage the **road contexts** to help **long-term planning**."
+
+- _How to generate realistic data?_
+  - > "`SUMMIT` is based on `CARLA` to benefits from its desirable features such as **high-fidelity physics**, **realistic rendering**, weather control, and rich sensors".
+
+- _What decision-making module?_
+  - A **context-aware `POMDP`** is proposed and compared to **`TTC`**-based **reactive** system.
+  - About the `state` space:
+    - **_observable_ ego** (**continuous**): `position`, `speed`, and `heading`.
+    - **_observable_ other** (**discrete**): `position`, `speed`
+      - _No information about the_ **_discretisation_**.
+    - **_hidden_ other**:
+      - `type`: An agent can be either **`distracted`**, thus **not interacting** with the ego-vehicle, or be **`attentive`**, thus cooperatively **avoid collision** with the ego-vehicle.
+      - `intention` wrt. a set of path candidates.
+  - > "We assume that the ego-vehicle can observe its **own `state`** and **discretized values** of the **observable `state`s** of **exo-agents**. The **hidden `state`s** of exo-agents can only be **inferred and modelled with `belief`s**."
+  - Two components:
+  - `1-` The **belief tracker** for the **hidden `state` variables**.
+    - > "At each time step, it uses a **motion model** to compute the likelihood of transitions and observations, and **updates the posterior belief** using the Bayes rule."
+  - `2-` The **online solver** **[`hyp-DESPOT`](https://arxiv.org/abs/1802.06215)** that takes the **current belief** and computes the **optimal driving action**.
+  - About the `action` space:
+    - **Path-velocity decomposition**:
+      - > "We restrict the `POMDP` to compute the **acceleration along the intended path**, while the steering angle is generated using a **pure-pursuit algorithm**."
+    - {`ACC`, `MAINTAIN`, `DEC`}.
+  - About the **`transition`** model = **motion model**:
+    - > "`distracted` traffic agents are assumed to track their intended path with the **current speed**".
+    - > "`attentive` traffic agents also tend to follow the sampled path, but use [`PORCA`](https://arxiv.org/abs/1805.11833), an **interactive collision avoidance model** that is similar to [`GAMMA`](https://arxiv.org/abs/1906.01566) but considerably **simpler**, to generate the actual **local motion**".
+    - To model **stochastic transitions** of exo-agents, their motion is perturbed by **Gaussian noises on the displacement**.
+  - About the `reward` model:
+    - Multi-objective: `safety`, `efficiency`, and `smoothness` of driving.
+- Baseline for comparison:
+  - > "We compare `Context-GAMMA` with a **_reactive_ model** that moves agents along lane center-curves and uses **time-to-collision** (`TTC`) to calculate the vehicle’s speed."
+  - Criteria:
+    - `average speed` of traffic agents.
+    - `congestion factor` defined as the percentage of agents being jammed in the crowd. (Jammed agents are removed from the crowd after being stationary for `5s`.)
+  - Findings:
+    - The **congestion factor** of the `TTC`-controlled traffic **grows quickly** with the simulation time, indicating that **agents fail to coordinate** with each other.
+    - > "We thus conclude that **sophisticated long-term planning** is important for driving in **unregulated traffic**, and `Context-POMDP` establishes a reference for future **crowd-driving** algorithms."
+
+</details>
+
+---
+
 **`"Crossing of Road Intersections : Decision-Making Under Uncertainty for Autonomous Vehicles"`**
 
 - **[** `2019` **]**
