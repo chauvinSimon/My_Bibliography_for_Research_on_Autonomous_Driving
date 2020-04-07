@@ -3396,6 +3396,75 @@ Author: Noh, S.
 
 ---
 
+**`"Interpretable Multi Time-scale Constraints in Model-free Deep Reinforcement Learning for Autonomous Driving"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://arxiv.org/abs/2003.09398)]**
+**[** :mortar_board: `University of Freiburg` **]**
+**[** :car: `BMW` **]**
+
+- **[** _`constrained MDP`, [`SUMO`](https://sumo.dlr.de/docs/index.html)_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://arxiv.org/abs/2003.09398).](media/2020_kalweit_1.PNG "[Source](https://arxiv.org/abs/2003.09398).")  |
+|:--:|
+| *Bottom-left: While learning the `Q function`, another quantity is estimated: `JπH` represents the **amount of constraint violations** within **horizon `H`** when following the current **policy `πk`**. It is used to **defined safe action sets** for action selection. This is one of the ideas of the **Multi Time-scale Constrained `DQN`** proposed to solve the **`constrained MDP`**. Bottom-right: example illustrating the **need of long-term predictions/considerations** for in **constrained MDP**. Here state `s6` is marked as unsafe and has to be avoided. The **one-step `action masking`** cannot guarantee **optimality**: at the point of decision it can only choose the path leading to `s10` with a non-optimal return of `+0.5`. [Source](https://arxiv.org/abs/2003.09398).* |
+
+Authors: Kalweit, G., Huegle, M., Werling, M., & Boedecker, J.
+
+- Motivations: _how to perform_ **_model-free `RL`_** _while considering_ **_constraints_**_?_
+  - Previous works are limiting:
+    - `1-` **Reward shaping**: creating a weighted combination of **different objectives** in the **`reward` signal**.
+      - > "We add **weighted penalties** for `lane changes` and for not driving on the `right lane`."
+    - `2-` **Lagrangian optimization**: including **constraints** in the **loss function**.
+      - > "The **constrained `MDP`** is converted into an **equivalent unconstrained problem** by making infeasible solutions sub-optimal."
+    - `3-` **Safe Policy Extraction**: filter out unsafe actions (`action masking`).
+      - > "Restrict the **`action` space** during **policy extraction**, masking out all actions leading to constraint violations."
+    - The first two require **parameter tuning**, which is difficult in multi-objective tasks (trade-off `speed` / `constraint` violations).
+    - The last one does not deal with **multi-step** constraints.
+
+- Here, I noted **three main ideas**:
+  - `1-` Separate **`constraints` considerations** from the **`return` optimization**.
+    - > "Instead of a **weighted combination of the different objectives**, agents are optimizing **one objective** while satisfying constraints on expectations of auxiliary costs."
+  - `2-` Define the `constraints` with **different time scales**.
+    - > "Our approach combines the intuitive formulation of **constraints on the short-term horizon** as in `model-based` approaches with the robustness of a `model-free RL` method for the **long-term optimization**."
+  - `3-` Do not wait for **policy extraction** to mask actions.
+    - Modify the `DQN` output to **jointly estimate `Q`-values** and the **constraint related `comfort`-values**.
+    - Instead, **apply masking** directly during the **`Q`-update** to learn the optimal `Q`-function.
+  
+- About the task:
+  - **Highway lane changing**.
+    - > "The discrete `action` space includes three actions: `keep lane`, `perform left lane change` and `perform right lane change`."
+    - > "**Acceleration** and maintaining safe-distance to the preceding vehicle are controlled by a **low-level `SUMO` controller**."
+  - There is a **primary objective**: drive as close as possible to a **desired velocity**.
+  - And there are **multiple constraints**: `safety` (change lane only if lane available and free), `keep-right` and `comfort` (within the defined time span, a maximum of lane changes is allowed).
+
+- About the **constrained** Markov Decision Process (**`CMDP`**) framework:
+  - The `MDP` is extended with **two `action` sets**:
+  - `1-` Set of **safe `action`s** for a **single-step** constraint: **fully known**.
+  - `2-` Set of **_expected_ safe** `action`s of a **multi-step** constraint `Jπ`: function of policy.
+    - For instance, limit the **amount of lane changes** over `Horizon=5` (`10s`).
+    - They are modelled as **expectations** of **auxiliary costs**:
+      - The idea is to introduce **`constraint` signals** for each transition (similar to `reward` signals).
+      - And **estimate** the **cumulative sum** when following a policy (similar to the `Return`).
+        - > "Typically, long-term dependencies on constraints are represented by the **expected sum of discounted or average `constraint` signals**."
+        - Here only the **next `H` steps** are considered (**_truncated_ estimation**) and **no discounting** is applied (improving the interpretability of constraints).
+    - This quantity is estimated from experience.
+      - > "we jointly fit `Q-function` and **multi-step constraint-values `Jh`** in one **function approximator**."
+    - The set of expected safe actions for the constraint can then be defined as {`a ∈ A`| **`JH(st, a)` `≤` `threshold`** }
+      - `JπH` represents the **amount of constraint violations** within **horizon `H`** when following the current **policy `πk`**.
+
+- About **`off-policy`** learning.
+  - **Transitions** are either:
+  - `1-` Recorded from a simulator [`SUMO`](https://sumo.dlr.de/docs/index.html)
+  - `2-` Or extracted from [`HighD`](https://www.highd-dataset.com) dataset.
+
+</details>
+
+---
+
 **`"Review, Analyse, and Design a Comprehensive Deep Reinforcement Learning Framework"`**
 
 - **[** `2020` **]**
