@@ -1516,6 +1516,55 @@ Authors: Kuefler, A., Morton, J., Wheeler, T., & Kochenderfer, M.
 
 ---
 
+**`"Using Counterfactual Reasoning and Reinforcement Learning for Decision-Making in Autonomous Driving"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://arxiv.org/abs/2003.11919)]**
+**[** :mortar_board: `Technische Universität München` **]**
+**[** :car: `fortiss` **]**
+**[[:octocat:](https://github.com/bark-simulator/bark) (simulator)]**
+
+- **[** _`counterfactual reasoning`_  **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://arxiv.org/abs/2003.11919).](media/2020_hart_1.PNG "[Source](https://arxiv.org/abs/2003.11919).")  |
+|:--:|
+| *The idea is to first `train` the agent interacting with **different driver models**. This should lead to a **more robust** policy. During `inference` the possible outcomes are **first evaluated**. If too many **predictions** result in collisions, a **non-learnt controller** takes over. Otherwise, the **learnt policy** is executed. [Source](https://arxiv.org/abs/2003.11919).* |
+
+Authors: Hart, P., & Knoll, A.
+
+- Motivations:
+  - Cope with the **behavioural uncertainties** of other traffic participants.
+- The idea is to perform **predictions** considering **multiple** interacting **driver models**.
+  - `1-` During `training`: expose **multiple behaviour models**.
+    - The **parametrized model `IDM`** is used to describe more **passive** or **aggressive** drivers.
+    - Model-free `RL` is used. The **diversity** of driver models should improve the **robustness**.
+  - `2-` During `application`: at each step, the learned policy is first **evaluated before being executed**.
+    - The **evolution** of the present scene is **simulated** using the different driver models.
+    - The **outcomes** are then aggregated:
+      - `1-` **Collision rate**.
+      - `2-` **Success rate** (reaching the destination).
+      - Based on these _risk_ and _performance_ metrics, the **policy is applied or not**.
+        - If the collision rate is too high, then the ego vehicle **stays on its current lane**, controlled by `IDM`.
+        - > "Choosing the **thresholds** is nontrivial as this could lead to too passive or risky behaviors."
+    - It could be seen as some **_prediction-based `action masking`_**.
+    - These **multi-modal predictions** make me also think of the **roll-out** phase in **tree searches**.
+    - Besides it reminds me the concept of **`concurrent MDP`**, where the agent tries to infer in which `MDP` (parametrized) it has been placed.
+- Not clear to me:
+  - _Why not doing_ **_planning_** if you explicitly know the **`transition`** (`IMD`) and the `reward` models? It would substantially increase the **sampling efficiency**.
+- About the simulator:
+  - **[`BARK`](https://github.com/bark-simulator/bark)** standing for **_Behavior benchmARKing_** and developed at [`fortiss`](https://www.fortiss.org/en/research/fields-of-research).
+
+- About **_"counterfactual reasoning"_**:
+  - From [wikipedia](https://en.wikipedia.org/wiki/Counterfactual_thinking): "Counterfactual thinking is, as it states: **'counter to the facts'**. These thoughts consist of the _'What if?'_ ..."
+  - > "We use **_causal_ counterfactual reasoning**: [...] **sampling behaviors** from a model pool for other traffic participants can be seen as **assigning nonactual behaviors** to other traffic participants.
+
+</details>
+
+---
+
 **`"Modeling pedestrian-cyclist interactions in shared space using inverse reinforcement learning"`**
 
 - **[** `2020` **]**
