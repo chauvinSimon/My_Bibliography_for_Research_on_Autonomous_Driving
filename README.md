@@ -1522,7 +1522,7 @@ Authors: Kuefler, A., Morton, J., Wheeler, T., & Kochenderfer, M.
 **[[:memo:](https://arxiv.org/abs/2003.11919)]**
 **[** :mortar_board: `Technische Universität München` **]**
 **[** :car: `fortiss` **]**
-**[[:octocat:](https://github.com/bark-simulator/bark) (simulator)]**
+**[[:octocat:](https://github.com/bark-simulator/bark)]**
 
 - **[** _`counterfactual reasoning`_  **]**
 
@@ -3442,6 +3442,88 @@ Author: Noh, S.
 ---
 
 ## `Model-Free` `Reinforcement Learning`
+
+---
+
+**`"Learning Robust Control Policies for End-to-End Autonomous Driving from Data-Driven Simulation"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://www.mit.edu/~amini/pubs/pdf/learning-in-simulation-vista.pdf)]**
+**[[:memo:](https://www.mit.edu/~amini/vista/)]**
+**[[🎞️](https://www.youtube.com/watch?v=YgFlMnQmASw)]**
+**[[:octocat:](https://forms.gle/FiKEQjddFPDRd4pz9)]**
+**[** :mortar_board: `MIT` **]**
+**[** :car: `Toyota Research Institute`, `NVIDIA` **]**
+
+- **[** _`sim2real`, `data-driven simulation`, `robustness`, [`VISTA`](https://www.mit.edu/~amini/vista/)_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://www.mit.edu/~amini/pubs/pdf/learning-in-simulation-vista.pdf).](media/2020_amini_2.PNG "[Source](https://www.mit.edu/~amini/pubs/pdf/learning-in-simulation-vista.pdf).")  |
+|:--:|
+| *Top left: one figure is better than many words. **New possible trajectories** are synthesized to learn virtual agent control policies. Bottom and right: robustness analysis compared to two baselines using a **model-based simulator** (`CARLA`): [**domain randomization**](https://arxiv.org/abs/1703.06907) and [**domain adaptation**](https://arxiv.org/abs/1812.03823) and one real-world [imitation learning](https://arxiv.org/abs/1604.07316) approach. **Interventions** marked as red dots. [Source](https://www.mit.edu/~amini/pubs/pdf/learning-in-simulation-vista.pdf).* |
+
+| ![[Source](https://www.mit.edu/~amini/pubs/pdf/learning-in-simulation-vista.pdf).](media/2020_amini_1.PNG "[Source](https://www.mit.edu/~amini/pubs/pdf/learning-in-simulation-vista.pdf).")  |
+|:--:|
+| *`VISTA` stands for **'Virtual Image Synthesis and Transformation for Autonomy'**. One main idea is to **synthesize perturbations** of the **ego-agent's position**, to learn to navigate a some worse-case scenarios before cruising down real streets. [Source](https://www.mit.edu/~amini/pubs/pdf/learning-in-simulation-vista.pdf).* |
+
+| ![[Source](https://www.youtube.com/watch?v=YgFlMnQmASw).](media/2020_amini_1.gif "[Source](https://www.youtube.com/watch?v=YgFlMnQmASw).")  |
+|:--:|
+| *[Source](https://www.youtube.com/watch?v=YgFlMnQmASw).* |
+
+Authors: Amini, A., Gilitschenski, I., Phillips, J., Moseyko, J., Banerjee, R., Karaman, S., & Rus, D.
+
+- Motivations:
+  - `1-` Learn a policy **`end-to-end`** in a **simulator** that can **successfully transfer** into the **real-world**.
+    - It is one of the rare works that **go out of the lab to actually test on a road**.
+  - `2-` Achieve **robustness** in the transfer, **recovering** from complex, **near crash** driving scenarios.
+    - As stated, training AD requires `robustness`, `safety` and `realism`.
+  - `3-` Avoid **explicit supervision** where **ground truth human control labels** are used.
+    - Supervised learning methods such as **_behavioural cloning_** is not an option.
+    - Instead, a single **human collected trajectory** is used.
+    - > "**Preserving photorealism** of the real world allows the virtual agent to **move beyond imitation learning** and instead explore the space using reinforcement learning."
+
+- About the data-driven **simulator**:
+  - > "[for `end2end`] Simulator must address the challenges of **photorealism**, real-world **semantic complexities**, and **scalable exploration of control options**, while avoiding the fragility of imitation learning and preventing unsafe conditions during data collection, evaluation, and deployment."
+  - `Option 0`: **no simulator**, i.e. **`open-loop` replay**.
+    - One can use e.g. **supervised** behavioural cloning.
+    - One problem: real-world datasets **do not include many hazardous edge cases**.
+    - To **generate realistic images** for lateral control failure cases, `viewpoint augmentation` technique can be used, taking advantage of the large field of view.
+    > "Augmenting learning with **views from synthetic side cameras** is the standard approach to **increase robustness** and teach the model to **recover from off-center** positions on the roads.
+  - `Option 1`: **model-based** simulator.
+    - For instance **`CARLA`**.
+    - > "While **tremendous effort** has been placed into making the `CARLA` environment as photorealistic as possible, a simulation gap still exists. We found that end-to-end models trained solely in `CARLA` were **unable to transfer to the real-world**."
+    - The authors implement two techniques with additional **`data viewpoint augmentation`** to **increase its robustness** in the real-world:
+      - `Domain Randomization`.
+      - `Domain Adaptation`: training a the policy with **both _simulated_ and _real_** images, i.e. **sharing the latent space**.
+  - `Option 2`: **data-driven** simulator.
+    - `VISTA` synthesizes **photorealistic and semantically accurate** local viewpoints using a **small dataset** of **human collected driving trajectories**.
+    - Motion is simulated in `VISTA` and compared to the human’s estimated motion in the real world:
+      - From a `steering curvature` and `velocity` executed during `dt`, `VISTA` can generate the next observation, used for **`action` selection** by the agent.
+      - The process repeats.
+    - For more details about scene reconstruction, [this post](https://www.greencarcongress.com/2020/03/20200326-mit.html) give good reformulation of the paper.
+
+- About `end-to-end` policy and the `RL` training:
+  - `input`: **raw image pixels**.
+  - No **temporal stacking** is performed.
+    - > "We considered controllers that act based on their current perception **without memory or recurrence** built in."
+  - `output`: probability distribution for the desired **curvature** of motion (**lateral control** only), hence treated as a continuous variable.
+    - > "Note that curvature is equal to the **inverse turning radius** [`m−1`] and can be converted to **steering angle** at inference time using a **bike model**."
+  - `reward`: only the **feedback from interventions** in simulation. i.e. **very sparse** reward signals.
+    - This is as **opposed to behaviour cloning** where the agent has **knowledge of how the human drove** in that situation.
+  - `training`: Policy Gradient.
+    - _Happy to see that one can achieve such impressive results with an algorithm very far from the latest policy-gradient complex methods_.
+
+- About robustness:
+  - The idea is to **synthesize perturbations** of the **ego-agent's position**.
+    - I.e. during training, **generate new observations** by applying _translations_ and _rotations_ to the views of the recorded trajectory.
+  - **Robustness** analysis is perform for **recovery** from **near-crash scenarios**.
+    - > "All models showed greater robustness to **recovering from translations** than **rotations** since rotations required significantly more **aggressive control** to recover with a much smaller room of error."
+    - `VISTA` successfully recovered over `2×` more frequently than the next best: [NVIDIA's `IMIT-AUG`](https://arxiv.org/abs/1604.07316) which is based on imitation learning with augmentation.
+  - Future work: `VISTA` could **synthesize other dynamic obstacles** in the environment such as _cars_ and _pedestrians_.
+
+</details>
 
 ---
 
