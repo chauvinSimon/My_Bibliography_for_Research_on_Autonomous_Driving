@@ -3445,6 +3445,84 @@ Author: Noh, S.
 
 ---
 
+**`"Risk-Aware High-level Decisions for Automated Driving at Occluded Intersections with Reinforcement Learning"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://arxiv.org/abs/2004.04450)]**
+**[[:memo:](https://www.uni-das.de/images/pdf/fas-workshop/2020/FAS_2020_KAMRAN.pdf)]**
+**[[🎞️](https://www.dropbox.com/s/vnrjl0pro1uqw8w/rl_occlusion.avi?dl=0)]**
+**[** :mortar_board: `KIT` **]**
+
+- **[** _`risk-aware`, `occlusion`, [`CARLA`](http://carla.org)_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://arxiv.org/abs/2004.04450).](media/2020_kamran_1.PNG "[Source](https://arxiv.org/abs/2004.04450).")  |
+|:--:|
+| *The `state` considers the **topology** and include information about **occlusions**. A **`risk` estimate** is computed for each `state` using **manually engineered rules**: is it possible for the ego car to **safely stop/leave** the intersection? [Source](https://arxiv.org/abs/2004.04450).* |
+
+| ![[Source](https://arxiv.org/abs/2004.04450).](media/2020_kamran_2.PNG "[Source](https://arxiv.org/abs/2004.04450).")  |
+|:--:|
+| *Centre-up: The main idea is to **punish risky situations** instead of **only collision failures**. Left: Other **interesting tricks** are detailed: To deal with a **variable number of vehicles**, to relax the **Markov assumption**, and to focus on the **most important** (**closest**) parts of the scene. Centre-down: Also, the intersection is described as a **region** (`start` and `end`), as opposed to just a **single crossing point**. [Source](https://arxiv.org/abs/2004.04450).* |
+
+| ![[Source](https://www.dropbox.com/s/vnrjl0pro1uqw8w/rl_occlusion.avi?dl=0).](media/2020_kamran_1.gif "[Source](https://www.dropbox.com/s/vnrjl0pro1uqw8w/rl_occlusion.avi?dl=0).")  |
+|:--:|
+| *[Source](https://www.dropbox.com/s/vnrjl0pro1uqw8w/rl_occlusion.avi?dl=0).* |
+
+Authors: Kamran, D., Lopez, C. F., Lauer, M., & Stiller, C.
+
+- Motivations:
+  - `1-` **Scenario**: deal with **occluded** areas.
+  - `2-` **Behaviour**: Look more **human-like**, especially for **_creeping_**, paying attention to the risk.
+    - > "This [_`RL` with sparse rewards_] policy usually **drives fast** at occluded intersections and **suddenly stops** instead of having **creeping behavior** similar to humans at risky situations."
+  - `3-` **Policy**: Find a trade-off between `risky` and `over-cautious`.
+    - > "Not as **overcautious** as the rule-based policy and also not as **risky** as the collision-based `DQN` approach"
+
+- `reward`: The main idea is to **compromise between `risk`** and **`utility`**.
+  - **Sparse `reward` functions** ignoring `risk` have been applied in multiple previous works:
+    - `1-` **Penalize collisions**.
+    - `2-` Reward **goal reaching**.
+    - `3-` Give **tiny penalties** at each step to favour motion.
+  - > "We believe that such **sparse reward** can be improved by **explicitly providing risk measurements** for each (`state`, `action`) pair during training. The total `reward` value for the current state will then be calculated as the **weighted average** of **`risk`** and **`utility`** rewards."
+  - **`utility` reward**: about the speed of ego vehicle.
+  - **`risk` reward**: Assuming a worst-case scenario. **Two safety conditions** between the ego vehicle and each related vehicle are defined.
+    - `1-` _Can the ego-car_ **_safely leave_** _the intersection before the other vehicle can reach it?_
+    - `2-` _Can the ego-car_ **_safely stop_** _to yield before the stop line?_
+    - They are not just binary. Rather continuous, based on time computations.
+- `state`.
+  - A **vector of measurements** that can be used by a rule-based or a learning-based policy.
+  - The **map topology** is strongly considered.
+    - As opposed to _grid-based_ representations which, in addition, require more complex nets.
+  - About **occlusion**:
+    - > "For each **intersecting lane `L.i`**, the **closest point** to the conflict zone which is visible by perception sensors is identified and **its distance along the lane** to the **conflict point** will be represented as `do.i`. The maximum **allowed velocity** for each lane is also mapped and will be represented as `vo.i`."
+  - About **varying number of vehicles**:
+    - The **`5` most-important interacting vehicles** are considered, based on some distance metric.
+  - About the **discretization**.
+    - Distances are binned in a non-linear way. The **resolution is higher** in close regions: Using `sqrt`(`x`/`d-max`) instead of `x`/`d-max`.
+  - About the temporal information:
+    - **`5` frames are stacked**. With **`delta-t` = `0.5s`**.
+    - Probably to **relax the `Markov` assumption**. In particular, the "real" car dynamic **suffers from delay** (`acceleration` is not immediate).
+- `action`.
+  - **High-level actions** define **target speeds**:
+    - `stop`: **full stop** with maximum deceleration.
+    - `drive-fast`: reach `5m/s`.
+    - `drive-slow`: reach `1m/s`.
+  - **Hierarchical** pipeline:
+    - > "Such **high-level** `action` space helps to **learn decision-making** instead of **speed control** for the automated vehicle. The trajectory planner and **`control` module** will take care of **low-level control commands** for the ego vehicle in order to follow these high-level actions. Therefore, **high-level decisions** can be updated with **smaller rate (`2Hz`)** that improves the quality of learning and makes the policy to **only focus on finding optimal behaviors** instead of low level-control."
+- About **robustness**:
+  - Challenging scenarios are implemented to test the **robustness** of the different approaches:
+    - **Dense traffic**.
+    - **Severe occlusion**.
+    - **Sensor noise**.
+    - **Short sensor range**.
+  - Decisions must be **interaction-aware** (first case) and **uncertainty-aware** (partial observability).
+  - > "The **rule-based** policy is **very conservative** and **fails** for test scenarios with short sensor range (`40m`)."
+
+</details>
+
+---
+
 **`"Learning Robust Control Policies for End-to-End Autonomous Driving from Data-Driven Simulation"`**
 
 - **[** `2020` **]**
