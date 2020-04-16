@@ -1,5 +1,7 @@
 # My Bibliography for Research on Autonomous Driving
 
+Note: Some articles may be missing at the bottom of this preview page (due to length). Open [README.md](https://github.com/chauvinSimon/My_Bibliography_for_Research_on_Autonomous_Driving/blob/master/README.md) to get all the articles!
+
 ## Motivation
 
 In this document, I would like to **share some personal notes** about the latest exciting trends in **research** about decision making for autonomous driving. I keep on updating it :construction_worker: :construction: :smiley:
