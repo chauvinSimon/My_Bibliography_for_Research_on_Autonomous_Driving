@@ -3447,6 +3447,100 @@ Author: Noh, S.
 
 ---
 
+**`"Tactical Decision-Making in Autonomous Driving by Reinforcement Learning with Uncertainty Estimation"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://arxiv.org/abs/2004.10439)]**
+**[[:octocat:](https://github.com/carljohanhoel/BayesianRLForAutonomousDriving)]**
+**[[🎞️](https://github.com/carljohanhoel/BayesianRLForAutonomousDriving)]**
+**[** :mortar_board: `Chalmers University` **]**
+**[** :car: `Volvo` **]**
+
+- **[** _`ensemble`, `bayesian RL`, [`SUMO`](https://sumo.dlr.de/docs/index.html)_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://arxiv.org/abs/2004.10439).](media/2020_hoel_1.PNG "[Source](https://arxiv.org/abs/2004.10439).")  |
+|:--:|
+| *The main idea is to use an **ensemble of neural networks with additional randomized prior functions** (`RPF`) to **estimate the uncertainty of decisions**. Each member estimates `Q(s, a)` in a **sum `f + βp`**. Note that the **prior `p` nets** are initialized with random parameters `θˆk` that are **kept fixed**. [Source](https://arxiv.org/abs/2004.10439).* |
+
+| ![[Source](https://arxiv.org/abs/2004.10439).](media/2020_hoel_2.PNG "[Source](https://arxiv.org/abs/2004.10439).")  |
+|:--:|
+| *Bottom: example of **situation outside of the training distribution**. Before seeing the other, the policy chooses to **maintain its current speed**. As soon as the stopped vehicle is seen, the **uncertainty `cv` becomes higher that the safety threshold**. The agent chooses then the **fallback action `brake hard`** early enough and manages to avoid a collision. The baseline DQN agent also brakes when it approaches the stopped vehicle, but **too late**. [Source](https://arxiv.org/abs/2004.10439).* |
+
+Authors: Hoel, C.-J., Wolff, K., & Laine, L.
+
+- Motivations:
+  - `1-` Estimate an **uncertainty** for each **(`s`, `a`) pair** when computing the `Q(s,a)`, i.e. express some **confidence** about the decision in `Q`-based algorithms.
+  - `2-` Use this metric together with some **safety criterion** to **detect situations** are **outside of the training distribution**.
+    - Simple `DQN` can **cause collisions** if the confidence of the agent is not considered:
+    - > "A fundamental problem with these methods is that no matter what situation the agents are facing, they **will always output a decision**, with **no information on the uncertainty** of the decision or if the agent has **experienced anything similar** during its training. If, for example, an agent that was trained for a one-way highway scenario would be deployed in a scenario with **oncoming traffic**, it would still output a decision, **without any warning**."
+    - > "The DQN algorithm returns a **maximum likelihood estimate** of the `Q-values`. But gives no information about the uncertainty of the estimation. Therefore **collisions occur in unknown situations**".
+  - `3-` And also leverage this **uncertainty estimation** to better train and **transfer** to real-world.
+    - > "The uncertainty information could be used to **guide the training** to situations that the agent is **currently not confident about**, which could improve the **sample efficiency** and broaden the distribution of situations that the agent can handle."
+    - > If an agent is trained in a **simulated environment** and **later deployed in real traffic**, the uncertainty information could be used to detect situations that need to be **added to the simulated world**.
+
+- Previous works:
+  - [Automated Speed and Lane Change Decision Making using Deep Reinforcement Learning](https://arxiv.org/abs/1803.10056) (Hoel, Wolff, & Laine, 2018).
+  - [Combining Planning and Deep Reinforcement Learning in Tactical Decision Making for Autonomous Driving](https://arxiv.org/abs/1905.02680) (Hoel, Driggs-Campbell, Wolff, Laine, & Kochenderfer, 2019) analysed in [my `IV19` report](https://github.com/chauvinSimon/IV19).
+  - [Tactical decision-making for autonomous driving: A reinforcement learning approach](https://research.chalmers.se/publication/511929/file/511929_Fulltext.pdf). Hoel's 2019 thesis.
+- How to estimate uncertainty:
+  - `1-` **Bootstrap sampling**.
+    - The **risk** of an `action` is represented as the **variance of the return** (`Q(s, a)`) when taking that action. The **variance** is estimated using an **ensemble of models**:
+    - > "An **ensemble of models** is trained on **different subsets** of the available data and the **distribution** that is given by the ensemble is used to **approximate the uncertainty**".
+      - Issue: "No mechanism for uncertainty that **does not come from the observed data**".
+  - `2-` **Ensemble-`RPF`**.
+    - Same idea, but a **randomized untrainable prior function** (`RPF`) is added to each **ensemble member**.
+      - **_"untrainable"_**: The `p` nets are initialized with random parameters `θˆk` that are kept fixed.
+    - This is inspired by the work of DeepMind: [Randomized prior functions for deep reinforcement learning](https://arxiv.org/pdf/1806.03335.pdf) (Osband, Aslanides, & Cassirer, 2018).
+    - Efficient parallelization is required since `K` nets need to be trained instead of one.
+- About the `RPF`:
+  - Each of the **`K` ensemble members** estimates `Q(s, a)` in a **sum `f + βp`**, where `β` balances the importance of the **prior function**.
+  - Training (_generate_ + _explore_): **One member is sampled**. It is used to generate an experience `(s, a, r, s')` that is **added to each ensemble buffer** with probability `p-add`.
+  - Training (_evaluate_ + _improve_): A **minibatch `M`** of experiences is sampled from **each ensemble buffer** and the trainable network parameters of the corresponding ensemble member are updated.
+- About the **_"coefficient of variation"_ `cv`(`s`, `a`)**:
+  - It is used to estimate the **agent's uncertainty** of taking different actions from a given state.
+  - It represents the **relative standard deviations**, which is defined as the **ratio** of the **`standard deviation`** to the **`mean`**.
+  - It indicates **_how far `(s, a)` is from the training distribution_**.
+- At inference (during testing):
+  - `action`s with a **level of uncertainty `cv(s, a)`** that exceeds a defined threshold are **prohibited**.
+  - If no `action` fulfils the criteria, a **fallback action `a-safe`** is used.
+  - Otherwise, the selection is done **maximizing the mean `Q-value`**.
+  - The `DQN`-baseline, `SUMO`-baseline and proposed **`DQN`-`ensemble-RPF`** are tested on **scenarios outside** of the **training distributions**.
+    - > "The `ensemble RPF` method both indicates a **high uncertainty** and **chooses safe actions**, whereas the `DQN` agent causes collisions."
+- About the `MDP`:
+  - `state`: relative positions and speeds.
+  - `action`:
+    - longitudinal: {`-4`, `−1`, `0`, `1`} `m/s2`.
+    - lateral: {`stay in lane`, `change left`, `change right`}.
+    - The **fallback action `a-safe`** is set to `stay in lane` and apply `−4 m/s2`
+  - `time`:
+    - Simulation timestep `∆t` = `1s`. _Ok, they want high-level decision. Many things can happen within 1s though! How can it react properly?_
+    - A lane change takes `4s` to complete. Once initiated, it cannot be aborted. _I see that as a_ **_de-bouncing_** _method_.
+  - `reward`:
+    - `v/v-max`, in `[0, 1]`, encouraging the agent to overtake slow vehicles.
+    - `-10` for **collision / off-road** (when changing lane when already on the side). `done`=`True`.
+    - `-10` if the behaviour of the ego vehicle causes another vehicle to **emergency brake**, or if the ego vehicle **drives closer to another vehicle** than a minimum time gap. `done`=`False`.
+      - This reminds me the idea of [(Kamran, Lopez, Lauer, & Stiller, 2020)](https://arxiv.org/abs/2004.04450) to **add risk estimate to the reward function** to offer **more frequent signals**.
+    - `-1` for each lane change. To discourage unnecessary lane changes.
+- One quote about the `Q`-neural net:
+  - > "By applying `CNN` layers and a `max pooling` layer to the part of the input that describes the **surrounding vehicles**, the output of the network becomes **independent of the ordering** of the surrounding vehicles in the **input vector**, and the architecture allows a **varying input vector size**."
+- One quote about **hierarchy in decision-making**:
+  - > "The **decision-making** task of an autonomous vehicle is commonly divided into **`strategic`, `tactical`, and `operational`** decision-making, also called **`navigation`, `guidance` and `stabilization`**. In short, **`tactical` decisions** refer to **high level, often discrete**, decisions, such as when to _change lanes_ on a highway."
+- One quote about the **`k-Markov` approximation**:
+  - > "Technically, the problem is a `POMDP`, since the ego vehicle **cannot observe the internal state** of the driver models of the **surrounding vehicles**. However, the `POMDP` can be approximated as an `MDP` with a **`k-Markov` approximation**, where the state consists of the **last `k` observations**."
+  - Here the authors define **full observability** within `200 m`.
+- Why is it called _Bayesian_ `RL`?
+  - Working with an **ensemble** gives **probability distribution** for the **`Q` function**.
+  - The `prior` is introduced, here `p`.
+  - _What is the posterior?_ The resulting `f+βp`.
+  - _How could the likelihood be interpreted?_
+
+</details>
+
+---
+
 **`"Risk-Aware High-level Decisions for Automated Driving at Occluded Intersections with Reinforcement Learning"`**
 
 - **[** `2020` **]**
