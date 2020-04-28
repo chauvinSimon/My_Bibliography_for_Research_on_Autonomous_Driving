@@ -975,6 +975,8 @@ Authors: Chen, D., Zhou, B., Koltun, V. & Krähenbühl, P
 - **[** `2019` **]**
 **[[:memo:](https://arxiv.org/abs/1810.06544v4)]**
 **[[🎞️](https://sites.google.com/view/imitative-models)]**
+**[[🎞️](https://www.youtube.com/watch?v=p-ltQdNFlVg)]**
+**[[:octocat:](https://github.com/nrhine1/deep_imitative_models)]**
 **[** :mortar_board: `Carnegie Mellon University, UC Berkeley` **]**
 
 - **[** _`conditional IL`, `model-based RL`, [`CARLA`](http://carla.org/)_ **]**
@@ -1005,7 +1007,7 @@ Authors: Rhinehart, N., McAllister, R., & Levine, S.
   - Neither `IL` nor `MBRL` can do so.
   - In other words, it completes **planning** based on some **imitation prior**.
 - One concept: **"_Imitative Models"_**
-  - They are _"probabilistic predictive models able to **_plan interpretable expert-like trajectories to achieve new goals_**".
+  - They are "probabilistic predictive models able to **_plan interpretable expert-like trajectories to achieve new goals_**".
   - As for `IL` -> use **expert demonstration**:
     - It generates **expert-like** behaviors **without reward function crafting**.
     - The model is learnt _"offline"_ also means it avoids costly online data collection (contrary to `MBRL`).
