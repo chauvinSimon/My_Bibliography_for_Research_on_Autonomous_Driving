@@ -42,6 +42,49 @@ Looking forward your reading suggestions!
 
 ## `Architecture` and `Map`
 
+**`"LGSVL Simulator: A High Fidelity Simulator for Autonomous Driving"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://zelenkovsky.com/assets/files/LGSVL_Simulator_ITSC_2020.pdf)]**
+**[[:memo:](https://www.lgsvlsimulator.com/)]**
+**[[:octocat:](https://github.com/lgsvl/simulator)]**
+**[[🎞️](https://www.youtube.com/channel/UChrPZIYAnKEKiQjmPmBwPKA)]**
+**[** :car: `LG` **]**
+
+- **[** _`simulator`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://zelenkovsky.com/assets/files/LGSVL_Simulator_ITSC_2020.pdf).](media/2020_boise_1.PNG "[Source](https://zelenkovsky.com/assets/files/LGSVL_Simulator_ITSC_2020.pdf).")  |
+|:--:|
+| *A **bridge** is selected based on the user **AD stack’s runtime framework**: `Autoware.AI` and `Autoware.Auto`, which run on `ROS` and `ROS2`, can connect through **standard open source `ROS` and `ROS2` bridges**, while for `Baidu’s Apollo` platform, which uses a custom runtime framework called [`Cyber RT`](https://github.com/ApolloAuto/apollo/tree/master/cyber), a custom bridge is provided to the simulator. [Source](https://zelenkovsky.com/assets/files/LGSVL_Simulator_ITSC_2020.pdf).* |
+
+Authors: Boise, E., Uhm, G., Gerow, M., Mehta, S., Agafonov, E., Kim, T. H., … Kim, S.
+
+- Motivations (_Yet another simulator?_):
+  - > "The LGSVL Simulator is a simulator that facilitates testing and development of autonomous driving software systems."
+  - The main use case seems to be the **integration** to **AD stacks**: `Autoware.AI`, `Autoware.Auto`, `Apollo 5.0`, `Apollo 3.0`.
+  - Compared to [`CARLA`](http://carla.org/) for instance, it seems more **focused** on _development_ rather than _research_.
+- The simulation engine serves three functions:
+  - **Environment** simulation
+  - **Sensor** simulation
+  - **Vehicle dynamics and control** simulation.
+- Miscellaneous:
+  - `LGSVL` = _LG Silicon Valley Lab_.
+  - Based on `Unity` engine.
+  - A `openAI-gym` environment is provided for **reinforcement learning**: [`gym-lgsvl`]().
+    - Default `action` space: `steering` and `braking`/`throttle`.
+    - Default `observation` space: single camera image from the front camera. _Can be enriched_.
+  - For **perception** training, [`kitti_parser.py`](https://github.com/lgsvl/PythonAPI/blob/master/examples/kitti_parser.py) enables to **generate labelled data** in `KITTI` format.
+  - A **custom [License](https://raw.githubusercontent.com/lgsvl/simulator/master/LICENSE)** is defined.
+    - > "You may not **sell or otherwise transfer** or make available the Licensed Material, any copies of the Licensed Material, or any information derived from the Licensed Material in any form to any third parties for **commercial purposes**."
+    - It makes it **hard to compare** to other simulators and AD software: for instance [`Carla`](http://carla.org/), [`AirSim`](https://github.com/microsoft/AirSim) and [`DeepDrive`](https://deepdrive.io/) are all under **`MIT License`** while code for `Autoware` and `Apollo` is protected by the **`Apache 2 License`**.
+
+</details>
+
+---
+
 **`"Overview of Tools Supporting Planning for Automated Driving"`**
 
 - **[** `2020` **]**
@@ -98,6 +141,8 @@ Authors: Tong, K., Ajanovic, Z., & Stettinger, G.
 </details>
 
 ---
+
+**`"Decision-making for automated vehicles using a hierarchical behavior-based arbitration scheme"`**
 
 - **[** `2020` **]**
 **[[:memo:](https://arxiv.org/abs/2003.01149)]**
