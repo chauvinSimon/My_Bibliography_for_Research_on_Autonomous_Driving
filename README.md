@@ -3552,6 +3552,27 @@ Author: Noh, S.
 
 ---
 
+**`"Deep Reinforcement Learning for Intelligent Transportation Systems: A Survey"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://arxiv.org/abs/2005.00935)]**
+**[** :mortar_board: `University of South Florida` **]**
+
+- **[** _`literature review`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://arxiv.org/abs/2005.00935).](media/2020_haydari_1.PNG "[Source](https://arxiv.org/abs/2005.00935).")  |
+|:--:|
+| *The review focuses on **traffic signal control** (`TSC`) use-cases. Some `AD` applications are nonetheless shortly mentioned. [Source](https://arxiv.org/abs/2005.00935).* |
+
+Authors: Haydari, A., & Yilmaz, Y.
+
+</details>
+
+---
+
 **`"Tactical Decision-Making in Autonomous Driving by Reinforcement Learning with Uncertainty Estimation"`**
 
 - **[** `2020` **]**
