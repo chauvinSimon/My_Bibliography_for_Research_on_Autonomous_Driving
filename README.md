@@ -2352,6 +2352,64 @@ Authors: Kuderer, M., Gulati, S., & Burgard, W.
 
 ---
 
+**`"Online parameter estimation for human driver behavior prediction"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://arxiv.org/abs/2005.02597)]**
+**[[:octocat:](https://github.com/sisl/ngsim_env/tree/idm_pf_NGSIM)]**
+**[**:mortar_board: `Stanford`**]**
+**[**:car: `Toyota Research Institute`**]**
+
+- **[** _`stochastic IDM`_  **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://arxiv.org/abs/2005.02597).](media/2020_bhattacharyya_1.PNG "[Source](https://arxiv.org/abs/2005.02597).")  |
+|:--:|
+| *The vanilla [IDM](https://arxiv.org/abs/cond-mat/0002177) is a **parametric rule-based car-following model** that balances two forces: the desire to achieve **free speed** if there were no vehicle in front, and the **need to maintain safe separation** with the vehicle in front. It outputs an **acceleration** that is guaranteed to be **collision free**. The **stochastic** version introduces a new model parameter `σ-IDM`. [Source](https://arxiv.org/abs/2005.02597).* |
+
+Authors: Bhattacharyya, R., Senanayake, R., Brown, K., & Kochenderfer
+
+- Motivations:
+  - `1-` Explicitly **model stochasticity** in the behaviour of individual drivers.
+    - Complex **multi-modal** distributions over possible outcomes should be modelled.
+  - `2-` Provide **safety guarantees**
+  - `3-` **Highway** scenarios: no urban intersection.
+  - The methods should combine advantages of `rule-based` and `learning-based` estimation/prediction methods:
+    - **Interpretability**.
+    - **Guarantees on safety** (the learning-based model **Generative Adversarial Imitation Learning ([**`GAIL`**](https://arxiv.org/abs/1606.03476))** used as baseline is not collision free).
+    - Validity even in regions of the state space that are under-represented in the data.
+    - High **expressive power** to capture **nuanced driving behaviour**.
+- About the method:
+  - > "We apply **online parameter estimation** to an extension of the **Intelligent Driver Model** [IDM](https://arxiv.org/abs/cond-mat/0002177) that explicitly models stochasticity in the behavior of individual drivers."
+  - This rule-based method is **online**, as opposed for instance to the IDM with parameters obtained by **offline estimation**, using **non-linear least squares**.
+  - **Particle filtering** is used for the recursive Bayesian estimation.
+  - The derived parameter estimates are then used for **forward motion prediction**.
+- About the **estimated parameters** (per observed vehicle):
+  - `1-` The **desired velocity** (`v-des`).
+  - `2-` The driver-dependent **stochasticity on acceleration** (`σ-IDM`).
+  - They are assumed **stationary** for each driver, i.e., human drivers **do not change their latent driving behaviour** over the time horizons.
+- About the **datasets**:
+  - `NGSIM` for [US Highway 101](https://www.fhwa.dot.gov/publications/research/operations/07030/index.cfm) at `10 Hz`.
+  - Highway Drone Dataset ([`HighD`](https://arxiv.org/ftp/arxiv/papers/1810/1810.05642.pdf)) at `25 Hz`.
+  - `RMSE` of the **position** and **velocity** are used to measure “closeness” of a **predicted trajectory** to the corresponding ground-truth trajectory.
+  - **Undesirable events**, e.g. _collision_, _going off-the-road_, _hard braking_, that occur in each scene prediction are also considered.
+- How to deal with the **_"particle deprivation problem"_**?:
+  - Particle deprivation = particles **converge to one region** of the state space and there is **no exploration** of other regions.
+  - `Dithering` method = **external noise** is added to **aid exploration** of state space regions.
+  - From (Schön, Gustafsson, & Karlsson, 2009) in ["The Particle Filter in Practice"](http://user.it.uu.se/~thosc112/pubpdf/schongk2011.pdf):
+    - > "Both the **`process`** noise and **`measurement` noise** distributions need some **dithering** (**increased covariance**).  Dithering the `process` noise is a well-known method to mitigate the **sample impoverishment problem**.  Dithering the `measurement` noise is a good way to mitigate the effects of **outliers** and to robustify the `PF` in general".
+  - Here:
+    - > "We implement dithering by **adding random noise** to the top `20%` particles ranked according to the corresponding likelihood. The noise is sampled from a **discrete uniform distribution** with `v-des` `∈` {`−0.5`, `0`, `0.5`} and `σ-IDM` `∈` {`−0.1`, `0`, `0.1`}. (This **preserves the discretization** present in the initial sampling of particles).
+- Future works:
+  - **Non-stationarity**.
+  - Combination with a **lane changing model** such as [`MOBIL`](https://mtreiber.de/publications/MOBIL_TRB.pdf) to extend to two-dimensional driving behaviour.
+
+</details>
+
+---
+
 **`"PLOP: Probabilistic poLynomial Objects trajectory Planning for autonomous driving"`**
 
 - **[** `2020` **]**
