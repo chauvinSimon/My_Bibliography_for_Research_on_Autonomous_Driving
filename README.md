@@ -3552,6 +3552,50 @@ Author: Noh, S.
 
 ---
 
+**`"Offline Reinforcement Learning: Tutorial, Review, and Perspectives on Open Problems"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://arxiv.org/abs/2005.01643)]**
+**[** :mortar_board: `UC Berkeley` **]**
+
+- **[** _`offline RL`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://arxiv.org/abs/2005.01643).](media/2020_levine_1.PNG "[Source](https://arxiv.org/abs/2005.01643).")  |
+|:--:|
+| *__Offline__ reinforcement learning algorithms are reinforcement learning algorithms that **utilize previously collected data**, without additional **online** data collection. The term ''`fully off-policy`'' is sometimes used to indicate that **no additional online data collection** is performed. [Source](https://arxiv.org/abs/2005.01643).* |
+
+Authors: Levine, S., Kumar, A., Tucker, G., & Fu, J.
+
+Note: This **theoretical tutorial** could also have been part of sections on `model-based RL` and `imitation learning`.
+
+- Motivations:
+  - Make `RL` **data-driven**, i.e. forget about _exploration_ and _interactions_ and utilize **only previously collected offline** data.
+    - > "**Fully offline** `RL` framework is enormous: in the same way that **supervised machine learning** methods have enabled data to be turned into generalizable and powerful pattern recognizers (e.g., image classifiers, speech recognition engines, etc.), offline `RL` methods equipped with powerful function approximation may enable data to be turned into generalizable and powerful decision making engines, effectively allowing anyone **with a large enough dataset** to turn this dataset into a policy that can optimize a desired utility criterion."
+  - Enable the use of `RL` for **safety** critical applications.
+    - > "In many settings, the **online interaction** is impractical, either because **data collection is expensive** (e.g., in robotics, educational agents, or healthcare) and **dangerous** (e.g., in **_autonomous driving_**, or healthcare)."
+    - This could also remove the need for **"simulation to real-world transfer" (`sim-2-real`)**, which is difficult:
+    - > "If it was possible to **simply train policies with previously collected data**, it would likely be unnecessary in many cases to manually **design high-fidelity simulators** for simulation-to-real-world transfer."
+- About the "**data**-driven" aspect.
+  - Because formulation resembles the standard **_supervised_ learning** problem statement, technics / **lesson-learnt** from supervised learning could be considered.
+  - > "Much of the amazing practical progress that we have witnessed over the past decade has arguably been driven just as much **by advances in datasets as by advances in methods**. In real-world applications, **collecting large, diverse, representative, and well-labeled datasets** is often **far more important than utilizing the most advanced methods.**" _I agree!_
+  - Both [`RobotCar`](https://robotcar-dataset.robots.ox.ac.uk/) and [`BDD-100K`](https://bair.berkeley.edu/blog/2018/05/30/bdd/) are cited as **large video datasets** containing thousands of hours of real-life driving activity.
+- One major **challenge** for `offline RL` formulation:
+  - > "The fundamental challenge with making such **counterfactual queries** _[given data that resulted from a given set of decisions, infer the consequence of a different set of decisions]_ is **distributional shift**: while our function approximator (policy, value function, or model) might be trained under one distribution, it will be **evaluated on a different distribution**, due both to the change in visited states for the new policy and, more subtly, by the act of maximizing the expected return."
+  - This makes **`offline RL`** differ from Supervised learning methods which are designed around the **assumption that the data is independent and identically distributed** (`i.i.d.`).
+- About applications to `AD`:
+  - **`offline RL`** is potentially a promising tool for enabling **safe and effective** learning in autonomous driving.
+    - > "**Model-based `RL`** methods that employ constraints to keep the agent close to the training data for the model, so as to **avoid out-of-distribution inputs** as discussed in Section `5`, can effectively provide elements of **imitation learning** when training on driving demonstration data.
+  - The work of (Rhinehart, McAllister & Levine, 2018) [`"Deep Imitative Models for Flexible Inference, Planning, and Control"`](https://arxiv.org/abs/1810.06544v4), is mentioned:
+    - It tries to combine the benefits of **`imitation learning`** (**`IL`**) and **`goal-directed planning`** such as `model-based RL` (**`MBRL`**).
+    - > "Indeed, with the widespread **availability of high-quality demonstration data**, it is likely that effective methods for **offline `RL`** in the field of autonomous driving will, explicitly or implicitly, **combine elements of `imitation learning` and `RL`**.
+  
+</details>
+
+---
+
 **`"Deep Reinforcement Learning for Intelligent Transportation Systems: A Survey"`**
 
 - **[** `2020` **]**
