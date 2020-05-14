@@ -3552,6 +3552,80 @@ Author: Noh, S.
 
 ---
 
+**`"Delay-Aware Multi-Agent Reinforcement Learning"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://arxiv.org/abs/2005.05441)]**
+**[[:octocat:](https://github.com/baimingc/damarl)]**
+**[** :mortar_board: `Carnegie Mellon` **]**
+
+- **[** _`delay aware MDP`, [`CARLA`](http://carla.org)_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://arxiv.org/abs/2005.05441).](media/2020_chen_3.PNG "[Source](https://arxiv.org/abs/2005.05441).")  |
+|:--:|
+| *Real cars exhibit `action` delay. Standard delay-free `MDP`s can be augmented to **Delay-Aware `MDP` (`DA-MDP`)** by enriching the `observation` vector with the **sequence of previous `action`**. [Source](https://arxiv.org/abs/2005.05441).* |
+
+| ![[Source](https://arxiv.org/abs/2005.05441).](media/2020_chen_4.PNG "[Source](https://arxiv.org/abs/2005.05441).")  |
+|:--:|
+| *Combining **multi-agent** and **delay-awareness**. In the left-turn scenario, `agent`s decide the longitudinal **acceleration** based on the `observation` the **position** and **velocity** of other vehicles. They are positively rewarded if **all of them successfully finish** the left turn and penalized if any collision happens. Another cooperative task is tested: driving out of the parking lot. [Source](https://arxiv.org/abs/2005.05441).* |
+
+Authors: Chen, B., Xu, M., Liu, Z., Li, L., & Zhao, D.
+
+- Motivations:
+  - `1-` Deal with `observation` **delays** and `action` **delays** in the `environment`-`agent` interactions of **`MDP`s**.
+    - It is hard to **transfer** a policy learnt with **standard delay-free MDPs** to real-world cars because of **actuator** delays.
+      - > "Most `DRL` algorithms are evaluated in turn-based simulators like `Gym` and `MuJoCo`, where the `observation`, `action` selection and actuation of the agent are **assumed to be instantaneous**."
+    - Ignoring the delay of agents violates the **Markov property** and results in `POMDP`s, with **historical actions as hidden states**.
+      - To retrieve the **Markov property**, a **Delay-Aware `MDP` (`DA-MDP`)** formulation is proposed here.
+  - `2-` One option would be to go `model-based`, i.e. learning the **transition dynamic model**. Here the authors prefer to stay `model-free`.
+    - > "The **control** community has proposed several methods to address the delay problem, such as using **Smith predictor** [24], [25], **Artstein reduction** [26], [27], **finite spectrum assignment** [28], [29], and **H∞ controller**."
+  - `3-` Apply to **multi-agent** problems, using the **Markov game (`MG`)** formulation.
+    - > "**Markov game** is a **multi-agent** extension of `MDP` with **partially observable** environments.
+    - Application: vehicles trying to **cooperate at an unsignalized intersection**.
+- About delays:
+  - There exists **two** kinds:
+    - > "For simplicity, we will focus on the **`action` delay** in this paper, and the algorithm and conclusions should be able to generalize to systems with **`observation` delays**."
+  - > "The **delay** of a vehicle mainly includes:"
+    - **Actuator delay**.
+      - > "The actuator delay for vehicle **powertrain system** and **hydraulic brake** system is usually between **`0.3` and `0.6` seconds**."
+    - **Sensor delay**.
+      - > "The delay of sensors (cameras, LIDARs, radars, GPS, etc) is usually between `0.1` and `0.3` seconds."
+    - **Time for decision making**.
+    - **Communication delay**, in `V2V`.
+- > "Consider a velocity of `10 m/s`, the `0.8` seconds delay could cause a **position error of `8 m`**, which injects **huge uncertainty and bias** to the state-understanding of the agents."
+- Main idea: **`observation` augmentation with `action` sequence buffer** to retrieve the **Markov property**.
+  - The authors show that a Markov game (`MG`) with **multi-step action delays** can be converted to a **regular** `MG` by **state augmentation** (delay aware `MG` = `DA-MG`).
+    - Proof by comparing their corresponding `Markov Reward Processes` (`MRP`s).
+    - Consequence: instead of solving `MG`s with delays, we can alternatively **solve the corresponding `DA-MGs` directly with `DRL`**.
+  - The **input** of the policy now consists of:
+    - The current information of the environment. E.g. `speeds` and `positions`.
+    - The **planned action sequence** of **length `k`** that will be executed from.
+  - The agents **interact with the environment not directly** but through an **action buffer**.
+    - The **state vector** is augmented with an **action sequence** being executed in the next `k` steps where `k` `∈` `N` is the **delay duration**.
+    - The dimension of `state` space increases, since `X` becomes `S` × `Ak`.
+    - `a(t)` is the action **taken** at time `t` but **executed** at time `t + k` due to the `k`-step action delay.
+      - Difference between _select_ an action (done by the `agent`) and _execute_ an `action` (done by the `environment`).
+- About **delay sensitivity**:
+  - Trade-off between **_delay-unawareness_** and **_complexity_** for the learning algorithm.
+  - > "When the **delay is small** (here less than `0.2s`), the effect of **expanding state-space** on training is more severe than the **model error** introduced by **delay-unawareness**".
+- Papers about action delay in `MDP`s:
+  - [Learning and planning in environments with delayed feedback](https://www.researchgate.net/publication/227301866_Learning_and_planning_in_environments_with_delayed_feedback) (Walsh, Nouri, Li & Littman, 2008) -> `model-based` predictions.
+  - [At human speed: Deep reinforcement learning with action delay](https://arxiv.org/pdf/1810.07286.pdf) (Firoiu, Ju, & Tenenbaum, 2018) -> `model-based` predictions. The delayed system was reformulated as an **augmented MDP problem**.
+  - [Real-time reinforcement learning](https://arxiv.org/pdf/1911.04448.pdf) (Ramstedt & Pal, 2019) -> solve the **`1`-step** delayed problem.
+- About multi-agent `RL`:
+  - > "The simplest way is to directly train each agent with **single-agent `RL`** algorithms. However, this approach will introduce the **non-stationary** issue."
+  - **Centralized training** and **decentralized execution**.
+    - Centralized `Q-function`s: The **centralized critic** conditions on **global information** (global `state` representation and the `actions` of all agents).
+      - > "The non-stationary problem is alleviated by **centralized training** since the transition distribution of the environment is **stationary when knowing all agent actions**."
+    - Decentralized `policy` for each agent: The **decentralized actor** conditions only on **private observation** to avoid the need for a **centralized controller** during execution.
+
+</details>
+
+---
+
 **`"Offline Reinforcement Learning: Tutorial, Review, and Perspectives on Open Problems"`**
 
 - **[** `2020` **]**
