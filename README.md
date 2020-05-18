@@ -3669,7 +3669,7 @@ Authors: Capasso, A. P., Bacchiani, G., & Broggi, A.
 
 | ![[Source](https://arxiv.org/abs/2005.05441).](media/2020_chen_3.PNG "[Source](https://arxiv.org/abs/2005.05441).")  |
 |:--:|
-| *Real cars exhibit `action` delay. Standard delay-free `MDP`s can be augmented to **Delay-Aware `MDP` (`DA-MDP`)** by enriching the `observation` vector with the **sequence of previous `action`**. [Source](https://arxiv.org/abs/2005.05441).* |
+| *Real cars exhibit `action` delay. Standard delay-free `MDP`s can be augmented to **Delay-Aware `MDP` (`DA-MDP`)** by enriching the `observation` vector with the **sequence of previous `action`**. [Source1](https://arxiv.org/abs/2005.05441) [Source2](https://arxiv.org/abs/2005.05440).* |
 
 | ![[Source](https://arxiv.org/abs/2005.05441).](media/2020_chen_4.PNG "[Source](https://arxiv.org/abs/2005.05441).")  |
 |:--:|
