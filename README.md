@@ -3552,6 +3552,109 @@ Author: Noh, S.
 
 ---
 
+**`"From Simulation to Real World Maneuver Execution using Deep Reinforcement Learning"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://arxiv.org/abs/2005.07023)]**
+**[[🎞️](https://drive.google.com/file/d/1X9Sy2Mru_SfWyid3-Va8Ftm1pXfk5w3o/view)]**
+**[** :mortar_board: `University of Parma` **]**
+**[** :car: `VisLab` **]**
+
+- **[** _`sim2real`, `noise injection`, `train-validation-test`, `D-A3C`, `conditional RL`, `action repeat`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://arxiv.org/abs/2005.07023).](media/2020_capasso_2.PNG "[Source](https://arxiv.org/abs/2005.07023).")  |
+|:--:|
+| *Environments for `training` (top) differ from those used for `validation` and `testing` (bottom): **Multi-environment System** consists in **four `training` roundabouts** in which vehicles are **trained simultaneously**, and a **`validation` environment** used to **select the best network parameters** based on the results obtained on such scenario. The **generalization performance** is eventually measured on a separate `test` environment. [Source](https://arxiv.org/abs/2005.07023).* |
+
+| ![[Source](https://arxiv.org/abs/2005.07023).](media/2020_capasso_1.PNG "[Source](https://arxiv.org/abs/2005.07023).")  |
+|:--:|
+| *A sort of **conditional-learning** methods: an **`aggressiveness` level** is set as an input in the `state` and considered during the `reward` computation. More precisely: `α = (1−aggressiveness)`. During the `training` phase, `aggressiveness` assumes a random value from `0` to `1` kept fixed for the **whole episode**. Higher values of `aggressiveness` should encourage the actor to **increase the impatience**; consequently, **dangerous actions will be less penalized**. The authors note that values of `aggressiveness` sampled outside the training interval `[0, 1]` produce consistent consequences to the agent conduct, intensifying its behaviour even further. The **non-visual channel** can also be used to specify the **desired cruising speed**. [Source1](https://arxiv.org/abs/2005.07023) [Source2]((https://arxiv.org/abs/1903.01365)).* |
+
+| ![[Source]((https://drive.google.com/file/d/1iGc820O_qeBSrWHbwhPTiTyby_HupM-_/view)).](media/2020_capasso_2.gif "[Source]((https://drive.google.com/file/d/1iGc820O_qeBSrWHbwhPTiTyby_HupM-_/view)).")  |
+|:--:|
+| *The `active` agent decides **high-level actions**, i.e. when to enter the roundabout. It should interact with `passive` agents, that have been collectively trained in a **multi-agent fashion** and decide lower-level `speed`/`acceleration` actions. [Source]((https://drive.google.com/file/d/1iGc820O_qeBSrWHbwhPTiTyby_HupM-_/view)).* |
+
+| ![[Source]((https://drive.google.com/file/d/1X9Sy2Mru_SfWyid3-Va8Ftm1pXfk5w3o/view)).](media/2020_capasso_1.gif "[Source]((https://drive.google.com/file/d/1X9Sy2Mru_SfWyid3-Va8Ftm1pXfk5w3o/view)).")  |
+|:--:|
+| *[Source]((https://drive.google.com/file/d/1X9Sy2Mru_SfWyid3-Va8Ftm1pXfk5w3o/view)).* |
+
+Authors: Capasso, A. P., Bacchiani, G., & Broggi, A.
+
+- Motivations:
+  - `1-` Increase **robustness**. In particular **generalize** to **unseen scenarios**.
+    - This relates to the problem of **overfitting** for `RL` agents.
+    - > "Techniques like **_random starts_** and **_sticky actions_** are often **un-useful to avoid overfitting**."
+  - `2-` **Reduce the gap** between **synthetic** and **real data**.
+    - Ambition is to deploy a system in the **real world** even if it was **fully trained in simulation**.
+  - Ingredients:
+    - `1-` **Multiple `training` environments**.
+    - `2-` Use of separated **`validation`** environment to select the best hyper-parameters.
+    - `3-` **Noise injection** to increase robustness.
+- Previous works:
+  - `1` [Intelligent Roundabout Insertion using Deep Reinforcement Learning](https://arxiv.org/abs/2001.00786) [[🎞️](https://drive.google.com/file/d/1iGc820O_qeBSrWHbwhPTiTyby_HupM-_/view)] about the need for a **learning-based** approach.
+    - > "The results show that a **rule-based** (`TTC-`based) approach could lead to **long waits** since its **lack of negotiation and interaction capabilities** brings the agent to perform the entry only when the roundabout is **completely free**".
+  - `2` [Microscopic Traffic Simulation by Cooperative Multi-agent Deep Reinforcement Learning](https://arxiv.org/abs/1903.01365) about **cooperative multi-agent**:
+    - > "Agents are **collectively trained** in a **multi-agent fashion** so that **cooperative behaviors** can emerge, gradually inducing agents to learn to **interact** with each other".
+    - As opposed to **rule-based** behaviours for `passive` actors **hard coded** in the simulator (`SUMO`, `CARLA`).
+    - > "We think that this **multi-agent** learning setting is captivating for many applications that require a **simulation environment with intelligent agents**, because it **learns the joint interactive behavior** eliminating the need for hand-designed behavioral rules."
+- Two types of `agent`, `action`, and `reward`.
+  - `1-` **Active** agents learn to **enter** a roundabout.
+    - The **length of the episode does not change** since it ends once the insertion in the roundabout is completed.
+    - **High-level `action`** in {`Permitted`, `Not Permitted`, `Caution`}
+  - `2-` **Passive** agents learn to **drive** in the roundabout.
+    - **Low-level `action`** in {`accelerate` (`1m/s2`), `keep the same speed`, `brake` (`−2m/s2`).}
+    - The **length of the episode changes!**
+      - > "We multiply the `reward` by a **normalization factor**, that is the ratio between the **path length** in which the rewards are computed, and the **longest path** measured among all the training scenarios"
+  - They interact with each other.
+    - The **density** of passive agents on the roundabout can be set in {`low`, `medium`, `high`}.
+  - The abstraction levels differ: _What are the timesteps used?_ _What about action holding?_
+- About the **hybrid** `state`:
+  - **Visual** channel:
+    - `4` images `84`x`84`, corresponding to a square area of **`50`x`50` meters around the agent**:
+      - **Obstacles**.
+      - **Ego-Path** to follow.
+      - **Navigable space**.
+      - **Stop line**: the position where the agent should stop if the entry cannot be made safely.
+  - **Non-visual** channel:
+    - Measurements:
+      - **Agent speed**.
+      - **Last action** performed by the vehicle.
+    - **Goal specification**:
+      - > "We coupled the visual input with some parameters whose values **influence the agent policy**, inducing different and **tuneable behaviors**: used **to define the goal** for the agent."
+      - **Target speed**.
+      - **`Aggressiveness`** in the manoeuvre execution:
+        - A parameter fed to the net, which is taken into account in the **reward computation**.
+        - I previous works, the authors tuned this `aggressiveness level` as the `elapsed time ratio`: _time and distance left_.
+      - _I see that as a_ **_conditional_**_-learning technique: one can_ **_set the level of aggressiveness of the agent_** _during testing_.
+  - _In previous works,_ _**frames were stacked**_, _so that speed can be inferred._
+- About **robustness** via **noise injection**:
+  - **Perception noise**: `position`, `size` and `heading` as well as errors in the detection of passive vehicles _(probably `false positive` and `false negative`)_.
+  - **Localisation noise**: generate a **new path** of the active vehicle **perturbing the original** one using Cubic Bézier curves.
+- **Multi-env** and `train-validate-test`:
+  - > "**Multi-environment System** consists in **four `training` roundabouts** in which vehicles are **trained simultaneously**, and a **`validation` environment** used to **select the best network parameters** based on the results obtained on such scenario."
+  - The **generalization performance** is eventually measured on a further `test` environment, which does not have any active role during the training phase.
+- About the simulator.
+  - **Synthetic representations** of real scenarios are built with the **[Cairo](https://en.wikipedia.org/wiki/Cairo_(graphics))** graphic library.
+- About the `RL` algorithm.
+  - **Asynchronous** Advantage Actor Critic (`A3C`):
+    - Reducing the **correlation between experiences**, by collecting experiences from agents running in **parallel environment instances**. An alternative to the commonly used **experience replay**.
+    - This parallelization also increases the **time and memory efficiency**.
+  - Delayed A3C (`D-A3C`):
+    - Keep **parallelism**: different environment instances.
+    - Make **interaction** possible: **several agents** in each environment, so that they can **sense each other**.
+    - Reduce the **synchronization burden** of `A3C`:
+    - > "In `D-A3C`, the system collects the contributions of each **asynchronous learner** during the **whole episode**, sending the updates to the global network **only at the end of the episode**, while in the classic `A3C` this exchange is performed **at fixed time intervals**".
+- About **frame-skipping technique** and **action repeat** (previous work).
+  - > "We tested both with and without **action repeat of `4`**, that is **repeating the last action** for the **following `4` frames** (repeated actions are not used for computing the updates). It has been proved that in some cases **action repeat** improves learning by increasing the capability to **learn associations between temporally distant** (`state`, `action`) pairs, giving to `action`s **more time to affect** the `state`."
+  - However, the use of **repeated actions** brings a drawback, that is to **diminish the rate** at which agents interact with the environment.
+
+</details>
+
+---
+
 **`"Delay-Aware Multi-Agent Reinforcement Learning"`**
 
 - **[** `2020` **]**
@@ -5342,9 +5445,8 @@ Authors: Bacchiani, G., Molinari, D., & Patander, M.
 - Other ideas:
   - Stacking the `n=4` most recent views to _capture the evolution_ of the scene (e.g. relative speeds).
   - **_Action repeat_** technique for _temporal abstraction_ to stabilize the learning process (c.f. "_frame skip_").
-- One concept: **"Aggressiveness tuning"**. Together with the `target speed`, the `elapsed time ratio` (ETR) feature is used to tune the aggressiveness of the car:
-
-> "ETR Values close to `1` will induce the agent to drive faster, in order to avoid the predicted negative return for running out of time. Values close to `0` will tell the driver that it still has much time, and it is not a problem to yield to other vehicles."
+- One concept: **"Aggressiveness tuning"**. Together with the `target speed`, the `elapsed time ratio` (`ETR`) feature is used to tune the **aggressiveness** of the car:
+  - > "`ETR` Values close to `1` will induce the agent to **drive faster**, in order to avoid the predicted negative return for running out of time. Values close to `0` will tell the driver that it still **has much time**, and it is not a problem to yield to other vehicles."
 
 </details>
 
