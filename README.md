@@ -2352,6 +2352,97 @@ Authors: Kuderer, M., Gulati, S., & Burgard, W.
 
 ---
 
+**`"VectorNet: Encoding HD Maps and Agent Dynamics from Vectorized Representation"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://arxiv.org/abs/2005.04259)]**
+**[[:memo:](https://blog.waymo.com/2020/05/vectornet.html)]**
+**[**:car: `Waymo`**]**
+
+- **[** _`GNN`, `vectorized representation`_  **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://arxiv.org/abs/2005.04259).](media/2020_gao_1.gif "[Source](https://arxiv.org/abs/2005.04259).")  |
+|:--:|
+| *Both `map features` and our `sensor input` can be **simplified into either a `point`, a `polygon`, or a `curve`**, which can be approximately represented as **polylines**, and eventually further split into vector fragments. The set of such vectors form a simplified **abstracted world** used to make prediction with **less computation** than **rasterized images** encoded with `ConvNets`. [Source](https://arxiv.org/abs/2005.04259).* |
+
+| ![[Source](https://arxiv.org/abs/2005.04259).](media/2020_gao_1.PNG "[Source](https://arxiv.org/abs/2005.04259).")  |
+|:--:|
+| *A **vectorized** representation of the scene is preferred to the combination (**rasterized** rendering + **`ConvNet`** encoding). A **global interaction graph** can be built from these **vectorized** elements, to model the **higher-order relationships** between entities. To further improve the prediction performance, a **supervision** auxiliary task is introduced. [Source](https://arxiv.org/abs/2005.04259).* |
+
+Authors: Gao, J., Sun, C., Zhao, H., Shen, Y., Anguelov, D., Li, C., & Schmid, C.
+
+- Motivations:
+  - `1-` **Reduce computation cost** while offering good prediction performances.
+  - `2-` Capture **long range context information**, for longer horizon prediction.
+    - `ConvNets` are commonly used to encode the scene context, but they have **limited receptive field**.
+    - And increasing `kernel size` and `input image size` is not so easy:
+      - **FLOPs** of `ConvNets` increase **quadratically** with the `kernel size` and `input image size`.
+      - The **number of parameters** increases **quadratically** with the `kernel size`.
+  - Four ingredients:
+    - `1-` A **vectorized** representation is preferred to the combination (**rasterized** rendering + **`ConvNet`** encoding).
+    - `2-` A **graph network**, to model **interactions**.
+    - `3-` **Hierarchy**, to first encode `map` and `sensor` information, and then learn interactions.
+    - `4-` A **supervision** auxiliary task, in parallel to the prediction task.
+- Two kind of **input**:
+  - `1-` **`HD map`** information: **Structured road context information** such as `lane boundaries`, `stop/yield signs`, `crosswalks` and `speed bumps`.
+  - `2-` **`Sensor`** information: Agent **trajectories**.
+- _How to_ **_encode the scene context_** _information?_
+  - `1-` **Rasterized representation**.
+    - `Rendering`: in a **bird-eye image**, with colour-coded attributes. Issue: colouring requires manual specifications.
+    - `Encoding`: encode the scene context information with **`ConvNets`**. Issue: **receptive field** may be limited.
+    - > "The most popular way to **incorporate highly detailed maps** into behavior prediction models is by **rendering the map into pixels** and **encoding the scene information**, such as `traffic signs`, `lanes`, and `road boundaries`, with a **convolutional neural network** (`CNN`). However, this process requires a **lot of compute and time**. Additionally, processing maps as imagery makes it challenging to **model long-range geometry**, such as _lanes merging ahead_, which affects the quality of the predictions."
+    - Impacting parameters:
+      - Convolutional **kernel sizes**.
+      - **Resolution** of the rasterized images.
+      - **Feature cropping**:
+        - > "A larger crop size (`3` vs `1`) can significantly improve the performance, and **cropping along observed trajectory** also leads to better performance."
+  - `2-` **Vectorized representation**
+    - All `map` and `trajectory` elements can be **approximated as sequences of vectors**.
+    - > "This avoids **lossy rendering** and **computationally intensive `ConvNet` encoding** steps."
+  - About **graph neural networks (`GNN`s)**, from [Rishabh Anand](https://www.notion.so/Rishabh-Anand-ceb23e08fecf4afb8732fe0f55039f90)'s [medium article](https://medium.com/dair-ai/an-illustrated-guide-to-graph-neural-networks-d5564a551783):
+    - `1-` Given a graph, we first **convert the `nodes`** to recurrent units and the `edges` to **feed-forward** neural networks.
+    - `2-` Then we perform **`Neighbourhood Aggregation`** (**`Message Passing`**) for all nodes `n` number of times.
+    - `3-` Then we **sum over the embedding vectors** of all nodes to **get graph representation `H`**. Here the _"Global interaction graph"._
+    - `4-` Feel free to pass `H` into higher layers or use it to represent the graph’s unique properties! _Here to learn interaction models to make_ **_prediction_**.
+- About **hierarchy**:
+  - `1-`First, **aggregate information** among **vectors** inside a **polyline**, namely `polyline subgraphs`.
+    - **Graph neural networks (`GNN`s)**  are used to **incorporate these sets of vectors**
+    - > "We treat each vector vi belonging to a polyline Pj as a node in the graph with node features."
+    - _How to encode_ **_attributes_** _of these geometric elements?_ E.g. `traffic light state`, `speed limit`?
+      - _I must admit I did not fully understand. But from what I read on medium:_
+        - Each `node` has a **set of features** defining it.
+        - Each `edge` may **connect `nodes` together** that have **similar features**.
+  - `2-` Then, model the **higher-order relationships** among **polylines**, directly from their **vectorized form**.
+    - Two interactions are jointly modelled:
+      - `1-` The **interactions of multiple agents**.
+      - `2-` Their interactions with the entities from **road maps**.
+        - E.g. a **car enters an intersection**, or a pedestrian approaches a crosswalk.
+        - > "We clearly observe that adding map information significantly improves the trajectory prediction performance."
+- An **auxiliary task**:
+  - `1-` **Randomly masking out `map` features** during training, such as a `stop sign` at a four-way intersection.
+  - `2-` Require the net to **complete it**.
+  - > "The goal is to incentivize the model to **better capture interactions among nodes**."
+  - And to learn to **deal with occlusion**.
+  - > "Adding this objective consistently helps with performance, especially at **longer time horizons**".
+- Two **training objectives**:
+  - `1-` Main task = **Prediction**. **Future trajectories**.
+  - `2-` Auxiliary task = **Supervision**. `Huber loss` between **predicted node features** and **ground-truth masked node features**.
+- Evaluation metrics:
+  - The "widely used" **Average Displacement Error** (`ADE`) computed over the **entire trajectories**.
+  - The **Displacement Error** at `t` (`DE@ts`) metric, where `t` in {`1.0`, `2.0`, `3.0`} seconds.
+- Performances and computation cost.
+  - `VectorNet` is compared to `ConvNets` on the **[`Argoverse`](https://www.argoverse.org/) forecasting dataset**, as well as on some `Waymo` in-house prediction dataset.
+  - `ConvNets` consumes **`200+` times more `FLOPs`** than `VectorNet` for a single agent: `10.56G` vs `0.041G`. Factor `5` when there are `50` agents per scene.
+  - `VectorNet` needs **`29%` of the parameters** of `ConvNets`: `72K` vs `246K`.
+  - `VectorNet` achieves up to `18%` better performance on `Argoverse`.
+
+</details>
+
+---
+
 **`"Online parameter estimation for human driver behavior prediction"`**
 
 - **[** `2020` **]**
