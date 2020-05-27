@@ -1565,6 +1565,70 @@ Authors: Kuefler, A., Morton, J., Wheeler, T., & Kochenderfer, M.
 
 ---
 
+**`"Reinforcement Learning with Iterative Reasoning for Merging in Dense Traffic"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://arxiv.org/abs/2005.11895)]**
+**[** :mortar_board: `Stanford` **]**
+**[** :car: `Honda`, `Toyota` **]**
+
+- **[** _`curriculum learning`, `level-k reasoning`_  **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://arxiv.org/abs/2005.11895).](media/2020_bouton_3.PNG "[Source](https://arxiv.org/abs/2005.11895).")  |
+|:--:|
+| *`Curriculum learning`: the `RL` agent solves `MDP`s with **iteratively increasing complexity**. At each step of the **curriculum**, the behaviour of the cars in the environment is **sampled from the previously learnt `k-levels`**. Bottom left: **`3` or `4` iterations** seem to be enough and larger **reasoning levels** might not be needed for this merging task. [Source](https://arxiv.org/abs/2005.11895).* |
+
+Authors: Bouton, M., Nakhaei, A., Isele, D., Fujimura, K., & Kochenderfer, M. J.
+
+- Motivations:
+  - `1-` Training `RL` agents **more efficiently** for **complex traffic scenarios**.
+    - The goal is to avoid standard **issues with `RL`**: `sparse rewards`, `delayed rewards`, and `generalization`.
+    - Here the agent should **merge in dense traffic**, requiring **interaction**.
+  - `2-` Cope with **dense** scenarios.
+    - > "The lane change model `MOBIL` which is at the core of this **rule-based policy** has been designed for **SPARSE** traffic conditions _[and performs poorly in comparison]_."
+  - `3-` Learn a **robust** policy, able to deal with **various behaviours**.
+    - Here learning is done iteratively, as the **reasoning level** increases, the learning agent is exposed to a **larger variety of behaviours**.
+  - Ingredients:
+    - > "Our **training curriculum** relies on the `level-k` **cognitive hierarchy model** from **behavioral game theory**".
+- About **`k-level`** and game theory:
+  - > "This model consists in assuming that **an agent performs a limited number of iterations** of strategic reasoning: **_(“I think that you think that I think”)_**."
+  - A **level-`k`** agent acts **optimally** against the strategy of a **level-`(k-1)`** agent.
+  - The **level-`0`** is not learnt but uses an `IDM` + `MOBIL` hand-engineered **rule-based** policy.
+- About **curriculum learning**:
+  - The idea is to **iteratively increase the complexity** of the problem. Here increase the **diversity** and the **optimality** of the surrounding cars.
+  - Each **cognitive level** is trained in a `RL` environment populated with vehicles of **any lower cognitive level**.
+    - > "We then train a level-`3` agent by populating the top lane with level-`0` and level-`2` agents and the bottom lane with level-`0` or level-`1` agents."
+    - > "Note that a **level-`1`** policy corresponds to a **standard `RL` procedure** [no further iteration]."
+  - Each learnt policy is learnt with `DQN`.
+    - To accelerate training at each time step, the authors **re-use the weights** from the previous iteration to start training.
+- `MDP` formulation.
+  - Actually, **two policies** are learnt:
+    - Policies `1`, `3`, and `5`: **change-lane** agents.
+    - Policies `2` and `4`: **keep-lane** agents.
+  - `action`
+    - > "The learned policy is intended to be **high level**. At deployment, we expect the agent to decide on a **desired speed** (`0 m/s`, `3 m/s`, `5 m/s`) and a **lane change command** while a **lower lever controller**, operating at **higher frequency**, is responsible for executing the motion and **triggering emergency braking system** if needed."
+    - Simulation runs at `10Hz` but the agent takes an action **every five simulation steps**: **`0.5 s`** between **two actions**.
+    - The authors chose **high-level** `action`s and to **rely on `IDM`**:
+      - > "By using the `IDM` rule to **compute the acceleration**, the behavior of **braking if there is a car in front** will not have to be learned."
+      - > "The **longitudinal action space** is **_safe_** by design. This can be thought of as a **form of shield** to the `RL` agent from **taking unsafe actions**."
+        - _Well, all learnt agent exhibit_ **_at least `2%` collision rate_** _??_
+  - `state`
+    - Relative `pose` and `speed` of the **`8` closest** surrounding vehicles.
+    - **Full observability** is assumed.
+      - > "**Measurement uncertainty** can be **handled online (after training)** using the **`QMDP`** approximation technique".
+  - `reward`
+    - Penalty for **collisions**: `−1`.
+    - Penalty for deviating from a **desired velocity**: `−0.001|v-ego − v-desired|`.
+    - Reward for being in the **top lane**: `+0.01` for the _merging-agent_ and `0` for the _keep-lane_ agent.
+    - Reward for **success** (passing the blocked vehicle): `+1`.
+
+</details>
+
+---
+
 **`"Using Counterfactual Reasoning and Reinforcement Learning for Decision-Making in Autonomous Driving"`**
 
 - **[** `2020` **]**
@@ -2762,7 +2826,7 @@ Authors: Jayaraman, S. K., Jr, L. P. R., Yang, X. J., Pradhan, A. K., & Tilbury,
 **[[:memo:](https://arxiv.org/abs/1912.12773)]**
 **[[🎞️](https://sites.google.com/view/lpmfoai)]**
 **[** :mortar_board: `University of Pennsylvania`, `Stanford University`, `UC Berkeley` **]**
-**[** :car: `Honda Research Institute` **]**
+**[** :car: `Honda` **]**
 
 - **[** _`visual prediction`, `domain transfer`, `nuScenes`, `BDD100K`_  **]**
 
