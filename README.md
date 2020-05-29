@@ -2820,6 +2820,77 @@ Authors: Jayaraman, S. K., Jr, L. P. R., Yang, X. J., Pradhan, A. K., & Tilbury,
 
 ---
 
+**`"Learning Interaction-Aware Probabilistic Driver Behavior Models from Urban Scenarios"`**
+
+- **[** `2019` **]**
+**[[:memo:](https://www.researchgate.net/publication/334591840_Learning_Interaction-Aware_Probabilistic_Driver_Behavior_Models_from_Urban_Scenarios)]**
+**[** :mortar_board: `TUM` **]**
+**[**:car: `BMW`**]**
+
+- **[** _`probabilistic predictions`, `multi-modality`_  **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://www.researchgate.net/publication/334591840_Learning_Interaction-Aware_Probabilistic_Driver_Behavior_Models_from_Urban_Scenarios).](media/2019_schulz_2.PNG "[Source](https://www.researchgate.net/publication/334591840_Learning_Interaction-Aware_Probabilistic_Driver_Behavior_Models_from_Urban_Scenarios).")  |
+|:--:|
+| *The network produces an **`action` distribution** for the **next time-step**. The `features` are function of one selected **driver's `route intention`** (such as `turning left` or `right`) and the `map`. **Redundant features** can be **pruned** to reduce the complexity of the model: even with as few as **`5` features** (framed in blue), it is possible for the network to learn basic behaviour models that achieve lower losses than both baseline recurrent networks. [Source](https://www.researchgate.net/publication/334591840_Learning_Interaction-Aware_Probabilistic_Driver_Behavior_Models_from_Urban_Scenarios).* |
+
+| ![[Source](https://www.researchgate.net/publication/334591840_Learning_Interaction-Aware_Probabilistic_Driver_Behavior_Models_from_Urban_Scenarios).](media/2019_schulz_1.PNG "[Source](https://www.researchgate.net/publication/334591840_Learning_Interaction-Aware_Probabilistic_Driver_Behavior_Models_from_Urban_Scenarios).")  |
+|:--:|
+| *Right: At each time step, the **confidence in the `action` changes**. Left: How to compute some **loss** from the **predicted `variance`** if the **ground-truth** is a **point-estimate**? The predicted distribution can be evaluated at ground-truth, forming a **likelihood**. The **negative-log-likelihood** becomes the objective to minimize. The network can output **high variance** if it is not sure. But a **regularization term** deters it from being too uncertain. [Source](https://www.researchgate.net/publication/334591840_Learning_Interaction-Aware_Probabilistic_Driver_Behavior_Models_from_Urban_Scenarios).* |
+
+Authors: Schulz, J., Hubmann, C., Morin, N., Löchner, J., & Darius, B.
+
+- Motivations:
+  - `1-` Learn a **driver model** that is:
+    - **Probabilistic**. I.e. capture **multi-modality** and **uncertainty** in the predicted low-level actions.
+    - **Interaction-aware**. _Well, here the `actions` of surrounding vehicles are ignored, but their `states` are considered_
+    - **_"Markovian"_**, i.e. that makes **`1`-step prediction** from the current `state`, assuming independence of previous `state`s / `action`s.
+  - `2-` Simplicity + **lightweight**.
+    - This model is intended to be integrated as a **probabilistic transition model** into **sampling-based** algorithms, e.g. `particle filtering`.
+    - Applications include:
+      - `1-` **Forward simulation**-based interaction-aware **`planning` algorithms**, e.g. `Monte Carlo tree search`.
+      - `2-` Driver **intention estimation** and **trajectory `prediction`**, here a `DBN` example.
+    - Since samples are plenty, **runtime** should be kept low. And therefore, **nested net structures** such as [`DESIRE`](https://arxiv.org/abs/1704.04394) are excluded.
+  - Ingredients:
+    - **Feedforward net** predicting `steering` and `acceleration` **distributions**.
+    - Enable **multi-modality** by building one `input vector`, and making one prediction, per possible `route`.
+- About the model:
+  - Input: a set of **features** build from:
+    - One **route intention**. For instance, the distances of both agents to `entry` and `exit` of the related **conflict areas** are computed.
+    - The **map**.
+    - The **kinematic state** (`pos`, `heading`, `vel`) of the `2` closest agents.
+  - Output: `steering` and `acceleration` **distributions**, modelled as Gaussian: `mean` and `std` are estimated (`cov` = `0`).
+    - **Not the next `state`!!**
+      - > "Instead of directly learning a **`state` transition model**, we restrict the neural network to learn a **`2`-dimensional `action` distribution** comprising `acceleration` and `steering angle`."
+    - Practical implication when building the dataset from real data: the `action`s of **observed** vehicles are unknown, but **inferred using an `inverse bicycle model`**.
+  - Using the model at run time:
+    - `1-` Sample the **possible `routes`**.
+    - `2-` For each route:
+      - Start with one `state`.
+      - Get one **`action` distribution**. Note that the **uncertainty** can change at each step.
+      - **Sample (`acc`, `steer`)** from this distribution.
+      - Move to next `state`.
+      - Repeat.
+
+- Issue with the **accumulation of `1`-step** to form **long-term predictions**:
+  - As in vanilla **imitation learning**, it suffers from **distribution shift** resulting from the **accumulating errors**.
+  - > "If this error is too high, the features determined during forward simulation are **not represented** within the training data anymore."
+  - A **`DAgger`-like solution** could be considered.
+
+- About **conditioning** on a driver's route intention:
+  - Without, one could pack **all the road info** in the input. _How many routes to describe?_ And **expect multiple trajectories** to be produced. _How many output heads?_ Tricky.
+  - **Conditioning** offers two advantages:
+    - > "The learning algorithm does not have to cope with the **multi-modality** induced by **different route options**. The varying number of **possible `routes`** (depending on the road topology) is handled **outside of the neural network**."
+    - It also allows to define _(and detail)_ relevant **features along the considered path**: upcoming `road curvature` or longitudinal distances to `stop lines`.
+  - Limit to this approach (again related to the **"off-distribution"** issue):
+    - > "When **enumerating all possible routes** and running a **forward simulation** for each of the **conditioned models**, there might exist route candidates that are **so unlikely** that they have **never been followed** in the training data. Thus their features may result in **unreasonable actions** during inference, as the network only learns what actions are **reasonable given a route**, but not which routes are reasonable given a situation."
+
+</details>
+
+---
+
 **`"Learning Predictive Models From Observation and Interaction"`**
 
 - **[** `2019` **]**
