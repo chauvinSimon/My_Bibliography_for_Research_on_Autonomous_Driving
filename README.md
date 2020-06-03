@@ -6219,6 +6219,132 @@ Authors: Zhu, Y., & Zhao, D.
 
 ---
 
+**`"Improving Automated Driving through Planning with Human Internal States"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://arxiv.org/abs/2005.14549)]**
+**[[:octocat:](https://github.com/sisl/Multilane.jl/tree/master/thesis)]**
+**[** :mortar_board: `Stanford`**]**
+
+- **[** _`MCTS-DPW`, `Q-MDP`, `internal state`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://arxiv.org/abs/2005.14549).](media/2020_sunberg_1.PNG "[Source](https://arxiv.org/abs/2005.14549).")  |
+|:--:|
+| *Bottom-left: surrounded cars are modelled with **parametric `IDM` and `MOBIL`** models. These parameters are called `internal state` and are **not observable**. The agent uses a **`belief` tracker** to estimate them. Top: The `action` space has size `10`: `9` combinations of {`change-left`, `change-right`, `stay`} x {`accelerate`, `maintain`, `slow-down`} and one **dynamically determined** `braking` action, computed based on the `speed` and `position` of the vehicle ahead. [Source](https://arxiv.org/abs/2005.14549).* |
+
+| ![[Source](https://arxiv.org/abs/2005.14549).](media/2020_sunberg_2.PNG "[Source](https://arxiv.org/abs/2005.14549).")  |
+|:--:|
+| *The authors compared different solvers and compare them based on their **Pareto fronts** in this **multi-objective** problem. All approaches are variants of **Monte Carlo tree search** (**`MCTS`**) with **double progressive widening** (**`DPW`**). An approximation consists in assuming that the parameters in the `ìnternal state` are **correlated** (middle). In this case, only the **''type''** of behaviour {`Timid`, `Normal`, `Aggressive`} must be estimated, making the belief tracking and inference simpler: `dim`=`1` compared to `dim`=`8`. [Source](https://arxiv.org/abs/2005.14549).* |
+
+| ![[Source](https://arxiv.org/abs/2005.14549).](media/2020_sunberg_3.PNG "[Source](https://arxiv.org/abs/2005.14549).")  |
+|:--:|
+| *Two kinds of **robustness** are considered for the `internal state` estimation: How much are the **parameters correlated**. And how **diverse** can their value be (**domain** size). [Source](https://arxiv.org/abs/2005.14549).* |
+
+Authors: Sunberg, Z., & Kochenderfer, M.
+
+- Motivations:
+  - > "Our hypothesis is that **planning** techniques that consider **`internal states`** such as **`intentions`** and **`dispositions`** of other drivers can simultaneously improve **_safety_** and **_efficiency_**."
+
+- About **uncertainties**:
+  - `1-` **Epistemic** uncertainty: can be reduced through **learning**.
+  - `2-` **Aleatory** uncertainty: **cannot be reduced** with any kind of knowledge.
+  - > "The **`internal state`** (e.g., `intentions` and `aggressiveness`) of other drivers and road users can **only be indirectly inferred.**"
+    - **`internal state` uncertainty** can be said **epistemic**.
+  - > "`POMDP` planners **model human drivers’ internal states** as **epistemic uncertainty**, while the MDP methods **only consider aleatory uncertainty**."
+
+- About `(PO)MDP` solvers:
+  - > [Only **_approximate_ planning** approaches are considered] "Though `POMDP`s are **very powerful in terms of expression**, even the class of finite-horizon `POMDP`s is **`PSPACE-complete`**, indicating that it is unlikely that **efficient general _exact_ algorithms** for **large problems** will be discovered."
+  - Only **online** solutions are considered here, and all the approaches use variants of **Monte Carlo tree search** (**`MCTS`**) with **double progressive widening** (**`DPW`**) - as opposed to **`value iteration`** methods for instance.
+    - Main idea of **`MCTS-DPW`**: **restrict the search to relevant regions** of the tree.
+    - > "`DPW` further **focuses computation** by considering only a limited, but **gradually increasing**, number of sampled `state`s or `observation`s".
+
+- About the **driver models**:
+  - > [**Transition function** in the **`(PO)MDP`** formulation] "The `T` function is implicitly defined by a **generative model** that consists of a **state transition function**, `F(·)`, and a **stochastic noise** process."
+  - `IDM` and `MOBIL` **_parametric_ models** are used.
+    - Example of parameters: The `MOBIL` parameter `p` in `[0, 1]` is the **politeness factor**, which represents how much the driver values **allowing other vehicles** to increase their acceleration.
+  - Their **parameters** are used to define the **`internal state`**.
+  - Limitations:
+    - > "The **primary weakness** of this investigation is the model of the other drivers. Since the `IDM` and `MOBIL` models were developed to **simulate large scale traffic flow**, simulations with these models **may not be accurate**. Incorporating **models learned from data** would further validate the conclusions drawn here."
+    - The authors also point that these models **neglect dynamic intentions** of other drivers.
+
+- About the **correlation** of the **distributions** of the parameters in the **`internal state`s**.
+  - The **`internal state`** consists in **many parameters** (from `IDM` and `MOBIL`): e.g. `desired deceleration`, `desired speed`, `desired time gap`, `politeness factor`...
+  - `1-` All parameters could be assumed **perfectly correlated**.
+    - An **`aggressiveness`** class can be defined {`Timid`, `Normal`, `Aggressive`}, with defined values for each parameter.
+    - In this case, **a particle** consists of **only a single value**: **`dimension` = `1`**.
+  - `2-` Parameters could be assumed **uncorrelated** and must be **estimated jointly**.
+    - A **particle** consists of values of all model parameters: **`dimension` = `8`**.
+  - `3-` A **partial correlation** is also investigated.
+  - **Robustness analysis `1`**: Simulation models with **varying levels of correlation** are tested:
+    - > "When the **parameters are fully correlated**, all of the parameters are **easy to estimate** by **observing only a few**, so there is not a significant performance gap between `MSM`, `QMDP`, and `POMCPOW`."
+    - > "On the other hand, when the **parameters are uncorrelated**, the `QMDP` planner performs much better than the **`certainty equivalence planner`** [_`Mean state MDP`_], and `POMCPOW` performs much better than `QMDP`."
+  - **Robustness analysis `2`**: the **domain** from which the parameters are drawn is **expanded by a variable factor**.
+    - For instance, the **width** of the interval (e.g. [`0.5s`, `2.5s`]), from which the marginal distribution of the `desired time gap` parameter is drawn, is varied.
+    - > "Robustness to inaccuracy in the **parameter domain** is **one-sided**: when the true domain is **larger** than that assumed by the planners, performance is **adversely affected**, but when the **true domain is smaller**, there is **no degradation**."
+  - Conclusion for human-driver-modelling:
+    - > "**Simple solvers are enough** if most human driver behaviour can be correlated with easily measurable quantities."
+    - > "Otherwise, need **more advanced planners** that carry the uncertainty further into the future."
+
+- About the **`observation` filtering**:
+  - The `belief` at a given time consists of:
+    - `1-` The **exactly known physical state**.
+    - `2-` A collection of **particles**, along with associated **weights**, representing possible **internal state**.
+      - The **online estimation** of the **internal state** `θ` (driver model **parameters**) is accomplished with a **particle filter**.
+  - To **update the `belief`** when an `action` is taken:
+    - `1-` New **particles** are **sampled** with probability proportional to their **weights**.
+    - `2-` Sampled **noise values** and the **state transition function** are used to **generate new `state`s**.
+    - `3-` The **new weights** are determined by approximating the **conditional probability** of the particle given the `observation`.
+
+- **Approximate Planning** Approaches:
+  - `1`+`2`: **Baselines**, representing ways to **force the epistemic uncertainty** in the `POMDP` into an **`MDP` formulation**.
+    - `1-` `Normal`: All **drivers' parameters** are assumed to be known and identical.
+      - **No belief tracking** is needed: an `MDP` is formulated.
+      - It is **over-optimistic** since it assumes to **knows** the **`internal states`** of other drivers.
+      - **Over-confident**: it is able to **reach the goal** a large proportion of the time, but it causes **many safety violations**.
+    - `2-` `Naive MDP`: The `internal states` are considered as **random variables**, independent at each timestep, i.e. assumed to be simply **aleatoric**.
+      - No **belief tracking** can be done: an `MDP` with a `state` consisting **only of the physical state** is formulated.
+      - It is **conservative** since it plans **pessimistically** assuming **it can learn nothing new about the drivers**.
+      - **Over-cautious**: it can attain a **high level of safety**, but it is never able to meet the goal more than `80%` of the time.
+  - `3`+`4`+`5`: Online estimation of the **internal state** `θ` using a **particle filter**.
+  - `3`+`4`: **Passively** online learning. Optimistic assumption. Hence systematically suboptimal.
+    - > "These approximations are useful in many domains because they **are much easier to compute** than the full `POMDP` solution since they require only the solution to the **fully observable MDP**."
+    - There is **no incentive** for **learning about the state**, and hence these policies will **not take costly actions** for **"active learning"** / **"information gathering"**.
+    - `3-` `Mean state MDP`.
+      - At each timestep, a **fully observable `MDP`** is constructed using the **mean internal state** values: `s` = `E(s∼b)[s]`.
+      - > "This approach is sometimes referred to as **`certainty equivalence control`**".
+      - It is **over-confident** (achieving a high success rate, but sacrificing safety) because it plans **without any internal state uncertainty**.
+    - `4-` **[`QMDP`](http://www-anw.cs.umass.edu/~barto/courses/cs687/Cassandra-etal-POMDP.pdf)**: hypothetical problem with **partial observability on the current step**, but that **subsequently becomes fully observable**.
+      - > "Another natural approach to finding `Q` functions for `POMDP'`s is to make use of the `Q` values of the **underlying `MDP`**. That is, we can **temporarily ignore the `observation` model** and find the `Q-MDP`(`s`, `a`) values for the `MDP` consisting of the `transitions` and `rewards` only." [(Littman et al., 1994)]
+      - > "With the `Q-MDP` values in hand, we can treat all the `Q-MDP` values for each action as a **single linear function** and estimate the `Q` value for a **`belief` state** `b`. This estimate amounts to assuming that **any uncertainty** in the agent's **current `belief` state** will be gone after the next `action`." [(Littman et al., 1994)]
+      - The `action` selected maximizes the **`expected Q-MDP` value** for the current `belief`: **`Q`(`b`, `a`) = `Σ` `b`(`s`).`Q-MDP`(`s`, `a`)** _(single linear function)_
+      - Here, the `Q-MDP` values are estimated through **`MCTS-DPW` instead of `value iteration`**.
+      - It performs better than `mean state MDP` because it considers samples from the **entire estimated internal `state` distribution** when planning.
+
+  - `5-` [`POMCPOW`](https://github.com/JuliaPOMDP/POMCPOW.jl).
+    - > "Since full **Bayesian belief updates** are computationally expensive, the `POMCPOW` algorithm **extends `MCTS`** to include **approximate beliefs** represented by **weighted particle collections** that are **gradually improved** as the tree is searched".
+    - Since the vehicle does not have to take **costly information-gathering `action`s** to accomplish its goal, `POMCPOW` only outperforms `QMDP` in certain cases.
+  - `6-` A **omniscient** upper bound planner.
+
+- _How to_ **_compare_** _approaches on this_ **_multi-objective_** _problem?_
+  - Two criteria and terms in the `reward` function:
+    - `1-` **Safety**: any situation in which any human-driven or autonomous vehicle has to **break hard to avoid a collision** is marked **_"unsafe"_**.
+    - `2-` **Efficiency**: accomplishing a **goal** with minimum resource use (`time`).
+  - > "At first, it may seem that **`safety` is a strictly higher priority** than `efficiency`, but consumers **will not sacrifice efficiency without limit**."
+  - **Multi-objective** comparison with **Pareto frontier**.
+    - `reward` function: **Weighted sum** of the **competing goals**, create a single objective function.
+      - `1-` Positive reward for **reaching the target lane** within the distance limit.
+      - `2-` Negative reward for **hard brakes** and **slow velocity**.
+    - Different **weight** values are tested: **`λ`** in {`0.5`, `1`, `2`, `4`, `8`}.
+    - **Pareto fronts** are approximated by connecting the resulting **Pareto points** with straight lines.
+    - > "Conclusions about different algorithms can be reached by **comparing the resulting curves** generated by those algorithms."
+
+</details>
+
+---
+
 **`"Efficient Uncertainty-aware Decision-making for Autonomous Vehicles Using Guided Branching"`**
 
 - **[** `2020` **]**
