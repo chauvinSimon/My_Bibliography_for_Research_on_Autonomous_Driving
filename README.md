@@ -6689,6 +6689,99 @@ Author: Shved, P.
 
 ---
 
+**`"Context and Intention Aware Planning for Urban Driving"`**
+
+- **[** `2019` **]**
+**[[:memo:](https://ieeexplore.ieee.org/document/8967873)]**
+**[[🎞️](https://www.youtube.com/watch?v=psm6juPltJs)]**
+**[** :mortar_board: `National University of Singapore`, `MIT` **]**
+
+- **[** _`interaction-aware planning`, `LSTM-prediction`, `DESPOT`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://ieeexplore.ieee.org/document/8967873).](media/2019_meghjani_1.PNG "[Source](https://ieeexplore.ieee.org/document/8967873).")  |
+|:--:|
+| *Modular and **hierarchical** architecture. The planner is **`road context`- and `intention`-aware**. [Source](https://ieeexplore.ieee.org/document/8967873).* |
+
+| ![[Source](https://www.youtube.com/watch?v=psm6juPltJs).](media/2019_meghjani_1.GIF "[Source](https://www.youtube.com/watch?v=psm6juPltJs).")  |
+|:--:|
+| *Scenario showing the benefit of **integrating `intention` inference** into planning: after **inferring the exo-vehicles’ `intentions`** of driving to the right lane, the ego-car immediately changes to the left lane which **saves travelling time** and **avoids near collisions**. [Source](https://www.youtube.com/watch?v=psm6juPltJs).* |
+
+| ![[Source](https://www.youtube.com/watch?v=psm6juPltJs).](media/2019_meghjani_2.GIF "[Source](https://www.youtube.com/watch?v=psm6juPltJs).")  |
+|:--:|
+| *The authors tried their approach on **real scenarios**, which is quite rare in the field! Contrary to the **simulation**, measurements are not optimal: **inaccurate perception** module fails **assigning** the second and third car to their correct lanes. In addition, the **`turn signal`** of the first car is **ignored**, which could have led to an accident. It would be relevant to **consider this `turn signal`** to **infer `intention`**. A second idea would be to consider **occlusion**. [Source](https://www.youtube.com/watch?v=psm6juPltJs).* |
+
+Authors: Meghjani, M., Luo, Y., Ho, Q. H., Cai, P., Verma, S., Rus, D., & Hsu, D.
+
+- Motivation:
+  - Show the benefit, for _prediction_, _planning_ and _decision making_ in **urban driving**, of using:
+    - `1-` **Road contextual information**.
+      - This reduces the **uncertainties in `intention`** and trajectory **predictions** of exo-vehicles.
+      - It also reduces the **computation cost** of the `POMDP` planner for the ego-vehicle: the search is assisted by **pruning invalid actions** and **shaping the rewards**.
+    - `2-` **Intention inference** for **`behaviour` and `trajectory` prediction**.
+      - The **interaction** with **multiple exo-vehicles** is considered by the planner.
+    - `3-` **Long-term planning**.
+  - > [About the scenarios] "We argue that the **`lane merging` problem** is **much harder** than the **intersection case**, because exo-vehicles have a lot more freedom. [...] **Long-term interactions** are often required."
+
+- About **intention inference** and **trajectory prediction**.
+  - The **context-aware prediction** model **decouples `intention` and `trajectory` predictions**:
+    - `1-` The `intention` is predicted by a **neural network** _(mentioned below)_.
+    - `2-` The `trajectory` of **predicted intention** is obtained based on **polynomial fitting** and **extrapolating** the real-time vehicle state.
+      - The `time-to-collision` model (`TTC`) is used to predict the longitudinal speed. And hence embed **interaction** in the prediction.
+  - This [video](https://www.youtube.com/watch?v=e_GjCq0qsSE) describes the context-aware prediction module.
+  - This **generative model** is used in the `POMDP` **transition function**, for forward simulations.
+
+- About the **decision making** hierarchical architecture.
+  - Input: observed **trajectories** of _exo_-vehicles.
+  - Output: **high-level** lateral `action` for _ego_-vehicle.
+  - Three components:
+    - `1-` Road context database.
+      - The context include the `number of lanes`, the `direction` of the lanes, the `lane width`, and the `positions` of the `start` and `end` points of each lane.
+    - `2-` **`LSTM` intention predictor**.
+      - > "We formalize the **`intention`** as the **high-level action**, i.e., the action of `lane-keeping`, `left-lane-changing`, or `right-lane-changing`."
+      - The input includes: `changes` in lateral and longitudinal `pose`, flags indicating if `right lane` and `right lane` exist, as well as `lateral distance` from the centre of the lane.
+      - The output of the net is a **`belief`**, i.e., **probability distribution**, over three **`intention` classes**: `lane-keeping`, `right lane-changing`, and `left lane changing`.
+        - The use of a **net** contrasts with **particle filters** for **`belief` tracking**, which are prone to **computationally expensive Bayesian belief updates**.
+    - `3-` `POMDP` high-level planner.
+      - It determines **long-term high-level** `action`s of the ego-vehicle under **uncertainties** of exo-vehicles' **intentions**.
+        - > "The **`belief` tree search** takes as input the current `belief` and the `state` of all vehicles and performs **Monte Carlo simulations** for the **uncertain future** to provide the largest rewarding high-level `action`."
+      - > [About the solver] "The key idea of **[`DESPOT`](https://papers.nips.cc/paper/5189-despot-online-pomdp-planning-with-regularization)** is to search a **`belief` tree** under **`K` sampled scenarios** only, which greatly reduces computational complexity, making it an efficient solver for our `POMDP` model."
+
+- About the `POMDP` formulation.
+  - `state` space:
+    - The `intention`: hidden variables.
+    - The `road contextual information`.
+    - The `pose` (`x`, `y`, `θ`) of each vehicle.
+    - A `4`-time-step **history** of the **past `poses`**, representing `1s`.
+  - `action` space:
+    - {`LANE-KEEP`, `LEFT-LANE-CHANGE`, `RIGHT-LANE-CHANGE`} for the next time-step.
+    - > "We further **prune** the **forbidden `actions`** in different lanes with the **help of road contextual information**."
+  - `transition` function:
+    - The above-mentioned **trajectory predictor** is used to predict its **next-step `pose`**, given its `intention` and the `road contextual information`.
+    - A Gaussian noise is added _(no value reported)_.
+- About the baselines:
+  - `1-` **Reactive** controller.
+    - It reacts based on the comparison between `headway distances` with a `distance threshold`.
+  - `2-` **Greedy** controller.
+    - It chooses to drive in the lane that is **shortest to the destination lane** at each time step **regardless of exo-vehicles**.
+  - `3-` **`SimMobilityST`**.
+    - A **rule-based** algorithm used in **[`SimMobility`](https://github.com/smart-fm/simmobility-prod) simulator**.
+- About the criteria for **performance comparison**:
+  - For **safety**: the `collision rate`.
+  - For **efficiency**: the `success rate` and `travel time`.
+  - For **smoothness**: the number of `lane changes` per 100 meters.
+  - A **timeout** is also implemented.
+- Limitations:
+  - `1-` The **intention prediction** module considers the **exo-vehicles independently**, **ignoring the influence of interactions** between them.
+  - `2-` No **feedback loop**: The high-level `action`s provided by the planner are **decoupled from the low-level control**. It is possible that low-level controller **cannot execute the high-level `action`** given by the planner.
+    - In particular, the planner suffers from **decision switches** between `lane-change` and `keep-lane`. Instable high-level commands may become struggling for the **low-level controller** to implement.
+
+</details>
+
+---
+
 **`"SUMMIT: A Simulator for Urban Driving in Massive Mixed Traffic"`**
 
 - **[** `2019` **]**
@@ -7315,7 +7408,7 @@ Authors: Weingertner, P., Autef, A., & Le Cleac’h, S.
 
 - One algorithm: [`POMCP`](https://papers.nips.cc/paper/4031-monte-carlo-planning-in-large-pomdps).
   - Presented in 2010, `POMCP` is an extension of the traditional **MCTS algorithm to POMDP**.
-  - Together with [`DESPOT`], `POMCP` is an often-used POMDP online solver.
+  - Together with [`DESPOT`](https://papers.nips.cc/paper/5189-despot-online-pomdp-planning-with-regularization), `POMCP` is an often-used POMDP online solver.
 - One term: **"observation class"**.
   - Different extensions of `POMCP` and `DESPOT` have been proposed. In the presented approach, the goal is to work with **continuous observations**, while ensuring safety.
   - The idea is to **limit the number of observation nodes** in the tree by **grouping observations** based on some **utility function**.
