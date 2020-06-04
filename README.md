@@ -6705,11 +6705,11 @@ Author: Shved, P.
 |:--:|
 | *Modular and **hierarchical** architecture. The planner is **`road context`- and `intention`-aware**. [Source](https://ieeexplore.ieee.org/document/8967873).* |
 
-| ![[Source](https://www.youtube.com/watch?v=psm6juPltJs).](media/2019_meghjani_1.GIF "[Source](https://www.youtube.com/watch?v=psm6juPltJs).")  |
+| ![[Source](https://www.youtube.com/watch?v=psm6juPltJs).](media/2019_meghjani_1.gif "[Source](https://www.youtube.com/watch?v=psm6juPltJs).")  |
 |:--:|
 | *Scenario showing the benefit of **integrating `intention` inference** into planning: after **inferring the exo-vehicles’ `intentions`** of driving to the right lane, the ego-car immediately changes to the left lane which **saves travelling time** and **avoids near collisions**. [Source](https://www.youtube.com/watch?v=psm6juPltJs).* |
 
-| ![[Source](https://www.youtube.com/watch?v=psm6juPltJs).](media/2019_meghjani_2.GIF "[Source](https://www.youtube.com/watch?v=psm6juPltJs).")  |
+| ![[Source](https://www.youtube.com/watch?v=psm6juPltJs).](media/2019_meghjani_2.gif "[Source](https://www.youtube.com/watch?v=psm6juPltJs).")  |
 |:--:|
 | *The authors tried their approach on **real scenarios**, which is quite rare in the field! Contrary to the **simulation**, measurements are not optimal: **inaccurate perception** module fails **assigning** the second and third car to their correct lanes. In addition, the **`turn signal`** of the first car is **ignored**, which could have led to an accident. It would be relevant to **consider this `turn signal`** to **infer `intention`**. A second idea would be to consider **occlusion**. [Source](https://www.youtube.com/watch?v=psm6juPltJs).* |
 
