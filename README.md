@@ -2416,6 +2416,62 @@ Authors: Kuderer, M., Gulati, S., & Burgard, W.
 
 ---
 
+**`"PnPNet: End-to-End Perception and Prediction with Tracking in the Loop"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://arxiv.org/abs/2005.14711)]**
+**[**:car: `Uber`**]**
+
+- **[** _`joint perception + prediction`, `multi-object tracking`_  **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://arxiv.org/abs/2005.14711).](media/2020_liang_1.PNG "[Source](https://arxiv.org/abs/2005.14711).")  |
+|:--:|
+| *The authors propose to leverage **`tracking`** for the **joint `perception`+`prediction`** task. [Source](https://arxiv.org/abs/2005.14711).* |
+
+| ![[Source](https://arxiv.org/abs/2005.14711).](media/2020_liang_2.PNG "[Source](https://arxiv.org/abs/2005.14711).")  |
+|:--:|
+| *Top: One main idea is to make the `prediction` module directly reuse the scene context captured in the **`perception` features**, and also consider the **past object `tracks`**. Bottom: a second contribution is the use of a `LSTM` as a **sequence model** to learn the **object trajectory representation**. This encoding is jointly used for the `tracking` and `prediction` tasks. [Source](https://arxiv.org/abs/2005.14711).* |
+
+Authors: Liang, M., Yang, B., Zeng, W., Chen, Y., Hu, R., Casas, S., & Urtasun, R.
+
+- Motivations:
+  - `1-` Perform **`perception`** and **`prediction`** jointly, with a single neural network.
+    - There for it is called **"Perception and Prediction"**: **`PnP`**.
+    - The whole model is also said `end-to-end`, because it is `end-to-end` trainable.
+      - This constrast with **modular sequential architectures** where both the **perception output** and **map information** is forwarded to an **independent `prediction` module**, for instance in a **bird’s eye view** (`BEV`) **raster representation**.
+  - `2-` Improve `prediction` by leveraging the (past) **temporal** information (**motion history**) contained in **`tracking` results**.
+    - In particular, one goal is to **recover** from long-term object **occlusion**.
+      - > "While all these [_vanilla `PnP`_] approaches **share the sensor features** for `detection` and `prediction`, they fail to exploit the **rich information** of actors along the **time dimension** [...]. This may cause problems when dealing with **occluded actors** and may **produce temporal inconsistency** in `predictions`."
+    - The idea is to include `tracking` **in the loop** to improve **`prediction`** (motion forecasting):
+      - > "While the `detection` module processes **sequential sensor data** and generates **object detections** at each time step **independently**, the **`tracking`** module **associates these estimates across time** for better understanding of object states (e.g., **occlusion reasoning**, **trajectory smoothing**), which in turn provides **richer information** for the **`prediction` module** to produce accurate **future trajectories**."
+      - > "**Exploiting motion** from **explicit object trajectories** is more accurate than inferring motion from the features computed from the raw sensor data. [_this reduces the prediction error by (`∼6%`) in the experiment_]"
+    - All modules share computation as there is a **single backbone network**, and the full model can be trained `end-to-end`.
+      - > "While previous joint `perception` and `prediction` models make the prediction module **another convolutional header** on top of the `detection` backbone network, which shares the same features with the `detection` header, in `PnPNet` we put the **`prediction`** module **after explicit object `tracking`**, with the **object trajectory representation** as input."
+
+- _How to_ **_represent_** _(long-term)_ **_trajectories_**_?_
+  - The idea is to capture both **`sensor` observation** and **`motion` information** of actors.
+  - > "For each object we first extract its **inferred `motion`** (from past detection estimates) and raw observations (from **`sensor` features**) at each time step, and then **model its dynamics** using a recurrent network."
+  - > [_interesting choice_] "For **angular velocity** of ego car we parameterize it as its `cosine` and `sine` values."
+  - This **trajectory representation** is utilized in both `tracking` and `prediction` modules.
+
+- About **multi-object `tracking`** (`MOT`):
+  - There exist two distinct challenges:
+    - `1-` The **_discrete_** problem of **`data association`** between previous tracks and current detections.
+      - **Association errors** (i.e., **`identity switches`**) are prone to **accumulate** through time.
+      - > "The `association problem` is formulated as a **`bipartite` matching problem** so that exclusive **`track-to-detection` correspondence** is guaranteed. [...] Solved with the **`Hungarian algorithm`**."
+      - > "Many frameworks have been proposed to solve the `data association problem`: e.g., **Markov Decision Processes** (`MDP`), `min-cost flow`, `linear assignment` problem and `graph cut`."
+    - `2-` The **_continuous_** problem of **`trajectory estimation`**.
+      - In the proposed approach, the **`LSTM` representation** of associated **new tracks** are refined to generate **smoother trajectories**:
+        - > "For **`trajectory refinement`**, since it **reduces the localization error** of online generated perception results, it helps establish a **smoother** and more accurate motion history."
+  - The proposed **multi-object tracker** solves both problems, therefore it is said "`discrete`-`continuous`".
+
+</details>
+
+---
+
 **`"VectorNet: Encoding HD Maps and Agent Dynamics from Vectorized Representation"`**
 
 - **[** `2020` **]**
