@@ -2420,6 +2420,7 @@ Authors: Kuderer, M., Gulati, S., & Burgard, W.
 
 - **[** `2020` **]**
 **[[:memo:](https://arxiv.org/abs/2005.14711)]**
+**[** :mortar_board: `University of Toronto` **]**
 **[**:car: `Uber`**]**
 
 - **[** _`joint perception + prediction`, `multi-object tracking`_  **]**
@@ -6272,6 +6273,91 @@ Authors: Zhu, Y., & Zhao, D.
 ---
 
 ## `Planning` and `Monte Carlo Tree Search`
+
+---
+
+**`"Improving Automated Driving through Planning with Human Internal States"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://www.scitepress.org/Link.aspx?doi=10.5220/0009344703120321)]**
+**[** :mortar_board: `FAU Erlangen`**]**
+**[** :car: `AUDI` **]**
+
+- **[** _`ABT`, `TAPIR`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://www.scitepress.org/Link.aspx?doi=10.5220/0009344703120321).](media/2020_bey_4.PNG "[Source](https://www.scitepress.org/Link.aspx?doi=10.5220/0009344703120321).")  |
+|:--:|
+| *Top-left: scenario: the agent cannot recognize whether the **obstacle is traversable** (road blocked, obstacle exists `ep=1`; or not, `ep=0`) until getting closer. The `position` of the obstacle is described by a **continuous variable**. Bottom-left: distribution used for the **`observation model`**: getting closer increases the probability of a `true positive` measurement but also for `false positives`. Very close to the obstacle, it gets detected and correctly classified with high probability. Middle: example of a search in **simplified `belief tree`** with two `action`s: the `distance` of potential object is known, reducing the problem to a **binary** case, with **uniform initial `belief`** (`50/50`). Right: example of trajectories obtained from the **online search**: the `action` that maximizes the **approximated `Q`-function** is selected at each step. Here, future rewards are not discounted: `γ=1`. [Source](https://www.scitepress.org/Link.aspx?doi=10.5220/0009344703120321).* |
+
+| ![[Source](https://www.scitepress.org/Link.aspx?doi=10.5220/0009344703120321).](media/2020_bey_1.PNG "[Source](https://www.scitepress.org/Link.aspx?doi=10.5220/0009344703120321).")  |
+|:--:|
+| *Given a tree, how to **compute the `Q`(`b`, `a`) values**? Left: Estimate the **expected return** by averaging from **all episodes** passing from this (`b`, `a`) tuple. This leads to a **conservative behaviour** because the outer sum in also **includes episodes that act sub-optimally** (unnecessarily crash into the obstacle) since `ABT` **tries all actions** when hitting a new `belief`. Therefore, the authors switched to the **`max`-option** implemented in `TAPIR` (right). It **does not include suboptimal episodes**: **taking action `a` and acting optimally thereafter**. [Source](https://www.scitepress.org/Link.aspx?doi=10.5220/0009344703120321).* |
+
+| ![[Source](https://www.scitepress.org/Link.aspx?doi=10.5220/0009344703120321).](media/2020_bey_2.PNG "[Source](https://www.scitepress.org/Link.aspx?doi=10.5220/0009344703120321).")  |
+|:--:|
+| *Left: Influence of the `c-UCT` parameter **balancing the `exploration` / `exploitation`**. **Stochasticity** in the `observations emission` and in the tree construction make results vary. Therefore, **`50` simulations** are performed each time. Middle: Illustration of the **depletion** problem: Because `ABT` only keeps particles that took the same `action` and received the same `observation`, inherently, **particles get lost**. This can be seen at `20s`: the agent receives its first **positive measurement**. At this point **hardly any particles** are close to the observed position. Therefore, **`emergency resampling`** is started, which creates particles close to the **observed location** (in red). This impacts the efficiency as the tree **has to be re-calculated almost from scratch**. Note the **discretisation** with **initial uniform distribution**. Right: **Discretization** is proposed to deal with the **continuous `observation` space**. [Source](https://www.scitepress.org/Link.aspx?doi=10.5220/0009344703120321).* |
+
+| ![[Source](https://www.scitepress.org/Link.aspx?doi=10.5220/0009344703120321).](media/2020_bey_3.PNG "[Source](https://www.scitepress.org/Link.aspx?doi=10.5220/0009344703120321).")  |
+|:--:|
+| *The expected behaviour is to slow down in front of the **potential** obstacle and **once certain that there is no threat**, accelerate again. A too low `UCT`-factor leads to **too optimistic** (`exploitation`) behaviour: it can plan for up to `20s` but **ignores certain dangerous branches of the tree**. Increasing the `UCT` factor makes it **more conservative**, but a too high `c-UCT` may perform too much **exploration**, leading to a **too short horizon** and also crashes (unable to react). Top-right: **conservative** estimation of the `Q`-values. [Source](https://www.scitepress.org/Link.aspx?doi=10.5220/0009344703120321).* |
+
+Authors: Bey, H., Tratz, M., Sackmann, M., & Lange, A.
+
+- Motivations:
+  - `1` Detail how the **`POMDP` online solver** **`ABT`** works.
+  - `2` Using a simple example, illustrate the _"difficulties that have to be overcome when trying to_ **_define and solve_** _a_ **_real-world_** `POMDP` _problem"_.
+    - Well, **_"real-world"_** means _playing with the algorithm_, and _defining the `POMDP` spaces and models_.
+      - But **no consideration** about real-driving or **real-cars**: **no action delay**, `acceleration` as `action`s and **`1s` time-step**.
+  - Solver-specific **pitfalls** and impact of **parameters**:
+    - `1-` **`UCT`-factor**, balancing `exploration` versus `exploitation`.
+    - `2-` Estimation of the **`Q`-value** function.
+    - **Continuous** hidden `states` and `observations` makes it hard:
+    - `3-` **Particle depletion** in particle filter.
+    - `4-` **Degenerated tree** and **space discretization**.
+    - `5-` Planning **horizon** and **heuristic** / **default** policy.
+
+- About the scenario:
+  - > "The expected behavior is for the vehicle to **slow down** until it is **certain about the obstacle’s state** and then to either stop or accelerate again."
+
+- About [`ABT` (Kurniawati and Yadav, 2016)](https://robotics.itee.uq.edu.au/dokuwiki/papers/isrr13_abt.pdf).
+  - `ABT` = **Adaptive Belief Tree**.
+  - It is implemented in **"Toolkit for Approximating and Adapting `POMDP` Solutions in Real Time"** ([`TAPIR`](https://robotics.itee.uq.edu.au/~hannakur/dokuwiki/papers/acra14_tapir.pdf)) software [[:octocat:]](https://github.com/rdl-algorithm/tapir).
+  - Family of **online** + **sampling-based** solvers:
+    - > [approximation] "For more difficult problems it is often desired to **reach a good enough solution** in finite time rather than spending much more time in **search of the optimum**."
+    - The **`belief`** (probability distribution over possible `states`) is represented by a **set of sampled `states`** within a **particle filter**.
+    - They are **`anytime`-capable**, meaning that they improve the policy as long as they are given time.
+    - `ABT` differs from **[Determinized Sparse Partially Observable Tree (`DESPOT`)](https://papers.nips.cc/paper/5189-despot-online-pomdp-planning-with-regularization)** and **[Partially Observable Monte-Carlo Planning (`POMCP`)](https://papers.nips.cc/paper/4031-monte-carlo-planning-in-large-pomdps.pdf)** in that it is able to **keep and only modify the tree if the model changes** (hence _Adaptive_), whereas the others have to **start from scratch**.
+
+- About **particle depletion** (especially in continuous `states`).
+  - > "Particles explored with a different `action` at the first step or having received wrong `observations` are lost. Eventually, after several time steps **no particle is left** that fits the actual `observation`."
+  - > "The reason being, that the `ABT` does not perform **regular resampling** as it **tries to keep the subtree**, while moving or generating new particles would mean to lose their episodes. This behaviour is opposed to the `DESPOT` solver which uses an **independent conventional particle filtering** including **importance resampling**."
+  - > [solution] "`ABT` offers a default implementation to **replenish particles**. It tries to **“force” particles from the previous `belief`** into the new one by always **choosing the `action` actually performed** and “hoping” to receive the correct `observation`, until a minimum number of particles (`1000`) is reached at the new root."
+
+- About **infinite branching factor** (in **continuous** space).
+  - > "Whenever a new `observation` is made, a new `observation` branch and subsequent `belief` are opened up. In case of **continuous `observation`** this would mean that **each particle** lands in **its own `belief`**, degenerating the tree just after one step."
+  - Solutions:
+    - `1-` **Progressive widening**: limits the number of available `observations` at each `action` node, forcing episodes to **run deeper** into the tree.
+    - `2-` Space **discretization**: two `observations` are considered equal if a certain distance function falls below a pre-set `threshold`. In that case, the **episode is routed into the same `belief`**.
+      - **Small** `threshold` -> `fine`-grained -> many belief nodes -> **shallow search tree**.
+      - **Larger** `threshold` -> `coarse`-grained -> less observation branches -> **deeper trees**. But risk:
+        - > "If a belief stretches over a large section, there may be trajectories passing through that `belief` and not crashing, even though the obstacle lies within that section. [...] The `belief` may receive a **good value estimate**, making it attractive, even though it is **dangerous**."
+
+- A **`heuristic` function** as a first **estimate** for a **`belief` value**.
+  - Can be seen as the **`default` policy** (as opposed to **`tree` policy**) in **`MCTS`**, used for the **rollouts** in the **`simulation`** step.
+  - Examples:
+    - `1-` The **heuristic** returns simply **zero**.
+      - If the `rewards` are constructed to be **always negative**, this leads to **optimistic estimates**.
+    - `2-` **`IDM`** model is used.
+      - > "This helps to **detect `beliefs`** that **inevitably crash** into the obstacle and should be avoided; the **horizon** is **artificially prolonged**."
+
+- Directions for future works:
+  - `1-` **Speed up** the search algorithms by **parallelizing** it. For instance "Hyp-despot: A hybrid parallel algorithm for online planning under uncertainty" [(Cai et al., 2018)](https://arxiv.org/abs/1802.06215).
+  - `2-` Better handle **continuous observations**.
+
+</details>
 
 ---
 
