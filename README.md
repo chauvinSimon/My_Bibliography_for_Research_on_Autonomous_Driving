@@ -3835,6 +3835,43 @@ Author: Noh, S.
 
 ---
 
+**`"Development of A Stochastic Traffic Environment with Generative Time-Series Models for Improving Generalization Capabilities of Autonomous Driving Agents"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://arxiv.org/ftp/arxiv/papers/2006/2006.05821.pdf)]**
+**[** :mortar_board: `Istanbul Technical University` **]**
+
+- **[** _`generalisation`, `driver model`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://arxiv.org/ftp/arxiv/papers/2006/2006.05821.pdf).](media/2020_ozturk_1.PNG "[Source](https://arxiv.org/ftp/arxiv/papers/2006/2006.05821.pdf).")  |
+|:--:|
+| *The **trajectory generator** uses the `Social-GAN` architecture with a **`0.8s` horizon**. Bottom-right: `state` vector of the agent trained with **`Rainbow-DQN`**. Bottom-right: `reward` function: **`hard crash`** refers to **direct collisions** with other vehicles whereas the **`soft crash`** represents **dangerous approaches** (no precise detail). [Source](https://arxiv.org/ftp/arxiv/papers/2006/2006.05821.pdf).* |
+
+Authors: Ozturk, A., Gunel, M. B., Dal, M., Yavas, U., & Ure, N. K.
+
+- Previous work: _"Automated Lane Change Decision Making using Deep Reinforcement Learning in Dynamic and Uncertain Highway Environment"_ [(Alizadeh et al., 2019)](https://arxiv.org/abs/1909.11538)
+- Motivation:
+  - Increase **generalization capabilities** of a `RL` agent by training it in a **non-deterministic** and **data-driven** traffic simulator.
+    - > "Most existing work assume that **surrounding vehicles employ rule-based decision-making** algorithms such as `MOBIL` and `IDM`. Hence the traffic surrounding the ego vehicle always follow **smooth and meaningful trajectories**, which does not reflect the **real-world traffic** where surrounding vehicles driven by humans mostly execute **erroneous manoeuvres** and **hesitate during lane changes**."
+    - > "In this work, we develop a **data driven traffic simulator** by training a **generative adversarial network (`GAN`)** on real life **trajectory** data. The simulator generates **randomized trajectories** that resembles real life traffic **interactions** between vehicles, which enables training the `RL` agent on much **richer and realistic** scenarios."
+- About `GAN` for **trajectory generations**:
+  - > "The **`generator`** takes the real vehicle trajectories and generate **new trajectories**. The **`discriminator`** classifies the generated trajectories as real or fake."
+  - Two ways to adapt `GAN` architecture to **time-series** data:
+    - `1-` **Convert the time series** data into a **2D array** and then perform **convolution** on it.
+    - `2-` [done here] Develop a **sequence to sequence** encoder and decoder `LSTM` network.
+  - `NGSIM` seems to have been used for training. Not detailed.
+- To generate **interaction**-aware trajectories:
+  - Based on [`Social-GAN`](https://arxiv.org/abs/1803.10892).
+    - > "A **social pooling** is introduced where a **`LSTM` Encoder** encodes all the vehicles' position in a **relative** manner to the rest of the vehicles then a **max pooling** operation is performed at the hidden states of the encoder; arriving at a **socially aware module**."
+  - Alternatives could be to include **graph-based** or **convolution-based** models to extract **interaction** models.
+
+</details>
+
+---
+
 **`"From Simulation to Real World Maneuver Execution using Deep Reinforcement Learning"`**
 
 - **[** `2020` **]**
