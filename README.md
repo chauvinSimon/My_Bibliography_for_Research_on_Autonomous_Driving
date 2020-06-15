@@ -2255,6 +2255,51 @@ Author: Sierra Gonzalez, D.
 
 ---
 
+**`"An Auto-tuning Framework for Autonomous Vehicles"`**
+
+- **[** `2018` **]**
+**[[:memo:](https://arxiv.org/abs/1808.04913)]**
+**[**:car: `Baidu`**]**
+
+- **[** _`max-margin`_  **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://arxiv.org/abs/1808.04913).](media/2018_fan_4.PNG "[Source](https://arxiv.org/abs/1808.04913).")  |
+|:--:|
+| *Two ideas of rank-based conditional `IRL` framework (`RC`-`IRL`): **`Conditional` comparison** (left) and **`Rank`-based learning** (middle - is it a `loss`? I think you want to maximize this term instead?). Right: Based on the idea of the **`maximum margin`**, the goal is to find the **direction** that clearly **separates** the **demonstrated trajectory** from **randomly generated ones**. Illustration of the benefits of using `RC` to prevent **`background shifting`**: Even if the optimal reward function direction is the **same under the two scenarios**, it may not be ideal to train them together because the **optimal direction** may be impacted by **overfitting the `background shifting`**. Instead, the idea of **conditioning on scenarios** can be viewed as a **pairwise comparison**, which can **remove the background differences**. [Source](https://arxiv.org/abs/1808.04913).* |
+
+| ![[Source](https://arxiv.org/abs/1808.04913).](media/2018_fan_5.PNG "[Source](https://arxiv.org/abs/1808.04913).")  |
+|:--:|
+| *The **human expert** trajectory and **randomly generated** sample trajectories are sent to a `SIAMESE` network in a **pair-wise** manner. Again, I do not understand very well. [Source](https://arxiv.org/abs/1808.04913).* |
+
+Authors: Fan, H., Xia, Z., Liu, C., Chen, Y., & Kong, Q.
+
+- Motivation:
+  - Define an **automatic tuning** method for the **cost** function used in the `Apollo` **`EM`-planning** module to **address many different scenarios**.
+  - The idea is to learn these parameters from **human demonstration** via `IRL`.
+
+- Two main ideas _(to be honest, I have difficulties understanding their points)_:
+- `1-` **Conditional comparison**.
+  - _How to measure similarities between the `expert policy` and a `candidate policy`?_
+    - Usually: compare the **`expectation`** of their `value functions`.
+    - Here: compare their `value functions` **evaluated `state` by `state`**.
+  - _Why "conditional"?_
+    - Because the **loss function** is **conditional on `states`**.
+      - This can _allegedly_ significantly **reduce the _`background variance`_**.
+      - The authors use the term **"background variance"** to refer to the _"differences in behaviours metrics"_, due to the **diversity of scenarios**. _(Not very clear to me.)_
+    - > "Instead, the idea of **conditioning on scenarios** can be viewed as a **_pairwise comparison_**, which can remove the **background differences**."
+- `2-` **Rank-based** learning.
+  - > "To accelerate the training process and extend the coverage of corner cases, we **sample random policies** and compare against the expert demonstration instead of **generating the optimal policy first**, as in `policy gradient`."
+  - _Why "ranked"?_
+    - > "Our assumption is that the human demonstrations **rank near the top** of the distribution of policies **conditional on initial state** on average."
+    - > "The **value function** is a **rank** or search objective for selecting best trajectories in the online module."
+
+</details>
+
+---
+
 **`"Car-following method based on inverse reinforcement learning for autonomous vehicle decision-making"`**
 
 - **[** `2018` **]**
