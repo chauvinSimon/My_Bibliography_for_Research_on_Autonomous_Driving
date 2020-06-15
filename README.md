@@ -1565,6 +1565,51 @@ Authors: Kuefler, A., Morton, J., Wheeler, T., & Kochenderfer, M.
 
 ---
 
+**`"Deep Reinforcement Learning for Human-Like Driving Policies in Collision Avoidance Tasks of Self-Driving Cars"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://arxiv.org/abs/2006.04218)]**
+**[** :mortar_board: `University of the Negev` **]**
+
+- **[** _`data-driven reward`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://arxiv.org/abs/2006.04218).](media/2020_emuna_2.PNG "[Source](https://arxiv.org/abs/2006.04218).")  |
+|:--:|
+| *Note that the `state` variables are **normalized** in [`0`, `1`] or [`-1`, `1`] and that the **previous `actions`** are part of the **`state`**. Finally, both the **previous** and the **current** `observations` (only the current one for the `scans`) are included in the `state`, in order to **appreciate the temporal evolution**. [Source](https://arxiv.org/abs/2006.04218).* |
+
+| ![[Source](https://arxiv.org/abs/2006.04218).](media/2020_emuna_3.PNG "[Source](https://arxiv.org/abs/2006.04218).")  |
+|:--:|
+| *Left: `throttle` and `steering` actions are not predicted as **single scalars** but rather as **distributions**. In this case a **mixture of `3` Gaussian**, each of them parametrized by a `mean` and a `standard deviation`. **Weights** are also learnt. This enable modelling **multimodal distribution** and offers better **generalization** capabilities. Right: the `reward` function is designed to make the agent **imitate the expert driver's behaviour**. Therefore the differences in term of **mean `speed`** and **mean `track position`** between the **agent** and **expert** driver are penalized. The mean `speed` and `position` of the **expert** driver is obtained from the **learnt `GP` model**. It also contains a **non-learnable** part: penalties for `collision` and `action changes` are **independent of human driver observations**. [Source](https://arxiv.org/abs/2006.04218).* |
+
+| ![[Source](https://arxiv.org/abs/2006.04218).](media/2020_emuna_1.PNG "[Source](https://arxiv.org/abs/2006.04218).")  |
+|:--:|
+| *Human **`speeds` and `lateral` positions** on the track are recorded and **modelled using a `GP` regression**. It is used to define the `human-like` behaviours in the **`reward`** function (instead of `IRL`) as well as for **comparison** during test. [Source](https://arxiv.org/abs/2006.04218).* |
+
+Authors: Emuna, R., Borowsky, A., & Biess, A.
+
+- Motivations:
+  - Learn **human-like** behaviours via `RL` without **traditional `IRL`**.
+  - `Imitation` should be considered in term of **`mean`** but also **in term of `variability`**.
+- Main idea: **hybrid (`rule-based` and `data-driven`) reward shaping.**
+  - The idea is to **build a model** based on **observation of human behaviours**.
+    - In this case a **Gaussian Process** (`GP`) describes the **distribution of `speed` and `lateral position`** along a track.
+  - **Deviations** from these learnt parameters are then **penalized** in the **`reward` function**.
+  - Two variants are defined:
+    - `1-` The `reward` function is **fixed**, using the **`means`** of the **two `GPs`** are reference `speeds` and `positions`.
+    - `2-` The `reward` function **varies** by **sampling each time a trajectory** from the learnt `GP` models and using its values are **reference `speeds` and `positions`**.
+      - The goal here is not only to **imitate `mean` human behaviour** but to recover also the **variability in human driving**.
+  - > "Track `position` was **recovered better than `speed`** and we concluded that the latter is related to an agent acting in a **partially observable** environment."
+  - Note that the **weights** of feature in the `reward` function stay **arbitrary** (they are not learnt, contrary to `IRL`).
+- About the **dynamic batch update**.
+  - > "To improve **exploration** and avoid **early termination**, we used [`reference state initialization`](https://arxiv.org/abs/1804.02717). We initialized the `speed` by **sampling from a uniform distribution** between `30` to `90km/h`. **High variability** in the policy at the **beginning** of training caused the agent to **terminate after a few number of steps** (`30-40`). A **full round** of the track required about `2000` steps. To improve learning we implemented a **dynamic batch size** that **grows with the agent’s performance**."
+
+</details>
+
+---
+
 **`"Reinforcement Learning with Iterative Reasoning for Merging in Dense Traffic"`**
 
 - **[** `2020` **]**
