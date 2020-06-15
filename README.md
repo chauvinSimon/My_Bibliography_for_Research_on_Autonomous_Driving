@@ -7612,6 +7612,85 @@ Authors: Weingertner, P., Autef, A., & Le Cleac’h, S.
 
 ---
 
+**`"Baidu Apollo EM Motion Planner"`**
+
+- **[** `2018` **]**
+**[[:memo:](https://arxiv.org/abs/1807.08048)]**
+**[[:octocat:](https://github.com/ApolloAuto/apollo/tree/master/modules/planning)]**
+**[** :car: `Baidu` **]**
+- **[** _`path-velocity decomposition`, [`apollo`](https://github.com/ApolloAuto/apollo/)_  **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://arxiv.org/abs/1807.08048).](media/2018_fan_3.PNG "[Source](https://arxiv.org/abs/1807.08048).")  |
+|:--:|
+| *Top-left: __Hierarchical__ framework: **lane-level** trajectories are **generated in parallel** and eventually compared to decide of lane-changes. They can be **`passive`** (e.g. when the default lane is blocked by an obstacle) or **`non-passive`** (request triggered by the **routing module** for the purpose of **reaching the final destination**). For each lane, both `path` and `speed` optimizations are **iteratively** solved in the **`Frenet` frame** using a combination of **dynamic programming** for rough but feasible **decision**-proposals (`E-step`) and **spline-based quadratic programming** for smoothing and optimization (`M-step`). [Source](https://arxiv.org/abs/1807.08048).* |
+
+| ![[Source](https://arxiv.org/abs/1807.08048).](media/2018_fan_2.PNG "[Source](https://arxiv.org/abs/1807.08048).")  |
+|:--:|
+| *Bottom: note the **`path`<->`speed` communication**: `1-` The `speed` profile from the last cycle is used to evaluate the **dynamic obstacle `interactions`**, for instance to estimate the **time-to-collision** with oncoming and low-speed dynamic obstacles in the `path` optimizer. `2-` The generated `path` is sent to the **`speed` optimizer** to compute an optimal `speed` profile. [Source](https://arxiv.org/abs/1807.08048).* |
+
+| ![[Source](https://arxiv.org/abs/1807.08048).](media/2018_fan_1.PNG "[Source](https://arxiv.org/abs/1807.08048).")  |
+|:--:|
+| *Top: __Search__ within a grid is performed using **dynamic programming** (`DP`). In addition to the **boundary constraint** and the **dynamic constraints** (`acceleration`, `jerk limits` and `monotonicity`), the **generated path** shall match the ego car’s **initial lateral position** and **derivatives**. Bottom: Since all **constraints** are **linear** with respect to spline parameters, a **quadratic programming** solver (`QP`) can be used to solve the problem very fast. [Source](https://arxiv.org/abs/1807.08048).* |
+
+| ![[Source](https://github.com/ApolloAuto/apollo/blob/master/modules/planning/images/architecture_5.5.png).](media/2020_apollo_1.PNG "[Source](https://github.com/ApolloAuto/apollo/blob/master/modules/planning/images/architecture_5.5.png).")  |
+|:--:|
+| *__`Scenario`-based planning__ was introduced in `v3.5`. [Source1](https://github.com/ApolloAuto/apollo/blob/master/modules/planning/images/architecture_5.5.png) [Source2](https://github.com/ApolloAuto/apollo/blob/master/docs/demo_guide/images/Apollo_3_5_software_architecture.png).* |
+
+Authors: Fan, H., Zhu, F., Liu, C., Zhang, L., Zhuang, L., Li, D., Zhu, W., Hu, J., Li, H. & Kong, Q.
+
+- Motivations:
+  - > "This **planner** targets **safety** and ride experience with a **multilane**, **path-speed iterative**, **traffic rule** and **decision** combined design."
+  - Avoid **`state`-based descriptions** used in **`hand-tuning` decisions** (_tuneable_ but not _scalable_) and **`model-based` decisions** (e.g. data-driven-tuned `FSM`).
+    - > "It is true that a **heavy-decision-based** algorithm, or **heavily rule-based algorithm**, is easily **understood** and **explained**. The disadvantages are also clear: it may be trapped in **corner cases** (while its frequency is closely related to the complexity and magnitude of the number of rules) and **not always be optimal**."
+  - **Real-world** industrial applications are targeted. As opposed to theoretical simulator-based research experiments. Especially about **`safety`**.
+    - > "We aim to provide a trajectory with **at least an `8s`** or **`200m` meter** motion planning trajectory."
+    - > "In the case of an **emergency**, the system could react within `100ms`, compared with a `300ms` reaction time for a normal human driver."
+
+- About **`path-velocity` decomposition** and **`Fernet` frame**.
+  - > "Many autonomous driving motion planning algorithms are developed in **`Frenet` frames with time (`SLT`)** to reduce the planning dimension with the help of a **reference line**. Finding the optimal trajectory in a `Frenet` frame is essentially a **`3D` constrained optimization** problem."
+  - Instead of a direct **`3D`** optimization, the problem is converted into **two `2D`** problems: **`path` optimization** and **`speed` optimization**.
+
+- **_Why `EM`?_**
+  - It is based on an **[`EM`-type iterative](https://en.wikipedia.org/wiki/Expectation%E2%80%93maximization_algorithm)** algorithm:
+    - > "[Wikipedia] It alternates between performing an **expectation (`E`)** step, which creates a **function for the expectation** of the log-likelihood evaluated using the current estimate for the parameters, and a **maximization (`M`)** step, which computes parameters **maximizing the expected log-likelihood** found on the `E` step."
+    - Motivations for **two-step optimization**:
+      - > "Finding a best `path` / `speed` profile on the **`SL` / `ST` graph** is a **non-convex** optimization problem."
+      - > "In `Apollo` **`EM`-planner**, we **make decisions** prior to providing a **smooth trajectory**. The decision process is designed to make **on-road intentions clear** and **reduce the search space** for finding the **optimal** trajectory."
+  - Here:
+    - `1-` `E-path`. Based on the information projected in the `Frenet` frame (`SL` = **arclength `S`** vs `Lateral` gap), a **smooth `path`** is generated.
+      - **Search** within a grid is performed using **dynamic programming** (`DP`) to reach a **rough resolution**.
+        - > "Some necessary **pruning** based on vehicle dynamic constraints is also applied to **accelerate the process**."
+      - The `DP` results are used to generate a **convex domain** and guide the **spline-based quadratic programming** (`QP`).
+        - This solution can provide **obstacle decisions** such as **`nudge`**, `yield` and `overtake`.
+    - `2-` `M-path`. **Find** a feasible **smooth `path`** solution in this region.
+      - `QP` is used to search for the **optimal solution** in the **convex region supplied by the `DP` step**, balancing between **following the guidance line** and **smoothness** (`heading`, `curvature` and `derivative of curvature`).
+      - `QP` requires a **_decision_** from the `DP` step, such as `nudge from the left`, `nudge from the right`, `follow`, or `overtake`, to **generate its constraint**.
+      - > "For both the `path` and `speed` optimizers, we find that **piecewise `quintic` polynomials** are good enough. The spline generally contains **`3` to `5` polynomials** with approximately **`30` parameters**. The quadratic programming problem has a relatively **small objective function** but **large number of constraints** [`boundary constraints` and `dynamic feasibility`]. Consequently, an active set `QP` solver is good for solving the problem."
+      - The result calculated in the **last cycle** is re-used as a **hot start**.
+      - Average **solving time: `3ms`**.
+    - `3-` `E-speed`. Obstacles are projected on the station-**time** graph (`ST` = **arclength `S`** vs `Time`) and find a first solution with `DP`.
+      - Since the **piecewise linear** `speed` profile cannot satisfy **dynamic requirements**, the **spline `QP`** step is needed to fill this gap.
+    - `4-` `M-speed`. **Find** a feasible **smooth `speed`** solution in this region.
+      - > "The **spline `QP` speed** step includes three parts: `cost functional`, `linearized constraint` and spline `QP` solver."
+
+- How to tune a **`cost` functional** that can adapt to **different scenarios**?
+  - As the scenario becomes more complicated, **tuning** to improve the motion planner performance becomes **increasingly difficult**.
+  - One idea is to **learn these parameters** from **human demonstrated driving data**: [`auto-tuning`](https://arxiv.org/pdf/1808.04913.pdf).
+
+- About `Apollo`:
+  - Features are progressively added from the _`GPS` waypoint following_ in `v1.0` (2017) to _urban driving_ in `v5.5` (2020).
+  - **Scenario-based planning** e.g. `follow-lane`, `intersection`, `park`, `emergency`, was introduced in **`v3.5`**:
+    - > "We felt the need to move to a **more modular**, **scenario specific** and wholistic approach for planning its trajectory. In this approach, each **driving use case** is treated as a **different driving scenario**. This is useful because an issue now reported in a particular scenario can be fixed **without affecting the working of other scenarios** as opposed to the previous versions."
+  - `v5.5` focuses on **`curb-to-curb`** autonomous driving on urban roads, with a `Park-and-go` scenario, useful in situations like **`curb`-side delivery** or **passenger pick-up** or **drop-off**.
+  - License: **Apache-2.0**.
+
+</details>
+
+---
+
 **`"On Monte Carlo Tree Search and Reinforcement Learning"`**
 
 - **[** `2017` **]**
