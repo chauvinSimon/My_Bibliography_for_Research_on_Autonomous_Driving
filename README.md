@@ -476,6 +476,65 @@ Note: I find very valuable to get insights from the **CMU** (Carnegie Mellon Uni
 
 ## `Behavioural Cloning` `End-To-End` and `Imitation Learning`
 
+**`"Feudal Steering: Hierarchical Learning for Steering Angle Prediction"`**
+
+- **[** `2020` **]**
+**[[:memo:](http://openaccess.thecvf.com/content_CVPRW_2020/papers/w60/Johnson_Feudal_Steering_Hierarchical_Learning_for_Steering_Angle_Prediction_CVPRW_2020_paper.pdf)]**
+**[** :mortar_board: `Rutgers University` **]**
+**[** :car: `Lockheed Martin` **]**
+
+- **[** _`hierarchical learning`, `temporal abstraction`, `t-SNE embedding`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](http://openaccess.thecvf.com/content_CVPRW_2020/papers/w60/Johnson_Feudal_Steering_Hierarchical_Learning_for_Steering_Angle_Prediction_CVPRW_2020_paper.pdf).](media/2020_johnson_1.PNG "[Source](http://openaccess.thecvf.com/content_CVPRW_2020/papers/w60/Johnson_Feudal_Steering_Hierarchical_Learning_for_Steering_Angle_Prediction_CVPRW_2020_paper.pdf).")  |
+|:--:|
+| *__Feudal learning__ for `steering` prediction. The **worker** decides the next `steering` angle **conditioned on a `goal`** (`subroutine id`) determined by the **manager**. The **manager** learns to predict these `subroutine ids` from a sequence of **past `states`** (`break`, `steer`, `throttle`). The ground truth `subroutine ids` are the **centres of centroids** obtained by **unsupervised clustering**. They should contain observable **semantic meaning** in terms of driving tasks. [Source](http://openaccess.thecvf.com/content_CVPRW_2020/papers/w60/Johnson_Feudal_Steering_Hierarchical_Learning_for_Steering_Angle_Prediction_CVPRW_2020_paper.pdf).* |
+
+Authors: Johnson, F., & Dana, K.
+
+- Note: Although terms and ideas from hierarchical reinforcement learning (`HRL`) are used, **no `RL` is applied here!**
+
+- Motivation: **Temporal abstraction**.
+  - Problems in `RL`: **delayed rewards** and **sparse credit assignment**.
+  - Some solutions: **intrinsic rewards** and **temporal abstraction**.
+  - The idea of **temporal abstraction** is to **break down** the problem into more tractable pieces:
+    - > "At all times, human drivers are **paying attention** to **two levels** of their environment. The first level goal is on a **finer grain**: _don’t hit obstacles in the immediate vicinity of the vehicle_. The second level goal is on a **coarser grain**: _plan actions a few steps ahead to maintain the proper course efficiently_."
+
+- The idea of **feudal learning** is to **divide the task** into:
+  - `1-` A **manager** network.
+    - It **operates at a lower temporal resolution** and produces **`goal` vectors** that it passes to the **worker network**.
+    - This `goal` vector should encapsulate a **_temporally extended action_** called a `subroutine`, `skill`, `option`, or `macro-action`.
+    - Input: Sequence of previous `steering`.
+    - Output: `goal`.
+  - `2-` A **worker** network: **_conditioned_** on the `goal` decided by the manager.
+    - Input: `goal` decided by the manager, `previous own prediction`, sequence of `frames`.
+    - Output: `steering`.
+  - The **`subroutine ids`** (manager net) and the `steering angle` prediction (worker net) are jointly learnt.
+
+- _What are the ground truth `goal` used to train the manager?_
+  - They are **ids** of the **centres of centroids formed by clustering** (unsupervised learning) all the training data:
+    - `1-` Data: `Steering`, `braking`, and `throttle` data are concatenated every `m=10` time steps to make a vector of length `3m=30`.
+    - `2-` Encoding: projected in a **`t-SNE` `2d`-space**.
+    - `3-` Clustering: `K-means`.
+    - The `2d`-coordinates of **centroids of the clusters** are the **`subroutine ids`**, i.e. the possible `goals`.
+      - _How do they convert the `2d`-coordinates into a single scalar?_
+  - > "We aim to **classify the `steering` angles into their temporally abstracted subroutines**, also called `options` or `macro-actions`, associated with highway driving such as `follow the sharp right bend`, `bumper-to-bumper traffic`, `bear left slightly`."
+
+- _What are the decision frequencies?_
+  - The worker considers the last `10` actions to decide the `goal`.
+  - It seems like a **smoothing process**, where a **window is applied**?
+    - _It should be possible to achieve that with a recurrent net, shouldn't it?_
+
+- About **`t-SNE`**:
+  - > "**`t`-Distributed Stochastic Neighbor Embedding (`t-SNE`)** is an **unsupervised**, non-linear technique primarily used for **data exploration and visualizing** high-dimensional data. In simpler terms, `t-SNE` gives you a feel or intuition of how the data is arranged in a **high-dimensional space** [[from `towardsdatascience`](https://towardsdatascience.com/an-introduction-to-t-sne-with-python-example-5a3a293108d1)]."
+  - Here it is used as an **embedding space** for the driving data and as the **subroutine ids** themselves.
+
+</details>
+
+---
+
 **`"A Survey of End-to-End Driving: Architectures and Training Methods"`**
 
 - **[** `2020` **]**
