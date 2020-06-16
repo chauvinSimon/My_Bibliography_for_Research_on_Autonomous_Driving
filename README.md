@@ -3613,6 +3613,40 @@ Related works:
 
 ---
 
+**`"A hierarchical control system for autonomous driving towards urban challenges"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://www.mdpi.com/2076-3417/10/10/3543)]**
+**[** :mortar_board: `Chungbuk National University, Korea` **]**
+
+- **[** _`FSM`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://www.mdpi.com/2076-3417/10/10/3543).](media/2020_van_1.PNG "[Source](https://www.mdpi.com/2076-3417/10/10/3543).")  |
+|:--:|
+| *__Behavioural planning__ is performed using a **two-state `FSM`**. Right: **transition** conditions in the **`M-FSM`**. [Source](https://www.mdpi.com/2076-3417/10/10/3543)* |
+
+Authors: Van, N. D., Sualeh, M., Kim, D., & Kim, G. W.
+
+- Motivations:
+  - > "In the `DARPA` Urban Challenge, **Stanford `Junior`** team succeeded in applying **`FSM` with several scenarios** in urban traffic roads. However, the main **drawback of `FSM`** is the difficulty in **solving uncertainty** and in **large-scale scenarios**."
+  - Here:
+    - The **uncertainty** is not addressed.
+    - The diversity of scenarios is handled by a **two-stage Finite State Machine** (`FSM`).
+- About the **two-state `FSM`**:
+  - `1-` A **Mission `FSM`** (`M-FSM`).
+    - Five **states**: `Ready`, `Stop-and-Go` (`SAG`) _(main mode)_, `Change-Lane` (`CL`), `Emergency-stop`, `avoid obstacle mode`.
+  - `2-` A **Control `FSM`** (`C-FSM`) in each **`M-FSM` state**.
+- The `decision` is then converted into `speed` and `waypoints` objectives, handled by the **local path planning**.
+  - It uses a **real-time hybrid `A*` algorithm** with an **occupancy grid map**.
+  - The communication `decision` -> `path planner` is **unidirectional**: **No feedback** is given regarding the _feasibility_ for instance.
+
+</details>
+
+---
+
 **`"Trajectory Optimization and Situational Analysis Framework for Autonomous Overtaking with Visibility Maximization"`**
 
 - **[** `2019` **]**
