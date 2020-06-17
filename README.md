@@ -476,6 +476,53 @@ Note: I find very valuable to get insights from the **CMU** (Carnegie Mellon Uni
 
 ## `Behavioural Cloning` `End-To-End` and `Imitation Learning`
 
+---
+
+**`"Advisable Learning for Self-driving Vehicles by Internalizing Observation-to-Action Rules"`**
+
+- **[** `2020` **]**
+**[[:memo:](http://openaccess.thecvf.com/content_CVPR_2020/papers/Kim_Advisable_Learning_for_Self-Driving_Vehicles_by_Internalizing_Observation-to-Action_Rules_CVPR_2020_paper.pdf)]**
+**[** :mortar_board: `Berkeley` **]**
+**[[:octocat:](https://github.com/JinkyuKimUCB/Advisable-Learning)]**
+
+- **[** _`attention`, `advisability`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](http://openaccess.thecvf.com/content_CVPR_2020/papers/Kim_Advisable_Learning_for_Self-Driving_Vehicles_by_Internalizing_Observation-to-Action_Rules_CVPR_2020_paper.pdf).](media/2020_kim_1.PNG "[Source](http://openaccess.thecvf.com/content_CVPR_2020/papers/Kim_Advisable_Learning_for_Self-Driving_Vehicles_by_Internalizing_Observation-to-Action_Rules_CVPR_2020_paper.pdf).")  |
+|:--:|
+| *[Source](http://openaccess.thecvf.com/content_CVPR_2020/papers/Kim_Advisable_Learning_for_Self-Driving_Vehicles_by_Internalizing_Observation-to-Action_Rules_CVPR_2020_paper.pdf).* |
+
+| ![[Source](http://openaccess.thecvf.com/content_CVPR_2020/papers/Kim_Advisable_Learning_for_Self-Driving_Vehicles_by_Internalizing_Observation-to-Action_Rules_CVPR_2020_paper.pdf).](media/2020_kim_2.PNG "[Source](http://openaccess.thecvf.com/content_CVPR_2020/papers/Kim_Advisable_Learning_for_Self-Driving_Vehicles_by_Internalizing_Observation-to-Action_Rules_CVPR_2020_paper.pdf).")  |
+|:--:|
+| *[Source](http://openaccess.thecvf.com/content_CVPR_2020/papers/Kim_Advisable_Learning_for_Self-Driving_Vehicles_by_Internalizing_Observation-to-Action_Rules_CVPR_2020_paper.pdf).* |
+
+Authors: Kim, J., Moon, S., Rohrbach, A., Darrell, T., & Canny, J.
+
+- Related **PhD thesis**: [Explainable and Advisable Learning for Self-driving Vehicles](https://www2.eecs.berkeley.edu/Pubs/TechRpts/2020/EECS-2020-16.pdf), (Kim. J, 2020)
+
+- Motivation:
+  - An **`end-to-end` model** should be **explainable**, i.e. provide **easy-to-interpret rationales** for its behaviour:
+  - `1-` Summarize / the **visual observations** (input) in **natural language**, e.g. _"light is red"_.
+    - `Visual attention` is not enough, **verbalizing** is needed.
+  - `2-` Predict an **appropriate action response**, e.g. _"I see a pedestrian crossing, so I stop"_.
+    - I.e. Justify the decisions that are made and explain why they are reasonable in a **human understandable manner**, i.e., again, in **natural language**.
+  - `3-` Predict a **control signal**, accordingly.
+    - The command is **conditioned** on the predicted **high-level action command**, e.g. _"maintain a slow speed"_.
+    - The output is a **sequence of waypoints**, hence **`end-to-mid`**.
+
+- About the dataset:
+  - **Berkeley [`DeepDrive-eXplanation`](https://github.com/JinkyuKimUCB/BDD-X-dataset)** (`BDD-X`) dataset _(by the first author)_.
+  - Together with _camera front-views_ and _IMU signal_, the dataset provides:
+    - `1-` **Textual descriptions** of the vehicle's actions: **_what_** _the driver is doing_.
+    - `2-` **Textual explanations** for the driver's actions: **_why_** _the driver took that action from the point of view of a driving instructor_.
+      - For instance the pair: (_`"the car slows down"`_, _`"because it is approaching an intersection"`_).
+
+</details>
+
+---
+
 **`"Feudal Steering: Hierarchical Learning for Steering Angle Prediction"`**
 
 - **[** `2020` **]**
