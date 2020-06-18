@@ -3159,6 +3159,74 @@ Authors: Jayaraman, S. K., Jr, L. P. R., Yang, X. J., Pradhan, A. K., & Tilbury,
 
 ---
 
+**`"Rules of the road: Predicting driving behavior with a convolutional model of semantic interactions"`**
+
+- **[** `2019` **]**
+**[[:memo:](https://arxiv.org/abs/1906.08945)]**
+**[** :mortar_board: `Caltech` **]**
+**[**:car: `zoox`**]**
+
+- **[** _`multimodal`, `probabilistic`, `1-shot`_  **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://arxiv.org/abs/1906.08945).](media/2019_hong_1.PNG "[Source](https://arxiv.org/abs/1906.08945).")  |
+|:--:|
+| *The idea is to **encode** a **history of `world states`** (both `static` and `dynamic`) and **semantic `map` information** in a unified, **top-down spatial `grid`**. This allows to use a deep **convolutional** architecture to **model entity dynamics**, **entity interactions**, and **scene context** jointly. The authors found that **temporal convolutions** achieved **better performance** and **significantly faster** training than an `RNN` structure. [Source](https://arxiv.org/abs/1906.08945).* |
+
+| ![[Source](https://arxiv.org/abs/1906.08945).](media/2019_hong_2.PNG "[Source](https://arxiv.org/abs/1906.08945).")  |
+|:--:|
+| *Three **`1-shot` models** are proposed. Top: **parametric** and **continuous**. Bottom: **non-parametric** and **discrete** (trajectories are here sampled for display from the `state` probabilities). [Source](https://arxiv.org/abs/1906.08945).* |
+
+Authors: Hong, J., Sapp, B., & Philbin, J.
+
+- Motivations: A prediction method of **future distributions** of **entity `state`** that is:
+  - `1-` **Probabilistic**.
+    - > "A **single most-likely point estimate** isn't sufficient for a safety-critical system."
+    - > "Our perception module also gives us **`state` estimation uncertainty** in the form of **covariance matrices**, and we include this information in our representation via covariance norms."
+  - `2-` **Multimodal**.
+    - It is important to cover a **diversity of possible implicit actions** an entity might take (e.g., _which way through a junction_).
+  - `3-` **One-shot**.
+    - It should directly predict **distributions of future states**, rather than **a single point estimate** at **each future timestep**.
+    - > "For efficiency reasons, it is desirable to **predict full trajectories** (time sequences of `state` distributions) **without iteratively applying a recurrence step**."
+    - > "The problem can be naturally formulated as a **sequence-to-sequence** generation problem. [...] We chose **`ℓ=2.5s` of past history**, and predict up to **`m=5s` in the future**."
+    - > "**[`DESIRE`](https://arxiv.org/abs/1704.04394)** and **[`R2P2`](http://openaccess.thecvf.com/content_ECCV_2018/papers/Nicholas_Rhinehart_R2P2_A_ReparameteRized_ECCV_2018_paper.pdf)** address **multimodality**, but both do so via **`1`-step stochastic policies**, in contrast to ours which directly predicts a **time sequence** of multimodal distributions. Such **policy-based methods** require both **`future roll-out`** and **`sampling`** to obtain a set of possible trajectories, which has computational trade-offs to our **`one-shot` feed-forward** approach."
+
+- How to model **entity interactions**?
+  - `1-` **Implicitly**: By encoding them as **surrounding dynamic context**.
+  - `2-` **Explicitly**: For instance, **[`SocialLSTM`](http://cvgl.stanford.edu/papers/CVPR16_Social_LSTM.pdf) pools hidden temporal `state`** between entity models.
+  - Here, **all surrounding entities** are encoded within a **specific** tensor.
+
+- Input:
+  - A stack of **`2d`-top-view-grids**. Each frame has **`128×128` pixels**, corresponding to **`50m×50m`**.
+    - For instance, the **dynamic context** is encoded in a `RGB` image with **unique colours** corresponding to each **element type**.
+    - The **`state` history** of the considered entity is encoded in a **stack of binary maps**.
+      - _One could have use only `1` channel and play with the colour to represent the history_.
+  - > "Note that through rendering, we **lose the true graph structure of the road network**, leaving it as a **modeling challenge** to learn **valid road rules** like _legal traffic direction_, and _valid paths through a junction_."
+    - _Cannot it just be coded in another tensor?_
+
+- Output. Three approaches are proposed:
+  - `1-` **Continuous** + **parametric** representations.
+    - `1.1.` A **Gaussian distribution** is **regressed** per future timestep.
+    - `1.2.` **Multi-modal** Gaussian Regression (**`GMM-CVAE`**).
+      - A **set of Gaussians** is predicted by **sampling from a _categorial_ latent variable**.
+      - If non enhanced, this method is naive and suffers from **exchangeability**, and **mode collapse**.
+      - > "In general, our **mixture of sampled Gaussian** trajectories **underperformed** our other proposed methods; we observed that some **samples were implausible**."
+        - _One could have added an auxiliary loss that penalize off-road predictions, as in the [improved version of `CoverNet`](https://arxiv.org/abs/2006.04767)_
+  - `2-` **Discrete** + **non-parametric** representations.
+    - Predict **occupancy grid maps**.
+      - A **grid** is produced for each future modelled timestep.
+      - Each grid location holds the **probability** of the corresponding output `state`.
+      - For comparison, trajectories are extracted via some trajectory **sampling procedure**.
+
+- Against **non-learnt baselines**:
+  - > "Interestingly, both **`Linear` and `Industry` baselines** performed worse relative to our methods at **larger time offsets**, but **better at smaller offsets**. This can be attributed to the fact that **predicting near futures** can be accurately achieved with **classical physics** (which both baselines leverage) — more distant future predictions, however, require more challenging **semantic understanding**."
+
+</details>
+
+---
+
 **`"Learning Interaction-Aware Probabilistic Driver Behavior Models from Urban Scenarios"`**
 
 - **[** `2019` **]**
