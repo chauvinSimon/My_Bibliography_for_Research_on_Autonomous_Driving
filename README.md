@@ -2612,6 +2612,92 @@ Authors: Kuderer, M., Gulati, S., & Burgard, W.
 
 ---
 
+**`"Motion Prediction using Trajectory Sets and Self-Driving Domain Knowledge"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://arxiv.org/abs/2006.04767)]**
+**[**:car: `nuTonomy`**]**
+
+- **[** _`multimodal`, `probabilistic`, `mode collapse`, `domain knowledge`, `classification`_  **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://arxiv.org/abs/2006.04767).](media/2020_boulton_1.PNG "[Source](https://arxiv.org/abs/2006.04767).")  |
+|:--:|
+| *Top: The idea of `CoverNet` is to first **generate feasible future trajectories**, and then **classify** them. It uses the past `states` of all road users and a `HD map` to compute a **distribution** over a vehicle's possible future states. Bottom-left: the set of trajectories can be **reduced by considering the current `state` and the dynamics**: at `high speeds`, **sharp turns are not dynamically feasible** for instance. Bottom-right: the contribution here also deals with **"feasibility"**, i.e. tries to reduce the set using **domain knowledge**. A second `loss` is introduced to **penalize predictions that go `off-road`**. The first `loss` (`cross entropy` with closest prediction treated as ground truth) is also adapted: instead of a **`delta` distribution** over the **closest mode**, there is also **probability** assigned to near misses. [Source](https://arxiv.org/abs/2006.04767).* |
+
+Authors: Boulton, F. A., Grigore, E. C., & Wolff, E. M.
+
+- Related work: **[`CoverNet`: Multimodal Behavior Prediction using Trajectory Sets](https://arxiv.org/pdf/1911.10298.pdf)**, (Phan-Minh, Grigore, Boulton, Beijbom, & Wolff, 2019).
+
+- Motivation:
+  - Extend their `CoverNet` by including further **"domain knowledge"**.
+    - > "Both **dynamic constraints** and **_"rules-of-the-road"_** place strong priors on **likely motions**."
+    - `CoverNet`: Predicted trajectories should be **consistent** with the **current dynamic state**.
+    - This work : Predicted trajectories should **stay on road**.
+  - The main idea is to **leverage the `map` information** by adding an **auxiliary loss** that **penalizes off-road predictions**.
+
+- Motivations and ideas of `CoverNet`:
+  - `1-` Avoid the issue of **"mode collapse"**.
+    - The prediction problem is treated as **classification** over a **_diverse_ set of trajectories**.
+    - The **trajectory sets** for `CoverNet` is available on [`nuscenes-devkit` github](https://github.com/nutonomy/nuscenes-devkit).
+  - `2-` Ensure a desired level of **coverage** of the `state` space.
+    - The larger and the more diverse the **set**, the higher the **coverage**. One can play with the resolution to ensure **coverage guarantees**, while **pruning** of the set improves the efficiency.
+  - `3-` **Eliminate dynamically infeasible trajectories**, i.e. introduced **dynamic constraints**.
+    - Trajectories that are **not physically possible** are not considered, which limits the **set of reachable states** and improves the **efficiency**.
+    - > "We create a **dynamic trajectory** set based on the current `state` by **integrating forward** with our dynamic model over **diverse control sequences**."
+
+- Two **losses**:
+  - `1-` Moving beyond **"standard" `cross-entropy` loss** for **classification**.
+    - _What is the_ **_ground truth_** _trajectory?_ Obviously, it is **not part of the set**.
+    - One solution: designate **the closest one** in the set.
+      - > "We utilize **cross-entropy** with positive samples determined by the element in the **`trajectory set` closest to the actual ground truth** in **minimum average** of point-wise Euclidean distances."
+      - Issue: This **will penalize the second-closest trajectory** just as much as **the furthest**, since it ignores the **geometric structure** of the trajectory set.
+    - Another idea: use a **weighted** cross-entropy loss, where the **`weight`** is a **function of distance to the ground truth**.
+      - > "Instead of a **`delta` distribution** over the **closest mode**, there is also **probability** assigned to `near misses`."
+      - A **threshold** defines which trajectories are _"close enough"_ to the ground truth.
+    - This weighted loss is adapted to favour **mode diversity**:
+      - > "We tried an **_"Avoid Nearby"_ weighted cross entropy** loss that assigns weight of `1` to the **closest match**, `0` to all other trajectories within **`2` meters of ground truth**, and `1/|K|` to the rest. We see that we are able to **increase mode diversity** and recover the performance of the baseline loss."
+      - > "Our results indicate that losses that are better able to **enforce mode diversity** may lead to improved performance."
+  - `2-` Add an **auxiliary loss** for **off-road predictions**.
+    - This helps **learn domain knowledge**, i.e. partially encode _"rules-of-the-road"_.
+    - > "This auxiliary loss can easily be **pretrained** using only `map` information (e.g., `off-road` area), which **significantly improves performance on small datasets**."
+
+- Related works for **`predictions`** (we want **_multimodal_** and **_probabilistic_** trajectory predictions):
+  - **Input**, i.e. **encoding** of the scene:
+    - > "State-of-the-art motion prediction algorithms now typically use `CNNs` to learn appropriate features from a **`birds-eye-view` rendering** of the scene (**map** and road users)."
+    - **Graph neural networks** (`GNNs`) looks promising to **encode interactions**.
+    - Here: A **`BEV` raster `RGB` image** (fixed size) containing **`map` information** and the **past `states`** of all objects.
+      - It is inspired by the work of `UBER`: [Multimodal Trajectory Predictions for Autonomous Driving using Deep Convolutional Networks](http://arxiv.org/abs/1809.10732), (Cui et al., 2018).
+  - **Output**, i.e. representing the possible future motions:
+    - `1-` **Generative** models.
+      - They encode choice over multiple actions via **sampling latent variables**.
+      - Issue: **multiple trajectory samples** or **`1`-step policy rollouts** (e.g. `R2P2`) are required at inference.
+      - Examples: Stochastic policies, `CVAE`s and `GAN`s.
+    - `2-` **Regression**.
+      - **Unimodal**: predict a single future trajectory. Issue: **unrealistically average** over behaviours, even when predicting **Gaussian uncertainty**.
+      - **Multimodal**: **distribution over multiple trajectories**. Issue: suffer from **mode collapse**.
+    - `3-` **Classification**.
+      - > "We choose **not to learn an uncertainty distribution** over the space. The **density** of our trajectory sets reduces its benefit compared to the case when there are a only a handful of modes."
+      - _How to deal with varying number of classes to predict?_ Not clear to me.
+
+- How to solve `mode collapse` in regression?
+  - The authors consider [`MultiPath`](https://arxiv.org/abs/1910.05449) by `Waymo` (detailed also in this page) as their baseline.
+  - A **set of anchor boxes** can be used, much like in **object detection**:
+  - > "This model implements **ordinal regression** by first choosing among a **fixed set of anchors** (computed **_a priori_**) and then **regressing to residuals** from the chosen anchor. This model predicts a **fixed number of trajectories (`modes`)** and their associated **probabilities**."
+  - The authors extend `MultiPath` with **dynamically-computed anchors**, based on the agent's current `speed`.
+    - Again, it makes no sense to consider anchors that are **not dynamically reachable**.
+    - They also found that using one order of magnitude **more “anchor” trajectories** that Waymo (`64`) is beneficial: **better coverage of space** via anchors, leaving the network to **learn smaller residuals**.
+
+- Extensions:
+  - As pointed out by this [`KIT` Master Thesis offer](https://www.mrt.kit.edu/download/Extending_CoverNet_CNN-based_method_for_Trajectory_Prediction.pdf), the current state of `CoverNet` only has a **motion model for cars**. Predicting **bicycles and pedestrians'** motions would be a next step.
+  - **Interactions** are ignored now.
+
+</details>
+
+---
+
 **`"PnPNet: End-to-End Perception and Prediction with Tracking in the Loop"`**
 
 - **[** `2020` **]**
@@ -3334,7 +3420,7 @@ Authors: Mercat, J., Gilles, T., Zoghby, N. El, Sandou, G., Beauvois, D., & Gil,
 **[[:memo:](https://arxiv.org/abs/1910.05449v1)]**
 **[** :car: `Waymo` **]**
 
-- **[** _`anchor`, `multi-modality prediction`, `weighted prediction`_  **]**
+- **[** _`anchor`, `multi-modality prediction`, `weighted prediction`, `mode collapse`_  **]**
 
 <details>
   <summary>Click to expand</summary>
