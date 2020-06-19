@@ -4219,6 +4219,51 @@ Author: Noh, S.
 
 ---
 
+**`"Reinforcement Learning with Uncertainty Estimation for Tactical Decision-Making in Intersections"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://arxiv.org/abs/2006.09786)]**
+**[** :mortar_board: `Chalmers University` **]**
+**[** :car: `Volvo`, `Zenuity` **]**
+
+- **[** _`uncertainty-aware`, `continuous episodes`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://arxiv.org/abs/2006.09786).](media/2020_hoel_3.PNG "[Source](https://arxiv.org/abs/2006.09786).")  |
+|:--:|
+| *__Confidence__ of the recommended `actions` in a `DQN` are estimated using an **`ensemble` method**. Situation that are **outside of the training distribution** and **events rarely seen** while training can be detected. Middle: The `reward` associated to **non-terminated `state`s** is function of the **`jerk`** (comfort) and **scaled** so that its **accumulation until `timeout`** reaches `-1` if no `jerk` is applied. [Source](https://arxiv.org/abs/2006.09786).* |
+
+Authors: Hoel, C.-J., Tram, T., & Sjöberg, J.
+
+- Previous work: ["Tactical Decision-Making in Autonomous Driving by Reinforcement Learning with Uncertainty Estimation"](https://arxiv.org/abs/2004.10439) (Hoel, Wolff, & Laine, 2020), detailed on this page too.
+
+- Motivation:
+  - Same idea as the previous work (ensemble `RPF` method used to **estimate the confidence** of the recommended `actions`) but addressing **intersections** instead of **highways** scenarios.
+
+- Similar conclusions:
+  - **Uncertainty** for situations that are **outside** of the training distribution can be detected, e.g. with the approaching vehicle driving **faster than during training**.
+  - > "Importantly, the method also indicates high uncertainty for **rare events within the training distribution.**"
+
+- Miscellaneous:
+  - The threshold **`c-safe`** is still **manually selected**. Automatically updating its value during training would be beneficial.
+  - `state` similar to ["Learning When to Drive in Intersections by Combining Reinforcement Learning and Model Predictive Control"](https://arxiv.org/abs/1908.00177), (Tram, Batkovic, Ali, & Sjöberg, 2019), detailed on this page too.
+  - `action` space more **abstract**: {`take way`, `give way`, `follow car {1, ... , 4}`}, **relying on an `IDM`** for the implementation.
+  - The **timestep** has been reduced **from `1s` to `0.04s`**. _Better to react!_
+
+- Learning **interactions**:
+  - A **`1d-CNN` structure** is used for to input about the surrounding (and **interchangeable**) vehicles.
+  - > "Applying the **same weights** to the input that describes the **surrounding vehicles** results in a better performance."
+
+- How to **learn `continuous` tasks** while being **trained on `episodic` ones** (with `timeout`)?
+  - > "If the current `policy` of the agent decides to stop the ego vehicle, **an `episode` could continue forever**. Therefore, a `timeout` time is set to `τmax = 20 s`, at which the **episode terminates**. The **last experience** of such an episode is **not added to the replay memory**. This trick prevents the agent to learn that an **episode can end due to a `timeout`**, and makes it seem like an episode can **continue forever**, which is important, since the **terminating `state` due to the time limit** is not part of the `MDP`."
+  - > "The `state` space, described above, did not provide any information on **_where in an episode_** the agent was at a given time step, e.g. if it was in the _beginning_ or _close to the end_. The reason for this choice was that the goal was to train an agent that performed well **in `highway` driving of _infinite_ length**. Therefore, the **`longitudinal position` was irrelevant**. However, at the end of a **successful episode**, the future discounted `return` was `0`. To **avoid that the agent learned this**, the **last experience was not stored in the experience replay memory**. Thereby, the agent was **tricked to believe that the episode continued forever**. [_(C. Hoel, Wolff, & Laine, 2018)_]"
+
+</details>
+
+---
+
 **`"Development of A Stochastic Traffic Environment with Generative Time-Series Models for Improving Generalization Capabilities of Autonomous Driving Agents"`**
 
 - **[** `2020` **]**
@@ -4527,7 +4572,7 @@ Authors: Hoel, C.-J., Wolff, K., & Laine, L.
   - `2-` Use this metric together with some **safety criterion** to **detect situations** are **outside of the training distribution**.
     - Simple `DQN` can **cause collisions** if the confidence of the agent is not considered:
     - > "A fundamental problem with these methods is that no matter what situation the agents are facing, they **will always output a decision**, with **no information on the uncertainty** of the decision or if the agent has **experienced anything similar** during its training. If, for example, an agent that was trained for a one-way highway scenario would be deployed in a scenario with **oncoming traffic**, it would still output a decision, **without any warning**."
-    - > "The DQN algorithm returns a **maximum likelihood estimate** of the `Q-values`. But gives no information about the uncertainty of the estimation. Therefore **collisions occur in unknown situations**".
+    - > "The DQN algorithm returns a **`maximum-likelihood` estimate** of the `Q-values`. But gives no information about the uncertainty of the estimation. Therefore **collisions occur in unknown situations**".
   - `3-` And also leverage this **uncertainty estimation** to better train and **transfer** to real-world.
     - > "The uncertainty information could be used to **guide the training** to situations that the agent is **currently not confident about**, which could improve the **sample efficiency** and broaden the distribution of situations that the agent can handle."
     - > If an agent is trained in a **simulated environment** and **later deployed in real traffic**, the uncertainty information could be used to detect situations that need to be **added to the simulated world**.
@@ -4537,7 +4582,7 @@ Authors: Hoel, C.-J., Wolff, K., & Laine, L.
   - [Combining Planning and Deep Reinforcement Learning in Tactical Decision Making for Autonomous Driving](https://arxiv.org/abs/1905.02680) (Hoel, Driggs-Campbell, Wolff, Laine, & Kochenderfer, 2019) analysed in [my `IV19` report](https://github.com/chauvinSimon/IV19).
   - [Tactical decision-making for autonomous driving: A reinforcement learning approach](https://research.chalmers.se/publication/511929/file/511929_Fulltext.pdf). Hoel's 2019 thesis.
 - How to estimate uncertainty:
-  - `1-` **Bootstrap sampling**.
+  - `1-` **Statistical bootstrapping (sampling)**.
     - The **risk** of an `action` is represented as the **variance of the return** (`Q(s, a)`) when taking that action. The **variance** is estimated using an **ensemble of models**:
     - > "An **ensemble of models** is trained on **different subsets** of the available data and the **distribution** that is given by the ensemble is used to **approximate the uncertainty**".
       - Issue: "No mechanism for uncertainty that **does not come from the observed data**".
@@ -4555,7 +4600,7 @@ Authors: Hoel, C.-J., Wolff, K., & Laine, L.
   - It represents the **relative standard deviations**, which is defined as the **ratio** of the **`standard deviation`** to the **`mean`**.
   - It indicates **_how far `(s, a)` is from the training distribution_**.
 - At inference (during testing):
-  - `action`s with a **level of uncertainty `cv(s, a)`** that exceeds a defined threshold are **prohibited**.
+  - `action`s with a **level of uncertainty `cv(s, a)`** that exceeds a **pre-defined threshold** are **prohibited**.
   - If no `action` fulfils the criteria, a **fallback action `a-safe`** is used.
   - Otherwise, the selection is done **maximizing the mean `Q-value`**.
   - The `DQN`-baseline, `SUMO`-baseline and proposed **`DQN`-`ensemble-RPF`** are tested on **scenarios outside** of the **training distributions**.
@@ -4567,7 +4612,7 @@ Authors: Hoel, C.-J., Wolff, K., & Laine, L.
     - lateral: {`stay in lane`, `change left`, `change right`}.
     - The **fallback action `a-safe`** is set to `stay in lane` and apply `−4 m/s2`
   - `time`:
-    - Simulation timestep `∆t` = `1s`. _Ok, they want high-level decision. Many things can happen within 1s though! How can it react properly?_
+    - Simulation timestep `∆t` = `1s`. _Ok, they want high-level decision. Many things can happen within `1s` though! How can it react properly?_
     - A lane change takes `4s` to complete. Once initiated, it cannot be aborted. _I see that as a_ **_de-bouncing_** _method_.
   - `reward`:
     - `v/v-max`, in `[0, 1]`, encouraging the agent to overtake slow vehicles.
@@ -4583,6 +4628,7 @@ Authors: Hoel, C.-J., Wolff, K., & Laine, L.
   - > "Technically, the problem is a `POMDP`, since the ego vehicle **cannot observe the internal state** of the driver models of the **surrounding vehicles**. However, the `POMDP` can be approximated as an `MDP` with a **`k-Markov` approximation**, where the state consists of the **last `k` observations**."
   - Here the authors define **full observability** within `200 m`.
 - Why is it called _Bayesian_ `RL`?
+  - Originally used in `RL` to creating efficient **`exploration` methods**.
   - Working with an **ensemble** gives **probability distribution** for the **`Q` function**.
   - The `prior` is introduced, here `p`.
   - _What is the posterior?_ The resulting `f+βp`.
@@ -5997,7 +6043,7 @@ Two figures:
 
 | ![[Source Left](https://arxiv.org/abs/1908.00177) - [Source Right](https://pdfs.semanticscholar.org/fba5/6bac9a41b7baa2671355aa113462d2044fb7.pdf).](media/2019_tram_3.PNG "[Source Left](https://arxiv.org/abs/1908.00177) - [Source Right](https://pdfs.semanticscholar.org/fba5/6bac9a41b7baa2671355aa113462d2044fb7.pdf).")  |
 |:--:|
-| *[Source Left](https://arxiv.org/abs/1908.00177) - [Source Right](https://pdfs.semanticscholar.org/fba5/6bac9a41b7baa2671355aa113462d2044fb7.pdf).* |
+| *Sort of feedback loop in the **hierarchical structure**: the **`MPC` notifies** via the `reward` signal if the decision is **feasible, safe and comfortable**. [Source Left](https://arxiv.org/abs/1908.00177) - [Source Right](https://pdfs.semanticscholar.org/fba5/6bac9a41b7baa2671355aa113462d2044fb7.pdf).* |
 
 | ![This work applies the **path-velocity decomposition** and focuses on the longitudinal control. **Three intentions** are considered: aggressive `take-way`, `cautious` (slows down without stopping), and passive `give-way`. [Source](https://arxiv.org/abs/1908.00177).](media/2019_tram_2.PNG "This work applies the **path-velocity decomposition** and focuses on the longitudinal control. **Three intentions** are considered: aggressive `take-way`, `cautious` (slows down without stopping), and passive `give-way`. [Source](https://arxiv.org/abs/1908.00177).")  |
 |:--:|
