@@ -1671,6 +1671,143 @@ Authors: Kuefler, A., Morton, J., Wheeler, T., & Kochenderfer, M.
 
 ---
 
+**`"Modeling Human Driving Behavior through Generative Adversarial Imitation Learning"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://arxiv.org/abs/2006.06412)]**
+**[** :mortar_board: `Stanford` **]**
+
+- **[** _`GAIL`, `PS-GAIL`, `RAIL`, `Burn-InfoGAIL`, [`NGSIM`](https://github.com/sisl/ngsim_env)_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://arxiv.org/abs/2006.06412).](media/2020_bhattacharyya_3.PNG "[Source](https://arxiv.org/abs/2006.06412).")  |
+|:--:|
+| *Different variations of **Generative Adversarial Imitation Learning** (`GAIL`) are used to **model human drivers**. These **augmented `GAIL`-based models** capture many desirable properties of both **rule-based** (`IDM`+`MOBIL`) and **machine learning** (`BC` predicting single / multiple Gaussians) methods, while avoiding common pitfalls. [Source](https://arxiv.org/abs/2006.06412).* |
+
+| ![[Source](https://arxiv.org/abs/2006.06412).](media/2020_bhattacharyya_2.PNG "[Source](https://arxiv.org/abs/2006.06412).")  |
+|:--:|
+| *In **Reward Augmented Imitation Learning (`RAIL`)**, the imitation learning agent receives a **second source of `reward` signals** which is **hard-coded** to discourage undesirable driving behaviours. The reward can be either **`binary`**, receiving penalty when the collision actually occurs, or **`smoothed`**, via **increasing penalties** as it approaches an **undesirable event**. This should address the **credit assignment problem** in `RL`. [Source](https://arxiv.org/abs/2006.06412).* |
+
+Authors: Bhattacharyya, R., Wulfe, B., Phillips, D., Kuefler, A., Morton, J., Senanayake, R., & Kochenderfer, M.
+
+- Related work:
+  - ["Application of Imitation Learning to Modeling Driver Behavior in Generalized Environments"](https://www.bernardlange.com/s/Application-of-Imitation-Learning-to-Modeling-Driver-Behavior-in-Generalized-Environments.pdf), (Lange & Brannon, 2019), detailed in this page too.
+- Motivation: Derive realistic **models** of **human** drivers.
+  - Example of applications: populate surrounding vehicles with **human-like behaviours** in the **simulation**, to learn a driving policy.
+
+- Ingredients:
+  - `1-` **Imitation learning** instead of `RL` since the **`cost` function is unknown**.
+  - `2-` **`GAIL`** instead of `apprenticeship learning` to not **restrict the class of `cost` functions** and avoid computationally **expensive `RL` iterations**.
+  - `3-` Some **variations of `GAIL`** to deal with the **specificities of driver modelling**.
+
+- **Challenges** and solutions when **modelling the _driving_ task** as a **sequential decision-making** problem (`MDP` formulation):
+  - `1-` **Continuous** `state` and `action` spaces. And **high dimensionality** of the `state` representation.
+  - `2-` **Non-linearity** in the desired mapping from `states` to `actions`.
+    - For instance, **large corrections** in `steering` are applied to avoid collisions caused by **small changes** in the current `state`.
+    - Solution to `1-`+`2-`: Neural nets.
+      - > "The **feedforward `MLP`** is limited in its ability to adequately address **partially observable environments**. [...] By **maintaining sufficient statistics of _past_ `observations`** in memory, **recurrent policies disambiguate** perceptually similar states by acting with respect to **histories** of, rather than **individual `observations`**."
+      - **`GRU`** layers are used: **fewer parameters** and still good performances.
+  - `3-` **Stochasticity**: humans may take **different `actions`** each time they encounter a given traffic scene.
+    - Solution: Predicting a [Gaussian] **distribution** and **sampling** from it: `at` **`∼`** `πθ`(`at` | `st`).
+  - `4-` The **underlying `cost` function** is **unknown**. Direct `RL` is not applicable.
+    - Solution: **Learning from demonstrations** (**imitation learning**). E.g. `IRL`+`RL` or `BC`.
+    - > "The goal is to **infer this human policy** from a dataset consisting of a sequence of (`state`, `action`) tuples."
+  - `5-` **Interaction** between agents needs to be modelled, i.e. it is a **multi-agent problem**.
+    - Solution: `GAIL` extension. A **parameter-sharing `GAIL`** (`PS-GAIL`) to tackle **multi-agent driver modelling**.
+  - `6-` `GAIL` and `PS-GAIL` are **domain agnostic**, making it difficult to **encode specific knowledge** relevant to **driving** in the learning process.
+    - Solution: `GAIL` extension. **Reward Augmented Imitation Learning** (`RAIL`).
+  - `7-` The human demonstrations dataset is a **mixture** of **different driving styles**. I.e. human demonstrations are dependent upon **latent factors** that may not be captured by `GAIL`.
+    - Solution: `GAIL` extension. **[`Burn-`]Information Maximizing `GAIL`** (`Burn-InfoGAIL`) to **disentangle the latent variability in demonstrations**.
+
+- Issues with **behavioural cloning (`BC`)** (supervised version of `imitation learning`).
+  - > "`BC` trains the policy on the **distribution of `states`** encountered by the expert. During testing, however, the policy acts within the environment for **long time horizons**, and **small errors** in the learned policy or **stochasticity** in the environment can cause the agent to **encounter a different distribution of `states`** from what it observed during **training**. This problem, referred to as **_covariate shift_**, generally results in the policy making **increasingly large errors** from which it **cannot recover**."
+  - > "`BC` can be effective when a **large number of demonstrations are available**, but in many environments, it is not possible to obtain sufficient quantities of data."
+  - Solutions to the **covariate shift** problem:
+    - `1-` Dataset **Aggregation** (`DAgger`), assuming **access to an expert**.
+    - `2-` Learn a **replacement for the `cost` function** that generalizes to unobserved `states`.
+      - Inverse reinforcement learning (`IRL`) and `apprenticeship learning`.
+      - > "The goal in **apprenticeship learning** is to find a policy that **performs no worse than the expert** under the true [unknown] `cost` function."
+
+- Issues with `apprenticeship learning`:
+  - A **class of cost functions** is used.
+    - `1-` It is often defined as the span of a **set of basis functions** that must be **defined manually** (as opposed to **learned from the observations**).
+    - `2-` This class may be **restricting**. I.e. **no guarantee** that the learning agent will perform no worse than the expert, and the agent can **fail at imitating** the expert.
+    - > "There is no reason to assume that the **`cost` function of the human drivers** lies within a **small function class**. Instead, the `cost` function could be **quite complex**, which makes `GAIL` a suitable choice for **driver modeling**."
+  - `3-` It generally involves running **`RL` repeatedly**, hence **large computational cost**.
+
+- About **Generative Adversarial Imitation Learning** (`GAIL`):
+  - Recommended video: [This CS285 lecture](https://www.youtube.com/watch?v=DP0SJrNgV60&list=PLkFD6_40KJIwhWJpGazJ9VSj9CFMkb79A&index=14) of **Sergey Levine**.
+  - It is derived from an alternative approach to imitation learning called **Maximum Causal Entropy `IRL` (`MaxEntIRL`)**.
+  - > "While `apprenticeship learning` attempts to find a policy that **performs at least as well as the expert** across `cost` functions, `MaxEntIRL` seeks a **`cost` function** for which the expert is **uniquely optimal**."
+  - > "While existing `apprenticeship learning` formalisms used the `cost` function as the **descriptor of desirable behavior**, `GAIL` relies instead on the **divergence** between the **demonstration occupancy distribution** and the **learning agent’s occupancy distribution**."
+  - Connections to `GAN`:
+    - It performs **binary classification** of (`state`, `action`) pairs drawn from the **occupancy distributions** `ρπ` and `ρπE`.
+    - > "Unlike `GANs`, `GAIL` considers the environment as a **black box**, and thus the **objective is not differentiable** with respect to the parameters of the policy. Therefore, **simultaneous gradient descent** [for `D` and `G`] is not suitable for solving the `GAIL` optimization objective."
+    - > "Instead, **optimization** over the `GAIL` objective is performed by alternating between a **gradient step** to increase the **objective function** with respect to the **discriminator parameters** `D`, and a **Trust Region Policy Optimization** (`TRPO`) step (Schulman et al., 2015) to decrease the **objective function** with respect to the parameters `θ` of the **policy** `πθ`."
+
+- Advantages of `GAIL`:
+  - `1-` It removes the **restriction** that the `cost` belongs to a **highly limited class of functions**.
+    - > "Instead allowing it to be learned using **expressive function approximators** such as neural networks".
+  - `2-` It scales to **large `state` / `action` spaces** to work for practical problems.
+    - `TRPO` for `GAIL` works with **direct policy search** as opposed to **finding intermediate value functions**.
+  - > "`GAIL` proposes a **new cost function regularizer**. This regularizer allows scaling to **large state action spaces** and removes the requirement to **specify basis cost functions**."
+
+- Three extensions of `GAIL` to account for the **specificities** of **driver modelling**.
+  - `1-` **Parameter-Sharing `GAIL` (`PS-GAIL`)**.
+    - Idea: account for the **multi-agent nature** of the problem resulting from the **interaction** between traffic participants.
+    - "We formulate multi-agent driving as a **Markov game** (Littman, 1994) consisting of `M` agents and an **unknown `reward` function**."
+    - It combines `GAIL` with **`PS-TRPO`**.
+    - > "`PS-GAIL` training procedure **encourages stabler interactions** between agents, thereby making them **less likely to encounter extreme** or unlikely driving situations."
+  - `2-` **Reward Augmented Imitation Learning (`RAIL`).**
+    - Idea: **reward augmentation** during **training** to provide **domain knowledge**.
+    - It helps to improve the **`state` space exploration** of the learning agent by **discouraging bad `states`** such as those that could potentially lead to **collisions**.
+    - > "These include **penalties** for **`going off the road`**, **`braking hard`**, and **`colliding`** with other vehicles. All of these are **undesirable driving behaviors** and therefore should be **discouraged** in the learning agent."
+    - Two kinds of penalties:
+      - `2.1-` **Binary** penalty.
+      - `2.2-` **Smoothed** penalty.
+        - > "We hypothesize that **providing advanced warning** to the imitation learning agent in the form of **smaller, increasing penalties** as the agent approaches an event threshold will address the **credit assignment problem** in `RL`."
+        - > "For off-road driving, we **linearly increase the penalty** from `0` to `R` when the vehicle is within `0.5m` of the edge of the road. For **hard braking**, we **linearly increase** the penalty from `0` to `R/2` when the acceleration is between `−2m/s2` and `−3m/s2`."
+    - > "`PS-GAIL` and `RAIL` policies are **less likely to lead vehicles into collisions**, extreme decelerations, and off-road driving."
+    - It looks like now a **combination of `cloning` and `RL`** now: the agent receives `rewards` for **imitating** the `actions` and gets **hard-coded** `rewards`/`penalties` defined by the human developer.
+  - `3-` **Information Maximizing `GAIL` (`InfoGAIL`).**
+    - Idea: assume that the expert policy is a **mixture of experts**.
+    - > [**Different driving style** are present in the dataset] "**Aggressive drivers** will demonstrate significantly **different driving trajectories** as compared to **passive drivers**, even for the same road geometry and traffic scenario. To **uncover these latent factors of variation**, and learn policies that produce trajectories corresponding to these **latent factors**, `InfoGAIL` was proposed."
+    - To ensure that the learned policy utilizes the **latent variable `z`** as much as possible, `InfoGAIL` tries to **enforce high `mutual information`** between `z` and the **`state-action` pairs** in the generated trajectory.
+    - Extension: `Burn-InfoGAIL`.
+      - Playback is used to **initialize** the ego vehicle: the **"`burn-in` demonstration"**.
+      - > "If the policy is initialized from a `state` sampled at the end of a **demonstrator’s trajectory** (as is the case when initializing the ego vehicle from a human playback), the driving policy’s actions should be **consistent with the driver’s past behavior**."
+      - > "To address this issue of **inconsistency** with real driving behavior, `Burn-InfoGAIL` was introduced, where a **policy must take over** where an expert demonstration trajectory ends."
+    - When trained in a **simulator**, different parameterizations are possible, defining the **style `z`** of each car:
+      - `Aggressive`: **High `speed` and large `acceleration`** + small `headway distances`.
+      - `Speeder`: same but **large `headway distances`**.
+      - `Passive`: **Low `speed` and `acceleration`** + large `headway distances`.
+      - `Tailgating`: same but **small `headway distances`**.
+
+- Experiments.
+  - `NGSIM` dataset:
+    - > "The trajectories were **smoothed** using an **extended Kalman filter** on a **bicycle model** and **projected to lanes** using centerlines extracted from the `NGSIM` roadway geometry file."
+  - Metrics:
+    - `1-` **Root Mean Square Error** (`RMSE`) metrics.
+    - `2-` Metrics that **quantify** _undesirable_ traffic phenomena: `collisions`, `hard-braking`, and `offroad driving`.
+  - Baselines:
+    - `BC` with **single** or **mixture** Gaussian regression.
+    - Rule-based controller: `IDM`+`MOBIL`.
+      - > "A small amount of **noise** is added to both the lateral and longitudinal accelerations to make the **controller nondeterministic**."
+  - Simulation:
+    - > "The effectiveness of the resulting driving **policy trained using `GAIL`** in imitating human driving behavior is **assessed by validation in rollouts** conducted on the simulator."
+  - Some results:
+    - > [`GRU` helps `GAIL`, but not `BC`] "Thus, we find that **recurrence** by itself is insufficient for addressing the detrimental effects that **cascading errors** can have on `BC` policies."
+    - > "Only `GAIL`-based policies (and of course `IDM`+`MOBIL`) **stay on the road** for extended stretches."
+
+- Future work: _How to refine the integration modelling?_
+  - > "Explicitly modeling the interaction between agents in a **centralized manner** through the use of **Graph Neural Networks**."
+
+</details>
+
+---
+
 **`"Deep Reinforcement Learning for Human-Like Driving Policies in Collision Avoidance Tasks of Self-Driving Cars"`**
 
 - **[** `2020` **]**
