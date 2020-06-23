@@ -2749,6 +2749,108 @@ Authors: Kuderer, M., Gulati, S., & Burgard, W.
 
 ---
 
+**`"Modeling and Prediction of Human Driver Behavior: A Survey"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://arxiv.org/abs/2006.08832)]**
+**[** :mortar_board: `Stanford`, `University of Illinois` **]**
+**[**:car: `Qualcomm`**]**
+
+- **[** _`state estimation`, `intention estimation`, `trait estimation`, `motion prediction`_  **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://arxiv.org/abs/2006.08832).](media/2020_brown_1.PNG "[Source](https://arxiv.org/abs/2006.08832).")  |
+|:--:|
+| *Terminology: the problem is formulated as a **discrete-time multi-agent partially observable stochastic game** (`POSG`). In particular, the `internal state` can contain `agent’s navigational goals` or the `behavioural traits`. [Source](https://arxiv.org/abs/2006.08832).* |
+
+Authors: Brown, K., Driggs-Campbell, K., & Kochenderfer, M. J.
+
+- Motivation:
+  - A **review and taxonomy** of `200` models from the literature on **driver behaviour modelling**.
+    - > "In the context of the **partially observable stochastic game (`POSG`) formulation**, a **`driver behavior model`** is a collection of **assumptions** about the `human observation` function **`G`**, `internal-state update` function **`H`** and `policy` function **`π`** (the `state-transition` function **`F`** also plays an important role in driver-modeling applications, though it has **more to do with the vehicle than the driver**)."
+    - _The "References" section is large and good!_
+  - Models are categorized based on the **tasks** they aim to address.
+    - `1-` **`state` estimation**.
+    - `2-` **`intention` estimation**.
+    - `3-` **`trait` estimation**.
+    - `4-` **`motion` prediction**.
+- The following lists are **non-exhaustive**, see the tables for full details. Instead, they try to give an overview of the **most represented** instances:
+- `1-` **(Physical) `state` estimation**.
+  - **[Algorithm]**: approximate **recursive Bayesian filters**. E.g. `KF`, `PF`, `moving average filter`.
+  - > "Some advanced **`state` estimation** models take advantage of the **structure inherent in the driving environment** to improve filtering accuracy. E.g. `DBN`".
+
+- `2-` **(Internal states) `intention` estimation**.
+  - > "`Intention` estimation usually involves **computing a probability distribution** over a **finite set of possible behavior modes** - often corresponding to **navigational goals** (e.g., `change lanes`, `overtake`) - that a driver might execute in the current situation."
+  - **[Architecture]**: `[D]BN`, `SVM`, `HMM`, `LSTM`.
+  - **[Scope]**: `highway`, `intersection`, `lane-changing`, `urban`.
+  - **[Evaluation]**: `accuracy` (classification), `ROC` curve, `F1`, `false positive rate`.
+  - **[Intention Space]** (_set of possible_ **_behaviour modes_** _that may exist in a driver’s `internal state`_ - often **combined**):
+    - **`lateral` modes** (e.g. `lane-change` / `lane-keeping` intentions),
+    - **`routes`** (a sequence of decisions, e.g. `turn right → go straight → turn right again` that a driver may intend to execute),
+    - `longitudinal` modes (e.g. `car-following` / `cruising`),
+    - joint `configurations`.
+    - > "**`Configuration` intentions** are defined in terms of **spatial relationships** to **other vehicles**. For example, `intention estimation` for a `merging` scenario might involve reasoning about **_which gap between vehicles the target car intends to enter_**. The `intention space` of a car in the other lane might be **_whether or not to yield_** and allow the merging vehicle to enter."
+  - **[Hypothesis Representation]** (_how to represent uncertainty in the intention hypothesis?_): **`discrete probability distribution`** over possible `intentions`.
+    - > "In contrast, **`point estimate`** hypothesis **ignores uncertainty** and simply assigns a **probability of `1`** to a single (presumably the **most likely**) behavior mode."
+  - **[Estimation / Inference Paradigm]**: `single-shot`, `recursive`, `Bayesian` (based on **probabilistic graphical models**), `black-box`, `game theory`.
+    - > "**`Recursive`** estimation algorithms operate by **repeatedly updating** the intention hypothesis **at each time step** based on the new information received. In contrast, **`single-shot`** estimators compute a **new hypothesis from scratch** at each inference step. The latter may operate over a **history of observations**, but it **does not store** any information between successive **inference iterations**."
+    - > "**Game-theoretic** models are distinguished by being **`interaction-aware`**. They **explicitly consider possible situational outcomes** in order to compute or refine an intention hypothesis. This **`interaction-awareness`** can be as simple as **pruning intentions** with a high probability of **conflicting with other drivers**, or it can mean computing the **Nash equilibrium** of an explicitly formulated game with a **payoff matrix**."
+
+- `3-` **`trait` estimation**.
+  - > "Whereas **`intention` estimation** reasons about **_what a driver is trying to do_**, **`trait estimation`** reasons about **_factors that affect how the driver will do it_**. Broadly speaking, traits encompass `skills`, `preferences`, and `style`, as well as properties like `fatigue`, `distractedness`, etc."
+  - > "**`Trait` estimation** may be interpreted as the process of **inferring the “parameters” of the driver’s `policy function π`** on the basis of observed driving behavior. [...] `Traits` can also be interpreted as part of the **driver’s internal state**."
+  - **[Architecture]**: `IDM`, `MOBIL`, `reward` parameters.
+  - **[Training]**: `IRL`, `EM`, `genetic algorithms`, `heuristic`.
+  - **[Theory]**: Inverse `RL`.
+  - **[Scope]**: `car following` (`IDM`), `highway`, `intersection`, `urban`.
+  
+  - **[Trait Space]**: `policy` parameters, `reward` parameters (assuming that drivers are trying to optimize a `cost` function).
+    - > "Some of the most widely known driver models are **simple parametric controllers** with **tuneable “style” or “preference” `policy` parameters** that represent intuitive **behavioral `traits`** of drivers. E.g. `IDM`."
+    - **`IDM` traits**: _`minimum desired gap`, `desired time headway`, `maximum feasible acceleration`, `preferred deceleration`, `maximum desired speed`_.
+    - > "**`Reward` function parameters** often correspond to the same intuitive notions mentioned above (e.g., `preferred velocity`), the important difference being that they parametrize a `reward` function rather than a **closed-loop control `policy`**."
+  - **[Hypothesis Representation]** (uncertainty): in almost all cases, the hypothesis is represented by **a `point estimate`** rather than a **`distribution`**.
+  - **[Estimation Paradigm]**: `offline` / `online`.
+    - > "Some models combine the two paradigms by computing a **prior distribution `offline`**, then **tuning it `online`**. This tuning procedure often relies on **Bayesian** methods."
+  - **[Model Class]**: **`heuristic`**, `optimization`, `Bayesian`, `IRL`, **`contextually varying`**.
+    - > "One simple approach to **`offline`** trait estimation is to set `trait` parameters **heuristically**. Specifying parameters **manually** is one way to **incorporate expert domain knowledge** into models."
+    - > "In some approaches, `trait` parameters are modeled as **contextually varying**, meaning that they vary based on the region of the `state` space (the **context**) or the **current behavior mode**."
+
+- `4-` **`motion` prediction**.
+  - > "Infer the future **physical `states`** of the surrounding vehicles".
+  - **[Architecture]**: `IDM`, `LSTM` (and other `RNN`/`NN`), constant acceleration / speed (`CA`, `CV`), `encoder-decoder`, `GMM`, `GP`, `adaptive`, `spline`.
+  - **[Training]**: `heuristic`.
+    - > "Simple examples include **rule-based heuristic control** laws like `IDM`. More sophisticated examples include **closed-loop policies** based on `NN`, `DBN`, and random forests."
+  - **[Theory]**: `RL`, `MPC`, trajectory optimization.
+    - > "Some `MPC` policy models (including those used within a **forward simulation** paradigm) fall into the **game theoretic** category because they **explicitly predict the future states** of their environment (including other cars) before computing a planned trajectory."
+  - **[Scope]**: `highway`, `car-following` (e.g. using `IDM`), `intersection`, `urban`.
+  - **[Evaluation]**: `RMSE`, `NLL`, `MAE`, `collision rate`.
+  - **[Vehicle dynamics model]**: `linear`, `learned`, `bicycle kinematic`.
+    - > "Many models in the literature assume **linear `state-transition` dynamics**. Linear models can be **first order** (i.e., `output` is `position`, `input` is `velocity`), **second order** (i.e., `output` is `position`, `input` is `acceleration`), and so forth."
+    - > "**Kinematic** models are simpler than **dynamic** models, but the **no-slip assumption** can lead to significant modeling errors."
+    - > "Some `state-transition` models are **learned**, in the sense that the **observed correlation** between consecutive **predicted `states`** results entirely from training on **large datasets**. Some incorporate an explicit transition model where the **parameters are learned**, whereas others simply **output a full trajectory**."
+  - **[`Scene`-level _uncertainty_ modelling]**:
+    - `single-scenario` (ignoring **multimodal uncertainty** at the scene level),
+    - `partial scenario`,
+    - `multi-scenario` (reason about the different possible scenarios that **may follow** from an initial traffic scene),
+    - `reachable set`.
+    - > "Some models reason only about a **partial scenario**, meaning they predict the motion of **only a subset** of vehicles in the traffic scene, usually under a single scenario."
+    - > "Some models reason about **multimodal uncertainty** on the `scene`-level by performing **multiple (parallel) rollouts** associated with **different scenarios**."
+    - > "Rather than reasoning about the **likelihood of future `states`**, some models reason about reachability. **Reachability analysis** implies taking a **worst-case mindset** in terms of predicting vehicle motion."
+  - **[`Agent`-level _uncertainty_ modelling]**: `single deterministic`, `particle set`, `Gaussians`.
+  - **[Prediction paradigm]**:
+    - **open-loop `independent`** trajectory prediction.
+      - > "Many models operate under the **independent prediction** paradigm, meaning that they predict a **full trajectory independently** for each agent in the scene.  These approaches are **`interaction-unaware`** because they are **open-loop**. Though they may account for **interaction** between vehicles at the **current time `t`**, they **do not explicitly reason** about interaction over the **prediction window** from `t+1` to the **prediction horizon `tf`**.  [...] Because independent trajectory prediction models **ignore interaction**, their predictive power tends to quickly **degrade** as the **prediction horizon extends further** into the future."
+    - **closed-loop `forward`** simulation.
+      - > "In the **forward simulation** paradigm, motion hypotheses are computed by **rolling out** a **closed-loop control policy `π`** for each target vehicle."  - **`game theoretic`** prediction.
+    - **`game theoretic`** prediction.
+      - > "Agents are modeled as **_looking ahead_** to consider the **possible ramifications** of their `actions`. This notion of **_looking ahead_** makes **game-theoretic** prediction models more deeply `interaction-aware` than **forward simulation** models based on **_reactive_ closed-loop** control."
+
+</details>
+
+---
+
 **`"Motion Prediction using Trajectory Sets and Self-Driving Domain Knowledge"`**
 
 - **[** `2020` **]**
@@ -2897,6 +2999,7 @@ Authors: Liang, M., Yang, B., Zeng, W., Chen, Y., Hu, R., Casas, S., & Urtasun, 
 - **[** `2020` **]**
 **[[:memo:](https://arxiv.org/abs/2005.04259)]**
 **[[:memo:](https://blog.waymo.com/2020/05/vectornet.html)]**
+**[[🎞️](https://youtu.be/BV4EXwlb3yo?t=923)]**
 **[**:car: `Waymo`**]**
 
 - **[** _`GNN`, `vectorized representation`_  **]**
