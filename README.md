@@ -2178,6 +2178,7 @@ Authors: Xin, L., Li, S. E., Wang, P., Cao, W., Nie, B., Chan, C., & Cheng, B.
 
 - **[** `2019` **]**
 **[[:memo:](https://arxiv.org/abs/1910.04586)]**
+**[[🎞️](https://youtu.be/j8qypWV2L2g?t=1610)]**
 **[** :car: `Uber` **]**
 - **[** _`max-margin`_  **]**
 
@@ -4531,6 +4532,48 @@ Author: Noh, S.
 
 ## `Model-Free` `Reinforcement Learning`
 
+
+
+---
+
+**`"Safe Reinforcement Learning with Mixture Density Network: A Case Study in Autonomous Highway Driving"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://arxiv.org/abs/2007.01698)]**
+**[** :mortar_board: `West Virginia University` **]**
+
+- **[** _`risk estimation`, `collision buffer`, `multi-modal prediction`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://arxiv.org/abs/2007.01698).](media/2020_baheri_1.PNG "[Source](https://arxiv.org/abs/2007.01698).")  |
+|:--:|
+| *Multimodal future trajectory predictions are incorporated into the **`learning` phase** of `RL` algorithm as a **model lookeahed**: If **one of the future states of one of the possible trajectories** leads to a collision, then a penalty will be assigned to the reward function to prevent collision and to reinforce to **remember unsafe states**. Otherwise, the `reward` term **penalizes deviations** from the `desired speed`, `lane position`, and `safe longitudinal distance` to the lead traffic vehicle. [Source](https://arxiv.org/abs/2007.01698).* |
+
+Author: Baheri, A.
+
+- Previous work: [`"Deep Q-Learning with Dynamically-Learned Safety Module: A Case Study in Autonomous Driving"`](https://www.researchgate.net/publication/336591335_Deep_Q-Learning_with_Dynamically-Learned_Safety_Module_A_Case_Study_in_Autonomous_Driving) (Baheri et al., 2019), detailed on this page too.
+
+- Motivations:
+  - Same ideas as the previous work.
+  - `1-` **Speed up** the learning phase.
+  - `2-` Reduce collisions (**no safety guarantees** though).
+- Ingredients:
+  - "Safety" is _improved_ via **`reward` shaping**, instead of **constraining exploration** (e.g. `action masking`, `action shielding`).
+  - Two ways to classify a `state` as risky:
+    - `1-` Heuristic (**rule-based**). From a minimum relative `gap` to a traffic vehicle **based on its relative `velocity`**.
+    - `2-` Prediction (**learning-based**). Model lookaheads (prediction / rollouts) are performed to **assess the risk of a given `state`**.
+    - > [_Why learnt?_] "Because **heuristic safety rules** are susceptible to deal with **unexpected behaviors** particularly in a highly changing environment". [_Well, here the scenarios are generated in a simulator, that is ... heuristic-based_]
+  - Contrary to **`action masking`**, _"bad behaviours"_ are not discarded: they are stored in a **`collision`-buffer**, which is sampled during the `update` phase.
+
+- How to predict **a set of possible trajectories**?
+  - **Mixture density `RNN`** (`MD-RNN`).
+  - It has been **offline** trained (supervised learning).
+  - > "The central idea of a `MDN` is to predict an **entire probability distribution** of the output(s) instead of generating a **single prediction**. The `MD-RNN` outputs a `GMM` for multimodal future trajectory predictions that each mixture component describes a certain driving behavior."
+
+</details>
+
 ---
 
 **`"Reinforcement Learning with Uncertainty Estimation for Tactical Decision-Making in Intersections"`**
@@ -6028,11 +6071,11 @@ Authors: Fan, T., Long, P., Liu, W., Pan, J., Yang, R., & Manocha, D.
 
 ---
 
-**`"Deep Q-Learning with Dynamically-Learned Safety Module : A Case Study in Autonomous Driving"`**
+**`"Deep Q-Learning with Dynamically-Learned Safety Module: A Case Study in Autonomous Driving"`**
 
 - **[** `2019` **]**
 **[[:memo:](https://www.researchgate.net/publication/336591335_Deep_Q-Learning_with_Dynamically-Learned_Safety_Module_A_Case_Study_in_Autonomous_Driving)]**
-**[** :mortar_board: `University of Michigan and West Virginia University` **]**
+**[** :mortar_board: `University of Michigan`, `West Virginia University` **]**
 **[** :car: `Ford` **]**
 
 - **[** _`DQN`_ **]**
@@ -6931,7 +6974,7 @@ Authors: Pan, X., Chen, X., Cai, Q., Canny, J., & Yu, F.
 
 ---
 
-**`"Vision-Based Autonomous Driving : A Model Learning Approach"`**
+**`"Vision-Based Autonomous Driving: A Model Learning Approach"`**
 
 - **[** `2019` **]**
 **[[:memo:](https://www.researchgate.net/publication/332912542_Vision-Based_Autonomous_Driving_A_Model_Learning_Approach)]**
