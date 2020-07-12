@@ -552,6 +552,68 @@ Note: I find very valuable to get insights from the **CMU** (Carnegie Mellon Uni
 
 ---
 
+**`"Learning to drive by imitation: an overview of deep behavior cloning methods"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://www.researchgate.net/publication/342190981_Learning_to_drive_by_imitation_an_overview_of_deep_behavior_cloning_methods)]**
+**[** :mortar_board: `University of Moncton` **]**
+
+- **[** _`overview`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://www.researchgate.net/publication/342190981_Learning_to_drive_by_imitation_an_overview_of_deep_behavior_cloning_methods).](media/2020_ly_1.PNG "[Source](https://www.researchgate.net/publication/342190981_Learning_to_drive_by_imitation_an_overview_of_deep_behavior_cloning_methods).")  |
+|:--:|
+| *Some **simulators** and **datasets** for supervised learning of `end-to-end` driving. [Source](https://www.researchgate.net/publication/342190981_Learning_to_drive_by_imitation_an_overview_of_deep_behavior_cloning_methods).* |
+
+| ![[Source](https://www.researchgate.net/publication/342190981_Learning_to_drive_by_imitation_an_overview_of_deep_behavior_cloning_methods).](media/2020_ly_2.PNG "[Source](https://www.researchgate.net/publication/342190981_Learning_to_drive_by_imitation_an_overview_of_deep_behavior_cloning_methods).")  |
+|:--:|
+| *Instead of just **single front-view camera** frames (top and left), **other sensor modalities** can be used as **inputs**, for instance **event-based** cameras (bottom-right). [Source](https://www.researchgate.net/publication/342190981_Learning_to_drive_by_imitation_an_overview_of_deep_behavior_cloning_methods).* |
+
+| ![[Source](https://www.researchgate.net/publication/342190981_Learning_to_drive_by_imitation_an_overview_of_deep_behavior_cloning_methods).](media/2020_ly_3.PNG "[Source](https://www.researchgate.net/publication/342190981_Learning_to_drive_by_imitation_an_overview_of_deep_behavior_cloning_methods).")  |
+|:--:|
+| *The **temporal** evolution of the scene can be captured by considering a **sequence of past frames**. [Source](https://www.researchgate.net/publication/342190981_Learning_to_drive_by_imitation_an_overview_of_deep_behavior_cloning_methods).* |
+
+| ![[Source](https://www.researchgate.net/publication/342190981_Learning_to_drive_by_imitation_an_overview_of_deep_behavior_cloning_methods).](media/2020_ly_4.PNG "[Source](https://www.researchgate.net/publication/342190981_Learning_to_drive_by_imitation_an_overview_of_deep_behavior_cloning_methods).")  |
+|:--:|
+| *Other approaches also address the **`longitudinal` control** (top and right), while some try to **exploit intermediate representations** (bottom-left). [Source](https://www.researchgate.net/publication/342190981_Learning_to_drive_by_imitation_an_overview_of_deep_behavior_cloning_methods).* |
+
+| ![[Source](https://www.researchgate.net/publication/342190981_Learning_to_drive_by_imitation_an_overview_of_deep_behavior_cloning_methods).](media/2020_ly_5.PNG "[Source](https://www.researchgate.net/publication/342190981_Learning_to_drive_by_imitation_an_overview_of_deep_behavior_cloning_methods).")  |
+|:--:|
+| *[Source](https://www.researchgate.net/publication/342190981_Learning_to_drive_by_imitation_an_overview_of_deep_behavior_cloning_methods).* |
+
+Authors: Ly, A. O., & Akhloufi, M.
+
+- Motivation:
+  - An **overview** of the current state of the art **deep `behaviour cloning`** methods for lane stable driving.
+  - > [No `RL`] "By `end-to-end`, we mean **supervised methods** that map **raw visual inputs** to **low-level** (`steering` angle, `speed`, etc) or **high-level** (driving `path`, driving `intention`, etc.) of actuation commands using almost only deep networks."
+
+- **Five classes** of methods:
+  - `1-` **Pure imitative** methods that make use of vanilla `CNNs` and take **standard camera frames** only as input.
+    - The **loss** can be computed using the Mean Squared Error (`MSE`) between **predictions** and **`steering` labels**.
+    - > "Recovery from mistakes is made possible by **adding synthesized data** during training via simulations of **car deviation** from the center of the lane."
+    - > "**Data augmentation** was performed using a **basic viewpoint transformation** with the help of the `left` and `right` cameras."
+  - `2-` Models that use **other types of perceptual sensors** such as **`events` or `fisheye` cameras** etc.
+    - > "A **more realistic label augmentation** is achieved with the help of the **wide range** of captures from the front **fisheye** camera compared to previous methods using shearing with side (right and left) cameras."
+    - > "**`Events` based cameras** consist of **independent pixels** that record intensity variation in an asynchronous way. Thus, giving **more information** in a time interval than traditional video cameras where changes taking place between two consecutive frames are not captured."
+  - `3-` Methods that consider **previous driving history** to estimate future driving commands.
+  - `4-` Systems that predicts **both `lateral` and `longitudinal` control** commands.
+    - > "It outputs the **vehicle `curvature`** instead of the `steering angle` as generally found in the literature, which is justified by the fact that `curvature` is **more general** and **does not vary from vehicle to vehicle**."
+
+  - `5-` Techniques that leverage the power of **`mid-level` representations** for **transfer learning** or give **more explanation** in regards to taken actions.
+    - > "The motivation behind using a `VAE` architecture is to automatically **mitigate the bias issue** which occurs because generally the driving scenes in the datasets does not have the same proportions. In previous methods, this issue is solved by **manually reducing** the over represented scenes such as `straight driving` or `stops`."
+
+- Some take-aways:
+  - > "Models making use of **non-standard cameras** or **intermediate representations** are showing a lot of potential in comparison to **pure imitative** methods that takes conventional **video frames** as input."
+  - > "The **diversity in metrics and datasets** used for reporting the results makes it very hard to strictly weigh the different models against each other."
+  - **Explainability and transparency** of taken decisions is important.
+    - > "A common approach in the literature is to analyse the **pixels** that lead to the **greatest activation** of neurons."
+
+</details>
+
+---
+
 **`"Advisable Learning for Self-driving Vehicles by Internalizing Observation-to-Action Rules"`**
 
 - **[** `2020` **]**
@@ -4537,7 +4599,7 @@ Author: Noh, S.
 **`"Safe Reinforcement Learning for Autonomous Lane Changing Using Set-Based Prediction"`**
 
 - **[** `2020` **]**
-**[[:memo:](todo)]**
+**[[:memo:](https://mediatum.ub.tum.de/doc/1548735/256213.pdf)]**
 **[** :mortar_board: `TU Munich` **]**
 
 - **[** _`risk estimation`, `reachability analysis`, `action-masking`_ **]**
@@ -4545,11 +4607,13 @@ Author: Noh, S.
 <details>
   <summary>Click to expand</summary>
 
-| ![[Source](todo).](media/2020_krasowski_1.PNG "[Source](todo).")  |
+| ![[Source](https://mediatum.ub.tum.de/doc/1548735/256213.pdf).](media/2020_krasowski_1.PNG "[Source](https://mediatum.ub.tum.de/doc/1548735/256213.pdf).")  |
 |:--:|
-| *__`action` masking__ for **safety verification** using **set-based prediction** and sampling-based trajectory planning. Top-left: A **braking trajectory** with **maximum deceleration** is appended to the sampled trajectory. The ego vehicle never follows this `braking trajectory`, but it is utilized to **check** if the vehicle is in an **invariably safe `state`** at the end of its driving trajectory. [Source](todo).* |
+| *__`action` masking__ for **safety verification** using **set-based prediction** and sampling-based trajectory planning. Top-left: A **braking trajectory** with **maximum deceleration** is appended to the sampled trajectory. The ego vehicle never follows this `braking trajectory`, but it is utilized to **check** if the vehicle is in an **invariably safe `state`** at the end of its driving trajectory. [Source](https://mediatum.ub.tum.de/doc/1548735/256213.pdf).* |
 
 Authors: Krasowski, H., Wang, X., & Althoff
+
+- Previous work: [`"High-level Decision Making for Safe and Reasonable Autonomous Lane Changing using Reinforcement Learning"`](TODO), (Mirchevska, Pek, Werling, Althoff, & Boedecker, 2018).
 
 - Motivations:
   - Let a **safety layer** **guide the `exploration` process** to forbid (`mask`) **high-level `actions`** that might result in a collision and to **speed up training**.
