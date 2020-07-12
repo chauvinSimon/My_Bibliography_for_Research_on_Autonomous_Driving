@@ -4532,7 +4532,72 @@ Author: Noh, S.
 
 ## `Model-Free` `Reinforcement Learning`
 
+---
 
+**`"Safe Reinforcement Learning for Autonomous Lane Changing Using Set-Based Prediction"`**
+
+- **[** `2020` **]**
+**[[:memo:](todo)]**
+**[** :mortar_board: `TU Munich` **]**
+
+- **[** _`risk estimation`, `reachability analysis`, `action-masking`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](todo).](media/2020_krasowski_1.PNG "[Source](todo).")  |
+|:--:|
+| *__`action` masking__ for **safety verification** using **set-based prediction** and sampling-based trajectory planning. Top-left: A **braking trajectory** with **maximum deceleration** is appended to the sampled trajectory. The ego vehicle never follows this `braking trajectory`, but it is utilized to **check** if the vehicle is in an **invariably safe `state`** at the end of its driving trajectory. [Source](todo).* |
+
+Authors: Krasowski, H., Wang, X., & Althoff
+
+- Motivations:
+  - Let a **safety layer** **guide the `exploration` process** to forbid (`mask`) **high-level `actions`** that might result in a collision and to **speed up training**.
+
+- Why is it called "**_set_**-based prediction"?
+  - Using **reachability analysis**, the **`set` of future occupancies** of each surrounding traffic participant and the ego car is computed.
+  - > "If both **`occupancy sets` do not intersect** for all consecutive time intervals within a predefined time horizon and if the ego vehicle reaches an **invariably safe set**, a collision is impossible."
+  - Two-step prediction:
+    - `1-` The occupancies of the surrounding traffic participants are obtained by using **TUM's tool [`SPOT`](https://spot.in.tum.de)** = **_"Set-Based Prediction Of Traffic Participants"_**.
+      - > [`action` space] "**High-level `actions`** for lane-changing decisions: `changing to the left lane`, `changing to the right lane`, `continuing in the current lane`, and staying in the current lane by activating a safe adaptive cruise control (`ACC`)."
+      - `SPOT` considers the **physical limits** of surrounding traffic participants and **constraints** implied by traffic rules.
+    - `2-` The **precise movement** is obtained by a **sampling-based** trajectory planner.
+
+- Other approaches:
+  - > "One approach is to execute the planned trajectories if they do not collide with a traffic participant
+according to **its prediction**. The limitation is that collisions still happen if other traffic participants’ behaviour **deviates from their prediction**."
+  - **Reachability analysis** verifies the safety of planned trajectories by computing **all possible future motions of obstacles** and checking whether they **intersect** with the occupancy of the ego vehicle.
+    - > "Since computing the _exact_ reachable sets of **nonlinear systems** is impossible, reachable sets are **over-approximated** to ensure safety."
+
+- _What if, after `masking`, all actions are verified as unsafe? Can safety be guaranteed?_
+  - > "To guarantee safety, we added a **verified fail-safe planner**, which holds available a safe action that is activated when the agent fails to identify a safe action." [not clear to me]
+  - Apparently, the lane is kept and an **`ACC` module** is used.
+
+- `MDP` formulation: **Episodic** task.
+  - > "We terminate an episode if the time horizon of the current traffic scenario is reached, the **goal area is reached**, or the ego vehicle collides with another vehicle."
+  - Furthermore, the `distance to goal` is contained inside the `state`.
+  - Not clear to me: _How can this work in long highway journeys? By setting successive goals? How can `state` values be consistent? Should not the task be `continuous` rather than `episodic`?_
+
+- About safe `RL`.
+  - Safe `RL` approaches are distinguished by approaches that:
+    - `1-` Modify the **`optimization criterion`.**
+    - `2-` Modify the **`exploration process`**."
+  - > "By **modifying the `optimality objective`**, agents behave **more cautious** than those trained without a risk measure included in the objective; however, the **absence of unsafe behaviors cannot be proven**. In contrast, by verifying the safety of the `action` and **excluding possible unsafe `actions`**, we can ensure that the **exploration process is safe**."
+
+- Using **real-world** highway dataset (`highD`).
+  - > "We generated tasks by **removing a vehicle from the recorded data** and using its start and the final `state` as the initial `state` and the center of the goal region, respectively."
+  - > [Evaluation] "We have to **differentiate** between collisions for which the ego vehicle is **responsible** and collisions that occur because **no interaction between traffic participants was considered** due to **prerecorded** data."
+
+- Limitations.
+  - `1-` Here, _safe_ `actions` are determined by **set-based prediction**, which considers **all possible motions** of traffic participants.
+    - > "Due to the **computational overhead** for determining safe actions, the computation time for training safe agents is **`16` times higher** than for the non-safe agents. The average training step for safe agents takes `5.46s` and `0.112s` for non-safe agents."
+    - > "This significant increase in the training time is mainly because instead of one trajectory for the selected action, **all possible trajectories are generated** and compared to the predicted occupancies of traffic participants."
+  - `2-` Distribution shift.
+    > "The agents **trained in `safe` mode** did not experience **dangerous situations** with high penalties during training and cannot solve them in the **`non-safe` test** setting. Thus, the **safety layer** is necessary during deployment to ensure safety."
+  - `3-` The **interaction** between traffic participants is essential.
+    > "Although the proposed approach **guarantees safety** in all scenarios, the agent drives **more cautiously** than normal drivers, especially in dense traffic."
+
+</details>
 
 ---
 
@@ -4549,7 +4614,7 @@ Author: Noh, S.
 
 | ![[Source](https://arxiv.org/abs/2007.01698).](media/2020_baheri_1.PNG "[Source](https://arxiv.org/abs/2007.01698).")  |
 |:--:|
-| *Multimodal future trajectory predictions are incorporated into the **`learning` phase** of `RL` algorithm as a **model lookeahed**: If **one of the future states of one of the possible trajectories** leads to a collision, then a penalty will be assigned to the reward function to prevent collision and to reinforce to **remember unsafe states**. Otherwise, the `reward` term **penalizes deviations** from the `desired speed`, `lane position`, and `safe longitudinal distance` to the lead traffic vehicle. [Source](https://arxiv.org/abs/2007.01698).* |
+| *Multimodal future trajectory predictions are incorporated into the **`learning` phase** of `RL` algorithm as a **model lookahead**: If **one of the future states of one of the possible trajectories** leads to a collision, then a penalty will be assigned to the reward function to prevent collision and to reinforce to **remember unsafe states**. Otherwise, the `reward` term **penalizes deviations** from the `desired speed`, `lane position`, and `safe longitudinal distance` to the lead traffic vehicle. [Source](https://arxiv.org/abs/2007.01698).* |
 
 Author: Baheri, A.
 
@@ -4560,7 +4625,7 @@ Author: Baheri, A.
   - `1-` **Speed up** the learning phase.
   - `2-` Reduce collisions (**no safety guarantees** though).
 - Ingredients:
-  - "Safety" is _improved_ via **`reward` shaping**, instead of **constraining exploration** (e.g. `action masking`, `action shielding`).
+  - "Safety" is _improved_ via **`reward` shaping**, i.e. modification of the **optimization criterion**, instead of **constraining exploration** (e.g. `action masking`, `action shielding`).
   - Two ways to classify a `state` as risky:
     - `1-` Heuristic (**rule-based**). From a minimum relative `gap` to a traffic vehicle **based on its relative `velocity`**.
     - `2-` Prediction (**learning-based**). Model lookaheads (prediction / rollouts) are performed to **assess the risk of a given `state`**.
