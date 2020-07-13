@@ -4250,6 +4250,47 @@ Related works:
 
 ---
 
+**`"Formalizing Traffic Rules for Machine Interpretability"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://arxiv.org/abs/2007.00330)]**
+**[** :car: `Fortiss` **]**
+
+- **[** _`LTL`, `Vienna convention`, [`SPOT`](https://spot.in.tum.de), [`INTERACTION Dataset​`](http://interaction-dataset.com/)_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://arxiv.org/abs/2007.00330).](media/2020_esterle_1.PNG "[Source](https://arxiv.org/abs/2007.00330).")  |
+|:--:|
+| *Top left: Different techniques on how to **model the rules** have been employed: **formal logics** such as **Linear Temporal Logic `LTL`** or **Signal Temporal Logic (`STL`**), as well as **real-value constraints**. Middle and bottom: **Rules** are separated into **`premise`** and **`conclusion`**. The initial `premise` and `exceptions` (red) are combined by `conjunction`. [Source](https://arxiv.org/abs/2007.00330)* |
+
+Authors: Esterle, K., Gressenbuch, L., & Knoll, A.
+
+- Motivation:
+  - > "Traffic rules are **fuzzy** and **not well defined**, making them **incomprehensible to machines**."
+  - The authors **formalize traffic rules** from **legal texts** (here `StVO`) to a **formal language** (here `LTL`).
+  
+- _Which legal text defines rules?_
+  - For instance the **[Straßenverkehrsordnung](https://de.wikipedia.org/wiki/Stra%C3%9Fenverkehrs-Ordnung_(Deutschland))** (`StVO`), which is the **German concretization** of the **[`Vienna Convention` on Road Traffic](https://en.wikipedia.org/wiki/Vienna_Convention_on_Road_Traffic)**.
+- _Why_ **_Linear Temporal Logic (`LTL`)_** _as the_ **_formal language_** _to specify traffic rules?_
+  - > "During the legal analysis, `conjunction`, `disjunction`, `negation` and `implication` proved to be powerful and useful tools for formalizing rules. As traffic rules such as **`overtaking` consider temporal behaviors**, we decided to use `LTL`."
+  - > "Others have used **Signal Temporal Logic (`STL`)** to obtain **quantitative semantics** about **rule satisfaction**. Quantitive semantics might be beneficial for **relaxing the requirements** to satisfy a rule."
+
+- **Rules** are separated into **`premise`** and **`conclusion`**.
+  - > "This allows rules to be separated into a `premise` about the **current state of the environment**, i.e. when a rule applies, and the **legal behavior** of the ego agent in that situation (`conclusion`). Then, **exceptions** to the rules can be modeled to be part of the assumption."
+- Tools:
+  - [`INTERACTION`](http://interaction-dataset.com/): a dataset​ which focuses on **dense interactions** and *analyze the compliance** of each vehicle to the **traffic rules**.
+  - [`SPOT`](https://spot.in.tum.de): a **`C++` library for model checking**, to translate the formalized **`LTL` formula** to a **deterministic finite automaton** and to manipulate the automatons.
+  - [`BARK`](https://bark-simulator.github.io/): a benchmarking framework.
+
+- Evaluation of **rule-violation** on **public** data:
+  - > "Roughly **every fourth `lane change`** does **not keep a `safe distance`** to the rear vehicle, which is similar for the `German` and `Chinese` Data."
+
+</details>
+
+---
+
 **`"A hierarchical control system for autonomous driving towards urban challenges"`**
 
 - **[** `2020` **]**
