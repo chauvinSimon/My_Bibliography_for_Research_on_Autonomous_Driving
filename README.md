@@ -42,6 +42,8 @@ Looking forward your reading suggestions!
 
 ## `Architecture` and `Map`
 
+---
+
 **`"BARK : Open Behavior Benchmarking in Multi-Agent Environments"`**
 
 - **[** `2020` **]**
@@ -618,7 +620,7 @@ Authors: Ly, A. O., & Akhloufi, M.
 
 - **[** `2020` **]**
 **[[:memo:](http://openaccess.thecvf.com/content_CVPR_2020/papers/Kim_Advisable_Learning_for_Self-Driving_Vehicles_by_Internalizing_Observation-to-Action_Rules_CVPR_2020_paper.pdf)]**
-**[** :mortar_board: `Berkeley` **]**
+**[** :mortar_board: `UC Berkeley` **]**
 **[[:octocat:](https://github.com/JinkyuKimUCB/Advisable-Learning)]**
 
 - **[** _`attention`, `advisability`_ **]**
@@ -885,7 +887,7 @@ Authors: Kargar, E., & Kyrki, V.
 
 - **[** `2019` **]**
 **[[:memo:](https://ml4ad.github.io/files/papers/Robust%20Imitative%20Planning:%20Planning%20from%20Demonstrations%20Under%20Uncertainty.pdf)]**
-**[** :mortar_board: `University of Oxford, UC Berkeley, Carnegie Mellon University` **]**
+**[** :mortar_board: `University of Oxford`, `UC Berkeley`, `Carnegie Mellon University` **]**
 
 - **[** _`epistemic uncertainty`, `risk-aware decision-making`, [`CARLA`](http://carla.org/)_ **]**
 
@@ -1264,7 +1266,7 @@ Authors: Chen, D., Zhou, B., Koltun, V. & Krähenbühl, P
 **[[🎞️](https://sites.google.com/view/imitative-models)]**
 **[[🎞️](https://www.youtube.com/watch?v=p-ltQdNFlVg)]**
 **[[:octocat:](https://github.com/nrhine1/deep_imitative_models)]**
-**[** :mortar_board: `Carnegie Mellon University, UC Berkeley` **]**
+**[** :mortar_board: `Carnegie Mellon University`, `UC Berkeley` **]**
 
 - **[** _`conditional IL`, `model-based RL`, [`CARLA`](http://carla.org/)_ **]**
 
@@ -1807,6 +1809,63 @@ Authors: Kuefler, A., Morton, J., Wheeler, T., & Kochenderfer, M.
 
 ---
 
+**`"Analyzing the Suitability of Cost Functions for Explaining and Imitating Human Driving Behavior based on Inverse Reinforcement Learning"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://ras.papercept.net/proceedings/ICRA20/0320.pdf)]**
+**[** :mortar_board: `FZI`, `KIT`, `UC Berkeley` **]**
+
+- **[** _`max-entropy`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://ras.papercept.net/proceedings/ICRA20/0320.pdf).](media/2020_naumann_1.PNG "[Source](https://ras.papercept.net/proceedings/ICRA20/0320.pdf).")  |
+|:--:|
+| *Left: Definition of the **`features`** retrieved from **trajectory demonstrations** and the **`evaluation function`**. Right: `max-Entropy IRL` enable only requires **locally optimal** demonstrations because the `gradient` and `Hessian` of the reward function is only considered in **proximity of the demonstration**. Note that the `features` are only based on the `states`, while the `actions` remain disregarded. And that their approach assumes that the **`cost` function** is parameterized as a **linear combination of cost terms**. [Source](https://ras.papercept.net/proceedings/ICRA20/0320.pdf).* |
+
+| ![[Source](https://ras.papercept.net/proceedings/ICRA20/0320.pdf).](media/2020_naumann_2.PNG "[Source](https://ras.papercept.net/proceedings/ICRA20/0320.pdf).")  |
+|:--:|
+| *General **cost function structures** and commonly used **trajectory features**. Only one work considers `crossing` scenarios. To account for the `right of way` at intersections, the time that elapses between one vehicle leaving a conflict zone, i.e. an area where paths overlap, and another vehicle entering this zone, is considered: `tTZC` = `dsecond`/`vsecond`. Bottom: Due to the **similarity of the `variance`-`mean`-ratio** under different **`evaluation` functions**, the authors limit their experiments to the consideration of `sum[f(t)²]`, which is most used. [Source](https://ras.papercept.net/proceedings/ICRA20/0320.pdf).* |
+
+Authors: Naumann, M., Sun, L., Zhan, W., & Tomizuka, M.
+
+- Motivations:
+  - `1-` Overview of trajectory `features` and `cost` structures.
+  - `2-` About **demonstration selection**: _What are the requirements when_ **_entire trajectories are not available_** _and_ **_trajectory segments_** _must be used?_
+    - _Not very clear to me._
+    - > "**Bellman’s principle of optimality** states that parts of optimal decision chains are also optimal decisions. **Optimality**, however, **always refers to the entire decision chain**. [...] _Braking in front of a stop sign is only_ **_optimal_** _as soon as the stop sign is considered within the `horizon`._"
+    - > "The key insight is that **selected segments** have to **end in a `timestep` that is _optimal_**, independent of the weights that are to be learned."
+    - > "Assuming a **_non-negative_ cost** definition, this motivates the choice of **arbitrary trajectory segments** ending in a timestep `T` such that `cT−d+1` ... `cT+d` (depending on `xT−2d+1`...`xT+2d`) are zero, i.e. **optimal**, independent of `θ`."
+    - > "While this **_constraint_** limits the approach to cost functions that **yield zero cost for some sections**, it also yields the meaningful assumption that humans are not driven by a permanent dissatisfaction through their entire journey, but reach desirable states from time to time."
+
+- Miscellaneous: about `cost function` structures in related works:
+  - **Trajectory `features`** can depend on:
+    - `1-` A **single** trajectory only. They are based on **ego- `acceleration`, `speed` and `position`** for instance.
+    - `2-` Trajectory **ensembles**. I.e. they describe quality of one trajectory with respect to the trajectories of **other traffic participants**. For instance `TTC`.
+  - As most approaches did not focus on crossings, the **traffic rule features** were not used by the related approaches.
+  - All approaches use a **convenience term** to prevent that **being at a full stop is an optimal** state with zero cost.
+    - > "In order to prevent that being at a **full stop** is beneficial, **progress** towards the target must be rewarded, that is, `costs` must be added in case of little progress. This can be done by considering the **deviation from the `desired velocity`** or the **`speed limit`**, or via the **deviation from a `reference position`**."
+    - > "For stop signs, similarly, the deviation from a complete stop, i.e. the driven velocity at the stop line, can be used as a feature."
+  - All approaches incorporate both `smoothness` (longitudinal) and `curve comfort` (lateral).
+  - The `lane geometry` is incorporated in the cost, unless it was already incorporated by using a **predefined path**.
+
+- _What `feature` for `interaction` with others traffic participants?_
+  - Simply **relative** `speeds` and `positions` (`gap`).
+  - Most approaches assume that the **future trajectory** of others is known or provided by an **upstream prediction** module. The **effect of the ego vehicle** on the traffic participant can then be measured. For instance the **induced cost**, such as **`deceleration`**.
+  - > "Other approaches do not rely on an **upstream prediction**, but incorporate the prediction of others into the planning by **optimizing a global cost functional**, which weights other traffic participants equally, or allows for more **egoistic behavior** based on a **`cooperation factor`**."
+
+- Some findings when applying `IRL` on [`INTERACTION`](http://interaction-dataset.com/) dataset on three scenarios: `in-lane driving`, `right turn` and `stop`:
+  - `1-` Among all scenarios, human drivers **weight `longitudinal acceleration` higher than `longitudinal jerks`**.
+  - `2-` The weight for **`longitudinal` and `lateral acceleration` are similar** per scenario, such that neither seems to be preferred over the other. If implied by the scenario, as in the right turn, the weight decreases.
+  - `3-` In the `right turn` scenario, the weight of the `lateral deviation` from the centerline is very large.
+    - > "Rather than assuming that the `centerline` is especially important in turns, we hypothesize that a large weight on `d-cl` is necessary to **prefer turning over simply going straight**, which would cause less `acceleration` cost."
+  - > "We found that the **key `features` and human preferences differ largely**, even in different single lane scenarios and disregarding interaction with other traffic participants."
+
+</details>
+
+---
+
 **`"Modeling Human Driving Behavior through Generative Adversarial Imitation Learning"`**
 
 - **[** `2020` **]**
@@ -2296,7 +2355,7 @@ Authors: Sadat, A., Ren, M., Pokrovsky, A., Lin, Y., Yumer, E., & Urtasun, R.
 
 - **[** `2019` **]**
 **[[:memo:](https://arxiv.org/abs/1911.08044)]**
-**[** :mortar_board: `Berkeley, Chalmers University, Peking University` **]**
+**[** :mortar_board: `UC Berkeley, Chalmers University, Peking University` **]**
 **[** :car: `Zenuity` **]**
 - **[** _`GAIL`, `AIRL`, `action-masking`, `augmented reward function`_ **]**
 
@@ -6417,7 +6476,7 @@ Authors: Huegle, M., Kalweit, B., Werling, M., & Boedecker, J.
 **[[:octocat:](https://github.com/honda-research-institute/NNMPC.jl)** `MPC` **]**
 **[[:octocat:](https://github.com/honda-research-institute/DRLDriving)** `ML` **]**
 **[[🎞️](https://www.youtube.com/watch?v=zY4taTNRM1k)]**
-**[** :mortar_board: `Berkeley & Carnegie Mellon` **]**
+**[** :mortar_board: `UC Berkeley`, `Carnegie Mellon` **]**
 **[** :car: `Honda` **]**
 
 - **[** _`SISL`, `PPO`, `MPC`, `merging scenarios`_ **]**
@@ -6658,7 +6717,7 @@ Authors: Bouton, M., Nakhaei, A., Fujimura, K., & Kochenderfer, M. J.
 - **[** `2019` **]**
 **[[:memo:](https://arxiv.org/abs/1904.06025)]**
 **[[🎞️](https://www.youtube.com/watch?v=2CTTFHDW1ec)]**
-**[** :mortar_board: `Berkeley` **]**
+**[** :mortar_board: `UC Berkeley` **]**
 **[** :car: `Honda` **]**
 
 - **[** _`multi agent RL`, `interaction-aware decision making`, `curriculum learning`, `action masking`_ **]**
