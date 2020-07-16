@@ -4696,6 +4696,132 @@ Author: Noh, S.
 
 ---
 
+**`"Reinforcement Learning based Control of Imitative Policies for Near-Accident Driving"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://arxiv.org/abs/2007.00178)]**
+**[[🎞️](https://www.youtube.com/watch?v=envT7b5YRts)]**
+**[[🎞️](https://www.youtube.com/watch?v=CY24zlC_HdI)]**
+**[** :mortar_board: `Stanford` **]**
+**[** :car: `Toyota Research Institute` **]**
+
+- **[** _`hierarchical learning`, `RL+IL`, [`CARLO`](https://github.com/Stanford-ILIAD/CARLO), [`CARLA`](http://carla.org)_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://arxiv.org/abs/2007.00178).](media/2020_cao_1.gif "[Source](https://arxiv.org/abs/2007.00178).")  |
+|:--:|
+| *Illustration of **rapid phase transitions**: when **small changes in the critical `states`** – the ones we see in near-accident scenarios – **require dramatically different `actions`** of the autonomous car to stay safe.  [Source](https://arxiv.org/abs/2007.00178).* |
+
+| ![[Source](https://arxiv.org/abs/2007.00178).](media/2020_cao_1.PNG "[Source](https://arxiv.org/abs/2007.00178).")  |
+|:--:|
+| *I must say I am a bit disappointed by the `collision rate` results. The authors mention **`safety`** a lot, but their approaches **crash every third trial** on the `unprotected turn`. The too-conservative agent `TIMID` gets zero collision. Is it then fair to claim **''Almost as Safe as Timid''**? In such cases, what could be needed is an **uncertainty-aware** agent, e.g. `POMDP` with **information gathering behaviours**.  [Source](https://arxiv.org/abs/2007.00178).* |
+
+| ![[Source](https://arxiv.org/abs/2007.00178).](media/2020_cao_2.PNG "[Source](https://arxiv.org/abs/2007.00178).")  |
+|:--:|
+| *One of the five scenarios: In this `unprotected left turn`, a truck **occludes** the oncoming ado car. Bottom left: The **two primitive policies (`aggressive` and `timid`)** are first learnt by `imitation`. Then they are used to train a **high-level** policies with `RL`, to select **at each timestep `ts`** (larger that primitive timestep) **which primitive to follow**. Bottom right: While `AGGRESSIVE` achieves higher `completion rates` for the **low time limits**, it cannot improve further with the increasing limit with collisions. [Source](https://arxiv.org/abs/2007.00178).* |
+
+| ![[Source](https://arxiv.org/abs/2007.00178).](media/2020_cao_3.PNG "[Source](https://arxiv.org/abs/2007.00178).")  |
+|:--:|
+| *About **phase transition**: `H-REIL` usually chooses the `timid` policy at the areas that have a **collision risk** while staying `aggressive` at other locations when it is safe to do so. Baselines: `π-agg`, resp. `π-agg`, has been trained only on **`aggressive`**, resp. `timid`, **rule-based demonstrations** with `IL`. `π-IL` was trained on the **mixture** of both. A pity that **no pure `RL` baseline** is presented. [Source](https://arxiv.org/abs/2007.00178).* |
+
+Authors: Cao, Z., Bıyık, E., Wang, W. Z., Raventos, A., Gaidon, A., Rosman, G., & Sadigh, D.
+
+- Motivation:
+  - **Learn** (no `rule-based`) driving policies in **_near-accident_** scenarios, i.e. where quick reactions are required, being `efficient`, while `safe`.
+  - Idea: **decompose** this complicated task into **two levels**.
+
+- Motivations for a **hierarchical** structure:
+  - `1-` The presence of **rapid phase transitions** makes it hard for `RL` and `IL` to capture the policy because **they learn a _smooth_ policy across `states`**.
+    - > "**Phase transitions** in autonomous driving occur when **small changes in the critical `states`** – the ones we see in near-accident scenarios – **require dramatically different `actions`** of the autonomous car to stay safe."
+    - Due to the **non-smooth `value` function**, an `action` taken in one state may not **generalize to nearby `states`**.
+    - During training, the algorithms must be able to visit and **handle all the critical states individually**, which can be **computationally inefficient**.
+    - _How to model the rapid phase transition?_
+      - By **switching from one `driving mode` to another**.
+      - > [The main idea here] "Our key insight is to **model phase transitions as _optimal switches_**, learned by `RL`, between different **`modes` of driving styles**, each learned through `IL`."
+  - `2-` To achieve **full coverage**, `RL` needs to **explore the full environment** while `IL` requires a **large amount of expert demonstrations covering all `states`**.
+    - Both are prohibitive since the **`state`-`action` space** in **driving** is continuous and **extremely large**.
+      - One solution to **improve data-efficiency**: **Conditional** imitation learning (`CoIL`). it extends `IL` with **high-level commands** and learns a **separate `IL` model** for each command. High-level **commands are required at test time**, e.g., the direction at an intersection. Instead of depending on drivers to provide commands, the authors would like to **learn these optimal mode-switching policy**.
+    - > "The **mode switching** can model **rapid phase transitions**. With the **reduced action space** and **fewer time steps**, the **high-level `RL`** can explore all **the `states`** efficiently to address **`state` coverage**."
+    - > "`H-REIL` framework usually outperforms `IL` with a large margin, supporting the claim that in near-accident scenarios, training a **generalizable `IL`** policy **requires a lot of demonstrations**."
+  - > `Hierarchical RL` enables **efficient exploration** for the higher level with a **reduced `action` space**, i.e. goal space, while **making `RL` in the lower level easier** with an **explicit** and **short-horizon** goal.
+
+- Motivations for **combining `IL`+`RL`**, instead of single `HRL` or `CoIL`:
+  - `1-` For the low-level policy:
+    - Specifying `reward` functions for `RL` is hard.
+    - > "We emphasize that `RL` would **not be a reasonable fit** for learning the low-level policies as it is **difficult to define the `reward` function**."
+    - > "We employ `IL` to **learn low-level** policies `πi`, because each low-level policy **sticks to one driving style**, which behaves relatively **consistently across `states`** and requires **little rapid phase transitions**."
+  - `2-` For the high-level policy:
+    - > "`IL` does not fit to the **high-level policy**, because it is not natural for human drivers to accurately **demonstrate** **_how to switch driving modes_**."
+    - > "`RL` is a better fit since we need to learn to maximize the `return` based on a `reward` that contains a **trade-off** between various terms, such as **efficiency and safety**. Furthermore, the action space is now reduced from a **continuous `space`** to a **finite discrete `space`** [the **conditional branches**]."
+    - Denser `reward` signals: setting `ts > 1` **reduces the number of time steps in an episode** and makes the **collision penalty**, which appears at most once per episode, **less sparse**.
+
+- **Hierarchical** `reinforcement` and `imitation` learning (`H-REIL`).
+  - `1-` One **high-level** (meta-) policy, learned by `RL` that **switches between different `driving modes`**.
+    - Decision: _which low-level policy to use?_
+    - Goal: learn a **mode switching policy** that maximizes the `return` based on a **simpler pre-defined `reward` function**.
+    - This high-level decision is made every `ts` time steps. _No value given?_
+  - `2-` Multiple **low-level** policies `πi`, learned by `IL`: **one per `driving mode`**.
+    - Imitate drivers with different characteristics, such as different `aggressiveness` levels.
+    - They are "basic" and realize **relatively easier goals**.
+    - > "The **low-level policy** for each `mode` can be efficiently learned with `IL` even with **only a few expert demonstrations**, since `IL` is now learning a **much simpler** and specific policy by sticking to one driving style with **little phase transition**."
+
+- **Two `driving modes`**:
+  - `1-` **`timid`**: drives in a **safe** way to **avoid all potential accidents**. It **slows down** whenever there is even a **slight risk** of an accident.
+  - `2-` **`aggressive`**: favours `efficiency` over `safety`. _"It drives fast and frequently collides with the ado car."_
+  - > "Since humans often do not optimize for other nuanced metrics, such as `comfort`, in a near-accident scenario and **the planning horizon of our high-level controller is extremely short**, there is a **limited amount of diversity** that different modes of driving would provide, which makes having **extra modes unrealistic and unnecessary** in our setting."
+  - > "This intelligent **mode switching** enables `H-REIL` to drive reasonably under different situations: **slowly and cautiously under uncertainty**, and **fast when there is no potential risk.**"
+
+- About the **low-level `IL`** task.
+  - **`Conditional imitation`**:
+    - All the policies **share the same feature extractor**.
+    - Different **branches** split in later layers for `action` prediction, where each corresponds to one `mode`.
+    - The **branch** is selected by **external input** from high-level `RL`.
+  - Each scenario is run with the ego car following a **hand-coded** with two settings: `difficult` and `easy`.
+    - > [_Are there demonstrations of collisions?_] "The `difficult` setting is described above where the ado car **acts carelessly or aggressively**, and is likely to collide with the ego car."
+    - These demonstrations are used to learn the `aggressive` and `timid` primitive policies.
+  - Number of **episodes collected** per `mode`, for **imitation**:
+    - `CARLO`: `80.000` (computationally lighter).
+    - `CARLA`: `100` (it includes perception data).
+
+- About the **high-level `RL`** task: **`POMDP`** formulation.
+  - `reward`
+    - > "It is now much easier to define a `reward` function because the ego car **already satisfies some properties** by following the policies learned from expert demonstrations. We do not need to worry about `jerk` [if `ts` large], because the **experts naturally give low-jerk demonstrations**."
+    - `1-` **Efficiency** term: `Re` is **negative in every time step**, so that the agent will try to **reach its destination** as quickly as possible.
+      - _Ok, but how can it scale to_ **_continuous_** _(non-episodic) scenarios, such as real-world driving?_
+    - `2-` **Safety** term: `Rs` gets an **extremely large negative value** if a **collision** occurs.
+  - `training` environment: `CARLO`.
+  - _No detail about the `transition` model._
+
+- About `observation` spaces, for **both tasks**:
+  - In `CARLO`: `positions` and `speeds` of the **ego car** and the **ado car**, if **not occluded**, perturbed with **Gaussian noise**.
+  - In `CARLA`: Same but with **front-view `image`**.
+    - _How to process the image?_
+      - Generate a **binary image** using an object detection model.
+      - Only the **bounding boxes are coloured white**. It provides information of the **ado car** more **clearly** and **alleviates the environmental noise**.
+  - _How can the agents be trained if the `state` space varies?_
+  - _Are frames stacked, as represented on the figure?_
+
+- About [`CARLO`](https://github.com/Stanford-ILIAD/CARLO) simulator to **train faster**.
+  - `CARLO` stands for **_`CARLA` - Low Budget_**. It is less realistic but **computationally much lighter** than `CARLA`.
+  - > "While `CARLO` does not provide realistic visualizations other than **two-dimensional diagrams**, it is useful for **developing control models** and **collecting large amounts of data**. Therefore, we use `CARLO` as a **simpler environment** where we assume perception is handled, and so we can **directly use the noisy measurements** of other vehicles’ `speeds` and `positions` (if not occluded) in addition to the `state` of the ego vehicle."
+
+- Some concerns:
+  - _What about the_ **_car dynamics_** _in `CARLO`?_
+    - > [same `action` space] "For both CARLO and CARLA, the **control inputs** for the vehicles are `throttle`/`brake` and `steering`."
+    - `CARLO` assumes **point-mass dynamics** models, while `CARLA` models are much more complex!
+    - _Is it made consistent with `CARLA`?_
+    - _How can it_ **_transfer_** _for testing in `CARLA`?_
+  - **Distribution shift and overfitting**.
+    - **Evaluation** is performed on scenarios used during `training`.
+    - _Can the system address situations it has not been trained on?_
+  - **Safety!**
+
+</details>
+
+---
+
 **`"Safe Reinforcement Learning for Autonomous Lane Changing Using Set-Based Prediction"`**
 
 - **[** `2020` **]**
