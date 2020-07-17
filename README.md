@@ -1809,6 +1809,82 @@ Authors: Kuefler, A., Morton, J., Wheeler, T., & Kochenderfer, M.
 
 ---
 
+---
+
+**`"Efficient Sampling-Based Maximum Entropy Inverse Reinforcement Learning with Application to Autonomous Driving"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://arxiv.org/abs/2006.13704)]**
+**[** :mortar_board: `UC Berkeley` **]**
+
+- **[** _`max-entropy`, `partition function`, `sampling`, [`INTERACTION`](http://interaction-dataset.com/)_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://arxiv.org/abs/2006.13704).](media/2020_wu_1.PNG "[Source](https://arxiv.org/abs/2006.13704).")  |
+|:--:|
+| *The **intractable partition `Z` function** of `Max-Entropy` method is approximated by a **sum of sampled trajectories**. [Source](https://arxiv.org/abs/2006.13704).* |
+
+| ![[Source](https://arxiv.org/abs/2006.13704).](media/2020_wu_2.PNG "[Source](https://arxiv.org/abs/2006.13704).")  |
+|:--:|
+| *Left: Prior knowledge is injected to make the sampled trajectories **feasible**, hence **improving the efficiency** of the `IRL` method. Middle: Along with `speed-desired_speed`, `long-acc`, `lat-acc` and `long-jerk`, two **interactions `features`** are considered. Bottom-right: **Sample re-distribution** is performed since generated samples are not necessarily **uniformly distributed in the selected feature space**. Top-right: The learned weights indicate that **humans care more about longitudinal accelerations** in both non-interactive and interactive scenarios. [Source](https://arxiv.org/abs/2006.13704).* |
+
+Authors: Wu, Z., Sun, L., Zhan, W., Yang, C., & Tomizuka, M.
+
+- Motivations:
+  - `1-` The trajectories of the observed vehicles satisfy **car kinematics constraints**.
+    - This **should be considered** while learning `reward` function.
+  - `2-` **Uncertainties** exist in real traffic demonstrations.
+    - The demonstrations in naturalistic driving data are **not necessarily optimal or near-optimal**, and the `IRL` algorithms should be compatible with such uncertainties.
+    - `Max-Entropy` methods (**probabilistic**) can cope with this **sub-optimality**.
+  - `3-` The approach should **converge quickly** to **scale** to problems with **large continuous-domain** applications with **long horizons**.
+    - The critical part in **max-entropy `IRL`**: **_How to estimate the intractable partition `Z`_?**
+
+- Some assumptions:
+  - > "We do not consider scenarios where human drivers **change their `reward` functions** along the demonstrations."
+  - > "We also do not specify the **diversity of `reward` functions** among different human drivers. Hence, the acquired `reward` function is **essentially an averaged result** defined on the demonstration set."
+
+- _Why "sampling-based"?_
+  - The **integral** of the **partition function** is approximated by a **sum over generated samples**.
+    - It reminds me the **Monte Carlo** integration techniques.
+    - The **sampled are not random**. Instead they are **feasible** and **represent** long-horizon trajectories, leveraging **prior knowledge** on **vehicle kinematics** and motion planning.
+  - Efficiency:
+    - `1-` Around `1 minute` to **generate all samples** for the entire training set.
+    - `2-` The sampling process is **one-shot** in the algorithm through the training process (_do they mean that the set needs only to be created once?_).
+  - Sample **Re-Distribution**.
+    - > "The samples are not necessarily **uniformly distributed in the selected feature space**, which will cause **biased evaluation of probabilities**."
+    - > "To address this problem, we propose to use **`Euclidean` distance** [_better metrics will be explored in future works_] in the **feature space** as a **similarity metric** for **re-distributing the samples**."
+  - The sampling time of all trajectories is `∆t=0.1s`.
+
+- Features:
+  - `1-` **Non-interactive**: `speed` **deviation** to `desired_speed`, longitudinal and lateral `accelerations`, longitudinal `jerk`.
+  - `2-` **Interactive**:
+    - `future distance`: **minimum** spatial distance of **two interactive vehicles** within a predicted horizon `τ-predict` assuming that they are **maintaining their current speeds**.
+    - `future interaction distance`: minimum distance between **their distances** to the **collision point**.
+  - All are normalized in (`0, 1`).
+
+- Metrics:
+  - `1-` Deterministic: **feature deviation** from the ground truth.
+  - `2-` Deterministic: **mean `Euclidean` distance** to the ground truth.
+  - `3-` Probabilistic: the **likelihood** of the ground truth.
+
+- Baselines:
+  - They all are based on the principle of **maximum entropy**, but differ in the **estimation of `Z`**:
+    - `1-` [Continuous-domain `IRL`](https://graphics.stanford.edu/projects/cioc/cioc.pdf) (`CIOC`).
+      - `Z` is estimated in a continuous domain via **Laplace approximation**: the `reward` at an arbitrary trajectory `ξ˜` can be **approximated** by its **second-order Taylor expansion** at a demonstration trajectory `ˆξD`.
+    - `2-` [Optimization-approximated `IRL`](http://ais.informatik.uni-freiburg.de/publications/papers/kuderer15icra.pdf) (`Opt-IRL`).
+      - An optimal trajectory `ξopt` can be obtained by **minimizing the updated `reward`** function. Then, `Z` ≈ `exp`(`βR`(`θ`,`ξopt`)).
+      - > "In the **forward problem** at each iteration, it directly **solves the optimization** problem and use the **optimal trajectories** to represent the **expected feature counts**."
+    - `3-` [Guided cost learning](https://arxiv.org/abs/1603.00448) (`GCL`).
+      - This one is not model-based: it **does not need manually crafted `features`**, but automatically learns features via neural networks.
+      - It uses rollouts (**samples**) of the `policy` network to estimate `Z` in each iteration.
+      - However, **all these samples must be re-generated** in every training iteration, while the proposed method **only needs to generate all samples once**.
+
+</details>
+
+---
+
 **`"Analyzing the Suitability of Cost Functions for Explaining and Imitating Human Driving Behavior based on Inverse Reinforcement Learning"`**
 
 - **[** `2020` **]**
