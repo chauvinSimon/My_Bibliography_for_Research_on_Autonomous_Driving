@@ -5906,6 +5906,62 @@ Authors: Chen, J., Li, S. E., & Tomizuka, M.
 
 ---
 
+**`"Driving Reinforcement Learning with Models"`**
+
+- **[** `2019` **]**
+**[[:memo:](https://arxiv.org/abs/1911.04400)]**
+**[[:octocat:](https://github.com/GIOVRUSSO/Control-Group-Code/tree/master/MPRL)]**
+**[** :mortar_board: `University College Dublin`, `Imperial College London`, `Salerno University` **]**
+
+- **[** _`planning`, `MPC`, `environment model`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://arxiv.org/abs/1911.04400).](media/2020_rathi_1.PNG "[Source](https://arxiv.org/abs/1911.04400).")  |
+|:--:|
+| *When a **model of the environment is available** (e.g. when the ball comes toward the ego paddle), `planning` is performed. Otherwise, a **model-free `RL` agent** is used. The `RL` agent maximizes the expected `return`, while **imitating the `MPC`** when it is used. This improves the **sampling efficiency**, while bringing some **guarantees**. [Source](https://arxiv.org/abs/1911.04400).* |
+
+Authors: Rathi, M., Ferraro, P., & Russo, G.
+
+- Motivations:
+  - `1-` **Model-free `RL`** is **sample inefficient** and **lacks (e.g. `safety`) guarantees** while learning.
+  - `2-` **`planning`** can efficiently solve a `MDP`. But the `transition` and `reward` models must be known.
+  - `3-` In many real-world systems, **tasks can be broken down** into a set of **functionalities** and, for some of these, **a mathematical model might be available**.
+    - > [Observation] "In many applications, such as applications requiring **physical interactions** between the agent and its environment, while a **full model** of the environment might not be available, **at least parts of the model**, for e.g. a **subset of the `state` space**, might be known/identifiable."
+
+- Main idea:
+  - Use a **`planning`** (here a `MPC`) when a **mathematical model is available** and `Q-learning` otherwise.
+  - `MPC` is **not only** used for **`action` selection**. Even if `MPC` is used, `RL` makes a prediction and is **penalized if predictions differ**. This accelerates the learning phase of the `RL` part by:
+    - `1-` Driving the **`state`-space exploration** of `Q-learning`.
+    - `2-` Tuning its rewards.
+- At first sight, it seems that the learning-agent **simultaneously maintains two goals**:
+  - `1-` Maximize the expected sum of discounted `rewards`: **`RL`** part.
+  - `2-` **Imitate** the `MPC`: **`behavioural cloning`**.
+  - If the **supervised imitation** is too strict, the performances degrade:
+    - > "Simulations show that, while the `MPC` component is important for **enhancing the agent’s defence**, too much influence of this component on the `Q-L` can **reduce the attack performance** of the agent (this, in turn, is essential in order to score higher points)."
+
+- About `MPC`:
+  - > "At each time-step, the algorithm computes a **control `action`** by **solving an optimization** problem having as **constraint the dynamics** of the system being controlled. In addition to the dynamics, other **system requirements** (e.g. `safety` or `feasibility` requirements) can also be **formalized as constraints** of the optimization problem."
+
+- Example: `pong`.
+  - During the **defence** phase, `MPRL` used its `MPC` component since this phase is completely governed by the **physics** of the game and by the **moves** of the ego-agent.
+  - During the **attack** phase,  `MPRL` used its `Q-L` component.
+    - > "Indeed, even if a mathematical model describing the evolution of the position of the ball could be devised, there is **no difference equation** that **could predict what our opponent would do in response** (as we have no control over it)."
+  - The **`MPC` takes over** when the paddle is not correctly posed to receive the ball, **ensuring that the ego-agent does not lose**.
+    - > "Intuitively, the paddle was moved by the `MPC` component when the ball was **coming towards the `MPRL` paddle** and, at the same time, the **future vertical position** of the ball (predicted via the model) was **far from the actual position** of the agent’s paddle."
+  - [`MPC` < `RL` for attack] "While `MPC` allows the agent to **defend**, it does not allow for the learning of an **attack strategy** to consistently obtain points."
+
+- _How can it be applied to decision-making for AD?_
+  - The task of driving is a **partially observable** and **partially controllable** problem:
+    - `1-` When surrounded by vehicles, the **ego-`action` has full control on the `state-transition`**. Hence a `RL` agent can be used to cope with uncertainty.
+    - `2-` But when the car is **driving alone**, a rule-based controller such `PID` / `MPC` could be used, since the **ego-car dynamic is fully known** (_deterministic_ transitions).
+    - The `planning` part would **alleviates the `RL` exploration**, accelerating the learning process, but this does not provide any **safety guarantees**.
+
+</details>
+
+---
+
 **`"End-to-end Reinforcement Learning for Autonomous Longitudinal Control Using Advantage Actor Critic with Temporal Context"`**
 
 - **[** `2019` **]**
