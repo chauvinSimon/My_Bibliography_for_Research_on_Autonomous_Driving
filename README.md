@@ -4761,11 +4761,18 @@ Authors: Cao, Z., Bıyık, E., Wang, W. Z., Raventos, A., Gaidon, A., Rosman, G.
   - `1-` One **high-level** (meta-) policy, learned by `RL` that **switches between different `driving modes`**.
     - Decision: _which low-level policy to use?_
     - Goal: learn a **mode switching policy** that maximizes the `return` based on a **simpler pre-defined `reward` function**.
-    - This high-level decision is made every `ts` time steps. _No value given?_
   - `2-` Multiple **low-level** policies `πi`, learned by `IL`: **one per `driving mode`**.
     - Imitate drivers with different characteristics, such as different `aggressiveness` levels.
     - They are "basic" and realize **relatively easier goals**.
     - > "The **low-level policy** for each `mode` can be efficiently learned with `IL` even with **only a few expert demonstrations**, since `IL` is now learning a **much simpler** and specific policy by sticking to one driving style with **little phase transition**."
+- _How often are decisions taken?_
+  - `500ms` = timestep of HL.
+  - `100ms` = timestep of LL.
+  - There is clearly a **trade-off**:
+    - `1-` The high level should run at **low frequency** (**`action` abstraction**).
+    - `2-` Not too _low_ since it should be able **to react and switch quickly**.
+  - Maybe the `timid` `IL` primitive could **take over** before the end of the `500ms` if needed.
+  - Or add some **`reward` regularization** to **discourage changing modes** as long as it is not very crucial.
 
 - **Two `driving modes`**:
   - `1-` **`timid`**: drives in a **safe** way to **avoid all potential accidents**. It **slows down** whenever there is even a **slight risk** of an accident.
@@ -4779,8 +4786,10 @@ Authors: Cao, Z., Bıyık, E., Wang, W. Z., Raventos, A., Gaidon, A., Rosman, G.
     - Different **branches** split in later layers for `action` prediction, where each corresponds to one `mode`.
     - The **branch** is selected by **external input** from high-level `RL`.
   - Each scenario is run with the ego car following a **hand-coded** with two settings: `difficult` and `easy`.
-    - > [_Are there demonstrations of collisions?_] "The `difficult` setting is described above where the ado car **acts carelessly or aggressively**, and is likely to collide with the ego car."
+    - _Are there demonstrations of collisions?_ _Are `IL` agents supposed to imitate that?_ _How can they learn to recover from near-accident situations?_
+    - > "The `difficult` setting is described above where the ado car **acts carelessly or aggressively**, and is likely to collide with the ego car."
     - These demonstrations are used to learn the `aggressive` and `timid` primitive policies.
+  - Trained with [`COiLTRAiNE`](https://github.com/felipecode/coiltraine).
   - Number of **episodes collected** per `mode`, for **imitation**:
     - `CARLO`: `80.000` (computationally lighter).
     - `CARLA`: `100` (it includes perception data).
@@ -4801,7 +4810,7 @@ Authors: Cao, Z., Bıyık, E., Wang, W. Z., Raventos, A., Gaidon, A., Rosman, G.
       - Generate a **binary image** using an object detection model.
       - Only the **bounding boxes are coloured white**. It provides information of the **ado car** more **clearly** and **alleviates the environmental noise**.
   - _How can the agents be trained if the `state` space varies?_
-  - _Are frames stacked, as represented on the figure?_
+  - _Are frames stacked, as represented on the figure?_ Yes, one of the authors told me `5` are used.
 
 - About [`CARLO`](https://github.com/Stanford-ILIAD/CARLO) simulator to **train faster**.
   - `CARLO` stands for **_`CARLA` - Low Budget_**. It is less realistic but **computationally much lighter** than `CARLA`.
@@ -4809,10 +4818,10 @@ Authors: Cao, Z., Bıyık, E., Wang, W. Z., Raventos, A., Gaidon, A., Rosman, G.
 
 - Some concerns:
   - _What about the_ **_car dynamics_** _in `CARLO`?_
-    - > [same `action` space] "For both CARLO and CARLA, the **control inputs** for the vehicles are `throttle`/`brake` and `steering`."
-    - `CARLO` assumes **point-mass dynamics** models, while `CARLA` models are much more complex!
-    - _Is it made consistent with `CARLA`?_
-    - _How can it_ **_transfer_** _for testing in `CARLA`?_
+    - > [same `action` space] "For both `CARLO` and `CARLA`, the **control inputs** for the vehicles are `throttle`/`brake` and `steering`."
+    - `CARLO` assumes **point-mass dynamics** models, while the model of physics engine of `CARLA` is much more complex with **non-linear dynamics**!
+    - First, I thought agents were trained in `CARLO` and tested in `CARLA`. But the transfer is not possible because of **mismatch in `dynamics` and `state` spaces.
+      - But apparently training and testing are performed **individually and separately** in both simulators. _Ok, but only one set of results is presented. I am confused._
   - **Distribution shift and overfitting**.
     - **Evaluation** is performed on scenarios used during `training`.
     - _Can the system address situations it has not been trained on?_
@@ -7134,7 +7143,93 @@ Author: Plessen, M. G.
 
 ---
 
-## `Model Based` `Reinforcement Learning`
+## `Model-Based` `Reinforcement Learning`
+
+---
+
+**`"Assurance of Self-Driving Cars: A Reinforcement Learning Approach"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://cs.anu.edu.au/courses/CSPROJECTS/20S1/reports/u6646917_report.pdf)]**
+**[** :mortar_board: `Australian National University` **]**
+
+- **[** _[`PILCO`](https://mlg.eng.cam.ac.uk/pub/pdf/DeiRas11.pdf), [`ρUCT`](https://arxiv.org/pdf/0909.0801.pdf)_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://cs.anu.edu.au/courses/CSPROJECTS/20S1/reports/u6646917_report.pdf).](media/2020_quan_2.PNG "[Source](https://cs.anu.edu.au/courses/CSPROJECTS/20S1/reports/u6646917_report.pdf).")  |
+|:--:|
+| *Top-left: The task is not to drive a car! But rather to find the **weather conditions** causing accidents (not clear to me). Right: `Model learning` is done **offline**. Once a good confidence in **prediction accuracy** of `PILCO GPs` is obtained, **online `planning`** is conducted by starting a new episode and building up a `ρUCT` at each `state`. Bottom-left: [`ρUCT`](https://arxiv.org/pdf/0909.0801.pdf) is a **best-first `MCTS`** technique that **iteratively constructs a search tree in memory**. The tree is composed of **two interleaved types of nodes**: **`decision` nodes** and **`chance` nodes**. These correspond to the **alternating `max` and `sum` operations** in the `expectimax` operation. Each `node` in the tree corresponds to a **history `h`**. If `h` ends with an `action`, it is a **chance node**; if `h` ends with an (`observation`-`reward`) pair, it is a **decision node**. Each `node` contains a statistical estimate of the future `reward`. [Source](https://cs.anu.edu.au/courses/CSPROJECTS/20S1/reports/u6646917_report.pdf).* |
+
+| ![[Source](https://cs.anu.edu.au/courses/CSPROJECTS/20S1/reports/u6646917_report.pdf).](media/2020_quan_1.PNG "[Source](https://cs.anu.edu.au/courses/CSPROJECTS/20S1/reports/u6646917_report.pdf).")  |
+|:--:|
+| *Inference in the **transition model**: given **`x`**=(`s`, `a`), the `mean` and `variance` of the posterior distribution `p`(`s'`, **`x`**) are computed and used in a **normal distribution** to **sample state transitions**. [Source](https://cs.anu.edu.au/courses/CSPROJECTS/20S1/reports/u6646917_report.pdf).* |
+
+Author: Quan, K.
+
+- About:
+  - A **student project**. Results are unfortunately not very good. But the report gives a good example of some **concrete `model-based` implementation** (and its **difficulties**).
+
+- Motivation:
+  - Perform `planning` to solve a `MDP` where the **environment dynamics** is **unknown**.
+  - A **generative model** that **approximates the transition function** is therefore needed.
+
+- About model-based `RL`.
+  - > "In `model-based` `RL`, the agent learns an **approximated model of the environment** and performs **`planning`** utilising this model."
+  - > "**Gaussian Process (`GP`)** is widely considered as the state-of-the-art method in **learning stochastic transition models**."
+    - [`PILCO`](https://mlg.eng.cam.ac.uk/pub/pdf/DeiRas11.pdf) = *Probabilistic Inference for Learning Control*. It is a **model-based policy search** algorithm.
+    - The **transition model** in the `PILCO` algorithm is implemented as a **`GP`**.
+  - In short, the author proposes a combination of:
+    - `1-` **Offline model learning** via `PILCO` Gaussian Processes.
+    - `2-` **Online planning** with [`ρUCT`](https://arxiv.org/pdf/0909.0801.pdf).
+  - Miscellaneous:
+    - A **fixed frame rate** is necessary to reduce the difficulty of **learning the transition model**.
+    - Here, a [python implementation]((https://github.com/nrontsis/PILCO)) of `PILCO` in `TensorFlow v2` is used, leveraging [`GPflow`](https://github.com/GPflow/GPflow) for the `GP` regression.
+
+- Model learning is **OFFLINE**, for **efficiency** reasons.
+  - Contrary to [`Dyna`](https://people.cs.umass.edu/~barto/courses/cs687/Chapter%209.pdf) model, **new experience** obtained from interactions with the environment during the **planning phase** is **not fed back** to the **model learning process** to further improve the **approximate transition model**.
+    - > "The major reason is that **optimisation of `PILCO` `GPs`** is significantly time-consuming with a large set of experience. Thus, **interleaving online planning** in decision time with **model learning** would make the solution time intractable under the computation resource we have."
+    - **Error correction** is therefore impossible.
+
+- **Long `training` time** and **`sampling` time** with the `python` package:
+  - A model learnt with `200` episodes has an **`8s` sampling time**, making `planning` intractable.
+  - The author raises two reasons:
+    - `1-` Optimisation of the `GP’s` hyper parameters are not done in **incremental-basis**.
+    - `2-` Intermediate results of sampling from the **posterior distribution** are not **cached**, thus **every sampling** requires a `Cholesky` decomposition of the covariance matrix.
+
+- About `planning`.
+  - `Policy iteration` is not applicable.
+    - It becomes **intractable** in large problems, since it operates in sweeps of the **entire `state`-`action` space**.
+  - Instead Monte Carlo Tree Search (`MCTS`).
+    - _No detail about the `state` discretization._
+  - About [`ρUCT`](https://arxiv.org/pdf/0909.0801.pdf):
+    - > "A generalisation of the popular `MCTS` algorithm `UCT`, that can be used to **approximate a finite horizon `expectimax` operation** given an environment model `ρ`.
+    - > "The `ρUCT` algorithm can be realised by replacing the notion of `state` in `UCT` by an **agent history `h`** (which is always a sufficient statistic) and using an environment model `ρ` to **predict the next percept**."
+    - `UCB1` is used by `ρUCT` as the **selection** strategy to balance `exploration` and `exploitation`.
+
+- `MDP` formulation (_not clear to me_).
+  - > "We set up the `CARLA` environment with a single vehicle moving towards a destination in a **straight lane** and a **pedestrian** that is placed in the path of the vehicle and stands still, which simulates the dynamics between a **moving car** and a pedestrian who is **crossing the street**."
+  - > "The results indicate that **sun altitude** is an important influence factor for the stability and consistency of the test autonomous controller in that certain configurations of **sun altitude produce lighting conditions** that cause more frequent **failure** of the controller."
+  - `gamma`
+    - > "Since the length of episodes is **finite**, we **omit the discounting factor**."
+  - `state` (normalisation is performed):
+    - Pedestrian's (_or car's?_) `position`, `velocity` and `acceleration`. Plus a weather configuration: `SunAltitude`.
+    - > "Out of the **`6` weather parameters** configurable in `CARLA`, in this baseline experiment we will only include `Sun Altitude` in our state-action space given its biggest impact on the **lighting condition**."
+  - `reward`:
+    - `+10` if the vehicle **crash** into pedestrian. _Should not it be negative? Or maybe the goal is to find the weather conditions that cause crashes?_
+    - `-1` as **step penalty**.
+  - `action`:
+    - The task is **not to drive a car!**
+    - Instead to **change the weather parameters**, i.e. `SunAltitude`.
+    - > [During **data collection**] "An arbitrary policy produces `actions` that **modify the `SunAltitude`** weather parameter by sampling from a **Bernoulli Process** that gives the probability of **two actions**: increase `SunAltitude` by `2`, or decrease it by `2`: `P(A = 2) = p = 0.8, P(A = −2) = 1 − p`."
+
+- Results:
+  - Learning the **dynamics** is not successful.
+    - For `velocity` prediction, the **error percentage** remains **higher than `40%`**!
+  - > [solving the `MDP`] "The best result of **`1.2` average final reward** [_Rather `return`?_] that we have achieved so far is still having a significant gap from the **theoretical optimal reward of `10`** [_What about the `-1` step penalties??_]. Model error still seems to be a limiting factor to our planning capability."
+
+</details>
 
 ---
 
