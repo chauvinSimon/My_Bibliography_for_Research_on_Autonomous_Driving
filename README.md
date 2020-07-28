@@ -4772,6 +4772,128 @@ Author: Noh, S.
 
 ---
 
+**`"Trajectory based lateral control: A Reinforcement Learning case study"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://www.sciencedirect.com/science/article/pii/S0952197620301858)]**
+**[[🎞️](https://storage.googleapis.com/jlrie-aia-rl-vmc/agent_training_porgression.mp4)]**
+**[[🎞️](https://storage.googleapis.com/jlrie-aia-rl-vmc/agent_velocities.mp4)]**
+**[[🎞️](https://storage.googleapis.com/jlrie-aia-rl-vmc/validation_videos.mp4)]**
+**[** :car: `Jaguar Land Rover` **]**
+
+- **[** _`generalization`, `sim2real`, `ablation`, `DDPG`, [`IPG CarMaker`](https://ipg-automotive.com/products-services/simulation-software/carmaker/)_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://www.sciencedirect.com/science/article/pii/S0952197620301858).](media/2020_wasala_1.PNG "[Source](https://www.sciencedirect.com/science/article/pii/S0952197620301858).")  |
+|:--:|
+| *The task is to predict the `steering` commands to **follow the given trajectory** on a **race track**. Instead of **a `sum`**, a **`product` of three deviation terms** is proposed for the **multi-objective `reward`**. Not clear to me: which `WP` is considered for the `deviation` computation in the `reward`? [Source](https://www.sciencedirect.com/science/article/pii/S0952197620301858).* |
+
+| ![[Source](https://www.sciencedirect.com/science/article/pii/S0952197620301858).](media/2020_wasala_1.gif "[Source](https://www.sciencedirect.com/science/article/pii/S0952197620301858).")  |
+|:--:|
+| *Testing a vehicle with **different drive dynamics** on an **unseen track**. [Source](https://www.sciencedirect.com/science/article/pii/S0952197620301858).* |
+
+Authors: Wasala, A., Byrne, D., Miesbauer, P., O’Hanlon, J., Heraty, P., & Barry, P.
+
+- Motivations:
+  - `1-` **Generalization** in simulation.
+    - The learnt agent should be able to complete at `test`-time **unseen and more complex tracks** using different **unseen vehicle** models.
+    - > "How can RL agents be trained to **handle diverse scenarios** and adapt to **different car models**?"
+    - The **learnt policy** is tested on vehicles with different `dimensions`, `weights`, `power-trains`, `chassis`, `transmission` and `aerodynamics`.
+  - `2-` **`sim-to-real`** transfer.
+    - > "Is **training solely in a simulated environment** usable in a **real car without any additional training / fine-tuning** on the car itself?"
+    - > "[Other works] Those that did implement **live vehicle testing**, required **further tuning/training** in order to make the jump from simulation and **were constrained to low speeds** between `10km∕h` and `40km∕h`."
+  - `3-` **Ablation** study.
+    - > "What are the **most useful (essential) `state`–space parameters**?"
+
+- Task: predict the `steering` commands to **follow the given trajectory** on a **race track**.
+  - > "[Need for learning-based approach.] These **traditional controllers [`MPC`, `PID`]** require **large amounts of tuning** in order to perform at an acceptable level for safe autonomous driving."
+  - **Path-velocity decomposition**:
+    - The longitudinal control (`acceleration` and `braking`) is handled by some **"baseline driver"**.
+    - > "Our experiments show that trying to control **all three actuation signals** with a single network makes it **very difficult** for the agent to converge on an optimal policy."
+    - > "[The **decomposition**] helped to improve **`credit assignment`**, a common problem in the field involving the agent trying to **assign what `action` is responsible for the `reward`** the agent is receiving."
+
+- `MDP` formulation:
+  - `state`:
+    - **`10` waypoints** spaced evenly `5m` apart.
+    - Several **ego vehicle parameters** such as the `wheel speed`, and `engine rpm`.
+  - `discount factor` set to `1`.
+  - Exploration and termination.
+    - When the car **drives `off-road`** or when a high `yaw acceleration` is measured, the episode is **terminated**.
+  - `reward`
+    - Multi-objective: `efficiency`, `safety` and `comfort`.
+    - Instead of **a `sum`**, here a **`product` of three deviation terms**: `speed` (ratio), `angle` (normalized ratio) and `distance` (normalized ratio).
+  - Algorithm:
+    - `DDPG` was preferred over `PPO` since it is `off-policy`: better **sampling efficiency**.
+  - Simulator:
+    - The **commercial vehicle dynamics simulation** platform [`IPG CarMaker`](https://ipg-automotive.com/products-services/simulation-software/carmaker/).
+
+- **Ablation** study in the `state` space.
+  - `1-` Parameters can be **overwritten** at **test time**.
+    - During **inference**, `wheel speed` and `engine RPM` are replaced with `0.5` (the median of the normalized range [`0`, `1`]).
+    - > "Surprisingly, the agent was still able to **drive successfully** with no evident side effects being displayed."
+  - `2-` Parameters can be **removed** during **training**.
+    - > "However, once these features [`wheel speed` and `engine RPM`] were removed, the agent was **no longer able to converge**."
+    - > [Intuition - _I think there must be something else_] "Similar to **_training wheels_** on a bicycle, these features helped to **stabilize the training** and allow the agent to **see patterns**, that are otherwise more **difficult to detect**."
+
+- Generalization.
+  - `1-` Driving on **unseen and more complex `tracks`**.
+    - The **stability** of the agent’s policy began to deteriorate as it was exposed to **increasingly complex `states` outside of its `training` scope**.
+  - `2-` Driving at **higher speeds** (`120` − `200 km∕h`), while being trained on a top speed of `80 km∕h`.
+    - > "Once we **re-scaled the normalization thresholds** of the `state`–space to match the **increased range of velocity**, the agent was able to handle even greater speeds."
+    - > "**Re-normalizing** the `state` space to match the range of the **initial training `state` space** played a key role in the agent' ability to adapt to new and unseen challenges."
+  - `3-` Driving with **unseen** and **varying car models**.
+    - > "The generalizability across **multiple vehicle models** could be improved by adding a **vehicle _descriptor_** to the `state`–space and **training with a wider range** of vehicle models."
+
+- Transfer to a **live test vehicle**.
+  - Challenges:
+    - `1-` Port the trained `Keras` model to `C++`, with **[frugally-deep](https://github.com/Dobiasd/frugally-deep)**.
+    - `2-` Build the `state` from the AD stack.
+      - > "`Engine rpm` was the only **element of the `state`–space we could not reproduce in the AD stack**, since we wanted our controller to only utilize information that any other controller had available. We replaced the `engine rpm` with the **median value** of the normalized range ([`0`, `1`]), i.e. `0.5`."
+    - `3-` Deal with **latency** between `commands` and `actuation`.
+      - _Actually a big topic!_
+      - Addressed with **`action` holding**.
+      - > [Also, about the **decision frequency**:] "The created trajectory in our **AD stack** was updated every **100 ms**, as opposed to the **`CarMaker` simulation** where it was updated each simulation step, i.e. **continuously**."
+  - Findings:
+    - > "[Unseen `state`s and different `transition` function] We found that moving from simulation to the real-world without **additional training** poses several problems. Firstly, our training simulation did not contain any **sloped roads**, weather disturbances (e.g. `wind`), or **inaccuracies of sensor measurements** used to represent the `state`–space."
+  - > "While the **ride comfort** was not ready for a **production vehicle** yet, it achieved **speeds of over `60 km∕h`** while **staying within lane** and **taking turns**."
+
+- I really like the **_`lessons learned`_** part.
+  - `1-` Generalization.
+    - > "We believe that the cause of the agents high `generalization` capabilities stems from **_how_ the agent was trained** [`state`, `reward`, `scenarios`], **as opposed to _what algorithm_** was used for learning."
+    - > "**The `scenario` used for `training` the agent is _paramount_ to its `generalization` potential."**
+  - `2-` Problem of **oscillation**.
+    - > "The authors combat this by using an **`action` smoothing** method that **constrains maximum change allowed between `actions`**. This constraint helps reduce the oscillation of the agent and promotes a smoother control policy."
+  - `3-` **Catastrophic forgetting**.
+    - > "Seemingly **without explanation**, the agent would forget everything it had learned and **degraded into a policy** that would immediately drive the agent off the track."
+    - Solution: greatly increase the **size of the replay buffer**.
+      - This meant the agent was able to **sample** from a **much wider distribution of experiences** and still see examples of driving in poor conditions such as being off-centre.
+      - A similar idea could be to **maintain two buffers**: a `safe` and a `non-safe`, as in [`(Baheri et al., 2019)`](https://www.researchgate.net/publication/336591335_Deep_Q-Learning_with_Dynamically-Learned_Safety_Module_A_Case_Study_in_Autonomous_Driving).
+  - `4-` **Buffer initialization**.
+    - > "During our experiments, we noticed that **pre-populating the replay buffer**, before training **accelerated the convergence**."
+  - `5-` **`Loss` in the `Q`-net** is **not converging**.
+    - As noted in [this post](https://stats.stackexchange.com/questions/313876/loss-not-decreasing-but-performance-is-improving):
+      - This is not unusual for `RL` and **does not indicate anything is wrong**.
+      - `1)` As the agent **gets better** at playing, **estimating the reward** does get **more difficult** (because it's no longer always `0`).
+      - `2)` As the **`reward` gets higher**, and the average **episode length** gets **longer**, the amount of **variance in the `reward`** can also get larger, so it's challenging even to prevent the loss from increasing.
+      - `3)` A third factor is that the **constantly changing** d poses a **"moving-target"** problem for the `Q-network`.
+    - > "While the `DNN`’s **`loss` plot** gives an indication of whether or not the agent **is learning**, it does not reflect the **quality of the policy** the agent has learned, i.e. an agent may **learn a bad policy well**."
+  - `6-` **`action` repeats**.
+    - The agent repeats the **same `action`** for a given number of consecutive steps **without revaluating the `state`–space**.
+    - > "We could **accelerate the training** and address the **latency issues**."
+    - _Is the agent aware of that? For instance by_ **_penalizing `action` changes_**_?_
+  - `7-` **Poor reproducibility**.
+  - Other **references for `RL debugging`**:
+    - **[Brilliant notes!](https://github.com/williamFalcon/DeepRLHacks)** on [Nuts and Bolts of Deep RL](https://www.youtube.com/watch?v=8EcdaCk9KaQ).
+    - [10 Steps and some tricks to set up neural reinforcement controllers](https://ml.informatik.uni-freiburg.de/former/_media/publications/12riedmillertricks.pdf).
+    - [RL Debugging and Diagnostics | Stanford CS229](https://www.youtube.com/watch?v=pLhPQynL0tY) - mostly the first `20min`.
+    - [Deep Reinforcement Learning Doesn't Work Yet](https://www.alexirpan.com/2018/02/14/rl-hard.html).
+
+</details>
+
+---
+
 **`"Reinforcement Learning based Control of Imitative Policies for Near-Accident Driving"`**
 
 - **[** `2020` **]**
