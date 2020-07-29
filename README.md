@@ -4772,6 +4772,79 @@ Author: Noh, S.
 
 ---
 
+**`"High-Speed Autonomous Drifting with Deep Reinforcement Learning"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://arxiv.org/abs/2001.01377)]**
+**[[:octocat:](https://github.com/caipeide/drift_drl)]**
+**[[🎞️](https://sites.google.com/view/autonomous-drifting-with-drl/)]**
+**[** :mortar_board: `Hong Kong University` **]**
+
+- **[** _`generalization`, `action smoothing`, `ablation`, `SAC`, [`CARLA`](http://carla.org)_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://arxiv.org/abs/2001.01377).](media/2020_cai_1.PNG "[Source](https://arxiv.org/abs/2001.01377).")  |
+|:--:|
+| *The goal is to control the vehicle to **follow a trajectory** at **high speed** (`>80 km/h`) and drift through manifold corners with **large side `slip angles`** (`>20°`), like a **professional racing driver**. The **slip angle `β`** is the angle between the **direction of the heading** and the **direction of speed vector**. The **desired heading angle** is determined by the **vector field guidance (`VFG`)**: it is close to the direction of the **reference trajectory** when the **lateral error** is small. [Source](https://arxiv.org/abs/2001.01377).* |
+
+| ![[Source](https://arxiv.org/abs/2001.01377).](media/2020_cai_2.PNG "[Source](https://arxiv.org/abs/2001.01377).")  |
+|:--:|
+| *Top-left: The **generalization** capability is tested by using cars with **different kinematics and dynamics**. Top-right: An **`action` smoothing** strategy is adopted for **stable control outputs**. Bottom: the `reward` function **penalized deviations** to **references `states`** in term of `distance`, `direction`, and `slip angle`. The **speed factor `v`** is used to stimulate the vehicle to **drive fast**: If `v` is smaller than `6 m/s`, the total reward is **decreased by half** as a **punishment**. [Source](https://arxiv.org/abs/2001.01377).* |
+
+| ![[Source](https://sites.google.com/view/autonomous-drifting-with-drl/).](media/2020_cai_1.gif "[Source](https://sites.google.com/view/autonomous-drifting-with-drl/).")  |
+|:--:|
+| *The proposed `SAC`-based approach as well as the **three baselines** can **follow the reference trajectory**. However, `SAC` achieves a **much higher average velocity (`80 km/h`)** than the baselines. In addition, it is shown that the **`action smoothing` strategy** can improve the final performance by comparing `SAC-WOS` and `SAC`. Despite the `action smoothing`, the steering angles of `DDPG` is also shaky. Have a look at the **`steering` gauges**! [Source](https://sites.google.com/view/autonomous-drifting-with-drl/).* |
+
+Authors: Cai, P., Mei, X., Tai, L., Sun, Y., & Liu, M.
+
+- Motivations:
+  - `1-` Learning-based.
+    - The **car dynamics** during **transient drift** (high `speed` > `80km/h` and `slipe angle` > `20°` as opposed to _steady-state_ drift) is too hard to **model** precisely. The authors claim it should rather be addressed by **model-free learning** methods.
+  - `2-` **Generalization**.
+    - The drift controller should generalize well on various **`road structures`**, **`tire friction`** and **`vehicle types`**.
+
+- `MDP` formulation:
+  - `state` (**`42`**-dimensional):
+    - [_Close to `imitation learning`_] It is called **"error-based `state`"** since it describes **deviations** to the **referenced drift trajectories** (performed by a **experienced driver** with a `Logitech G920`).
+    - These **deviations** relate to the `location`, `heading angle`, `velocity` and `slip angle`.
+      - > [Similar to `D` in `PID`] "**Time derivatives** of the **error variables**, such as `d(ey)/d(t)`, are included to **provide temporal information** to the controller."
+    - The `state` also contains the **last `steering` and `throttle` commands**. Probably enabling **consistent action selection** in the `action smoothing` mechanism.
+  - `action`:
+    - The `steering` is limited to a smaller range of [`−0.8`, `0.8`] instead of [`−1`, `1`] to **prevent rollover**.
+    - > "Since the vehicle is expected to **drive at high speed**, we further **limit** the range of the `throttle` to **[`0.6`, `1`]** to **prevent slow driving** and **improve training efficiency**.
+  - **`action` smoothing** against **shaky control output**.
+    - > "We impose **continuity in the `action`**, by constraining the **change of output** with the **deployed action in the previous step**: `a[t]` = `K1`.`a_net[t]` + `K2`.`a[t-1]`.
+
+- Algorithms:
+  - `1-` `DQN` can only handle the **discrete `action` space**: it selects among `5`*`10`=`50` combinations, without the `action smoothing` strategy.
+  - `2-` `DDPG` is difficult to converge due to the limited exploration ability caused by its **deterministic** character.
+  - `3-` [Proposed] **Soft actor-critic (`SAC`)** offers a **better convergence ability** while avoiding the **high sample complexity**: Instead of only seeking to maximize the lifetime rewards, `SAC` seeks to also **maximize the entropy of the policy** (as a regularizer). This **encourages exploration**: the policy should act **as randomly as possible** [encourage uniform action probability] while being able to succeed at the task.
+  - `4-` The `SAC-WOS` baseline does not have any **`action smoothing` mechanism** (`a[t]` = `K1`.`a_net[t]` + `K2`.`a[t-1]`) and suffers from **shaky behaviours**.
+
+- **Curriculum learning**:
+  - > "Map (`a`) is **relatively simple** and is used for the **first-stage training**, in which the vehicle learns some **basic driving skills** such as speeding up by applying large values of throttle and drifting through **some simple corners**. Maps (`b`-`f`) have different levels of difficulty with diverse corner shapes, which are used for further **training with the pre-trained weights** from map (`a`). The vehicle can **use the knowledge learned from map (`a`)** and **quickly adapt to these tougher maps**, to learn a more advanced drift technique."
+  - _Is the replay buffer build from training with map (`a`) reused? What about the weighting parameter `α` of the entropy term `H` in the objective function?_
+
+- **Robust `training`** for **generalization**:
+  - The idea is to expose different `road structures` and `car models` during training, i.e. make the **`MDP` environment `stochastic`**.
+  - > "At the start of each episode, the **`tire friction`** and `vehicle mass` are sampled from the range of [`3.0`, `4.0`] and [`1.7t`, `1.9t`] respectively."
+  - > [Evaluation.] "Note that for each kind of vehicle, the **referenced drift trajectories** are different in order to **meet the respective physical dynamics**." [_How are they adjusted?_]
+  - Benefit of `SAC`:
+    - > [from [`BAIR` blog](https://bair.berkeley.edu/blog/2018/12/14/sac/)] "Due to **entropy maximization** at training time, the policy can **readily generalize** to these **perturbations** without any additional learning."
+
+- **Ablation** study for the `state` space.
+  - > "Can we also provide **less information** during the training and achieve **no degradation** in the final performance?"
+  - Findings:
+    - `1-` Necessity of **`slip angle`** information (in `state` and `reward`) during `training`.
+      - > [Need for **`supervision` / `expert demonstration`**] "Generally, **accurate `slip angles`** from **expert drift trajectories** are indeed necessary in the training stage, which can improve the final performance and the training efficiency."
+    - `2-` **Non-degraded performance** with a rough and easy-to-access **reference trajectory** during `testing`. Making it **less dependant** on **expert demonstraions**.
+
+</details>
+
+---
+
 **`"Trajectory based lateral control: A Reinforcement Learning case study"`**
 
 - **[** `2020` **]**
@@ -4859,7 +4932,7 @@ Authors: Wasala, A., Byrne, D., Miesbauer, P., O’Hanlon, J., Heraty, P., & Bar
     - > "[Unseen `state`s and different `transition` function] We found that moving from simulation to the real-world without **additional training** poses several problems. Firstly, our training simulation did not contain any **sloped roads**, weather disturbances (e.g. `wind`), or **inaccuracies of sensor measurements** used to represent the `state`–space."
   - > "While the **ride comfort** was not ready for a **production vehicle** yet, it achieved **speeds of over `60 km∕h`** while **staying within lane** and **taking turns**."
 
-- I really like the **_`lessons learned`_** part.
+- I really like the **_`lessons learned`_** section.
   - `1-` Generalization.
     - > "We believe that the cause of the agents high `generalization` capabilities stems from **_how_ the agent was trained** [`state`, `reward`, `scenarios`], **as opposed to _what algorithm_** was used for learning."
     - > "**The `scenario` used for `training` the agent is _paramount_ to its `generalization` potential."**
