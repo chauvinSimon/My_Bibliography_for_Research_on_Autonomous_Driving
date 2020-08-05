@@ -7474,6 +7474,79 @@ Author: Plessen, M. G.
 
 ---
 
+**`"Model-based Reinforcement Learning for Time-optimal Velocity Control"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://www.researchgate.net/publication/343242054_Model-based_Reinforcement_Learning_for_Time-optimal_Velocity_Control)]**
+**[[🎞️](https://www.youtube.com/watch?v=Ffo3SYonwPk)]**
+**[** :mortar_board: `Ariel University, Israel` **]**
+
+- **[** _`speed response`, `dynamic stability`, `action masking`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://www.researchgate.net/publication/343242054_Model-based_Reinforcement_Learning_for_Time-optimal_Velocity_Control).](media/2020_hartmann_2.PNG "[Source](https://www.researchgate.net/publication/343242054_Model-based_Reinforcement_Learning_for_Time-optimal_Velocity_Control).")  |
+|:--:|
+| *Since the **underlying dynamic model of the vehicle** is complex, it is **learnt** with supervised learning. The learnt **transition** function is then used for `planning`. This improves the sampling efficiency compared to model-free `RL`. Note that instead of **directly predicting the next `state`**, the **neural network** predicts the **difference between the current state `s[t]` and the next state `s[t+1]`**. But no previous `action`s are considered (What about **physical latencies** and **"delayed action effect"**?). [Source](https://www.researchgate.net/publication/343242054_Model-based_Reinforcement_Learning_for_Time-optimal_Velocity_Control).* |
+
+| ![[Source](https://www.researchgate.net/publication/343242054_Model-based_Reinforcement_Learning_for_Time-optimal_Velocity_Control).](media/2020_hartmann_1.PNG "[Source](https://www.researchgate.net/publication/343242054_Model-based_Reinforcement_Learning_for_Time-optimal_Velocity_Control).")  |
+|:--:|
+| *The **Failure Prediction and Intervention Module (`FIM`)** uses an **analytical** model to determine the **potential instability** of a given `action`. Actions proposed by the `model-based RL` agent is overwritten if one of the **future predicted states** is prone to `roll-over`. This **maintains safety** also during the **beginning of the training process**, where the **learned model** may be inaccurate. [Source](https://www.researchgate.net/publication/343242054_Model-based_Reinforcement_Learning_for_Time-optimal_Velocity_Control).* |
+
+| ![[Source](https://www.youtube.com/watch?v=Ffo3SYonwPk).](media/2020_hartmann_1.gif "[Source](https://www.youtube.com/watch?v=Ffo3SYonwPk).")  |
+|:--:|
+| *[Source](https://www.youtube.com/watch?v=Ffo3SYonwPk).* |
+
+Authors: Hartmann, G., Shiller, Z., & Azaria, A.
+
+- Task: decide **binary acceleration** (`max-throttle` / `hard-brake`) to drive **as fast as possible** along a path (`steering` is controlled by an external module) without compromising **dynamic stability**.
+- Motivations. Improve training wrt:
+  - `1-` **Sampling efficiency**.
+    - The **training time** should be short enough to enable training on **real vehicles** (less than **`1` minute** of real-time learning).
+    - Since the **underlying dynamic model of the vehicle** is very complex, it is **learnt** (supervised learning) and then used for `planning`.
+  - `2-` Safety. More precisely the **"dynamic stability"**.
+    - > "By **“dynamic stability”** we refer to constraints on the vehicle that are functions of its speed, such as not **rolling-over** and not **sliding**."
+    - > "An important advantage of `LMVO+FIM` over the other methods is that **it maintains safety** also during the **beginning of the training process**, where the **learned model** may be inaccurate."
+  - As opposed to **model-free `RL`** approaches:
+    - > "The **millions of training steps** are required to converge, which is impractical for real applications, and the **safety** of the learned driving policy is **not guaranteed**."
+    - > "`LMVO+FIM` achieves higher velocity, in approximately **`1%` of the time that is required by `DDPG`**, while **completely preventing failure**."
+- Main idea. Combine:
+  - `1-` A **model-based `RL`** for **sampling efficiency**.
+    - A **prediction transition function** is learnt (and maybe inaccurate at start).
+    - _How the `model-based policy` is learnt is not explained. `MCTS`?_
+  - `2-` An **analytical planner** to protect the vehicle from **reaching dynamically unstable `states`**.
+    - Another prediction transition function (`bicycle` model) is used which _should_ ensure safety **before the other learned model converges**.
+
+- Learning a **dynamic model**.
+  - > "Instead of **directly predicting the next `state`**, we use a **neural network** to predict the **_difference_ between the current state `s[t]` and the next state `s[t+1]`**."
+  - To make a **multi-step roll-out**, this **single-step prediction** is repeated.
+    - > "Since the **multi-step predictions** are computed **iteratively** based on the previous step, the **error** between the predicted and actual values is **expected to grow** with the number of steps. For simplicity, we take a **`safety factor`** that is **linear with the number of future steps**."
+
+- About the **analytical model**: _How to determine the_ **_potential instability_** _of a given `action`?_
+  - Based on the **bicycle model**.
+  - > "The **Lateral load Transfer Rate** (`LTR`), to estimate **how close the vehicle is to a `roll-over`**. The `LTR` describes the different between the **load** on the `left` and the load on the `right` wheels."
+  - > "For **all rolled-out future `states`**, it is checked if the **predicted `LTR`** is lower than `1`, which indicates that the vehicle is **expected to remain safe**."
+  - If an _"unsafe"_ manoeuvre is attempted, an alternative _"safe"_ local manoeuvre is executed (`max-brake`).
+    - > "`πs` tries to **brake** while using the **regular controller for steering**, but if it predicts that the vehicle will **still result in an unstable state**, it also **straightens the steering wheel** which will prevent the expected **roll-over** by reducing the radius of curvature of the future state and following that, reducing `LTR`."
+
+- A personal concern: **physical latencies** and **"delayed action effect"**.
+  - In real cars, the **dynamic reaction** does depend on a sequence of **past actions**.
+  - E.g. applying `max-throttle` at `5m/s` will result in totally **different speeds** depending if the car's **previous `action`** was `max-brake` or `max-throttle`.
+  - Here:
+    - **Predictions** and **decisions** are made at **`5Hz`**.
+    - The learnt **transition** function takes as input the `speed` and desired `action`. No information about the past.
+  - One solution from [TEXPLORE: ROS-based RL](https://link.springer.com/content/pdf/10.1007%2F978-3-662-44468-9_47.pdf):
+    - > "To handle robots, which commonly have **sensor and actuator delays**, we **provide the model with the past `k` actions**."
+
+- Another concern: computationally **expensive inference**.
+  - The **forward path** in the net should be light. But `planning` steps seem costly, despite the minimal **`action` space** size (only `2` choices).
+  - > "At every time step `t`, the action at must be applied immediately. However, since the **computing time is not negligible**, the **command is applied with some delay**. To solve this problem, instead of computing action `a[t]` at time `t`, action `a[t+1]` is computed based on the predicted next state `s[t+1]` and `a[t+1]` is applied immediately when obtaining the actual state `s[t+1]` at time `t+1` (which may be **slightly different** than the model’s prediction for that state)."
+
+</details>
+
+---
+
 **`"Assurance of Self-Driving Cars: A Reinforcement Learning Approach"`**
 
 - **[** `2020` **]**
