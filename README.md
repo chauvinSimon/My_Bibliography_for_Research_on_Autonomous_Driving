@@ -1811,6 +1811,141 @@ Authors: Kuefler, A., Morton, J., Wheeler, T., & Kochenderfer, M.
 
 ---
 
+**`"Planning on the fast lane: Learning to interact using attention mechanisms in path integral inverse reinforcement learning"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://arxiv.org/abs/2007.05798)]**
+**[** :mortar_board: `TU Darmstadt` **]**
+**[** :car: `Volkswagen` **]**
+
+- **[** _`max-entropy`, `path integral`, `sampling`, `MPC`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://arxiv.org/abs/1905.00229).](media/2019_rosbach_1.PNG "[Source](https://arxiv.org/abs/1905.00229).")  |
+|:--:|
+| *About **`path integral IRL`** and how the **`partition function`** in the `MaxEnt-IRL` formulation is approximated via **sampling**. Note the need to integrate over **all possible trajectories** (`Π`) in the `partition function`. Besides, note the **transition model `M`** that produces the `features` but is also able to **generate the `next-state`**. Such a model-based **generation** is simple for **static scenes**, but can it work in **dynamic environments** (unknown system dynamics), where the **future is way more uncertain**? [Source](https://arxiv.org/abs/1905.00229).* |
+
+| ![[Source](https://arxiv.org/abs/1905.00229).](media/2019_rosbach_2.PNG "[Source](https://arxiv.org/abs/1905.00229).")  |
+|:--:|
+| *Top-left: **sampling-based** and 'general-purpose' (**non-hierarchical**) planner that **relies** on some **transition model**. Top-right: the **`features`** used and their learnt/hard-coded associated `weights`. It can be seen that the **weights are changing** depending on the **context** (`straight` / `curvy` road). Bottom: For every planning cycle, **a restricted set of demonstrations `ΠD`** is considered, which are **"geometrically" close** (c.f. `projection metric` that transfers the `actions` of a manual drive into the `state-action` space of the planning algorithm) to the **odometry record `ζ`** (not very clear to me). Also note the **`labelling` function** that assigns **categorical labels** to **transitions**, e.g., a label associated with `collision`. [Source](https://arxiv.org/abs/1905.00229).* |
+
+| ![[Source](https://arxiv.org/abs/2007.05798).](media/2020_rosbach_1.PNG "[Source](https://arxiv.org/abs/2007.05798).")  |
+|:--:|
+| *To ensure **temporally consistent** prediction, an analogy with the **temporal abstraction** of `HRL` is made. [Source](https://arxiv.org/abs/2007.05798).* |
+
+| ![[Source](https://arxiv.org/abs/2007.05798).](media/2020_rosbach_2.PNG "[Source](https://arxiv.org/abs/2007.05798).")  |
+|:--:|
+| *To **dynamically update** the `reward` function while ensuring **temporal consistency**, the deep `IRL` architecture is separated into a **`policy` attention** and a **`temporal` attention** mechanism. The first one **encodes** the **context** of a situation and should learns to **focus on collision-free policies** in the configuration space. It also helps for **dimension reduction**. The second one predicts a **mixture `reward` function** given a **history of `context` vectors**. [Source](https://arxiv.org/abs/2007.05798).* |
+
+Authors: Rosbach, S., Li, X., Großjohann, S., Homoceanu, S., & Roth, S.
+
+- Previous related works:
+  - `0-` [`Planning Universal On-Road Driving Strategies for Automated Vehicles`](https://www.springer.com/gp/book/9783658219536), (Heinrich, 2018) and [`Optimizing a driving strategy by its sensor coverage of relevant environment information`](https://ieeexplore.ieee.org/document/7535423) (Heinrich, Stubbemann, & Rojas, 2016).
+    - A **_"general-purpose"_** (i.e. **no `behavioural`/`local path` hierarchy**) planner.
+  - `1-` [`Driving with Style: Inverse Reinforcement Learning in General-Purpose Planning for Automated Driving`](https://arxiv.org/abs/1905.00229), (Rosbach, James, Großjohann, Homoceanu, & Roth, 2019).
+    - **Path integral** (`PI`) maximum entropy `IRL` method to **learn `reward` functions** for/with the **above planner**.
+    - The **structure of the planner** is leveraged to compute the `state visitation`, enabling `MaxEnt-IRL` despite the **high-dimensional `state` space**.
+  - `2-` [`Driving Style Encoder: Situational Reward Adaptation for General-Purpose Planning in Automated Driving`](https://arxiv.org/abs/1912.03509), (Rosbach et al., 2019).
+    - Motivation: learn **situation-dependent** `reward` functions for the **planner**.
+    - The (complex) **mapping** between the `situation` and the `weights` of the `reward function` is approximated by a `NN`.
+
+- Motivations:
+  - `1-` Automate the **tuning** of the `reward` function for a **_"general-purpose"_** (non hierarchical) planner, using **human driving demonstrations**.
+    - The **absence of temporal abstraction** brings a constraint: a high-dimensional **`state` space** with continuous actions.
+  - `2-` Be able to **update** the `reward` function **dynamically**, i.e. predict **situation-dependent** `reward` functions.
+  - `3-` Predict **temporally-consistent** `reward` functions.
+    - Since **"Non-_temporally-consistent_ `reward` functions"** `=>` **"Non-_persistent_ behaviours / interactions"**.
+
+- About the **planner**.
+  - It is **model-based**, i.e. relies on some `transition model` to performed a **forward search of `actions`** via **sampling**, starting from some **initial state `s0`**.
+    - > "The algorithm is similar to **parallel breadth first search** [leveraging **GPU** and made efficient with **`pruning`**] and **forward value iteration**."
+  - **Optimization under constraints**: The most promising sequence is selected based on some **`reward` function** while respecting **`kinematic` / `dynamic` constraints**.
+    - > "The planner **explores** the subspace of **feasible policies `Π`** by **sampling `actions`** from a distribution **conditioned on vehicle `dynamics`** for each state `s`."
+    - > "The final **driving policy** is selected based on the **policy value `V(π)`** and **model-based constraints**."
+- _Why no_ **_hierarchical_** _planner, e.g. some_ **_tactical `manoeuvre` selection_** _above some_ **_operational local `trajectory` optimization_**_?_
+  - > "`Behavior` planning becomes difficult in **complex and unforeseen driving situations** in which the behavior **fails to match predefined admissibility templates**."
+  - > [**kinematic constraints**] "These **hierarchical** planning architectures suffer from **uncertain behavior planning** due to **insufficient knowledge about motion constraints**. As a result, a maneuver may either be **infeasible** due to over-estimation or discarded due to under-estimation of the **vehicle capabilities**."
+  - One idea is instead to **sample** of a **large set of `actions`** that **respect `kinematic` constraints**. And then evaluate the candidates with some **`cost` / `reward` function**.
+  - The **sequences** of sampled actions can **represent complex manoeuvres**, **implicitly** including multiple behaviours, e.g., `lane following`, `lane changes`, `swerving`, and `emergency stops`.
+- Advantages of the **flat planning architecture** (no `planning`-task decomposition).
+  - > "These **general-purpose planners** allow **`behavior`-aware motion planning** given a **SINGLE `reward` function**." _[Which would probably have to **be adapted** depending on the situation?]_
+  - Also, it can become **more scalable** since it does not rely on **behaviour implementations**: it does not **decompose** the decision-making based on **behaviour templates** for instance.
+    - _But, again,_ **_there will not be a `One-size-fits-all` function_**. _So now the challenge is to constantly adapt the `reward` function based on the situation_.
+- About the `action` space.
+  - **Time-continuous polynomial** functions:
+    - **`Longitudinal` actions** described by **`velocity` profiles**, up to the `5th`-order.
+    - **`Lateral` actions** described by **`wheel`** angle, up to the `3th`-order.
+
+- About `IRL`.
+  - `1- Idea.` Find the `reward` function **weights `θ`** that enable the optimal policy `π∗` to be **at least as good as the demonstrated policy**.
+    - Issue: learning a `reward` function given an **_optimal_ policy** is ambiguous since **many `reward` functions** may lead to the same **_optimal_ policy**.
+  - `2- Solution.` **Max-margin** classification.
+    - Issue: it suffers from drawbacks in the case of **imperfect demonstrations**.
+  - `3- Solution.` Use a **probabilistic** model. For instance maximize the **entropy** of the distribution on `state`-`actions` under the learned policy: `MaxEnt-IRL`.
+    - > "It solves the **ambiguity of imperfect demonstrations** by recovering a **distribution** over potential reward functions while avoiding any bias."
+    - _How to compute the **_gradient of the `entropy`_**_?_
+      - Many use **state visitation calculation**, similar to **backward value iteration** in `RL`.
+    - Issue: this is intractable in the **high-dimensional `state` space**.
+      - > [Because **no `hierarchy` / `temporal abstraction`**] "Our desired driving style requires **high-resolution sampling** of **time-continuous actions**, which produces a **high-dimensional `state` space** representation."
+  - `4- Solution.` Combines **search-based planning** with `MaxEnt-IRL`.
+    - Solution: Use the **graph representation** of the planner (i.e. starting from `s0`, sampling `actions` and using a **`transition model`**) to **approximate the required empirical feature expectations** and to allow `MaxEnt-IRL`.
+    - > "The **parallelism of the `action` sampling** of the **search-based planner** allows us to explore a **high-resolution state representation `St`** for each discrete planning horizon increment `t`."
+    - > "Our sample-based planning methodology allows us to **approximate the `partition function`** similar to **Markov chain Monte Carlo** methods."
+    - > "Due to the **high-resolution sampling of actions**, we ensure that there are policies that are **geometrically close to human-recorded odometry** and resemble human driving styles. The task of `IRL` is to find the **unknown reward function** that increases the **likelihood of these trajectories** to be considered as **optimal policies**."
+
+- About the `features`.
+  - The vector of `features` is generated by the **environment model `M`** at each step: **`f`**(`s`,`a`).
+  - The **mapping** from the **complex `feature` space** to the `reward` is here **linear**.
+    - The `reward` is computed by **weighting the `features` in a sum**: `r`(`s`,`a`) = **`f`**(`s`,`a`) . **`θ`**.
+  - The **`feature path integral`** for a policy `π` is defined by `fi`(`π`) = −`Integral-over-t` [`γt.fi`(`st, at`)`.dt`].
+    - The **path integral** is approximated by the **iterative execution of sampled `state-action` sets**.
+
+- Why is it called **_"path integral"_** `MaxEnt-IRL`?
+  - It builds on **[`Maximum entropy inverse reinforcement learning in continuous state spaces with path integrals`](https://www.ias.informatik.tu-darmstadt.de/uploads/Research/ICML2011/Aghasadeghi_Bretl_ICML_2011.pdf)**, (Aghasadeghi & Bretl, 2011).
+    - > "Similar to (Aghasadeghi et al.), we **optimize** [maximization of the `log-likelihood` of the expert behavior] under the **constraint of matching the feature path integrals `fπ`** of the demonstration and **feature expectations** of the explored policies."
+    - The **expected `PI` feature values** `Ep`(`π|θ`)[`fπ`] of the **policy set `Π`** should match the **empirical feature values `fˆΠD`** of the demonstrations for each planning cycle of the `MPC`.
+
+- _How to adapt to_ **_continuously-changing_** objectives?_ I.e. learn **situation-dependent** reward functions.
+  - > "The probabilistic model `p(π|θ)` that recovers a **single reward function** for the demonstrated trajectories **does not scale**."
+  - > "The **tuned linear reward functions** do not **generalize** well over different situations as the **objectives change continuously**, e.g., the importance of **keeping to the lane center** in straight road segments while allowing deviations in curvy parts."
+  - `Idea 1.` `PI-clustered IRL`: Consider that there are **`N` different reward functions**.
+    - Reward functions (their `weights` for the **linear combination**) are computed for **each cluster**.
+    - > "We utilize **Expectation Maximization (`EM`)** in `IRL`, where `βπDc` is the probability that a demonstration `πD` **belongs to a cluster `c`** [`E`-step], and `ψ`(`c`) is the estimated **prior probability** of a cluster `c` [`M`-step]."
+  - `Idea 2.` Neural net as **function approximator**.
+    - Input: `PI features` and `actions` of **sampled driving policies** of an `MPC`-based planner.
+    - Output: a **set of linear `reward` function `weights`** for upcoming planning cycles: `reward-weights`(`t+1`) `≈` `net`[`Θ`](`fk`, `ak`).
+    - Hence the net learns a representation of the `statics` and `kinematics` of the situation.
+      - > "Previously **sampled driving policies** of the `MPC` are used as inputs to our neural network. The network learns a **representation of the driving situation** by matching distributions of **features and actions** to reward functions on the basis of the **maximum entropy principle**."
+    - It uses **`1-d` convolutions** over trajectories. With ideas similar to [`PointNet`](https://arxiv.org/abs/1612.00593):
+      - > "The **average pooling layers** are used for **dimensionality reduction** of the features. Since we use only **one-dimensional convolutional layers**, no relationship is established between **policies of a planning cycle** by then. These **inter-policy relationships** are established by a series of `8` fully-connected layers at the end."
+  - During **inference**.
+    - The `MPC` re-plans in discrete time-steps `k`
+    - After receiving the `features` and `actions` of the latest planning cycle, the **neural network infers the new `reward` weights**.
+    - > "To enable **smooth transitions** of the `reward` functions, we utilize a predefined **history size `h`** to calculate the empirical mean of **weights `θˆ`**. The **weights** hence obtained are used to **continuously re-parameterize** the planning algorithm for the subsequent planning cycle."
+
+- _How to_ **_dynamically update_** _the `reward` function while enabling_ **_persistent behaviour_** _over an extended time horizon?_
+  - > "Continuous reward function **switches** may result in **non-stationary behavior** over an extended planning horizon."
+  - > "The interaction with **dynamic objects** requires an **extended planning horizon**, which requires **_sequential_** context modeling."
+  - The reward functions for the **next planning cycle at time `t+1`** is predicted with a net. With two **attention** mechanisms:
+  - `1-` **`Policy` (trajectory) attention** mechanism.
+    - Generate a **low dimensional `context` vector** of the driving situation from `features` sampled-driving policies.
+    - > "Inputs are a **set of planning _cycles_** each having a **set of _policies_**."
+    - > "The **attention vector** essentially **filters non-human-like trajectories** from the policy encoder."
+    - It also helps for **dimension reduction**.
+      - > "The size of the policy set used to understand the spatio-temporal scene can be significantly reduced by **concentrating on relevant policies having a human-like driving style**. In this work, we use a **policy attention mechanism** to achieve this **dimension reduction** using a **situational `context` vector**."
+      - > "The attention networks stand out, having **less parameters and a low-dimensional `context` vector** while **yielding similar performance** as compared to **larger neural network** architectures."
+  - `2-` **`Temporal` attention** network (`TAN`) with **recurrent** layers.
+    - Predict a **mixture `reward` function** given a **history of `context` vectors**.
+    - > "We use this **context vector** in a **sequence model** to predict a **temporal `reward` function attention vector**."
+    - > "This **`temporal` attention vector** allows for **stable `reward` transitions** for upcoming planning cycles of an `MPC`-based planner."
+  - > "We are able to produce **stationary reward functions** if the driving task does not change while at the same time addressing **situation-dependent task switches** with rapid response by giving the **highest weight** to the reward prediction of the **last planning cycle**."
+
+</details>
+
+---
+
 **`"Efficient Sampling-Based Maximum Entropy Inverse Reinforcement Learning with Application to Autonomous Driving"`**
 
 - **[** `2020` **]**
