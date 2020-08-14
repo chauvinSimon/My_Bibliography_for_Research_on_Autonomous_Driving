@@ -1811,6 +1811,112 @@ Authors: Kuefler, A., Morton, J., Wheeler, T., & Kochenderfer, M.
 
 ---
 
+**`"Deep Inverse Q-learning with Constraints"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://arxiv.org/abs/2008.01712)]**
+**[[🎞️](https://www.youtube.com/watch?v=5m21ibhWcXw)]**
+**[** :mortar_board: `University of Freiburg` **]**
+**[** :car: `BMW` **]**
+
+- **[** _`constrained Q-learning`, `constrained imitation`, `Boltzmann distribution`, [`SUMO`](https://sumo.dlr.de/docs/index.html)_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://arxiv.org/abs/2008.01712).](media/2020_kalweit_2.PNG "[Source](https://arxiv.org/abs/2008.01712).")  |
+|:--:|
+| *Left: both the `reward` and `Q`-function are estimated based on demonstrations and a **set of constraints**. Right: Comparing the expert, the **unconstrained (blue) and constrained (green) imitating agents** as well as a `RL` agent trained to optimize the **true `MDP`** with constraints (yellow). The **`constrained imitation`** can keep high speed while ensuring **no constrain violation**. Not to mention that it can **converge faster** than the `RL` agent (yellow). [Source](https://arxiv.org/abs/2008.01712).* |
+
+| ![[Source](https://arxiv.org/abs/2008.01712).](media/2020_kalweit_3.PNG "[Source](https://arxiv.org/abs/2008.01712).")  |
+|:--:|
+| *Compared to existing `IRL` approaches, the proposed methods can **enforce additional constraints** that were **not part of the original demonstrations**. And it does not requires solving the  **`MDP` multiple times**. [Source](https://arxiv.org/abs/2008.01712).* |
+
+| ![[Source](https://arxiv.org/abs/2008.01712).](media/2020_kalweit_4.PNG "[Source](https://arxiv.org/abs/2008.01712).")  |
+|:--:|
+| *Derivation for the **model-based** case (Inverse Action-value Iteration): The `IRL` problem is transformed to solving a **system of linear equations**. ((`3`) reminds me the `law of total probability`). The demonstrations are assumed to come from an **expert following a stochastic policy with an underlying `Boltzmann` distribution** over optimal `Q`-values (which enables working with `log`). With this formulation, it is possible to calculate a matching `reward` function for the observed (optimal) behaviour **analytically in closed-form**. An extension based on **sampling** is proposed for **model-free** problems. [Source](https://arxiv.org/abs/2008.01712).* |
+
+| ![[Source](https://arxiv.org/abs/2008.01712).](media/2020_kalweit_1.gif "[Source](https://arxiv.org/abs/2008.01712).")  |
+|:--:|
+| *While the **Expert** agent was not trained to include the `Keep Right` constraint (**US-highway** demonstrations), the **Deep Constrained Inverse Q-learning (`DCIQL`) agent** is satisfying the `Keep Right` (**German highway**) and `Safety` constraints while still imitating to overtake the other vehicles in an anticipatory manner. [Source](https://arxiv.org/abs/2008.01712).* |
+
+Authors: Kalweit, G., Huegle, M., Werling, M., & Boedecker, J.
+
+- Previous related works:
+  - `1-` [`Interpretable multi time-scale constraints in model-free deep reinforcement learning for autonomous driving`](https://arxiv.org/abs/2003.09398), (Kalweit, Huegle, Werling, & Boedecker, 2020)
+    - About **Constrained `Q`-learning**.
+    - Constraints are considered at **different time scales**:
+      - Traffic rules and constraints are ensured in predictable **short-term** horizon.
+      - **Long-term** goals are optimized by **optimization** of long-term return: With an **expected sum of discounted or average `constraint` signals**.
+  - `2-` [`Dynamic input for deep reinforcement learning in autonomous driving`](https://arxiv.org/abs/1907.10994), (Huegle, Kalweit, Mirchevska, Werling, & Boedecker, 2019)
+    - A **`DQN` agent is learnt** with the following definitions and used as the **_expert_** to **produce the demonstrations**.
+      - `simulator`: `SUMO`.
+      - `state` representation: [`DeepSet`](https://arxiv.org/abs/1909.13582) to **model interactions** between an **arbitrary number of objects** or lanes.
+      - `reward` function: minimize **deviation to some `desired speed`**.
+      - `action` space: **high-level** manoeuvre in {`keep lane`, `perform left lane change`, `perform right lane change`}.
+        - `speed` is controlled by low-level controller.
+  - `2-` [`Off-policy multi-step q-learning`](https://arxiv.org/abs/1909.13518), (Kalweit, Huegle, & Boedecker, 2019)
+    - Considering two methods inspired by **multi-step `TD`-learning** to enhance **data-efficiency** while remaining **off-policy**:
+      - `(1)` **Truncated** `Q`-functions: representing the `return` for the first `n` steps of a policy rollout.
+      - `(2)` **Shifted** `Q`-functions: acting as the **far-sighted `return`** after this **truncated rollout**.
+
+- Motivations:
+  - `1-` **Optimal _constrained_ imitation**.
+    - The goal is to **imitate an expert** while **respecting constraints**, such as _traffic rules_, that **may be violated** by the expert.
+      - > "`DCIQL` is able to guarantee satisfaction of constraints on the **long-term for optimal constrained imitation**, even if the **original demonstrations violate these constraints**."
+    - For instance:
+      - Imitate a driver observed on the **US highways**.
+      - And **transfer** the policy to **German highways** by including a **`keep-right` constraint**.
+  - `2-` Improve the **training efficiency** of `MaxEnt IRL` to offer **faster training convergence**.
+    - > "Popular `MaxEnt IRL` approaches require the **computation of expected `state visitation` frequencies** for the optimal policy under an **estimate** of the `reward` function. This usually requires **intermediate `value` estimation** in the **inner loop** of the algorithm, slowing down convergence considerably."
+    - > "One general limitation of `MaxEnt IRL` based methods, however, is that **the considered `MDP`** underlying the demonstrations **has to be solved MANY times** inside the **inner loop** of the algorithm."
+    - The goal is here to **solve the `MDP` underlying the demonstrated behaviour once** to recover the expert policy.
+      - > "Our approach needs to **solve the `MDP`** underlying the demonstrated behavior **only once**, leading to a **speedup of up to several orders** of magnitude compared to the popular **`Maximum Entropy IRL`** algorithm and some of its variants."
+      - > "Compared to our **learned `reward`**, the agent **trained on the true `reward` function** has a **higher demand for training samples** and requires **more iterations** to achieve a well-performing policy. [...] Which we hypothesize to result from the **bootstrapping formulation** of `state-action` visitations in our `IRL` formulation, suggesting a strong link to **[successor features](https://www.gatsby.ucl.ac.uk/~dayan/papers/d93b.pdf)**."
+  - `3-` Focus on **off-policy** `Q-learning`, where an optimal policy can be found on the basis of a **given transition set**.
+
+- Core assumption.
+  - The **expert** follows a **`Boltzmann` distribution** over **optimal `Q-values`**.
+    - > "We assume a policy that only **maximizes the entropy** over actions **locally** at each step as an approximation."
+- Outputs.
+  - Each time, not only `r` but also **`Q` is estimated**, i.e. a `policy`.
+    - Deriving the `policy` by such imitation seems faster than solving the `MDP` with the true `reward` function:
+    - > "Compared to our **learned `reward`**, the agent trained on the **true `reward` function** has a **higher demand for training samples** and **requires more iterations** to achieve a well-performing policy."
+- Two families:
+  - `1-` **model-based**.
+    - > "If the **observed `transitions`** are samples from the **true optimal `Boltzmann`** distribution, we can recover the **true `reward` function** of the `MDP` in **closed-form**. In case of an infinite control problem or if **no clear reverse topological order exists**, we solve the `MDP` by **iterating multiple times** until convergence."
+    - If the **`transition` model is known**, the `IRL` problem is converted to a system of linear equations: it is possible to calculate a matching reward function for the observed (optimal) behaviour **analytically in closed-form**.
+    - Hence named "Inverse Action-value **Iteration**" (`IAVI`).
+    - > "Intuitively, this formulation of the **immediate `reward`** encodes the **local probability of action `a`** while also ensuring the probability of the **maximizing next action under `Q-learning`**. Hence, we note that this formulation of **bootstrapping visitation frequencies** bears a strong resemblance to the **Successor Feature Representation.**"
+
+  - `2-` **model-free**.
+    - > "To relax the **assumption** of an **existing `transition` model and `action` probabilities**, we extend `IAVI` to a **sampling-based** algorithm."
+    - > "We extend `IAVI` to a **sampling based** approach using **stochastic approximation**, which we call **Inverse Q-learning (`IQL`)**, using **`Shifted` Q-functions** proposed in [[6]](https://arxiv.org/abs/1909.13518) to make the approach **model-free**.
+      - The shifted `Q-value` `QSh`(`s`, `a`) **skips the immediate `reward`** for taking `a` in `s` and **only considers the discounted `Q-value` of the `next state`**.
+    - `1-1.` **_Tabular_** Inverse Q-learning algorithm:
+      - The `action` probabilities are approximated with **`state-action` visitation counter `ρ`(`s`, `a`)**.
+      - > [`transition` model] "In order to avoid the need of a **model `M`** [in `η`(`a`, `s`)], we evaluate all other actions via **Shifted `Q-functions`.**"
+    - `1-2.` Deep (**non-tabular**) `IQL`.
+      - **Continuous `state`s** are now addressed.
+      - The `reward` function is estimated with **function approximator `r(·, ·|θr)`**, parameterized by `θr`.
+      - The **`Q`-function and `Shifted-Q` function** are also estimated with nets.
+      - > "We approximate the **state-action visitation** by classifier **ρ(·, ·|`θρ`)**, parameterized by `θρ` and with linear output."
+- _How to_ **_enforce_** _(additional)_ **_constraints_**_?_
+  - In [one previous work](https://arxiv.org/abs/2003.09398), two sets of constraints were considered.
+    - `1-` One about the **`action`** (`action masking`).
+    - `2-` One about the **`policy`**, with **multi-step constraint signals** with **horizon**.
+      - An **expected sum of discounted or average `constraint` signals** is estimated.
+    - Here, only the **`action` set** is considered.
+      - A set of **constraints functions** **C={`ci`}** is defined. Similar to the `reward` function, it considers (`s, a`): `ci`(`s`, `a`).
+      - A **"safe" `action` set** can be defined based on some **threshold values** for each `ci`: `Safe`[`i`](`s`) = {`a ∈ A` | `ci(s, a)` ≤ `βci` }
+    - In addition to the `Q`-function in `IQL`, a **constrained `Q`-function `QC`** is estimated.
+      - > "For **policy extraction from `QC`** after `Q-learning`, only the `action-values` of the **constraint-satisfying actions** must be considered."
+  - Including constraints directly in `IQL` leads to **optimal constrained imitation** from **unconstrained demonstrations**.
+
+</details>
+
+---
+
 **`"Planning on the fast lane: Learning to interact using attention mechanisms in path integral inverse reinforcement learning"`**
 
 - **[** `2020` **]**
@@ -5254,7 +5360,7 @@ Authors: Cao, Z., Bıyık, E., Wang, W. Z., Raventos, A., Gaidon, A., Rosman, G.
 
 Authors: Krasowski, H., Wang, X., & Althoff
 
-- Previous work: [`"High-level Decision Making for Safe and Reasonable Autonomous Lane Changing using Reinforcement Learning"`](TODO), (Mirchevska, Pek, Werling, Althoff, & Boedecker, 2018).
+- Previous work: [`"High-level Decision Making for Safe and Reasonable Autonomous Lane Changing using Reinforcement Learning"`](https://mediatum.ub.tum.de/doc/1454224/712763187208.pdf), (Mirchevska, Pek, Werling, Althoff, & Boedecker, 2018).
 
 - Motivations:
   - Let a **safety layer** **guide the `exploration` process** to forbid (`mask`) **high-level `actions`** that might result in a collision and to **speed up training**.
@@ -7020,7 +7126,7 @@ Authors: Galias, C., Jakubowski, A., Michalewski, H., Osinski, B., & Ziecina, P.
 
 ---
 
-**`"Dynamic Interaction-Aware Scene Understanding Reinforcement Learning in Autonomous Driving"`**
+**`"Dynamic Interaction-Aware Scene Understanding for Reinforcement Learning in Autonomous Driving"`**
 
 - **[** `2019` **]**
 **[[:memo:](https://arxiv.org/abs/1909.13582)]**
