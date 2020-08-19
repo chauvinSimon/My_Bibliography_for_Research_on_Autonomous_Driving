@@ -8232,6 +8232,88 @@ Authors: Zhu, Y., & Zhao, D.
 
 ---
 
+**`"POMDP Autonomous Vehicle Visibility Reasoning"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://kylewray.com/s/WWrssra20.pdf)]**
+**[** :car: `Renault-Nissan` **]**
+
+- **[** _`occlusion`, `MODIA`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://kylewray.com/s/WWrssra20.pdf).](media/2020_wray_1.PNG "[Source](https://kylewray.com/s/WWrssra20.pdf).")  |
+|:--:|
+| *Left: the `MODIA` framework consists of two **small POMDP decision problems (`DP`s)** that are **solved offline**. One to deal **with another car** at an intersection. Another to deal with an **obstacle**. When vehicles are **perceived online**, `DPs` are **instantiated** as **decision components (`DC`s)**. `DC`s **recommend** an `action` at specific arbitration points along the route, with **conflicts resolved by an `executor arbitration` function** (e.g., **_take the safest action_**). Virtual vehicles, imagined just outside of the field-of-view, are also created and instantiate `DC`s to allow for **reasoning about possible imperceptible vehicles**. Right (from [`MODIA`](https://rbr.cs.umass.edu/shlomo/papers/WWZijcai17.pdf)): the policy seems to be derived iteratively, with **`α`-vectors**. This is possible since only **`128` states** are defined. [Source](https://kylewray.com/s/WWrssra20.pdf).* |
+
+Authors: Wray, K. H., Lange, B., Jamgochian, A., Witwicki, S. J., Kobashi, A., Hagaribommanahalli, S., & Ilstrup, D.
+
+- Motivations:
+  - `1-` Decision making under **limited visibility**.
+    - > "To maximize safety, AVs must reason about these **“known unknowns”** [_they are capable of_ **_detecting their own limited visibility_**] and intelligently make decisions for when to `go`, `stop`, or `edge forward slowly` for visibility when entering an **occluded T-intersection** or **passing an obstacle** in the road."
+    - > "`POMDP` provides a powerful model for **sequential decision-making under limited visibility, sensor noise**, and other forms of **uncertainty** known **sensor limitations** through its **probabilistic model** of observing other vehicles. They enable **`belief`-based reasoning** about a **vehicle’s existence** even if it has never actually been perceived by perception."
+  - `2-` Scalability: **multiple vehicles** and different scenarios.
+    - > [issue] "**Single monolithic `POMDP`s** for AV decision-making define a `state` space for **up to some maximum number of possible vehicles**."
+  - `3-` Real world. _Unfortunately, no video is provided._
+
+- **`MODIA`**: for scalability.
+  - From (Wray, Witwicki, & Zilberstein, 2017): **[`"Online Decision-Making for Scalable Autonomous Systems"`](https://rbr.cs.umass.edu/shlomo/papers/WWZijcai17.pdf)**. [Slides](https://pdfs.semanticscholar.org/1df1/8e66c9117852468f8e327a67622b5738558a.pdf).
+  - It is a framework for **multiple online decision-components with interacting actions**.
+  - The main idea is the **scene-decomposition**, i.e. to divide the problem into **canonical decision-making subproblems** and to **solve separately** each of them.
+    - > "In `MODIA`, a collection of possible **decision-problems (`DP`s)**, known a priori, are **instantiated online** and executed as **decision-components (`DC`s)**, unknown a priori.
+  - Two decision-making problem (`DP`) are considered:
+    - `DP.1`: negotiating with a **single vehicle** at a **T-intersection**.
+    - `DP.2`: **passing a single obstacle** [_not detailed here??_].
+  - Multiple instances of each `DP` are created:
+    - For each **perceived** (or **virtual**) vehicle, **a `DC` is instantiated** as a copy of one of the two `DP`s original, including its `policy` that has been derived offline.
+    - Each created `DC` makes decision proposals. An **executor arbitration** function **aggregates these proposals** to produce one action to be performed.
+      - > "Here we consider an **executor arbitration** function that selects the **most conservative recommendation**. That is, `stop` is preferred to `edge` which is preferred to `go`."
+    - At each time step, each `DC`[`j`] (_instantiated from `DP`[`i`]_) obtains its **`belief`** and **`arbitration point`** from the **monitor `M`[`i`]**.
+
+- The two `DP` are formulated as `POMDP`.
+  - They are **solved offline**.
+    - _How is belief tracking done?_
+      - `b` is updated to `b'` with: `b'`(`s'`) = `η` . `O(a,s',ω)` . SUM-over-s[`T(s,a,s')`.`b(s)`]
+    - _How is the policy derived?_ No detail here. But from `MODIA` paper:
+      - > "Since `Vπ` is **piecewise linear and convex**, we describe it using sets of `α`-vectors `Γ`={`α1`, ... , `αr`} with each `αi` =[`αi`(`s1`), ... , `αi`(`sn`)]`T` and `αi`(`s`) denoting **value of state `s`∈`S`**. The objective is to find **optimal policy `π∗`** that maximizes `V` denoted as `V∗`. Given an initial belief `b0`, **`V∗` can be iteratively computed** for a time step `t`, **expanding beliefs** at each update resulting in belief `b`."
+
+  - They share the **same `action` space**.
+    - {`stop`, `edge forward`, and `go`} decisions which control the **motion along the trajectory**.
+    - _How can the ego-car decide to take an obstacle over, as illustrated by `DC4` on the figure, if the trajectory is defined and the decisions only control the longitudinal motion?_
+    - > "The **low-level trajectory control** uses these points as an input to its **constrained optimization continual planner**."
+  - `state` for `DP.1`: **discrete and abstracted**!
+    - `1-` Ego location: {`before-stop`, `at-stop`, `before-gap`, `at-gap`, `goal`, `terminal`}. _I don't understand what `gap` means here._
+    - `2-` Other's location: {`before-stop`, `at-stop`, `before-gap`, `at-gap`, `goal`, `empty`}.
+    - `3-` Ego **time at the location**: {`short`, `long`}.
+    - `4-` **Existence of a gap** when the AV arrives: {`yes`, `no`}. _I am confused by the inclusion of the temporality. What happens if the ego car waits and the gap disappears? Is it still `true`?_
+    - In total `6*6*2*2`=**`128` states**. _This can be stored in a_ **_table_**_, and does not require function approximator_.
+    - The **high abstraction** in the `state` space can be problematic here.
+      - `1-` **Precision** is required, especially when driving close to other objects.
+      - `2-` Some **transitions may become impossible**, depending on the **timestep** used.
+  - `observation` (_I must say I don't understand their relevance. Shouldn't it be the `location`s with noise added for instance?_):
+    - `1-` If the ego car **successfully moved** {`yes`, `no`}. _Why "successfully"?_
+    - `2-` If the other vehicle **successfully moved** {`yes`, `no`}.
+    - `3-` If a **gap is detected** {`yes`, `no`}.
+  - `reward` for `DP.1`:
+    - `0` for the **goal `state`**, `−1000` for any other **terminal `state`**, and `-1` for all other (`s`, `a`) pairs.
+    - That makes `DP.1` **episodic**.
+  - `transition function` for `DP.1`:
+    - _I don't understand. More details needed (especially about "etc.")! What `distribution`s for instance?_
+    - > "It multiplies parameterized probabilities of quantifiable **events** within the `state`-`action` space including: (`1`) _the AV and/or other vehicle moving forward_, (`2`) _time incrementing_, (`3`) _entering a terminal state_, (`4`) _the other vehicle slowing down for a crossing AV_, (`5`) _the gap’s existence toggling based on other vehicle movement_, etc."
+  - `observation function` for `DP.1`:
+    - > [_More details would have been appreciated_] "It multiples parameterized probabilities including: (`1`) _localizing correctly within the AV’s location state factor_, (`2`) _correctly detecting the other vehicle that does exist_, (`3`) _correctly matching the other vehicle to its location state factor_, (`4`) _observing the terminal or goal state_, (`5`) _detecting the gap correctly based on predictions_, etc."
+  - _What about the timestep?_
+    - If too large, then the ego car cannot react. If too small, **some `transitions` between `states` are impossible** and some `states` become absorbing.
+  - _What about `DP.2`?_
+- _How to deal with occlusion?_
+  - **Virtual vehicles** are instantiated.
+  - > "We create **virtual vehicles** at the edge of the **detectable visibility range** along all lanes. For example at a T-intersection, **two virtual vehicle `DC`s will always exist**, one for each incoming lane."
+
+</details>
+
+---
+
 **`"Improving Automated Driving through Planning with Human Internal States"`**
 
 - **[** `2020` **]**
