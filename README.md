@@ -5255,6 +5255,7 @@ Authors: Wasala, A., Byrne, D., Miesbauer, P., O’Hanlon, J., Heraty, P., & Bar
 **[[:memo:](https://arxiv.org/abs/2007.00178)]**
 **[[🎞️](https://www.youtube.com/watch?v=envT7b5YRts)]**
 **[[🎞️](https://www.youtube.com/watch?v=CY24zlC_HdI)]**
+**[[🎞️](https://www.youtube.com/watch?v=IPa-cxcdT8U&t=1106s)]**
 **[** :mortar_board: `Stanford` **]**
 **[** :car: `Toyota Research Institute` **]**
 
@@ -5918,6 +5919,7 @@ Authors: Hoel, C.-J., Wolff, K., & Laine, L.
 **[[:memo:](https://arxiv.org/abs/2004.04450)]**
 **[[:memo:](https://www.uni-das.de/images/pdf/fas-workshop/2020/FAS_2020_KAMRAN.pdf)]**
 **[[🎞️](https://www.dropbox.com/s/vnrjl0pro1uqw8w/rl_occlusion.avi?dl=0)]**
+**[[🎞️](https://youtu.be/IPa-cxcdT8U?t=6196)]**
 **[** :mortar_board: `KIT` **]**
 
 - **[** _`risk-aware`, `occlusion`, [`CARLA`](http://carla.org)_ **]**
@@ -8235,6 +8237,7 @@ Authors: Zhu, Y., & Zhao, D.
 **`"POMDP Autonomous Vehicle Visibility Reasoning"`**
 
 - **[** `2020` **]**
+**[[🎞️](https://www.youtube.com/watch?v=NojRqX3cIH4)]**
 **[[:memo:](https://kylewray.com/s/WWrssra20.pdf)]**
 **[** :car: `Renault-Nissan` **]**
 
@@ -8261,6 +8264,7 @@ Authors: Wray, K. H., Lange, B., Jamgochian, A., Witwicki, S. J., Kobashi, A., H
   - From (Wray, Witwicki, & Zilberstein, 2017): **[`"Online Decision-Making for Scalable Autonomous Systems"`](https://rbr.cs.umass.edu/shlomo/papers/WWZijcai17.pdf)**. [Slides](https://pdfs.semanticscholar.org/1df1/8e66c9117852468f8e327a67622b5738558a.pdf).
   - It is a framework for **multiple online decision-components with interacting actions**.
   - The main idea is the **scene-decomposition**, i.e. to divide the problem into **canonical decision-making subproblems** and to **solve separately** each of them.
+    - This idea has already been applied in multiple papers, including patents: [`RL with scene decomposition for navigating complex environments`](http://www.freepatentsonline.com/20200247402.pdf) from Honda and Stanford ([related paper](https://arxiv.org/abs/1904.11483)).
     - > "In `MODIA`, a collection of possible **decision-problems (`DP`s)**, known a priori, are **instantiated online** and executed as **decision-components (`DC`s)**, unknown a priori.
   - Two decision-making problem (`DP`) are considered:
     - `DP.1`: negotiating with a **single vehicle** at a **T-intersection**.
@@ -8633,6 +8637,7 @@ Authors: Shu, K., Yu, H., Chen, X., Chen, L., Wang, Q., Li, L., & Cao, D.
 
 - **[** `2020` **]**
 **[[:memo:](https://arxiv.org/abs/2002.02277)]**
+**[[🎞️](https://youtu.be/IPa-cxcdT8U?t=5849)]**
 **[** :mortar_board: `University of Edinburgh` **]**
 **[** :car: `FiveAI` **]**
 
