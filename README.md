@@ -554,6 +554,82 @@ Note: I find very valuable to get insights from the **CMU** (Carnegie Mellon Uni
 
 ---
 
+**`"Action-based Representation Learning for Autonomous Driving"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://arxiv.org/abs/2008.09417)]**
+**[[:octocat:](https://github.com/yixiao1/Action-Based-Representation-Learning)]**
+**[[🎞️](https://www.youtube.com/watch?v=fFywCMlLbyE)]**
+**[** :mortar_board: `University of Moncton` **]**
+
+- **[** _`representation learning`, `affordances`, `self-supervised`, `pre-training`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://arxiv.org/abs/2008.09417).](media/2020_xiao_1.PNG "[Source](https://arxiv.org/abs/2008.09417).")  |
+|:--:|
+| *So--called **`direct` perception approach** uses **`affordances`** to select low-level driving commands. Examples of `affordances` include `is there a car in my lane within 10m?` or `relative angles deviation between my car's heading and the lane` to control the car. This approach offers **interpretability**. The question here is **''how to efficiently extract these `affordances`?''**. For this `classification` / `regression` **supervised learning** task, the encoder is first **pre-trained** on another task (**proxy tasks**) involving learning from **`action` demonstration** (e.g. `behavioural cloning`). The intuition is that for **a learnt `BC` model** able to take good driving decisions most of the time, **relevant information should have been captured in its encoder**. [Source](https://arxiv.org/abs/2008.09417).* |
+
+| ![[Source](https://arxiv.org/abs/2008.09417).](media/2020_xiao_2.PNG "[Source](https://arxiv.org/abs/2008.09417).")  |
+|:--:|
+| *Different `self-supervised learning` tasks based on **`action` prediction** can be used to produce the **encoder**. An other idea is to use models trained with **supervised learning**. For instance `ResNet`, whose encoder performs worse. Probably because of the **synthetic images**? [Source](https://arxiv.org/abs/2008.09417).* |
+
+| ![[Source](https://github.com/yixiao1/Action-Based-Representation-Learning).](media/2020_xiao_1.gif "[Source](https://github.com/yixiao1/Action-Based-Representation-Learning).")  |
+|:--:|
+| *Four **`affordances`** are **predicted from images**. They represent the **explicit detection of hazards** involving pedestrians and vehicles, respecting traffic lights and considering the **heading of the vehicle** within the current lane. `PID` controllers convert these `affordances` into `throttle`, `brake` and `steering` commands. [Source](https://github.com/yixiao1/Action-Based-Representation-Learning).* |
+
+Authors: Xiao, Y., Codevilla, F., Pal, C., & López, A. M.
+
+- One sentence:
+  - > "**Expert demonstrations** can act as an effective `action`-based **representation learning** technique."
+
+- Motivations:
+  - `1-` Leverage **driving demonstration data** that can be easily obtained by **simply recording** the `actions` of good drivers.
+  - `2-` Be more **interpretable** than pure `end-to-end` imitation methods.
+  - `3-` Be **less annotation dependent**, i.e. rely preferably on **self-supervision** and try to **reduce data supervision** (i.e., human annotation).
+    - > "Our method uses **much less densely annotated data** and does not use **dataset aggregation (`DAgger`)**."
+
+- Main idea:
+  - Use both **manually annotated data** (`supervised learning`) and **expert demonstrations** (`imitation learning`) to **learn to extract `affordances` from images** (`representations learning`).
+  - This combination is beneficial, compared to taking each approach separately:
+    - `1-` Pure `end-to-end` imitation methods such as `behavioural cloning` could be used to directly **predict `control` actions** (`throttle`, `brake`, `steering`).
+      - > "In this pure **data-centered approach**, the supervision required to train deep `end-to-end` driving models does not come from **human annotation**; instead, the vehicle’s state variables are used as **self-supervision** (e.g. `speed`, `steering`, `acceleration`, `braking`) since these can be **automatically collected** from fleets of human-driven vehicles."
+      - But it **lacks interpretability**, can have difficulty dealing with **spurious correlations** and training may be unstable.
+    - `2-` Learning to extract the `affordances` from scratch would not be very efficient.
+      - One could use a **pre-trained backbone** such as `ResNet`. But it does not necessary **capture the relevant information** of the driving scene to make decisions.
+      - > "**Action-based pre-training** (`Forward`/`Inverse`/`BC`) outperforms all the other reported **pre-training** strategies (e.g. `ImageNet`). However, we see that the **action-based pre-training** is mostly beneficial to help on **reliably estimating the vehicle’s relative angle** with respect to the road."
+
+- About **`driving affordances`** and **`direct` perception approach**:
+  - > "A different paradigm, conceptually midway between **pure modular** and **end-to-end** driving ones, is the so-called **_`direct perception` approach_**, which focuses on learning deep models to **predict driving `affordances`**, from which an additional controller can maneuver the AV. In general, such **`affordances`** can be understood as a **relatively small set of interpretable variables** describing **events that are relevant for an agent acting** in an environment. Driving `affordances` bring **interpretability** while **only requiring weak supervision**, in particular, human annotations just at the **image level** (i.e., not pixel-wise)."
+  - **Four `affordances`** used by a **rule-based** controller to select `throttle`, `brake` and `steering` commands:
+    - `1-` **Pedestrian** hazard (`bool`): _Is there is a_ **_pedestrian_** _in our lane at a distance lower than `10m`?_
+    - `2-` **Vehicle** hazard (`bool`): _Is there is a_ **_vehicle_** _in our lane at a distance lower than `10m`?_
+    - `3-` **Red** traffic light (`bool`): _Is there is a_ **_traffic light in red affecting our lane_** _at a distance lower than `10m`?_
+    - `4-` Relative **heading angle** (`float`): **relative angle** of the longitudinal vehicle axis with respect to the lane in which it is navigating.
+  - Extracting these `affordances` from the sensor data is called **"representation learning"**.
+  - Main idea here:
+    - Learn to **extract these `affordances`** (supervised learning), with the **encoder being pre-trained** on the task of **`end-to-end` driving**, e.g. `BC`.
+
+- Two stages with two datasets: A **_self_-supervised** dataset and a **_weakly_-supervised** dataset.
+  - `1-` Train an **`end-to-end` driving model** (e.g. `BC`) from (e.g. expert) **demonstrations**.
+    - The **final layers for `action` prediction** are discarded.
+    - Only the first part, i.e. the **encoder**, is used for the second stage.
+    - It is called **"_self_-supervised"** since it does not require **external manual annotations**.
+  - `2-` Use this **pre-trained encoder** together with a multi-layer perceptron (`MLP`) to **predict `affordances`**.
+    - The **pre-training** (stage `1`) is beneficial because all the **relevant information for driving** should have been **extracted by the encoder**.
+    - It is called **"_weakly_-supervised"** since it only requires **_image-level_ `affordance` annotations**, i.e. not pixel-level.
+
+- _Why is it called "`action`-based" method?_
+  - So far, I mention **`behaviour cloning`** (`BC`) as a learning method that **focus on predicting the control `actions`** and whose **learnt encoder** can be used.
+  - For instance, **`inverse dynamics` models**.
+    - > "Predicting the **next states** of an agent, or the **action between state transitions**, yields useful representations."
+  - > [_Is it a good idea to use_ **_random `actions`_**_?_] "We show that learning from **expert data** in our approach leads to **better representations** compared to **training `inverse dynamics` models**. This shows that expert **driving** data (i.e. coming from human drivers) is an important source for **representation learning**."
+
+</details>
+
+---
+
 **`"Learning to drive by imitation: an overview of deep behavior cloning methods"`**
 
 - **[** `2020` **]**
