@@ -5172,6 +5172,100 @@ Author: Noh, S.
 
 ---
 
+**`"MIDAS: Multi-agent Interaction-aware Decision-making with Adaptive Strategies for Urban Autonomous Navigation"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://arxiv.org/abs/2008.07081)]**
+**[** :mortar_board: `University of Pennsylvania` **]**
+**[** :car: `Nuro` **]**
+
+- **[** _`attention`, `parametrized driver-type`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://arxiv.org/abs/2008.07081).](media/2020_chen_5.PNG "[Source](https://arxiv.org/abs/2008.07081).")  |
+|:--:|
+| *Top: scenarios are generated to require **interaction-aware** decisions from the ego agent. Bottom: A **`driver-type` parameter** is introduced to learn a **single policy** that works **across different planning objectives**. It represents the **driving style** such as the **level of `aggressiveness`**. It affects the terms in the **`reward` function** in an **affine way**. [Source](https://arxiv.org/abs/2008.07081).* |
+
+| ![[Source](https://arxiv.org/abs/2008.07081).](media/2020_chen_6.PNG "[Source](https://arxiv.org/abs/2008.07081).")  |
+|:--:|
+| *The conditional parameter (**ego’s `driver-type`**) should **only affect the encoding of its own `state`**, not the `state` of the other agents. Therefore it injected **after the `observation` encoder**. `MIDAS` is compared to **[`DeepSet`](https://arxiv.org/abs/1909.13582)** and **[“Social Attention”](https://arxiv.org/abs/1911.12250)**. `SAB` stands for ''set-attention block'', `ISAB` for ''induced `SAB`'' and `PMA` for ''pooling by multi-head attention''. [Source](https://arxiv.org/abs/2008.07081).* |
+
+Authors: Chen, X., & Chaudhari, P.
+
+- Motivations:
+  - `1-` Derive an **adaptive** ego policy.
+    - For instance, **conditioned** on a parameter that represents the **driving style** such as the **level of `aggressiveness`**.
+    - > "`MIDAS` includes a **`driver-type` parameter** to learn a **single policy** that works **across different planning objectives**."
+  - `2-` Handle an **arbitrary number** of other agents, with a **permutation-invariant** input representation.
+    - > [`MIDAS` uses an `attention`-mechanism] "The ability to **pay attention** to only the part of the **`observation` vector** that matters for control **irrespective of the number of other agents** in the vicinity."
+  - `3-` **Decision-making** should be **interaction-aware**.
+    - > "A typical `planning` algorithm would **predict the forward motion** of the other cars and ego **would stop until it is deemed safe** and legal to proceed. While this is reasonable, it leads to **overly conservative plans** because it **does not explicitly model the mutual influence** of the actions of **interacting agents**."
+    - The goal here is to obtain a policy **more optimistic than a worst-case assumption** via the **tuning of the `driver-type`**.
+
+- _Why "`MIDAS`"?_ I could not find the meaning of this acronym.
+
+- _How to train a_ **_user-tuneable adaptive_** _policy?_
+  - > Each agent possesses a **real-valued parameter `βk` ∈ [`−1`, `1`]** that models its **“driver-type”**. A large value of `βk` indicates an **aggressive agent** and a small value of `βk` indicates that the agent is **inclined to wait for others** around it before making progress."
+  - `β` is **not observable** to others and is used to determine the **agent’s velocity** as `v = 2.7β + 8.3`.
+  - This **affine form `wβ+b`** is also used in all sub-rewards of the **`reward` function**:
+    - `1-` **Time-penalty** for every timestep.
+    - `2-` Reward for **non-zero speed**.
+    - `3-` **Timeout penalty** that discourages ego from stopping the traffic flow.
+      - > "This includes a **stalement penalty** where all nearby agents including ego are **standstill waiting for one** of them to take initiative and break the tie."
+    - `4-` **Collision** penalty.
+    - `5-` A penalty for following **too close to the agent in front**. _- This one does not depend on `β`_.
+  - The goal is **not to explicitly infer `β` from `observation`s**, as it is done by the `belief tracker` of some `POMDP` solvers.
+  - _Where to inject `β`?_
+    - > "We want **ego’s `driver-type`** information to **only affect the encoding of its own `state`**, not the state of the other agents."
+    - > "We use a two-layer perceptron with ReLU nonlinearities to embed the scalar variable `β` and **add the output** to the encoding of ego’s `state`." [_Does that mean that the_ **_single scalar `β`_** _go alone through two FC layers?_]
+  - To derive **adjustable drivers**, one could use `counterfactual reasoning` with `k-levels` for instance.
+    - > "It however uses **self-play** to train the policy and while this approach is reasonable for **highway merging**, the competition is likely to result in **high collision rates in busy urban intersections** such as ours."
+
+- About the **`attention`-based** architecture.
+  - The **permutation-invariance** and **size independence** can be achieved by **combining a `sum`** followed by **some `aggregation` operator** such as `average pooling`.
+    - The authors show the limitation of using a `sum`. Instead of **preferring a `max pooling`**, the authors suggest using `attention`:
+    - > "Observe however that the **summation assigns the same weight** to all elements in the input. As we see in our experiments, a value function using this **[`DeepSet`](https://arxiv.org/abs/1909.13582) architecture** is likely to be **distracted by agents** that do not inform the optimal action."
+  - > "An `attention` module is an elegant way for the `value function` to learn **`key`, `query`, `value` embeddings** that **pay more `attention`** to parts of the **input** that are more relevant to the output (for decision making)."
+  - [**`Set transformer`**](https://arxiv.org/abs/1810.00825).
+    - > "The **set-transformer** in `MIDAS` is an easy, automatic way to **encode variable-sized `observation` vectors**. In this sense, our work is closest to [“Social Attention”](https://arxiv.org/abs/1911.12250), (Leurent & Mercat, 2019), which learns to influence other agents based on **road priority** and demonstrates results on a limited set of road geometries."
+
+- `observation` space (_not very clear_).
+  - > "Their observation vector contains the **locations of all agents** within a Euclidean distance of `10m` and is created in an **ego-centric coordinate frame**."
+  - The list of `waypoints` to reach **agents-specific goal locations** is allegedly also part of the `observation`.
+  - _No orientation? No previous poses?_
+
+- Binary `action`.
+  - > "Control `actions` of all agents are `ukt` ∈ {`0`, `1`} which correspond to **`stop` and `go`** respectively."
+  - No information about the `transition` / `dynamics` model.
+
+- Tricks for **off-policy RL**, here `DQN`.
+  - > "The **`TD2` objective** can be zero even if the value function is not accurate because the **Bellman operator** is only a **contraction in the `L∞` norm, not the `L2` norm.**"
+  - Together with `double DQN`, and `duelling DQN`, the authors proposed **two variants**:
+    - `1-` The `net 1` (**local**) selects the action with `argmax` for `net 2` (`target` or **`time-lagged`**, whose weights are **copied** from `net 1` at **fixed periods**) and vice-versa.
+      - > "This forces the **first copy**, via its **time-lagged parameters** to be the **evaluator for the second copy** and vice-versa; it leads to further **variance reduction** of the target in the `TD` objective."
+    - `2-` During `action selection`, `argmax` is applied on the **average of the `q`-values** of **both networks**.
+
+- Evaluation.
+  - **Non-ego agents** drive using an **Oracle policy** that has full access to trajectories of nearby agents. Here it is rule-based (`TTC`).
+  - Scenarios are diverse for **training** (no `collision` scenario during **testing**. [_Why?_]):
+    - `generic`: Initial and goal locations are **uniformly sampled**.
+    - `collision`: The ego **will collide** with at least one other agent in the future if it does not stop at an appropriate timestep.
+    - `interaction`: At least `2` other agents will **arrive at a location simultaneously** with the ego car.
+      - > "Ego cannot do well in `interaction` episodes unless it **negotiates** with other agents."
+      - > "We randomize over the **number of agents**, **`driver-types`**, agent IDs, **road geometries**, and add **small perturbations** to their **arrival time** to construct `1917` `interaction` episodes."
+      - > "Curating the dataset in this fashion **aids the reproducibility of results** compared to using **random seeds** to initialize the environment."
+  - > "[Robustness] At test time, we add **`Bernoulli` noise of probability `0.1`** to the `actions` of other agents to model the fact that **driving policies of other agents may be different** from each other."
+  - Performance in the **simulator** is evaluated based on:
+    - `1-` The **`time-to-finish`** which is the **average episode length**.
+    - `2-` The **`collision-`, `timeout-` and `success rate`** which refer to the percentage of episodes that end with the corresponding status (the three add up to `1`).
+  - > "To qualitatively compare performance, we prioritize `collision rate` (an indicator for `safety`) over the `timeout rate` and `time-to-finish` (which indicate `efficiency`). Performance of **the `Oracle planner` is reported over `4` trials**. Performance of the trained policy is reported **across `4` random seeds**."
+
+</details>
+
+---
+
 **`"An end-to-end learning of driving strategies based on DDPG and imitation learning"`**
 
 - **[** `2020` **]**
