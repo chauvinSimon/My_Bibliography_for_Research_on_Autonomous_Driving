@@ -5204,8 +5204,6 @@ Authors: Chen, X., & Chaudhari, P.
     - > "A typical `planning` algorithm would **predict the forward motion** of the other cars and ego **would stop until it is deemed safe** and legal to proceed. While this is reasonable, it leads to **overly conservative plans** because it **does not explicitly model the mutual influence** of the actions of **interacting agents**."
     - The goal here is to obtain a policy **more optimistic than a worst-case assumption** via the **tuning of the `driver-type`**.
 
-- _Why "`MIDAS`"?_ I could not find the meaning of this acronym.
-
 - _How to train a_ **_user-tuneable adaptive_** _policy?_
   - > Each agent possesses a **real-valued parameter `βk` ∈ [`−1`, `1`]** that models its **“driver-type”**. A large value of `βk` indicates an **aggressive agent** and a small value of `βk` indicates that the agent is **inclined to wait for others** around it before making progress."
   - `β` is **not observable** to others and is used to determine the **agent’s velocity** as `v = 2.7β + 8.3`.
@@ -6709,6 +6707,63 @@ Authors: Chen, J., Li, S. E., & Tomizuka, M.
   - > "[but] it **does not provide any intuition about how it makes the decisions**, because the driving policy is obtained in a `model-free` way."
   - In this context, `model-based` `RL` is deemed as a promising direction.
   - It reminds me the distinction between **`learn to see`** (_controlled by the presented `mask`_) and **`learn to decide`**.
+
+</details>
+
+---
+
+**`"Worst Cases Policy Gradients"`**
+
+- **[** `2019` **]**
+**[[:memo:](https://arxiv.org/abs/1911.03618)]**
+**[[🎞️](https://youtu.be/IPa-cxcdT8U?t=11609)]**
+**[** :car: `Apple` **]**
+
+- **[** _`safe RL`, [`distributional RL`](https://arxiv.org/pdf/1707.06887.pdf), `risk-sensitive`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://arxiv.org/abs/1911.03618).](media/2019_tang_1.PNG "[Source](https://arxiv.org/abs/1911.03618).")  |
+|:--:|
+| *The **critic** predicts a **distribution of the expected `value function`** instead of a single scalar. Both the actor and critic take **risk-tolerance** `α` as input during **training**, which allows the learned policy to operate with **varying levels of risk** after training. Lower `α` values **improved robustness** dramatically. Top-right: the **uncertainty** can be quantified from the **variance** of the **`return` distribution**. [Source](https://arxiv.org/abs/1911.03618).* |
+
+| ![[Source](https://ieeexplore.ieee.org/abstract/document/8813791).](media/2019_bernhard_1.PNG "[Source](https://ieeexplore.ieee.org/abstract/document/8813791).")  |
+|:--:|
+| *A related work (Bernhard and Knoll 2019): Working with **distributions** instead of **mean expectation** can offer **uncertainty-aware** `action` selection. [Source](https://ieeexplore.ieee.org/abstract/document/8813791).* |
+
+Authors: TODO
+
+- One sentence:
+  - > "Our policies can be **adjusted dynamically after deployment** to select **risk-sensitive `actions`**."
+
+- Motivations:
+  - `1-` Models the **uncertainty** of the future.
+  - `2-` Learn policies with **risk-tolerance** parameters.
+    - > "The **learned policy** can map the same state to different `actions` depending on the **propensity for risk**."
+    - `α`=0.0 for **risk-aware**. `α`=1.0 for **risk-neural**.
+
+- Going beyond standard `RL`.
+  - > "Standard `RL` maximizes for the **expected (possibly discounted) future `return`**. However, maximizing for **average `return`** is not sensitive to the **possible risks** when the **future `return` is stochastic**, due to the **inherent randomness** of the environment not captured by the **observable `state`**."
+  - > "When the `return` distribution has **high variance** or is **heavy-tailed**, finding a `policy` which maximizes the **expectation of the distribution** might not be ideal: a high variance `policy` (and therefore higher risk) that has **higher `return` in expectation** is preferred over **low variance `policies`** with **lower expected `returns`**. Instead, we want to learn more robust policies by **minimizing long-tail risks**, reducing the likelihoods of bad outcomes."
+
+- _Why "_**_Worst Cases_** _Policy Gradients" (`WCPG`)?_
+  - > "However, for **risk-averse** learning, it is desirable to maximize the expected **worst cases** performance instead of the **average-case** performance."
+  - You do not care about the average expected return. You care about what the best return will be under the worst possible scenario.
+
+- About safe RL. Two categories:
+  - > "The first type is based on the **modification of the exploration process** to avoid **unsafe exploratory actions**. Strategies consist of **incorporating external knowledge** or using **risk-directed explorations**."
+  - The second type modifies the **optimality criterion** used during **training**.
+    - > "Our work falls under this latter category, where we try to optimize our policy to **strike a balance between pay-off and avoiding catastrophic events.**"
+
+- About **conditional [`Value-at-Risk`](https://www.ise.ufl.edu/uryasev/files/2011/11/CVaR1_JOR.pdf)** (`CVaR`)
+  - > "Working under the assumption that the **future `return`** is inherently stochastic, we first start by **modeling its distribution**. The **risk** of various actions can then be computed from this distribution. Specifically, we use the **conditional `Value-at-Risk`** as the criterion to maximize."
+  - > "`WCPG` optimizes for `CVaR` indirectly by first using **distributional RL** techniques to **estimate the distribution of `return`** and then compute `CVaR` from this distribution."
+    - Intuitively, `CVaR` represents the expected `return` should we experience the bottom `α`-percentile of the possible outcomes.
+  - How to compute the **loss** for the critic?
+    - The **scalar version with `L2`** is replaced by the **Wasserstein distance** between the predicted and the expected distribution.
+  - How to model the distribution?
+    - The authors assume a **Normal distribution**. Therefore only the `mean` and `variance` are to be predicted by the critic.
 
 </details>
 
