@@ -6732,7 +6732,7 @@ Authors: Chen, J., Li, S. E., & Tomizuka, M.
 |:--:|
 | *A related work (Bernhard and Knoll 2019): Working with **distributions** instead of **mean expectation** can offer **uncertainty-aware** `action` selection. [Source](https://ieeexplore.ieee.org/abstract/document/8813791).* |
 
-Authors: TODO
+Authors: Tang, Y. C., Zhang, J., & Salakhutdinov, R.
 
 - One sentence:
   - > "Our policies can be **adjusted dynamically after deployment** to select **risk-sensitive `actions`**."
@@ -8542,6 +8542,96 @@ Authors: Zhu, Y., & Zhao, D.
 
 ---
 
+**`"Autonomous Driving at Intersections: A Critical-Turning-Point Approach for Planning and Decision Making"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://arxiv.org/abs/2003.02409)]**
+**[** :mortar_board: [`Cogdrive lab`](https://www.cogdrive.ai/aboutus/) at `University of Waterloo`**]**
+
+- **[** _`CTP`, `ABT`, `unprotected left turn`, `information gathering`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://arxiv.org/abs/2003.02409).](media/2020_shu_4.PNG "[Source](https://arxiv.org/abs/2003.02409).")  |
+|:--:|
+| *__Left-turning__ behaviours at **unsignalized intersection** can be modelled using the **Critical Turning Points Model"** (`CTP`). Before the `CTP`, the ego-vehicle is **creeping forward** to collect information and assess the situation. After the `CTP`, it turns and accelerates. The action space is therefore made `2`-dimensional (`acceleration` and `CTP`). This improves the **`driving` efficiency** compared to just having control of the `acceleration` on a **fixed pre-defined path**, where the ego vehicle **stops and waits** for the critical zone to clear. Here, if **one of the paths is blocked**, it can **keep moving forward** and take the sharp turn at the **next `CTP`**. [Source](https://arxiv.org/abs/2003.02409).* |
+
+| ![[Source](https://arxiv.org/abs/2003.02409).](media/2020_shu_3.PNG "[Source](https://arxiv.org/abs/2003.02409).")  |
+|:--:|
+| *The **nodes** in the **tree** represent the `beliefs`. Each node is formed by a **set of particles**, where every **particle** is associated with a quadruple (`s`, `a`, `o`, `r`) obtained from **previous episodes**. The edge that connects the nodes `b` and `b'` in the tree is formed by a (`action`-`observation`) pair, which means that a particle in the belief `b` performs an action `a` and reached to belief `b'` (i.e. `b'` = `transition(b,a,o)`) which perceives an observation `o`. The **size of the tree** and thus the **complexity of the search** depends on the **discretization of the `observation` space**. Here, it is parametrized with an **accuracy variable `κa`**. [Source](https://arxiv.org/abs/2003.02409).* |
+
+Author: Shu, K.
+
+- A **master thesis**, with very good explanations about **`POMDP` solvers**!
+- Related work: [Autonomous Driving at Intersections: A Critical-Turning-Point Approach for Left Turns](https://arxiv.org/abs/2003.02409), (Shu et al., 2020). See below.
+
+- Motivations:
+  - `1-` Address **left-turning** at **unsignalized intersection**.
+    - > "**Left turning** when the oncoming vehicles are **not using turn signals** is one of the most common and challenging tasks for planning at **unsignalized intersections**."
+  - `2-` Consider the **unknown intentions** of the oncoming vehicle to **make less conservative decisions**.
+  - `3-` Ensure real-time performance.
+    - > "An **observation accuracy** as `1` and a **tree depth** of `4` or `5` [_`2` or `2.5s`_] would be an **ideal tree size** for good performance in this test scenario."
+    - > "Complexity is influenced by the **numbers of `CTPs`**, the more `CTPs` that are used, the **more candidate paths** would be generated to be taken into account to find an appropriate behavior. [...] Here, **`4` CTPs** would be appropriate."
+
+- About the architecture:
+  - `1-` **Offline**: select proper **candidate paths** (yes, multiple) for the particular intersection.
+  - `2-` **Online**: select one `path` and decide the `speed` on it.
+    - > "With the **generated candidate left-turning paths**, the left-turn problem is **formulated as a `POMDP` problem.**"
+    - > "`POMDP` provide a way to make decisions on the **best sequences of actions** to perform when the agent **can not fully observe the `states`** of the environment, in our case, it is the **intention** of the surrounding [_opposing_] vehicles."
+
+- How to **model behaviours** at intersection?
+  - With a **_"Critical Turning Point Model"_** (`CTP`).
+  - From dataset, the author finds that behaviours at left turns at intersections can be divided into two stages:
+    - `1-` A **`creeping forward` phase** when the driver **assesses the safety** of the environment.
+    - `2-` An **intense `steering` and `acceleration` phase** when the driver **feels confident** to drive through the potential collision area.
+  - The **physical point** where the vehicle transition from `1-` to `2-` is called a **critical turning points (`CTP`)**.
+    - **Multiple `CTP`s** exist for one intersection.
+    - They can be extracted from or validated by **naturalistic driving data**, using `yaw rate`, rather that `longitudinal speed`, as a major criterion.
+
+- How to avoid **over-conservatist** decisions?
+  - Enable **`information gathering`** by allowing **slight modifications around the "turning" path**, instead of just controlling the `longitudinal acceleration` on one **fixed pre-defined path**.
+  - > "Without the uses of `CTPs`, the path of the ego vehicle is **fixed**, thus, when the **Critical Zone is blocked by the oncoming vehicle**, the ego vehicle **stops and waits** for the critical zone to clear until any acceleration can be executed."
+  - > "However, with the uses of `CTPs`, if **one of the paths is blocked**, the vehicle has the option to **keep moving forward** and take the sharp turn at the **next `CTP`**."
+
+- How to **estimate `intention`**?
+  - With **`belief` tracking**. Using particle filtering in the **`belief` tree**.
+
+- About the `POMDP` formulation:
+  - `state`:
+    - `1-` **Travelled `distance`** on the pre-defined path, in the **Frenet–Serret frame**.
+    - `2-` **`speed`** along that path.
+    - `3-` **`intention`** of the vehicles, which includes `going straight`, `making right` or `left turns`.
+  - `observation`:
+    - Only the `position` and `speed` are observable.
+    - The `intention` (route to follow) is unknown to the ego vehicle and must be **estimated**.
+    - > [**Discretization** of the space] "An **accuracy variable `κa`** for the observation model is introduced. The `states` are multiplied by the **accuracy variable** first, then **rounded to the closest integer** and finally **divided by `κa`**. By tuning `κa`, the **width of the search tree** could be adjusted."
+  - `action`:
+    - `1-` **`acceleration`** along the pre-defined path.
+      - Discrete in [`-4`, `4m/s²`] with a interval of `1m/s`.
+    - `2-` **Left-turning `instruction`**
+      - Boolean.
+      - > "When this parameter is set to `1`, the ego vehicle **will shift from the creeping forward phase** to the **sharp left-turning phase** at the next `CTP` ahead."
+  - `reward`:
+    - `-` **Crashing** and **going backward**.
+    - `+` Reaching the **goal**.
+    - `+` Moving as the **referenced `speed`**.
+    - `+` Selecting the **proper path**.
+      - > "Finally, the key `reward` that enables the vehicle to **select the appropriate path** is set as `Rm = 10y − 50x²`, which encourages the vehicle to **move closer to the goal** on both `x` and `y`-axis."
+  - `transition` model:
+    - All the surrounding vehicles are moving on their **pre-defined paths** with an **uncertain `acceleration` / `deceleration`** which follows a **normal distribution**.
+
+- About the decision **frequency**:
+  - > "[Due to] the **rapidly changing** nature of the intersection scenarios [...] the **frequency of decision-making** needed to be realized **as high as possible**."
+  - Here, working at `2Hz`.
+
+- About the `POMDP` online solver.
+  - > "Among all the `MCTS` methods, **`Adaptive Belief Tree`** ([`ABT`](https://link.springer.com/chapter/10.1007/978-3-319-28872-7_35)) is implemented. This solver uses `MCTS` to generate a **`policy` tree**, then the `action` with the highest `reward` is executed and `belief` is updated using a **particle filter**. After that, instead of **discarding the entire policy tree** as the classical [`POMCP`](https://papers.nips.cc/paper/4031-monte-carlo-planning-in-large-pomdps.pdf) online solver, `ABT` only identifies and **trims the parts** of the policy tree that are influenced by the **_change of the model_** (e.g. change of `action` space, `transition` model, `observation` model, etc.), then revises the influence part of the **`policy` tree** and improves it if there is still time left in that time cycle. Since most part of the **`policy` tree** is **saved after each time step**, the **search efficiency** is boosted."
+
+</details>
+
+---
+
 **`"POMDP Autonomous Vehicle Visibility Reasoning"`**
 
 - **[** `2020` **]**
@@ -8907,34 +8997,35 @@ Authors: Zhang, L., Ding, W., Chen, J., & Shen, S.
 
 | ![[Source](https://arxiv.org/abs/2003.02409).](media/2020_shu_2.PNG "[Source](https://arxiv.org/abs/2003.02409).")  |
 |:--:|
-| *The ego vehicle **updates its beliefs** on the **`route`-intention** of the oncoming vehicle. At start, actions share the same pattern. But when the **`left-turn` intention becomes highly likely**, an `acceleration` action is performed (up) while a `braking` action is preferred in the `straight`-intention case since the future path is blocked by the oncoming traffic. [Source](https://arxiv.org/abs/2003.02409).* |
+| *The ego vehicle **updates its beliefs** on the **`route`-intention** of the oncoming vehicle. At start, actions share the same pattern. But when the **`left-turn` intention becomes highly likely**, an `acceleration` action is performed (top-left). In the `straight`-intention case, **the future path is blocked** by the oncoming traffic (right). Instead of stopping and then **waiting at standstill**, the ego vehicle slows down to **creep forward**, targeting **a `CTP` more far away**. [Source](https://arxiv.org/abs/2003.02409).* |
 
 Authors: Shu, K., Yu, H., Chen, X., Chen, L., Wang, Q., Li, L., & Cao, D.
 
 - Motivations:
   - Replicate **_human-like_ efficient behaviour** for a **left-turn** at an unsignalized intersection, trading off between **safety** and **conservatism**, without explicit hand-written rules:
-    - "Before merging into the intersection, the ego vehicle drives into the intersection with high speed. Then **it decelerates to a lower speed and creeps forward**, considering the **potential of collision** with the oncoming vehicle while **waiting for the oncoming vehicle’s intention to become certain**. The ego vehicle then performs **more confident** actions on a proper route when the intention of the oncoming vehicles becomes clear."
+    - > "Before merging into the intersection, the ego vehicle drives into the intersection with high speed. Then **it decelerates to a lower speed and creeps forward**, considering the **potential of collision** with the oncoming vehicle while **waiting for the oncoming vehicle’s intention to become certain**. The ego vehicle then performs **more confident** actions on a proper route when the intention of the oncoming vehicles becomes clear."
 - Architecture:
-  - `1-` [high-level] Paths generation using `CTP`s.
-  - `2-` [low-level] Path selection and speed planning using a `POMDP`.
+  - `1-` [`high-level`] Paths generation to define `CTP`s. **Offline**.
+  - `2-` [`low-level`] **`CTP` selection** and speed planning on the chosen path.  **Online**.
 - One term: **"critical turning point" (`CTP`)**.
-  - > "The starting points where the vehicle **makes hard steering** (**sharp turning**) are identified and extracted as **'turn points'**."
+  - > "The starting points where the vehicle **makes hard `steering`** (**sharp turning**) are identified and extracted as **'turn points'**."
   - They are computed based on the critical zone extraction (`CZE`) which is generated from road geometry.
-  - Path candidates are then generated from the `CTP` and sent to the lower-level planner for path selection and speed planning.
+  - Path candidates are then generated from the `CTP` and sent to the lower-level planner for `path selection` and `speed planning`.
   - [Benefits of `CTP`s]
     - > "Our **candidate paths planned with `CTP`** gives the ego vehicle an option to **keep moving forward** to reach the next `CTP` when one of the paths is blocked by the oncoming traffic."
     - > "The proposed method spends about **`1.5s` less time to pass** through the intersection than the one that does not use `CTP`s."
     - > "When the oncoming vehicle is driving with a **higher speed**, the **shortest and the most aggressive path** is chosen since the **waiting time is shorter**."
 - About the **`POMDP`** formulation:
-  - [hidden part of state] Oncoming vehicles have unknown intentions: either `straight` or `left-turn`.
-    - The other vehicle is assume to **ignore the ego-car** and the uncertainty is about the **chosen route**.
-    - Other approaches include the **yield reaction** of the other's, e.g. {`stopping`, `hesitation`, `normal`, `aggressive`}.
-  - [observation] speeds and positions - _I think an `orientation` would also be useful to infer which route is taken + give a sense to the `speed` scalar._
-  - [action] It is **`2`-dimensional**:
-    - `1-` (speed planning) - The **`ego-acceleration` along the current path** in [`-4 m/s2`, `4 m/s2`] with a step of `1 m/s2`.
-    - `2-` (path selection) - A **`left-turn` Boolean variable** which _"conveys sharp turn instructions"_. - _I understand it as a change in selected path_
-  - [transition model] All vehicles are assumed to move at **constant speed** on predefined routes.
-  - [solver] [Adaptive Belief Tree](http://robotics.itee.uq.edu.au/dokuwiki/papers/isrr13_abt.pdf) (`ABT`).
+  - [hidden part of `state`] Oncoming vehicles have unknown **intentions**: either `straight` or `left-turn`.
+    - The other vehicle is assumed to **ignore the ego-car** and the uncertainty is about the **chosen route**.
+    - _Other approaches include the_ **_yield reaction_** _of the other's, e.g. {`stopping`, `hesitation`, `normal`, `aggressive`}._
+  - [`observation`] `speeds` and `positions` in **Cartesian** coordinate system.
+    - _I think an `orientation` would also be useful to infer which route is taken + give a sense to the `speed` scalar._
+  - [`action`] It is **`2`-dimensional**:
+    - `1-` (`speed` planning) - The **`ego-acceleration` along the current path** in [`-4 m/s2`, `4 m/s2`] with a step of `1 m/s2`.
+    - `2-` (`path` / `CTP` selection) - A **`left-turn` Boolean variable** which _"conveys sharp turn instructions"_. - _I understand it as a change in selected path: where to leave the initial lane_
+  - [`transition` model] All vehicles are assumed to move at **constant speed** on predefined routes.
+  - [`solver`] [Adaptive Belief Tree](http://robotics.itee.uq.edu.au/dokuwiki/papers/isrr13_abt.pdf) (`ABT`).
     - "Instead of **trimming the entire policy tree** after an action is selected, the `ABT` algorithm **only modifies parts** of the tree that are influenced by the updated belief after executing the selected action".
 
 </details>
