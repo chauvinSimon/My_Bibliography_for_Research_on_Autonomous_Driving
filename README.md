@@ -554,7 +554,7 @@ Note: I find very valuable to get insights from the **CMU** (Carnegie Mellon Uni
 
 ---
 
-**`"Driving Through Ghosts: Behavioral Cloning with False Positives."`**
+**`"Driving Through Ghosts: Behavioral Cloning with False Positives"`**
 
 - **[** `2020` **]**
 **[[:memo:](https://arxiv.org/abs/2008.12969)]**
@@ -8603,6 +8603,85 @@ Authors: Zhu, Y., & Zhao, D.
 ---
 
 ## `Planning` and `Monte Carlo Tree Search`
+
+---
+
+**`"Driving Maneuvers Prediction Based Autonomous Driving Control by Deep Monte Carlo Tree Search"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://ieeexplore.ieee.org/document/9082903/)]**
+**[** :mortar_board: `University of Chengdu`, `University of Texas`, `San Diego State University`**]**
+
+- **[** _`AlphaGo`, `end-to-end`, `combining planning + learning`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://ieeexplore.ieee.org/document/9082903/).](media/2020_chen_7.PNG "[Source](https://ieeexplore.ieee.org/document/9082903/).")  |
+|:--:|
+| *The **`MCTS` search** is assisted by two networks: A **`value` net** is learnt from the **collected experiences** and used for the **`expansion` and `evaluation` steps**. A second net learns to **predict the `transitions`**, enabling rollouts **independently of the simulator**. [Source](https://ieeexplore.ieee.org/document/9082903/).* |
+
+| ![[Source](https://ieeexplore.ieee.org/document/9082903/).](media/2020_chen_8.PNG "[Source](https://ieeexplore.ieee.org/document/9082903/).")  |
+|:--:|
+| *The **`expansion` and `simulation` steps** of the vanilla `MCTS` are merged, relying on a network that predicts the **`action` probabilities** and **associated `values`** based on the current `state`. [Source](https://ieeexplore.ieee.org/document/9082903/).* |
+
+| ![[Source](https://www.nature.com/articles/nature16961).](media/2016_silver_1.PNG "[Source](https://www.nature.com/articles/nature16961).")  |
+|:--:|
+| *Compared to `AlphaGo`, the **evaluation of an `expanded` node** is done using the **`value net` only**. **No rollout** with some `fast rollout policy` `pπ` is performed. [Source](https://www.nature.com/articles/nature16961).* |
+
+| ![[Source](https://ieeexplore.ieee.org/document/9082903/).](media/2020_chen_9.PNG "[Source](https://ieeexplore.ieee.org/document/9082903/).")  |
+|:--:|
+| *How the **prior `action` probability** is used during the `selection` phase? Left: proposed approach. Right: `AlphaGo`. [Source1](https://ieeexplore.ieee.org/document/9082903/) [Source2](https://www.nature.com/articles/nature16961).* |
+
+Authors: Chen, J., Zhang, C., Luo, J., Xie, J., & Wan, Y.
+
+- Close to **model-based `RL`** / **learning-based `planning`**, it uses the idea of `AlphaGo`.
+
+- Motivations:
+  - `1-` **`end-to-end`**: predict `steering` from front view image on a racing track.
+    - Using the Udacity Self-driving Simulator (`USS`) and `Torcs`.
+  - `2-` Improve **training efficiency**. Compared to **model-free `RL`** and behavioural planning.
+    - > "The `training losses` of [_the proposed_] `AVP` network, `DQN`, `DDPG` and `IL` converge at the training step `40,000`, `80,000`, `70,000` and `30,000`, respectively. Hence, the `AVP` network improves `50.0%` compared to `DQN`, `42.9%` compared to `DDPG` in **training efficiency** and only loses `33.3%` in training efficiency compared to `IL`. [_Probably because `AVP` should predict the `next state` for_ **_all `actions`_**, not only the optimal ones_.]"
+  - `3-` Interpretability: **predict manoeuvres** by reconstructing **multiple possible trajectories**.
+
+- Main idea: `MCTS` with some **learnt modules**.
+  - > "We employ `deep-MCTS` based on **asynchronous policy** and the **value MCTS** algorithm ([`APV-MCTS`](https://www.nature.com/articles/nature16961) _from `AlphaGo`_) which contains **three steps** by **merging the `expansion` and `simulation` steps**."
+  - No info about the `timestep`.
+
+- _What_ **_transition model?_** _How to predict `s'`?_
+  - A first net predicts the `next state` of the vehicle based on a given control `action` and the current `state`.
+    - I.e. `grey-scale image` to `grey-scale image` prediction.
+  - Loss: distance between images. E.g. `L2`.
+
+- _How to_ **_guide_** _the tree `expansion` and make the `evaluation` step more efficient?_
+  - `1-` By estimating a **`value` function `V(s)`** to complement/avoid **rollouts**.
+  - `2-` By estimating the **`action` selection probabilities** (i.e. a **prior policy**), used for both the **initialization of new nodes** and during the `selection` phase.
+  - A second net predicts the **`action` selection probabilities `pt`** and the `value` `vt` of current `state` `ςt`.
+    - `P(n)` is the **prior selection probability** of node `n`.
+
+- Metrics:
+  - Stability of driving trajectory: the mean of the **deviation** to track centre (`MDC`).
+  - Stability of driving **control**: the mean **continuity** error (`MCE`).
+  - No consideration of the **efficiency**? E.g. `speed`.
+
+- About `AlphaGo`:
+  - Neural networks are used to reduce the **effective `depth` and `breadth`** of the search tree:
+    - `1-` **Evaluating positions** using a `value` network.
+    - `2-` **Sampling actions** using a `policy` network.
+    - > "First, the **`depth` of the search** is reduced by **`state evaluation`**: truncating the search tree at `state` `s` and replacing the subtree below `s` by an **approximate `value` function `v(s)`** that **predicts the outcome from `state` `s`**."
+    - > "Second, the **`breadth` of the search** is reduced by **sampling `actions` from a `policy` `p(a|s)`** that is a probability distribution over possible moves `a` in position `s`."
+  - Three learning steps:
+    - > [`policy` learnt from `BC`] "**Supervised learning (`SL`)** `policy` network directly from expert human moves."
+    - > [`policy` improved by `self-play`] "Next, we train a reinforcement learning (`RL`) `policy` network that **improves the `SL` policy network** by optimizing the final outcome of games of **self-play**."
+    - > "Finally, we train a **`value` network** that predicts the winner of games played by the `RL` `policy` network against itself."
+  - **`expansion` phase**:
+    - The **leaf state `sL`** is processed just once by the **`SL` policy network**. The **output probabilities** are stored as **prior probabilities `P`** for each legal `action`.
+      - This impacts the **action selection**: `argmax`[`Q(s)`+`u(s)`] where the **bonus term `u`** is proportional to that **prior probability** but decays with repeated visits to **encourage exploration**.
+    - The **leaf node** is **evaluated** in two very different ways. Evaluations are combined by a **weighted sum**.
+      - `1-` By the **value network `vθ(sL)`**.
+      - `2-` By the outcome of a **random rollout played out** until terminal step `T` using the **fast rollout policy `pπ`**.
+
+</details>
 
 ---
 
