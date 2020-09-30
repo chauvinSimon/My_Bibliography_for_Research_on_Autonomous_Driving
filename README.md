@@ -1,6 +1,6 @@
 # My Bibliography for Research on Autonomous Driving
 
-Note: Some articles may be missing at the bottom of this preview page (due to length). Open [README.md](https://github.com/chauvinSimon/My_Bibliography_for_Research_on_Autonomous_Driving/blob/master/README.md) to get all the articles!
+Note: Some articles may be missing at the bottom of this preview page (due to length). Open ➡️ **[README.md](https://github.com/chauvinSimon/My_Bibliography_for_Research_on_Autonomous_Driving/blob/master/README.md)** ⬅️ to get all the articles!
 
 ## Motivation
 
@@ -8606,232 +8606,6 @@ Authors: Zhu, Y., & Zhao, D.
 
 ---
 
-**`"Belief State Planning for Autonomous Driving : Planning with Interaction , Uncertain Prediction and Uncertain Perception"`**
-
-- **[** `2019` **]**
-**[[:memo:](https://publikationen.bibliothek.kit.edu/1000120841)]**
-**[** :mortar_board: `KIT`**]**
-**[** :car: `BMW` **]**
-
-- **[** _`ABT`, `information gathering`, `occlusion`_ **]**
-
-<details>
-  <summary>Click to expand</summary>
-
-| ![[Source](https://publikationen.bibliothek.kit.edu/1000120841).](media/2019_hubmann_1.PNG "[Source](https://publikationen.bibliothek.kit.edu/1000120841).")  |
-|:--:|
-| *Various sources of **uncertainty** and how to model the scene when dealing with **occlusion**. The variable `g` is a Boolean, indicating whether there is a car (`g=1`) in the occluded area. It is estimated by the `belief tracker`. `Ψ` denotes the edge of the **field of view** on the path of a **phantom vehicle**. It is part of the `observation` and used for the `transition` model. The idea is to **sample if the phantom vehicle is detected or not**. The probability of this sampling is proportional to the **revealed occluded area** during the **transition** from `state`(`t`) to `state`(`t+1`). I admit I did not fully understand. [Source](https://publikationen.bibliothek.kit.edu/1000120841).* |
-
-| ![[Source](https://publikationen.bibliothek.kit.edu/1000120841).](media/2019_hubmann_2.PNG "[Source](https://publikationen.bibliothek.kit.edu/1000120841).")  |
-|:--:|
-| *Hierarchy: The **`behaviour` planner** (**`A*`-based** or **`POMDP`-based**) generates an optimal **plan** first, but under different optimization criteria than the **`trajectory` planner**. The result of the `behaviour` planner is a **`policy`, not a trajectory**! Different plans can be retrieved from it, depending on the scene evolution. In a second step, the **most probable trajectory** in the **generated policy of the `POMDP`** is retrieved and optimized by a **local `trajectory` planning** algorithm on a **shorter horizon**. [Source](https://publikationen.bibliothek.kit.edu/1000120841).* |
-
-| ![[Source](https://publikationen.bibliothek.kit.edu/1000120841).](media/2019_hubmann_3.PNG "[Source](https://publikationen.bibliothek.kit.edu/1000120841).")  |
-|:--:|
-| *The **`rollout` stage** of the `MCTS` uses a **deterministic `A*`** that solves a **simplified (deterministic)** problem, followed by **constant velocity rollouts**. Thus, new **belief nodes** can be quickly initialized with an **estimated `value`** (heuristic). Note that `observations` (measurements) come at `1Hz`. In between, the tree is ''recycled'' and **produces `4` `reference trajectories`**. Right: `observation` clustering. If a **new `observation`** arrives, it is tried to match it on one of the **existing `observation` clusters**. [Source](https://publikationen.bibliothek.kit.edu/1000120841).* |
-
-| ![[Source](https://publikationen.bibliothek.kit.edu/1000120841).](media/2019_hubmann_4.PNG "[Source](https://publikationen.bibliothek.kit.edu/1000120841).")  |
-|:--:|
-| *Top: `prediction`, `manoeuvre selection` and `trajectory planning` are done separately. It assumes that the **probabilistic future behaviour** of the other agents is **independent** of the (future) ego-decisions, which may work well for **simple scenarios**. Bottom: In `MCTS`, an **external `prediction`** algorithm is not needed as the other agents are **simulated stepwise ahead** as part of a **forward simulation**. One challenge is to define these **`transition` models** though. Bottom-right: considering **_possible_ future `observation`s** (`measurements`) leads to a **closed-loop** policy planner that respects not only the **current `belief` state** but also the **most likely future scenarios**. This enables **less-conservative behaviours**, for instance by **postponing decisions** until more information is collected. [Source](https://publikationen.bibliothek.kit.edu/1000120841).* |
-
-| ![[Source](https://publikationen.bibliothek.kit.edu/1000120841).](media/2019_hubmann_5.PNG "[Source](https://publikationen.bibliothek.kit.edu/1000120841).")  |
-|:--:|
-| *The __deterministic__ formulation. It is solved with an **`A*` graph search** on a **receding horizon**. Three types of **`Event`** are defined to populate the **`s`-`t` cost map**. [Source](https://publikationen.bibliothek.kit.edu/1000120841).* |
-
-| ![[Source](https://publikationen.bibliothek.kit.edu/1000120841).](media/2019_hubmann_6.PNG "[Source](https://publikationen.bibliothek.kit.edu/1000120841).")  |
-|:--:|
-| *The __stochastic__ formulation. Here for the `intersection` scenario. The `belief` tracker uses `observations` to **estimate the current `route`** (hidden `intention`) followed by the other vehicles and **maintain `belief`** about the **possible futures**. This leads to **less conservative** behaviours. [Source](https://publikationen.bibliothek.kit.edu/1000120841).* |
-
-| ![[Source](https://github.com/chauvinSimon/IV19).](media/2019_hubmann_1.gif "[Source](https://github.com/chauvinSimon/IV19).")  |
-|:--:|
-| *The ego car maintains **multiple hypotheses** wrt. the path the other car is following and prepare **multiple plans** (in a `policy`) to react accordingly. The **`observations` are aggregated** over time to estimate the **probability of each path** (`belief tracking`). [Source](https://github.com/chauvinSimon/IV19).* |
-
-Author: Hubmann, C.
-
-- PhD Thesis.
-
-- One idea: combine `MCTS` with a **deterministic `A*` roll-out heuristic** for fast convergence to the optimal policy.
-
-- Motivations:
-  - `1-` **Uncertainty**-aware planner.
-    - Since the **current `state` is not _fully_ known**, a **`belief` over state** is maintained from `observations`. It is described by `b`(`s`), i.e. **the probability of being in a certain state `s`**.
-  - `2-` **Interaction**-aware planner.
-    - > "Modeling **intertwined `prediction` and `planning`** allows to consider the **reaction** of other agents to the trajectory of the autonomous car."
-  - `3-` **"_Globally_ optimal"**, [complete], **anytime** and **online** planner.
-    - > [Real time capability] "This is possible by extending state of the art solvers with domain **specific heuristics** which allows to **focus on promising branches** in an otherwise intractable graph search."
-  - `4-` Rely neither on **manually designed logic rules**, nor on **hand-selected `manoeuvres`**.
-    - This would become infeasible in **complex urban environments**.
-  - `5-` Avoid **over-conservatism** of rule-based planners.
-    - The idea is to consider **_possible_ future `observation`s** (`measurements`) during planning in this **_sequential_** decision-making problem.
-    - This leads to a **`closed-loop`** planner which generates a `policy` over an **uncertain `belief` space**, offering:
-      - The ability to **postpone (conservative) decisions**, waiting for more information to be gathered.
-        - The policy contains **reactive plans** for possible **future `observations`**, i.e. measurements of the **uncertain behaviour** of the other agents.
-      - The ability to take `action`s in order to **reduce uncertainty**, i.e. **active `information gathering`**.
-        - E.g. **step laterally** off the predefined path to **increase the `field of view`** in **occluded scenarios** (`lateral exploration`).
-    - > "By considering **_possible_ future `observations` explicitly**, the algorithm is able to predict in what ways the **current `belief` state** may change in the future. This enables the **postponing of decisions**, such as merging _before_ or _after_ another vehicle, as the algorithm is able to predict that future `observations` will lead to a **less uncertain prediction**."
-    - > "This behavior (also known as `information gathering`) is the result of the policy because the **`observation` model has simulated**, that the next measurements will lead to a **less uncertain `belief` state**. Because of the `observation` model, it can even infer **at what point in time the `belief` becomes less uncertain** and approach the intersection accordingly."
-
-- About **`manoeuvres`**.
-  - > "While a precise **definition** of a **`maneuver`** does not exist, it is often compared to the mathematical concept of **`homotopies`**. Two continuous trajectories are in the **same `homotopy` class** if a continuous, collision-free projection exists that transforms one trajectory to the other one. For example, two different trajectories, **one overtaking an obstacle on the right side** and one on the **left side** lie in **different `homotopies`**."
-  - Many works **define beforehand a set of `manoeuvres`**. For each, **trajectories** are planned and then **evaluated** with a cost function.
-    - The author wants to avoid this **_a priori_ enumeration of `manoeuvres`** which **constrains the solution space** and may prevent **global and optimal** behaviours.
-    - > "While the approach of only considering a **limited amount of predefined `maneuvers`** is feasible on highways, this may become intractable in **urban environments** due to the high amount of varying topological situations and corresponding maneuver possibilities."
-
-- _What types of_ **_uncertainty_**_?_
-  - Uncertain **perception**:
-    - `1-` Noisy **sensor measurements**
-    - `2-` **Occlusions**
-  - Uncertain **prediction**:
-    - `3-` Unknown **intentions** of other drivers
-    - `4-` Unknown **driver models** for other drivers, including interaction capabilities
-
-- _How to plan under uncertainty?_
-  - > "The problem of optimally considering the uncertainty of future `states` can be addressed by planning in the **space of `policies`** instead of in the **space of `trajectories`**."
-  - A `policy` is generated over a **`belief` state** and optimizes the expected `reward`, starting from an initial `belief` state.
-
-- About `open-loop`/`close-loop` planners.
-  - `1-` **`open-loop` motion planning** algorithms **do not consider future (possible) `measurements`** which arrive during the execution of the planned motion.
-    - > "Respecting every **possible prediction** leads to safe but potentially **conservative behavior**. Another possibility is to consider only the most likely prediction(s)."
-    - > "The **`open-loop`** planner has to **slow down immediately** as it is not able to incorporate **future `observations`** in the `planning` phase. This means, that the planner **reacts to both possible future situations** simultaneously."
-  - `2-` **`close loop` motion planning** on the other hand allows to **consider the possible future observations** in the planning stage.
-    - > "The policy **contains `2` plans** about **how to react** to the `observation` which arrives at `t=1`."
-    - > "On the contrary, the `POMDP` planner is able to **reason about both possible scenarios**. This results in a policy that **postpones the decision** of `crossing` vs. `braking` to a **future point in time** when more observations have been recorded."
-
-- _How to make_ **_interaction-aware_** _planning?_ By **not separating `planning` and `prediction`**.
-  - > "A common approach is to **separate `prediction` and `planning`**. In this case, all the trajectories of the other agents are predicted first. Given the predicted trajectories, a **maneuver** is selected for the autonomous car (by the **behavior layer**) and a correspondent trajectory is planned by the **`trajectory` planner**."
-  - A **separation** would assume that the **probabilistic future behaviour** of the other agents is **independent** of the (future) ego-decisions.
-    - It would work for simple scenarios (e.g. highway).
-    - But not for urban situations where **interaction** must be explicitly considered.
-  - _How to deal with the uncertainty in_ **_prediction_**_, when_ **_separation_** _is used?_
-    - **Frequent replanning** is one option. Especially when the prediction is **unimodal**.
-  - In `MCTS`, an **external prediction** algorithm is not needed as the other agents are **simulated stepwise ahead** as part of a **forward simulation**. One challenge is to define these **`transition` models**, usually one for each of the different possible manoeuvres. For instance `IDM`.
-
-- Making the problem simpler: the **_"path-velocity decomposition"_ assumption**.
-  - It is made for most of scenarios.
-  - Except for the strongly coupled problems **`lane change`** and `occlusions` which require **combined _longitudinal_ and _lateral_ optimization**.
-
-- _What if the_ **_`transition` model is deterministic_** _and the_ **_`state` fully observable_**_?_
-  - Then the planning problem is simpler and can be represented as a **graph**:
-    - `vertices` = `state`s
-    - `edges` = `action`s
-  - An **`A*` graph search on a receding horizon** derives the **longitudinal `acceleration`**.
-    - The path to follow is given by another module, based on **variational methods**, i.e. local convex optimization around a reference path.
-  - The `A*` algorithm uses a **heuristic** to speed up the graph search by **truncating non-promising branches early**.
-    - Here the heuristic is based on the idea of **[Inevitable Collision States](https://www.researchgate.net/publication/4046235_Inevitable_Collision_States_A_Step_Towards_Safer_Robots) (`ICS`)**.
-    - > "When a new `state` is generated, it is tested for **being an `ICS`**. If this is the case, the remaining **estimated costs** are at least the **collision costs**."
-  - The **traffic rules** and the **predicted behaviours** of other agents are represented into a **spatio-temporal cost map**.
-    - Only the **most likely prediction** is considered for each agent.
-    - The uncertainty in the (**unimodal**) prediction is addressed by **frequent replanning (`10Hz`)**.
-  - Information of **possible future `observations`** is ignored. Hence **open-loop**.
-
-- About the **`cost` definition** for the `A*` search.
-  - Three types of **events** are defined:
-    - `1-` **`static`**. It prohibits the ego vehicle to **traverse a certain `position` on its path at a certain position** during a **`time` interval**.
-    - `2-` **`dynamic`**. The prohibited `position` is **`time` dependent**. For instance leading car.
-      - Also traffic lights, otherwise the `green` and `red` phases are assumed to last forever.
-      - > "During a `yellow` phase, the **legal length of the `yellow` phase** is used to **predict the traffic signal switch**, such that `t-start` is the **predicted start of the `red` phase** and `t-end` is set to infinity. That way, the algorithm implicitly handles the decision **to pass or not to pass** a (recently switched) traffic light."
-    - `3-` **`area`**. It prohibits the ego vehicle to enter certain areas when they **cannot be left again**.
-
-- _How to penalize deviation from the_ **`desired speed`** _in the `reward`?_
-  - The `desired speed` depends on the **road’s `curvature`** and the **current legal `speed limit`**.
-  - Too **high** speeds are punished **_quadratically_**.
-  - Too **low** speeds are punished **_linearly_**.
-    - This allows lower velocities during **decelerating upon `events`** such as _red traffic lights_.
-    - > "Punishing lower velocities in a **linear way** motivates the planner to drive with the desired velocity but allows for **slower solutions** (e.g. because of a **temporarily occupied lane**)."
-
-- _How to ensure_ **_consistent decision_** _over time and prohibit jumps in behaviours?_
-  - The **current _desired_ `state`** on the **_reference_ trajectory** is considered during replanning, instead of the **_measured_ `state`**.
-  - > "Instead of planning from the actual, **measured state** `x-meas(t0)` the **currently _desired_ state** `x-des(t0)`, retrieved from the **previous planning step**, is used as the **start state `x-start`**."
-
-- _What if the_ **_`transition` model is stochastic_** _and the_ **_`state` partially observable_**_?_
-  - Modelling with `POMDP`
-  - Challenges: **curse of history** and **curse of dimensionality**.
-    - > "One of the main difficulties in solving `POMDPs` is the **continuous `belief` state**."
-    - The `observation` space is continuous. But **observation clustering** is performed to construct the tree.
-    - > During the simulation of the `belief` tree, the `observations` which are following a certain `action` must be **clustered into a discrete number of possible `observations`**. This is the case as the **structure of a tree** can only be generated when a **discrete number of `observations`** exist.
-    - If a **new `observation`** arrives, it is tried to match it on one of the **existing `observation` clusters**.
-
-- `POMDP` formulations (multiple since different scenarios are considered ).
-  - `action`.
-    - A **discrete** set. Describing `longitudinal acceleration`.
-  - `state`.
-    - `longitudinal position` and `speed` on a path.
-    - **Hidden parts** which cannot be measured directly but only **inferred over time** can be, depending on the **scenario**:
-      - `1-` [`Crossing`] The `path` followed by the other vehicle, i.e. its `intention`.
-      - `2-` [`Merging`] **`Willingness`** for yielding.
-        - > "The variable `m` is used to describe the **_friendliness_** of the other driver i.e. if he will **react by yielding** (`m=1`) to a merge attempt or not (`m=0`)."
-      - `3-` [`Occlusion`] A Boolean, indicating whether there is **a car in the occluded area**. _But no information about its `position`?_
-  - `observation`.
-    - `position` as (`x, y`) instead of (`s`, [`lat-offset`], `path`) since `path` is not observable.
-    - _no heading? this could be useful to estimate the path it follows_
-    - [`Occlusion`] The `FoV` on every lane.
-
-  - `observation` model.
-    - Noise is added to the true `position` and `speed`.
-    - [`Occlusion`] For every **potential phantom** vehicle, an observation is also generated. _Ok, but what `position` is given?_
-
-  - `transition` model.
-    - To convert `acceleration` to `position`: simple physical models (**point-mass object** with `1st` order integration).
-    - To derive the `action` of other agents. Depending on the scenario:
-      - `IDM` is used to compute the `longitudinal acceleration`.
-        - Potentially extended with **interaction-based** term, when **paths intersect** in the near future.
-        - > "The `acceleration` of the other vehicles is additionally perturbed by use of **Gaussian noise** to represent the **model uncertainty**."
-      - A **learnt classifier** predicts the **probability of `yielding`** to a possible merge attempt / `ignoring` and simply following the existing front vehicles.
-  - `reward`
-    - Considering `collision`, `comfort` and `desired speed`.
-
-- _How to represent_ **_phantom vehicles_** _[`occlusion`]?_
-  - The idea is to represent all the possible vehicle configurations in the occluded area by **one reachable set**:
-    - > "As it is infeasible to describe **all possible vehicle configurations in occlusions** by particular `states`, the idea is to describe all possible configurations on a occluded lane by **one `set`**."
-    - For each **occluded lane**, a **`phantom` vehicle** is placed at the start of the **field of view `FoV`**.
-    - It has **infinite length** and drives faster than the **speed limit** (i.e. worst-case).
-  - > "If every possible, occluded vehicle configuration would be represented explicitly, a certain **subset of these configurations** would be **discovered, when the `FoV` is expanded**."
-  - > "Nonetheless, in this work, the idea is to represent **all these configurations** by **one reachable set**. Instead of splitting the set into many discretized subsets, the idea is to **sample if the `phantom` vehicle is detected or not**. The probability of this sampling is **proportional to the revealed occluded** area during the **transition from `state`(`t`) to `state`(`t+1`)**." [_not very clear to me_]
-
-- _How the_ **_`belief` state_** _can be_ **_estimated over time_**_?
-  - By **recursive Bayesian estimation**.
-  - [`Intersection` scenario] A Bayes classifier with `2`-dimensional **feature** (`position` and `speed`) computes the **probability of each vehicle being on a certain route `r`**.
-    - The **likelihood** term includes `Euclidean distances` to the considered path.
-  - _How is it done for the other two scenarios? I did not understand._
-
-- _How `POMDP`s can be solved?_
-  - `1-` Offline.
-    - > "The `value` function of a `POMDP` is always **piece-wise linear and convex** in the `belief`."
-    - The optimal value function over the continuous `belief` is represented by a set of **alpha-vectors**.
-    - **Point-based solvers**, such as `SARSOP`, `PBVI`, `HSVI`.
-      - Why _"point-"_?
-      - > "The idea of **point-based** algorithms is to overcome that problem by **backing up the `value` function** only for a **discrete set of chosen `belief-points`**."
-  - `2-` Online: with an online **graph/tree search**.
-    - Traditional graph-searches are not appropriate due to the **non-deterministic** nature of the `transition` model.
-    - **Monte Carlo Tree Search** (`MCTS`) is one option: it combines a **deterministic tree search** with **random sampling**.
-    - For instance, **`Adaptive Belief Tree`** ([`ABT`](https://link.springer.com/chapter/10.1007/978-3-319-28872-7_35)) uses `MCTS`, optimized for `POMDP`s, where the search is done in a **`belief` tree**.
-      - > "The combination of a **smart selection method** (e.g. the `UCT` algorithm) and the **fast estimation of future `rewards`** by a sufficiently good **default `policy`** allows to reduce the **search space** drastically, which gives the algorithm its **online capabilities**."
-      - Another characteristic of `ABT`: reuse previous parts of the tree.
-    - Here the `ABT` implementation **["Toolkit for Approximating and Adapting POMDP Solutions in Real Time"](https://robotics.itee.uq.edu.au/~hannakur/dokuwiki/papers/acra14_tapir.pdf) (`TAPIR`)** ([[:octocat:]](https://github.com/rdl-algorithm/tapir)) is used to solve the `POMDP` online.
-
-- _How to make the_ **_search in the `belief` tree_** _faster?_
-  - By **initializing the `value`** of **new `belief` nodes** with **_optimized_ roll-outs**.
-    - A **heuristic** is used to estimate the `value` function of the nodes.
-    - > "The **heuristic value** is calculated by solving a **deterministic, simplified problem online** as soon as a **new `belief` state** is encountered."
-    - Here using the previously developed `A*` graph-search.
-  - More precisely:
-    - `1-` Optimization of the **simplified (`deterministic`) problem** is used for the **first three steps** ...
-    - `2-` ... Followed by a **constant velocity roll-out** until the optimization horizon.
-
-- _What_ **_decision frequency_** _and_ **_tree depth_**_, i.e. `planning horizon`?_
-  - > [On the one hand ...] "The more time is used for **sampling** of episodes, the better the policy is approximated."
-  - > [On the other hand ...] "The earlier the `policy` is sent to the trajectory layer, the **less delay** is introduced between the sensor measurements and the corresponding policy."
-  - Here, the algorithm returns a decision every `200ms` (`5Hz`).
-  - > "While **the solution is optimized for `200ms`**, a **step size of `∆t=1s`** is used to **construct the tree** to allow for a **planning horizon of `8-10s`**." [_i.e. `depth`~`8-10`_]
-
-- Future works:
-  - `1-` Constrained `POMDPs` for **safety guarantees**.
-  - `2-` Combining `learning` and `planning`: The **heuristic** that **guides the online search** could be **learnt offline**.
-
-</details>
-
----
-
 **`"Driving Maneuvers Prediction Based Autonomous Driving Control by Deep Monte Carlo Tree Search"`**
 
 - **[** `2020` **]**
@@ -9730,6 +9504,232 @@ Authors: Meghjani, M., Luo, Y., Ho, Q. H., Cai, P., Verma, S., Rus, D., & Hsu, D
   - `1-` The **intention prediction** module considers the **exo-vehicles independently**, **ignoring the influence of interactions** between them.
   - `2-` No **feedback loop**: The high-level `action`s provided by the planner are **decoupled from the low-level control**. It is possible that low-level controller **cannot execute the high-level `action`** given by the planner.
     - In particular, the planner suffers from **decision switches** between `lane-change` and `keep-lane`. Instable high-level commands may become struggling for the **low-level controller** to implement.
+
+</details>
+
+---
+
+**`"Belief State Planning for Autonomous Driving: Planning with Interaction, Uncertain Prediction and Uncertain Perception"`**
+
+- **[** `2019` **]**
+**[[:memo:](https://publikationen.bibliothek.kit.edu/1000120841)]**
+**[** :mortar_board: `KIT`**]**
+**[** :car: `BMW` **]**
+
+- **[** _`ABT`, `information gathering`, `occlusion`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://publikationen.bibliothek.kit.edu/1000120841).](media/2019_hubmann_1.PNG "[Source](https://publikationen.bibliothek.kit.edu/1000120841).")  |
+|:--:|
+| *Various sources of **uncertainty** and how to model the scene when dealing with **occlusion**. The variable `g` is a Boolean, indicating whether there is a car (`g=1`) in the occluded area. It is estimated by the `belief tracker`. `Ψ` denotes the edge of the **field of view** on the path of a **phantom vehicle**. It is part of the `observation` and used for the `transition` model. The idea is to **sample if the phantom vehicle is detected or not**. The probability of this sampling is proportional to the **revealed occluded area** during the **transition** from `state`(`t`) to `state`(`t+1`). I admit I did not fully understand. [Source](https://publikationen.bibliothek.kit.edu/1000120841).* |
+
+| ![[Source](https://publikationen.bibliothek.kit.edu/1000120841).](media/2019_hubmann_2.PNG "[Source](https://publikationen.bibliothek.kit.edu/1000120841).")  |
+|:--:|
+| *Hierarchy: The **`behaviour` planner** (**`A*`-based** or **`POMDP`-based**) generates an optimal **plan** first, but under different optimization criteria than the **`trajectory` planner**. The result of the `behaviour` planner is a **`policy`, not a trajectory**! Different plans can be retrieved from it, depending on the scene evolution. In a second step, the **most probable trajectory** in the **generated policy of the `POMDP`** is retrieved and optimized by a **local `trajectory` planning** algorithm on a **shorter horizon**. [Source](https://publikationen.bibliothek.kit.edu/1000120841).* |
+
+| ![[Source](https://publikationen.bibliothek.kit.edu/1000120841).](media/2019_hubmann_3.PNG "[Source](https://publikationen.bibliothek.kit.edu/1000120841).")  |
+|:--:|
+| *The **`rollout` stage** of the `MCTS` uses a **deterministic `A*`** that solves a **simplified (deterministic)** problem, followed by **constant velocity rollouts**. Thus, new **belief nodes** can be quickly initialized with an **estimated `value`** (heuristic). Note that `observations` (measurements) come at `1Hz`. In between, the tree is ''recycled'' and **produces `4` `reference trajectories`**. Right: `observation` clustering. If a **new `observation`** arrives, it is tried to match it on one of the **existing `observation` clusters**. [Source](https://publikationen.bibliothek.kit.edu/1000120841).* |
+
+| ![[Source](https://publikationen.bibliothek.kit.edu/1000120841).](media/2019_hubmann_4.PNG "[Source](https://publikationen.bibliothek.kit.edu/1000120841).")  |
+|:--:|
+| *Top: `prediction`, `manoeuvre selection` and `trajectory planning` are done separately. It assumes that the **probabilistic future behaviour** of the other agents is **independent** of the (future) ego-decisions, which may work well for **simple scenarios**. Bottom: In `MCTS`, an **external `prediction`** algorithm is not needed as the other agents are **simulated stepwise ahead** as part of a **forward simulation**. One challenge is to define these **`transition` models** though. Bottom-right: considering **_possible_ future `observation`s** (`measurements`) leads to a **closed-loop** policy planner that respects not only the **current `belief` state** but also the **most likely future scenarios**. This enables **less-conservative behaviours**, for instance by **postponing decisions** until more information is collected. [Source](https://publikationen.bibliothek.kit.edu/1000120841).* |
+
+| ![[Source](https://publikationen.bibliothek.kit.edu/1000120841).](media/2019_hubmann_5.PNG "[Source](https://publikationen.bibliothek.kit.edu/1000120841).")  |
+|:--:|
+| *The __deterministic__ formulation. It is solved with an **`A*` graph search** on a **receding horizon**. Three types of **`Event`** are defined to populate the **`s`-`t` cost map**. [Source](https://publikationen.bibliothek.kit.edu/1000120841).* |
+
+| ![[Source](https://publikationen.bibliothek.kit.edu/1000120841).](media/2019_hubmann_6.PNG "[Source](https://publikationen.bibliothek.kit.edu/1000120841).")  |
+|:--:|
+| *The __stochastic__ formulation. Here for the `intersection` scenario. The `belief` tracker uses `observations` to **estimate the current `route`** (hidden `intention`) followed by the other vehicles and **maintain `belief`** about the **possible futures**. This leads to **less conservative** behaviours. [Source](https://publikationen.bibliothek.kit.edu/1000120841).* |
+
+| ![[Source](https://github.com/chauvinSimon/IV19).](media/2019_hubmann_1.gif "[Source](https://github.com/chauvinSimon/IV19).")  |
+|:--:|
+| *The ego car maintains **multiple hypotheses** wrt. the path the other car is following and prepare **multiple plans** (in a `policy`) to react accordingly. The **`observations` are aggregated** over time to estimate the **probability of each path** (`belief tracking`). [Source](https://github.com/chauvinSimon/IV19).* |
+
+Author: Hubmann, C.
+
+- PhD Thesis.
+
+- One idea: combine `MCTS` with a **deterministic `A*` roll-out heuristic** for fast convergence to the optimal policy.
+
+- Motivations:
+  - `1-` **Uncertainty**-aware planner.
+    - Since the **current `state` is not _fully_ known**, a **`belief` over state** is maintained from `observations`. It is described by `b`(`s`), i.e. **the probability of being in a certain state `s`**.
+  - `2-` **Interaction**-aware planner.
+    - > "Modeling **intertwined `prediction` and `planning`** allows to consider the **reaction** of other agents to the trajectory of the autonomous car."
+  - `3-` **"_Globally_ optimal"**, [complete], **anytime** and **online** planner.
+    - > [Real time capability] "This is possible by extending state of the art solvers with domain **specific heuristics** which allows to **focus on promising branches** in an otherwise intractable graph search."
+  - `4-` Rely neither on **manually designed logic rules**, nor on **hand-selected `manoeuvres`**.
+    - This would become infeasible in **complex urban environments**.
+  - `5-` Avoid **over-conservatism** of rule-based planners.
+    - The idea is to consider **_possible_ future `observation`s** (`measurements`) during planning in this **_sequential_** decision-making problem.
+    - This leads to a **`closed-loop`** planner which generates a `policy` over an **uncertain `belief` space**, offering:
+      - The ability to **postpone (conservative) decisions**, waiting for more information to be gathered.
+        - The policy contains **reactive plans** for possible **future `observations`**, i.e. measurements of the **uncertain behaviour** of the other agents.
+      - The ability to take `action`s in order to **reduce uncertainty**, i.e. **active `information gathering`**.
+        - E.g. **step laterally** off the predefined path to **increase the `field of view`** in **occluded scenarios** (`lateral exploration`).
+    - > "By considering **_possible_ future `observations` explicitly**, the algorithm is able to predict in what ways the **current `belief` state** may change in the future. This enables the **postponing of decisions**, such as merging _before_ or _after_ another vehicle, as the algorithm is able to predict that future `observations` will lead to a **less uncertain prediction**."
+    - > "This behavior (also known as `information gathering`) is the result of the policy because the **`observation` model has simulated**, that the next measurements will lead to a **less uncertain `belief` state**. Because of the `observation` model, it can even infer **at what point in time the `belief` becomes less uncertain** and approach the intersection accordingly."
+
+- About **`manoeuvres`**.
+  - > "While a precise **definition** of a **`maneuver`** does not exist, it is often compared to the mathematical concept of **`homotopies`**. Two continuous trajectories are in the **same `homotopy` class** if a continuous, collision-free projection exists that transforms one trajectory to the other one. For example, two different trajectories, **one overtaking an obstacle on the right side** and one on the **left side** lie in **different `homotopies`**."
+  - Many works **define beforehand a set of `manoeuvres`**. For each, **trajectories** are planned and then **evaluated** with a cost function.
+    - The author wants to avoid this **_a priori_ enumeration of `manoeuvres`** which **constrains the solution space** and may prevent **global and optimal** behaviours.
+    - > "While the approach of only considering a **limited amount of predefined `maneuvers`** is feasible on highways, this may become intractable in **urban environments** due to the high amount of varying topological situations and corresponding maneuver possibilities."
+
+- _What types of_ **_uncertainty_**_?_
+  - Uncertain **perception**:
+    - `1-` Noisy **sensor measurements**
+    - `2-` **Occlusions**
+  - Uncertain **prediction**:
+    - `3-` Unknown **intentions** of other drivers
+    - `4-` Unknown **driver models** for other drivers, including interaction capabilities
+
+- _How to plan under uncertainty?_
+  - > "The problem of optimally considering the uncertainty of future `states` can be addressed by planning in the **space of `policies`** instead of in the **space of `trajectories`**."
+  - A `policy` is generated over a **`belief` state** and optimizes the expected `reward`, starting from an initial `belief` state.
+
+- About `open-loop`/`close-loop` planners.
+  - `1-` **`open-loop` motion planning** algorithms **do not consider future (possible) `measurements`** which arrive during the execution of the planned motion.
+    - > "Respecting every **possible prediction** leads to safe but potentially **conservative behavior**. Another possibility is to consider only the most likely prediction(s)."
+    - > "The **`open-loop`** planner has to **slow down immediately** as it is not able to incorporate **future `observations`** in the `planning` phase. This means, that the planner **reacts to both possible future situations** simultaneously."
+  - `2-` **`close loop` motion planning** on the other hand allows to **consider the possible future observations** in the planning stage.
+    - > "The policy **contains `2` plans** about **how to react** to the `observation` which arrives at `t=1`."
+    - > "On the contrary, the `POMDP` planner is able to **reason about both possible scenarios**. This results in a policy that **postpones the decision** of `crossing` vs. `braking` to a **future point in time** when more observations have been recorded."
+
+- _How to make_ **_interaction-aware_** _planning?_ By **not separating `planning` and `prediction`**.
+  - > "A common approach is to **separate `prediction` and `planning`**. In this case, all the trajectories of the other agents are predicted first. Given the predicted trajectories, a **maneuver** is selected for the autonomous car (by the **behavior layer**) and a correspondent trajectory is planned by the **`trajectory` planner**."
+  - A **separation** would assume that the **probabilistic future behaviour** of the other agents is **independent** of the (future) ego-decisions.
+    - It would work for simple scenarios (e.g. highway).
+    - But not for urban situations where **interaction** must be explicitly considered.
+  - _How to deal with the uncertainty in_ **_prediction_**_, when_ **_separation_** _is used?_
+    - **Frequent replanning** is one option. Especially when the prediction is **unimodal**.
+  - In `MCTS`, an **external prediction** algorithm is not needed as the other agents are **simulated stepwise ahead** as part of a **forward simulation**. One challenge is to define these **`transition` models**, usually one for each of the different possible manoeuvres. For instance `IDM`.
+
+- Making the problem simpler: the **_"path-velocity decomposition"_ assumption**.
+  - It is made for most of scenarios.
+  - Except for the strongly coupled problems **`lane change`** and `occlusions` which require **combined _longitudinal_ and _lateral_ optimization**.
+
+- _What if the_ **_`transition` model is deterministic_** _and the_ **_`state` fully observable_**_?_
+  - Then the planning problem is simpler and can be represented as a **graph**:
+    - `vertices` = `state`s
+    - `edges` = `action`s
+  - An **`A*` graph search on a receding horizon** derives the **longitudinal `acceleration`**.
+    - The path to follow is given by another module, based on **variational methods**, i.e. local convex optimization around a reference path.
+  - The `A*` algorithm uses a **heuristic** to speed up the graph search by **truncating non-promising branches early**.
+    - Here the heuristic is based on the idea of **[Inevitable Collision States](https://www.researchgate.net/publication/4046235_Inevitable_Collision_States_A_Step_Towards_Safer_Robots) (`ICS`)**.
+    - > "When a new `state` is generated, it is tested for **being an `ICS`**. If this is the case, the remaining **estimated costs** are at least the **collision costs**."
+  - The **traffic rules** and the **predicted behaviours** of other agents are represented into a **spatio-temporal cost map**.
+    - Only the **most likely prediction** is considered for each agent.
+    - The uncertainty in the (**unimodal**) prediction is addressed by **frequent replanning (`10Hz`)**.
+  - Information of **possible future `observations`** is ignored. Hence **open-loop**.
+
+- About the **`cost` definition** for the `A*` search.
+  - Three types of **events** are defined:
+    - `1-` **`static`**. It prohibits the ego vehicle to **traverse a certain `position` on its path at a certain position** during a **`time` interval**.
+    - `2-` **`dynamic`**. The prohibited `position` is **`time` dependent**. For instance leading car.
+      - Also traffic lights, otherwise the `green` and `red` phases are assumed to last forever.
+      - > "During a `yellow` phase, the **legal length of the `yellow` phase** is used to **predict the traffic signal switch**, such that `t-start` is the **predicted start of the `red` phase** and `t-end` is set to infinity. That way, the algorithm implicitly handles the decision **to pass or not to pass** a (recently switched) traffic light."
+    - `3-` **`area`**. It prohibits the ego vehicle to enter certain areas when they **cannot be left again**.
+
+- _How to penalize deviation from the_ **`desired speed`** _in the `reward`?_
+  - The `desired speed` depends on the **road’s `curvature`** and the **current legal `speed limit`**.
+  - Too **high** speeds are punished **_quadratically_**.
+  - Too **low** speeds are punished **_linearly_**.
+    - This allows lower velocities during **decelerating upon `events`** such as _red traffic lights_.
+    - > "Punishing lower velocities in a **linear way** motivates the planner to drive with the desired velocity but allows for **slower solutions** (e.g. because of a **temporarily occupied lane**)."
+
+- _How to ensure_ **_consistent decision_** _over time and prohibit jumps in behaviours?_
+  - The **current _desired_ `state`** on the **_reference_ trajectory** is considered during replanning, instead of the **_measured_ `state`**.
+  - > "Instead of planning from the actual, **measured state** `x-meas(t0)` the **currently _desired_ state** `x-des(t0)`, retrieved from the **previous planning step**, is used as the **start state `x-start`**."
+
+- _What if the_ **_`transition` model is stochastic_** _and the_ **_`state` partially observable_**_?_
+  - Modelling with `POMDP`
+  - Challenges: **curse of history** and **curse of dimensionality**.
+    - > "One of the main difficulties in solving `POMDPs` is the **continuous `belief` state**."
+    - The `observation` space is continuous. But **observation clustering** is performed to construct the tree.
+    - > During the simulation of the `belief` tree, the `observations` which are following a certain `action` must be **clustered into a discrete number of possible `observations`**. This is the case as the **structure of a tree** can only be generated when a **discrete number of `observations`** exist.
+    - If a **new `observation`** arrives, it is tried to match it on one of the **existing `observation` clusters**.
+
+- `POMDP` formulations (multiple since different scenarios are considered ).
+  - `action`.
+    - A **discrete** set. Describing `longitudinal acceleration`.
+  - `state`.
+    - `longitudinal position` and `speed` on a path.
+    - **Hidden parts** which cannot be measured directly but only **inferred over time** can be, depending on the **scenario**:
+      - `1-` [`Crossing`] The `path` followed by the other vehicle, i.e. its `intention`.
+      - `2-` [`Merging`] **`Willingness`** for yielding.
+        - > "The variable `m` is used to describe the **_friendliness_** of the other driver i.e. if he will **react by yielding** (`m=1`) to a merge attempt or not (`m=0`)."
+      - `3-` [`Occlusion`] A Boolean, indicating whether there is **a car in the occluded area**. _But no information about its `position`?_
+  - `observation`.
+    - `position` as (`x, y`) instead of (`s`, [`lat-offset`], `path`) since `path` is not observable.
+    - _no heading? this could be useful to estimate the path it follows_
+    - [`Occlusion`] The `FoV` on every lane.
+
+  - `observation` model.
+    - Noise is added to the true `position` and `speed`.
+    - [`Occlusion`] For every **potential phantom** vehicle, an observation is also generated. _Ok, but what `position` is given?_
+
+  - `transition` model.
+    - To convert `acceleration` to `position`: simple physical models (**point-mass object** with `1st` order integration).
+    - To derive the `action` of other agents. Depending on the scenario:
+      - `IDM` is used to compute the `longitudinal acceleration`.
+        - Potentially extended with **interaction-based** term, when **paths intersect** in the near future.
+        - > "The `acceleration` of the other vehicles is additionally perturbed by use of **Gaussian noise** to represent the **model uncertainty**."
+      - A **learnt classifier** predicts the **probability of `yielding`** to a possible merge attempt / `ignoring` and simply following the existing front vehicles.
+  - `reward`
+    - Considering `collision`, `comfort` and `desired speed`.
+
+- _How to represent_ **_phantom vehicles_** _[`occlusion`]?_
+  - The idea is to represent all the possible vehicle configurations in the occluded area by **one reachable set**:
+    - > "As it is infeasible to describe **all possible vehicle configurations in occlusions** by particular `states`, the idea is to describe all possible configurations on a occluded lane by **one `set`**."
+    - For each **occluded lane**, a **`phantom` vehicle** is placed at the start of the **field of view `FoV`**.
+    - It has **infinite length** and drives faster than the **speed limit** (i.e. worst-case).
+  - > "If every possible, occluded vehicle configuration would be represented explicitly, a certain **subset of these configurations** would be **discovered, when the `FoV` is expanded**."
+  - > "Nonetheless, in this work, the idea is to represent **all these configurations** by **one reachable set**. Instead of splitting the set into many discretized subsets, the idea is to **sample if the `phantom` vehicle is detected or not**. The probability of this sampling is **proportional to the revealed occluded** area during the **transition from `state`(`t`) to `state`(`t+1`)**." [_not very clear to me_]
+
+- _How the_ **_`belief` state_** _can be_ **_estimated over time_**_?
+  - By **recursive Bayesian estimation**.
+  - [`Intersection` scenario] A Bayes classifier with `2`-dimensional **feature** (`position` and `speed`) computes the **probability of each vehicle being on a certain route `r`**.
+    - The **likelihood** term includes `Euclidean distances` to the considered path.
+  - _How is it done for the other two scenarios? I did not understand._
+
+- _How `POMDP`s can be solved?_
+  - `1-` Offline.
+    - > "The `value` function of a `POMDP` is always **piece-wise linear and convex** in the `belief`."
+    - The optimal value function over the continuous `belief` is represented by a set of **alpha-vectors**.
+    - **Point-based solvers**, such as `SARSOP`, `PBVI`, `HSVI`.
+      - Why _"point-"_?
+      - > "The idea of **point-based** algorithms is to overcome that problem by **backing up the `value` function** only for a **discrete set of chosen `belief-points`**."
+  - `2-` Online: with an online **graph/tree search**.
+    - Traditional graph-searches are not appropriate due to the **non-deterministic** nature of the `transition` model.
+    - **Monte Carlo Tree Search** (`MCTS`) is one option: it combines a **deterministic tree search** with **random sampling**.
+    - For instance, **`Adaptive Belief Tree`** ([`ABT`](https://link.springer.com/chapter/10.1007/978-3-319-28872-7_35)) uses `MCTS`, optimized for `POMDP`s, where the search is done in a **`belief` tree**.
+      - > "The combination of a **smart selection method** (e.g. the `UCT` algorithm) and the **fast estimation of future `rewards`** by a sufficiently good **default `policy`** allows to reduce the **search space** drastically, which gives the algorithm its **online capabilities**."
+      - Another characteristic of `ABT`: reuse previous parts of the tree.
+    - Here the `ABT` implementation **["Toolkit for Approximating and Adapting POMDP Solutions in Real Time"](https://robotics.itee.uq.edu.au/~hannakur/dokuwiki/papers/acra14_tapir.pdf) (`TAPIR`)** ([[:octocat:]](https://github.com/rdl-algorithm/tapir)) is used to solve the `POMDP` online.
+
+- _How to make the_ **_search in the `belief` tree_** _faster?_
+  - By **initializing the `value`** of **new `belief` nodes** with **_optimized_ roll-outs**.
+    - A **heuristic** is used to estimate the `value` function of the nodes.
+    - > "The **heuristic value** is calculated by solving a **deterministic, simplified problem online** as soon as a **new `belief` state** is encountered."
+    - Here using the previously developed `A*` graph-search.
+  - More precisely:
+    - `1-` Optimization of the **simplified (`deterministic`) problem** is used for the **first three steps** ...
+    - `2-` ... Followed by a **constant velocity roll-out** until the optimization horizon.
+
+- _What_ **_decision frequency_** _and_ **_tree depth_**_, i.e. `planning horizon`?_
+  - > [On the one hand ...] "The more time is used for **sampling** of episodes, the better the policy is approximated."
+  - > [On the other hand ...] "The earlier the `policy` is sent to the trajectory layer, the **less delay** is introduced between the sensor measurements and the corresponding policy."
+  - Here, the algorithm returns a decision every `200ms` (`5Hz`).
+  - > "While **the solution is optimized for `200ms`**, a **step size of `∆t=1s`** is used to **construct the tree** to allow for a **planning horizon of `8-10s`**." [_i.e. `depth`~`8-10`_]
+
+- Future works:
+  - `1-` Constrained `POMDPs` for **safety guarantees**.
+  - `2-` Combining `learning` and `planning`: The **heuristic** that **guides the online search** could be **learnt offline**.
 
 </details>
 
