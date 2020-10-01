@@ -8606,6 +8606,77 @@ Authors: Zhu, Y., & Zhao, D.
 
 ---
 
+**`"Vehicle Control with Prediction Model Based Monte-Carlo Tree Search"`**
+
+- **[** `2020` **]**
+**[[:memo:](http://cpslab.snu.ac.kr/publications/papers/2020_ur_mcts.pdf)]**
+**[** :mortar_board: `Seoul National University`**]**
+
+- **[** _`highway`, `combine learning + planning`, `learnt transition model`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](http://cpslab.snu.ac.kr/publications/papers/2020_ur_mcts.pdf).](media/2020_ha_1.PNG "[Source](http://cpslab.snu.ac.kr/publications/papers/2020_ur_mcts.pdf).")  |
+|:--:|
+| *A **`prediction` model** is learnt from the `NGSIM` dataset. And used as **`transition` model to estimate the `next states`** of the nodes and the corresponding `rewards`. This contrasts with conventional `MCTS` formulations where the **`transition` model** is **rule-based**. [Source](http://cpslab.snu.ac.kr/publications/papers/2020_ur_mcts.pdf).* |
+
+| ![[Source](http://cpslab.snu.ac.kr/publications/papers/2020_ur_mcts.pdf).](media/2020_ha_2.PNG "[Source](http://cpslab.snu.ac.kr/publications/papers/2020_ur_mcts.pdf).")  |
+|:--:|
+| *__`Learning` and `planning` are combined__. A `RL` agent is first trained offline. Then, its `value net` helps for the **`evaluation` stage** while its `policy net` guides the **`selection` phase** of the `MCTS`. And the **trajectories** sampled during the **`MCTS` online rollouts** are used to fine-tune the `value net`. [Source](http://cpslab.snu.ac.kr/publications/papers/2020_ur_mcts.pdf).* |
+
+Authors: Ha, T., Cho, K., Cha, G., Lee, K., & Oh, S.
+
+- Motivations:
+  - `1-` Improve the **`transition` model** that predicts the `next state` from `current state` and `current action`.
+    - > "In conventional `MCTS` methods, they assume that the `next state` of the agent can be calculated from a **pre-defined deterministic model**, or sampled by a **self-play method**."
+    - Here the model is **learnt** offline.
+  - `2-` **Combine `learning` and `planning`**.
+    - By using a **pre-trained `RL` agent**.
+
+- `state`
+  - `1-` An image. It represents the **bird-eye view** of the scene.
+  - `2-` A vector. It represents the `position` and `speed` of the ego-car.
+  - `3-` A set of vectors. It represents the `position` and `speed` of neighbouring vehicles.
+
+- `action`
+  - `35` combinations of predefined (`acceleration`, `steer`) pairs.
+
+- _How to predict the `transition`s?_
+  - A **prediction network** is trained on the `NGSIM` dataset.
+    - Called **"Multi-Agent Joint Trajectory Prediction Model".**
+    - **[`"Deep Predictive Autonomous Driving Using Multi-Agent Joint Trajectory Prediction and Traffic Rules"`](http://cpslab.snu.ac.kr/publications/papers/2019_iros_predstl.pdf)** - also detailed on this page.
+  - Max number of surrounding vehicles = `6`.
+
+- _How can a_ **_pre-trained `RL` agent_** _can be used to improve the `MCTS`?_
+  - It offers a `value` and a `policy` function.
+  - `1-` The `value` function **evaluates the expanded nodes** during the **`evaluation` step**.
+  - `2-` The `policy` function **guides the `selection` phase** of `MCTS`.
+    - A **modified `UCT`**: `argmax` is applied on `Q + c*π*U`.
+    - `π` is the `policy` function.
+    - The **upper bound `U`** is a function of the **(`node`, `action`) visitation** counter: a larger **number of trials** should give us a **smaller bound**.
+    - Here `c=200`. But the **weighting** depends on the **magnitude of `Q`**, which depends on the range of `r`, with here `γ=0.8`.
+
+- _How can online `MCTS` improve the pre-trained `RL` agent?_
+  - It is said above that the `policy` net **guides the `selection`**.
+    - **Trajectories** are collected (from one node up to a `termination` node).
+  - The `value` net can be **fine-tuned using these sampled trajectories**.
+    - I.e. **Monte Carlo methods** which is **unbiased**.
+    - And this is **`on-policy`** since the experiences come from the `policy net`.
+
+- _Once the tree is constructed (here after `200` loops), how is the_ **_final decision_** _made?_
+  - > "In most `MCTS` algorithms, the `final action` is selected with the **highest value of the `Q-value`**, the **visit count `N`**, or a **combination of them `Q−U`**. In this paper, we adopt the last method."
+
+- Other detail for the `section` phase.
+  - **Breath-first-search** to the **root node**: the `selection` method first selects **not-visited `action`** before all the `action` from the root node are searched at least once.
+
+- Benchmark:
+  - It would have been interesting to use **a version of `IDM`** to model the **reaction of the other vehicles**.
+
+</details>
+
+---
+
 **`"Driving Maneuvers Prediction Based Autonomous Driving Control by Deep Monte Carlo Tree Search"`**
 
 - **[** `2020` **]**
