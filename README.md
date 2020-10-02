@@ -8289,6 +8289,101 @@ Author: Quan, K.
 
 ---
 
+**`"Model-predictive policy learning with uncertainty regularization for driving in dense traffic"`**
+
+- **[** `2019` **]**
+**[[:memo:](https://openreview.net/forum?id=HygQBn0cYm)]**
+**[[:memo:](https://postersession.ai/poster/model-predictive-policy-learning-with-un/)]**
+**[[🎞️](https://www.youtube.com/watch?v=X2s7gy3wIYw)]**
+**[** :mortar_board: `New York University` **]**
+
+- **[** _`uncertainty regularization`, `multi-modal prediction`, `CVAE`, `covariate shift`, `latent dropout`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://openreview.net/forum?id=HygQBn0cYm).](media/2019_canziani_2.PNG "[Source](https://openreview.net/forum?id=HygQBn0cYm).")  |
+|:--:|
+| *Small-top-right: example when averaging the outcomes of dropping a pen, to show that **deterministic prediction** that **averages** over possible futures is not an option. Top: how the **`action`-conditional dynamics model** has its **latent variable sampled** during `training` and `inference`. Bottom: latent **dropout** to solve the **action insensitivity issue** if only sampling from the **learnt posterior distribution** (function of the true `next state`) during training. [Source](https://openreview.net/forum?id=HygQBn0cYm).* |
+
+| ![[Source](https://openreview.net/forum?id=HygQBn0cYm).](media/2019_canziani_1.PNG "[Source](https://openreview.net/forum?id=HygQBn0cYm).")  |
+|:--:|
+| *The **world model** produces various possible futures, i.e. the `next-state`. From them, the `reward` is computed. This estimation is good on the training distribution. But depending on the net initialization, moving **out of the training distribution** leads to different results and **arbitrary predictions**. How to reduce this **disagreement** between the models? By **uncertainty regularization**: **multiple forward passes** are performed with **dropout**, and the **variance of the prediction** is computed. The uncertainty is **summarized into this scalar** and used as **regularization term when training the `policy`**. [Source](https://openreview.net/forum?id=HygQBn0cYm).* |
+
+| ![[Source](https://www.youtube.com/watch?v=X2s7gy3wIYw).](media/2019_canziani_1.gif "[Source](https://www.youtube.com/watch?v=X2s7gy3wIYw).")  |
+|:--:|
+| *The `latent variable` of the **predictive model** (`CVAE`) enables to **predict a multiple modal future**. Here `4` sequences of **`200` latent variables** were sampled. None of them repeats the actual future but show `4` different variants of the future. The **deterministic predictor** does not work: it **averages** over possible futures, producing **blurred predictions**. [Source](https://www.youtube.com/watch?v=X2s7gy3wIYw).* |
+
+Authors: Henaff, M., LeCun, Y., & Canziani, A.
+
+- Motivations:
+  - `1-` **Model-free `RL`** has **poor data efficiency**.
+    - **Interactions** with the world can be **slow, expensive, or dangerous**.
+    - > "Learning through interaction with the **real environment** is not a viable solution."
+    - The idea is to learn a **model of the `environment dynamics`**, and use it to **train a `RL` agent**, i.e. **model-based `RL`**.
+  - `2-` Observational data is often plentiful, _how can it be used?_
+    - > "Trajectories of human drivers can be **easily collected using traffic cameras** resulting in an **abundance of observational data**."
+  - `3-` **Dense** moving traffic, where **`interaction` is key**.
+    - > "The **driver behavior is complex** and includes sudden accelerations, lane changes and merges which are **difficult to predict**; as such the dataset has high enviroment (or **aleatoric**) **uncertainty**."
+
+- _Is `behavioural cloning` a good option?_
+  - > "Learning policies from **purely observational data** is challenging because the data may **only cover a small region** of the space over which it is defined."
+  - > "Another option [_here_] is to **learn a `dynamics model`** from observational data, and then use it to **train a `policy`**."
+
+- `state`:
+  - `1-` A vector: `ego-position` and `ego-speed`.
+  - `2-` A `3`-channel image (**high-dimensional**):
+    - `red` encodes the **lane markings**.
+    - `green` encodes the locations of **neighbouring cars**.
+    - `blue` represents the **ego car**.
+- `action`:
+  - Longitudinal `acceleration/braking`.
+  - **Change in** `steering` angle.
+
+- Main steps:
+  - `1-` Learn an **action-conditional `dynamics model`** using the collected observational data.
+    - From `NGSIM`. **`2` million transitions** are extracted.
+  - `2-` Use this model to **train** a fast, feedforward **`policy` network**.
+    - It minimizes an objective function containing two terms:
+    - `1-` A **policy cost** which represents the **objective** the policy seeks to optimize, e.g. **avoid driving too close** to other cars.
+    - `2-` An **uncertainty cost** which represents its **divergence from the `states` it is trained on**.
+      - > "We measure this second cost by using the uncertainty of the `dynamics model` about its own predictions, calculated using **dropout**."
+
+- Problem `1`: **predictions** cannot be **unimodal**. In particular, **averaging over the possible futures is bad**.
+  - Solution: **conditional `VAE`**.
+  - The **low dimensional `latent variable`** is sampled from **prior** distribution (`inference`) or from the **posterior** distribution (`training`).
+  - **Different samples lead to different outcomes.**
+  - Repeating the process enables to **unroll a potential future**, and generate a **`trajectory`**.
+
+- Problem `2`: **`action` sensitivity**: _how to keep the_ **_stochastic dynamics model responsive_** _to `input actions`?_
+  - The **predictive model** can **encode `action` information** in the **latent variables**, making the output **insensitive to the input `actions`**.
+  - > "It is important for the prediction model to accurately **respond to input `actions`**, and not use the **latent variables** to encode factors of variation in the outputs which are due to the `actions`."
+  - Solution: **Latent dropout**.
+    - During training: sometimes sample `z` from the **prior** instead of the **latent variable encoder**.
+    - > "This **forces** the prediction model to **extract as much information** as possible from the **input `states` and `actions`** by making the **latent variable independent of the output** with some probability."
+  - > "Our **modified posterior distribution** discourages the model from **encoding `action` information in the latent variables**."
+
+- _How to generate the_ **`latent variable`** at **`inference`/`testing` time** _if the_ **_`true target` is not available_**_?_
+  - By sampling from the **(fixed) prior distribution**, here an **isotropic Gaussian**.
+
+- Problem `3`: how to addresses **`covariate shift` without querying an expert** (`DAgger`)?
+  - Solution: **Uncertainty regularization**.
+  - A term **penalizing the uncertainty** of the **prediction forward model** is incorporated when training the `policy` network.
+  - > "Intuitively, if the `dynamics model` is given a state-action pair from the **same distribution as `D`** (which it was **trained on**), it will have **low uncertainty about its prediction**. If it is given a `state`-`action` pair which is **outside this distribution**, it will have **high uncertainty**."
+  - > "Minimizing this quantity with respect to actions encourages the **`policy` network** to produce `actions` which, when plugged into the forward model, will **produce predictions which the forward model is confident about**."
+  - This could be seen as a form of **imitation learning**. But what if the **expert was not optimal**?
+    - > "This leads to a set of `states` which the model is **presumably confident about**, but may not be a trajectory which also satisfies the policy cost `C` unless the dataset `D` consists of **expert trajectories**."
+    - Solution: the second **cost term**, i.e. `RL`.
+
+- Hence **`MPUR`: `M`odel-predictive `P`olicy-learning with `U`ncertainty `R`egularization.**
+  - Note that **imitation learning** is performed at the **level of `trajectories`** rather than **individual `actions`**.
+  - > "A key feature of is that we **optimize the objective over `T` time steps**, which is made possible by our **learned dynamics model**. This means that the actions will receive gradients from **multiple time steps ahead**, which will penalize actions which lead to large divergences from the training manifold **further into the future**, even if they only cause a **small divergence at the next time step.**"
+  - > "We see that the **single-step imitation learner** produces **divergent trajectories** which turn into other lanes, whereas the `MPUR` and `MPER` methods show **trajectories** which primarily stay within their lanes."
+
+</details>
+
+---
+
 **`"Automatic learning of cyclist’s compliance for speed advice at intersections - a reinforcement learning-based approach"`**
 
 - **[** `2019` **]**
