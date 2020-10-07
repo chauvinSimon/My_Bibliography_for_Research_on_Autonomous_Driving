@@ -8130,6 +8130,97 @@ Author: Plessen, M. G.
 
 ---
 
+**`"Guided Policy Search Model-based Reinforcement Learning for Urban Autonomous Driving"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://arxiv.org/abs/2005.03076)]**
+**[** :mortar_board: `Berkeley` **]**
+
+- **[** _`guided policy search`, `dual gradient descent`, [`carla`](http://carla.org/)_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://arxiv.org/abs/2005.03076).](media/2020_xu_1.PNG "[Source](https://arxiv.org/abs/2005.03076).")  |
+|:--:|
+| *Model-based `RL` with guided policy search (`GPS`). The `dynamics` model uses a Gaussian mixture model (`GMM`) with `20` mixtures as global prior. The `policy` model is updated via **dual gradient descent (`DGD`)**: it is a constrained optimization problem, where `KL divergence` constrains the magnitude of **policy updates** (since the **`dynamics` model is valid only `locally`**). I am confused by the inconsistency in terminology between **`LQR` / `LQG`**. The **augmented `cost` (`return` and `KL` term) of the Lagrangian** and its **derivatives** being computable, the authors claim that the trajectory optimization can be solved using **`LQG`**. But `LQR` in the figure. Since the optimization is done on an **expectation of `cumulative costs`**, I would say it is `LQG`. [Source](https://arxiv.org/abs/2005.03076).* |
+
+Authors: Xu, Z., Chen, J., & Tomizuka
+
+- Motivations.
+  - `1-` **Model-free** `RL` methods suffer from:
+    - Very poor **sampling efficiency**.
+      - > "Showing **`100x` better sample efficiency** of the `GPS`-based `RL` method [over model-free ones]."
+    - Lack of **interpretability**.
+    - `reality gap`: It learns in a **non-perfect simulator**, so **transferring** to the real-world vehicle is difficult.
+  - `2-` **Behavioural cloning** methods suffer from:
+    - It requires collecting a **large amount of driving data**, which is costly and time consuming.
+    - `Distributional shift`: the **training dataset is biased** compared to real world driving, since the expert drivers generally do not provide data for dangerous situations.
+    - It essentially clones the **human driver demonstrations**, and cannot exceed the **human performance**.
+
+- `MDP` formulation (_very simplified traffic scene - solvable with `PD`/`PID`_):
+  - `state`
+    - ego `lateral` deviation.
+    - ego `yaw` error.
+    - ego `speed`. _no info to the max allowed `speed`?_
+    - `gap` to leader.
+    - relative `speed` to leader.
+  - `action`: throttle, brake, and steering angle.
+  - `reward`
+    - Penalizing `lateral`, `yaw`, `speed` deviations to references as well as changes in `control commands`.
+    - Relative `position` and `speed` compared to the **leader** are also considered, but **only if the `gap` is smaller than `20m`**.
+
+- Idea of the proposed model-based `RL`: **Guided Policy Search** (`GPS`). Iterate:
+  - `1-` Collect samples by running the `policy`.
+  - `2-` Learn a **parameterized `local` `dynamic model`** to approximate the complex and interactive driving task.
+  - `3-` Optimize the driving `policy` under the **(non-linear approximate) `dynamic model`**, subject to a `constraint` on the magnitude of the  **`trajectory` change**.
+    - > "We can view the `policy` as **imitating a supervised learning teacher**."
+    - > "But the **teacher is adapting** to produce `actions` that the learner can also execute."
+
+- `Global` / `local` models. From this [post](https://michaelrzhang.github.io/model-based-rl).
+  - `1-` **Local models** are easier to fit, but need to be **thrown away** whenever the policy updates because they are **only accurate for trajectories collected under the old policy**.
+    - > "It can take a number of episodes for the training of such parameterized models [`policy` and `dynamics` model]. In order to get **high sample efficiency**, we adopt the idea of **`local` models**, and apply the **time-varying linear Gaussian models** (_why "time varying"?_) to approximate the **local behavior** of the **system dynamics** and the **control policy**."
+    - Trajectories are collected to fit **local models** rather than using **linearization’s of a global model** of the `dynamics`.
+  - `2-` **Global models** are beneficial in that they generally maintain some sort of **consistency in `state` space** i.e. `states` close to each other generally have **similar dynamic**.
+    - We can approximately get this same desirable behaviour by using a **`global` model as a prior** in training **`local` models**.
+    - This is called **`Bayesian linear regression`** and can help reduce **sample complexity**.
+
+- _Why is the policy search "guided"?_
+  - Probably as opposed to **random search** for the two models? Or because of the `prior` that guides the local fit of the `dynamics` model?
+
+- Learning the `dynamics model`.
+  - > "We adopt a **`global` model** as the **prior**, which evolves throughout the whole model based `RL` lifetime, and **fit the `local` linear dynamics** to it at **each iteration**."
+  - Nonlinear **prior** model: Gaussian mixture model (`GMM`). Here **`20` mixtures**.
+  - Each **mixture element** serving as prior for **one driving pattern**.
+  - Idea of **Expectation Maximization (`EM`)** process to train the `GMM`:
+    - `1-` Each tuple sample (`st`, `at`, `st+1`) is first **assigned to a pattern**.
+    - `2-` Then it is used to **update the mixture element**.
+  - > "Finally, at each iteration, we fit the **current episode** of data (`st`, `at`, `st+1`)'s to the `GMM`, incorporating a **normal-inverse-`Wishart` prior**. The **`local` lineal** dynamics **`p`(`st+1`|`st`, `at`)** is derived by **conditioning the Gaussian** on (`st`, `at`)." [_I don't fully understand_]
+
+- Learning the `policy`.
+  - `1-` Using `KL divergence` to **constrain policy updates**.
+  - `2-` Using **dual gradient descent (`DGD`)** to solve **constrained optimization** problems.
+    - > "The main idea of the `DGD` is to **first minimize the Lagrangian function** under **fixed Lagrangian multiplier `λ`**, and then increase the **`λ` penalty** if the **constrained is violated**, so that more emphasis is placed on the **constraint term** in the Lagrangian function in the next iteration."
+    - The **Lagrangian objective** can be re-written as an **augmented cost function `c`(`st`, `at`)**. This cost function and its derivatives can be directly computed, hence the trajectory optimization problem can be **solved using `LQG`**.
+    - > "After the Lagrangian is optimized under a **fixed `λ`**, in the second step of `DGD`, `λ` is updated using the function below with **step size `α`**, and the `DGD` loop is closed."
+
+- Baseline `1`: Black Box (**derivative-free**) optimization.
+  - **Cross Entropy Method** (`CEM`).
+  - **Simple** but **not sample efficient**.
+  - "In order to optimize the **parameterized policy `πθ`**, the `CEM` adopts the assumption of **Gaussian distribution of `θ` = `N`(`µ`,`σ2`)**. It **iteratively samples `θ`** from the distribution, using which to **collect sample trajectories**, and then updates `µ` and `σ` using the `θ`’s that produces the best trajectories."
+
+- Baseline `2`: model-free `SAC`.
+  - It maximizes both the **expected return** and the **entropy** of the policy.
+
+- Initialization (_is it fair?_):
+  - `GPS` and `CEM`: **`PD` controller** with **large variance**, since the policies are **linear Gaussians**.
+  - `SAC`: pure **random initialization** of the weights.
+  - > "Therefore, the initial performances of the `GPS` and `CEM` are slightly better compared to the model free `RL` methods."
+
+</details>
+
+---
+
 **`"Model-based Reinforcement Learning for Time-optimal Velocity Control"`**
 
 - **[** `2020` **]**
