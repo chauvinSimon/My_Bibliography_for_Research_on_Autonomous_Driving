@@ -212,7 +212,6 @@ Authors: Tong, K., Ajanovic, Z., & Stettinger, G.
   - Evaluation tools for **quantitative comparison**.
   - Evaluation tools incorporating **human judgment**, not only from the vehicle occupants but also from other road users.
   - A **standard format** for **motion datasets**.
-- I am surprised [`INTERACTION`](http://interaction-dataset.com/) dataset was not mentioned.
 
 </details>
 
