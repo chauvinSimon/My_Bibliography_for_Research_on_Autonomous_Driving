@@ -16,11 +16,11 @@
 <details>
   <summary>Click to expand</summary>
 
-| ![[Source](https://arxiv.org/abs/2003.02604).](media/2020_bernhard_1.PNG "[Source](https://arxiv.org/abs/2003.02604).")  |
+| ![[Source](https://arxiv.org/abs/2003.02604).](../media/2020_bernhard_1.PNG "[Source](https://arxiv.org/abs/2003.02604).")  |
 |:--:|
 | *The **`ObservedWorld` model**, reflects the `world` that is perceived by an agent. **Occlusions** and **sensor noise** can be introduced in it. The **`simultaneous movement`** makes **simulator planning cycles** entirely **deterministic**. [Source](https://arxiv.org/abs/2003.02604).* |
 
-| ![[Source](https://arxiv.org/abs/2003.02604).](media/2020_bernhard_2.PNG "[Source](https://arxiv.org/abs/2003.02604).")  |
+| ![[Source](https://arxiv.org/abs/2003.02604).](../media/2020_bernhard_2.PNG "[Source](https://arxiv.org/abs/2003.02604).")  |
 |:--:|
 | *Two evaluations. Left: **Robustness** of the `planning` model against the `transition function`. The **scenario's density** is increased by reducing the **`time headway`** `IDM` parameters of interacting vehicles. **Inaccurate prediction model** impacts the performance of an `MCTS` (`2k`, `4k`, and `8k` search iterations) and `RL`-based (`SAC`) planner. Right: an **agent from the dataset is replaced** with various agent behaviour models. Four different parameter sets for the `IDM`. Agent sets `A0`, `A1`, `A2`, `A6` are not replaced with the `IDM` since this model **cannot change lane**. **Maintaining a specific order** is key for `merging`, but without fine-tuning model parameters, **most behaviour models fail to coexist next to replayed agents**. [Source](https://arxiv.org/abs/2003.02604).* |
 
@@ -90,7 +90,7 @@ Authors: Bernhard, J., Esterle, K., Hart, P., & Kessler, T.
 <details>
   <summary>Click to expand</summary>
 
-| ![[Source](https://zelenkovsky.com/assets/files/LGSVL_Simulator_ITSC_2020.pdf).](media/2020_boise_1.PNG "[Source](https://zelenkovsky.com/assets/files/LGSVL_Simulator_ITSC_2020.pdf).")  |
+| ![[Source](https://zelenkovsky.com/assets/files/LGSVL_Simulator_ITSC_2020.pdf).](../media/2020_boise_1.PNG "[Source](https://zelenkovsky.com/assets/files/LGSVL_Simulator_ITSC_2020.pdf).")  |
 |:--:|
 | *A **bridge** is selected based on the user **AD stack’s runtime framework**: `Autoware.AI` and `Autoware.Auto`, which run on `ROS` and `ROS2`, can connect through **standard open source `ROS` and `ROS2` bridges**, while for `Baidu’s Apollo` platform, which uses a custom runtime framework called [`Cyber RT`](https://github.com/ApolloAuto/apollo/tree/master/cyber), a custom bridge is provided to the simulator. [Source](https://zelenkovsky.com/assets/files/LGSVL_Simulator_ITSC_2020.pdf).* |
 
@@ -130,15 +130,15 @@ Authors: Boise, E., Uhm, G., Gerow, M., Mehta, S., Agafonov, E., Kim, T. H., …
 <details>
   <summary>Click to expand</summary>
 
-| ![[Source](https://arxiv.org/abs/2003.04081).](media/2020_tong_3.PNG "[Source](https://arxiv.org/abs/2003.04081).")  |
+| ![[Source](https://arxiv.org/abs/2003.04081).](../media/2020_tong_3.PNG "[Source](https://arxiv.org/abs/2003.04081).")  |
 |:--:|
 | *The authors group **tools** that support **`planning`** in sections: `maps`, `communication`, `traffic rules`, `middleware`, `simulators` and `benchmarks`. [Source](https://arxiv.org/abs/2003.04081).* |
 
-| ![[Source](https://arxiv.org/abs/2003.04081).](media/2020_tong_1.PNG "[Source](https://arxiv.org/abs/2003.04081).")  |
+| ![[Source](https://arxiv.org/abs/2003.04081).](../media/2020_tong_1.PNG "[Source](https://arxiv.org/abs/2003.04081).")  |
 |:--:|
 | *About `simulators` and `dataset`. And how to **couple between tools**, either with co-simulation software or open interfaces. [Source](https://arxiv.org/abs/2003.04081).* |
 
-| ![[Source](https://arxiv.org/abs/2003.04081).](media/2020_tong_2.PNG "[Source](https://arxiv.org/abs/2003.04081).")  |
+| ![[Source](https://arxiv.org/abs/2003.04081).](../media/2020_tong_2.PNG "[Source](https://arxiv.org/abs/2003.04081).")  |
 |:--:|
 | *About maps. ''The planning tasks with different targets entail map models with different level of details. `HD map` provides the most sufficient information and can be generally categorized into **three layers**: **`road` model, `lane` model and `localization` model**''. [Source](https://arxiv.org/abs/2003.04081).* |
 
@@ -186,11 +186,11 @@ Authors: Tong, K., Ajanovic, Z., & Stettinger, G.
 <details>
   <summary>Click to expand</summary>
 
-| ![[Source](https://arxiv.org/abs/2003.01149).](media/2020_orzechowski_1.PNG "[Source](https://arxiv.org/abs/2003.01149).")  |
+| ![[Source](https://arxiv.org/abs/2003.01149).](../media/2020_orzechowski_1.PNG "[Source](https://arxiv.org/abs/2003.01149).")  |
 |:--:|
 | *Both **`urban`** and **`highway` behaviour options** are combined using a **`cost-based arbitrator`**. Together with `Parking` and `AvoidCollisionInLastResort`, these four **arbitrators** and the `SafeStop` fallback are **composed together** to the **top-most priority-based `AutomatedDriving` arbitrator**. [Source](https://arxiv.org/abs/2003.01149).* |
 
-| ![[Source](https://arxiv.org/abs/2003.01149).](media/2020_orzechowski_2.PNG "[Source](https://arxiv.org/abs/2003.01149).")  |
+| ![[Source](https://arxiv.org/abs/2003.01149).](../media/2020_orzechowski_2.PNG "[Source](https://arxiv.org/abs/2003.01149).")  |
 |:--:|
 | *Top-right: two possible options. The arbitrator generally prefers the `follow lane behaviour` as long as it **matches the route**. Here, a lane change is necessary and selected by the **cost-based arbitration**: `ChangeLaneRight` has lower cost than `FollowEgoLane`, mainly due to the **`routing` term** in the cost expression. Bottom: the resulting **`behaviour` selection** over time. [Source](https://arxiv.org/abs/2003.01149).* |
 
@@ -273,19 +273,19 @@ Authors: Orzechowski, P. F., Burger, C., & Lauer, M.
 <details>
   <summary>Click to expand</summary>
 
-| ![The review divides **motion planning** into five unavoidable parts. The **`decision making`** part contains `risk evaluation`, `criteria minimization`, and `constraint submission`. In the last part, a **low-level reactive** planner **deforms** the generated motion from the high-level planner. [Source](https://www.researchgate.net/publication/333124691_A_Review_of_Motion_Planning_for_Highway_Autonomous_Driving).](media/2019_claussmann_1.PNG "The review divides **`motion planning`** into five  parts. The **`decision-making`** part contains `risk evaluation`, `criteria minimization`, and `constraint submission`. In the last part, a **low-level reactive** planner **deforms** the generated motion from the high-level planner. [Source](https://www.researchgate.net/publication/333124691_A_Review_of_Motion_Planning_for_Highway_Autonomous_Driving).")  |
+| ![The review divides **motion planning** into five unavoidable parts. The **`decision making`** part contains `risk evaluation`, `criteria minimization`, and `constraint submission`. In the last part, a **low-level reactive** planner **deforms** the generated motion from the high-level planner. [Source](https://www.researchgate.net/publication/333124691_A_Review_of_Motion_Planning_for_Highway_Autonomous_Driving).](../media/2019_claussmann_1.PNG "The review divides **`motion planning`** into five  parts. The **`decision-making`** part contains `risk evaluation`, `criteria minimization`, and `constraint submission`. In the last part, a **low-level reactive** planner **deforms** the generated motion from the high-level planner. [Source](https://www.researchgate.net/publication/333124691_A_Review_of_Motion_Planning_for_Highway_Autonomous_Driving).")  |
 |:--:|
 | *The review divides **motion-planning** into five parts. The **`decision-making`** part contains `risk evaluation`, `criteria minimization`, and `constraint submission`. In the last part, a **low-level reactive** planner **deforms** the generated motion from the high-level planner. [Source](https://www.researchgate.net/publication/333124691_A_Review_of_Motion_Planning_for_Highway_Autonomous_Driving).* |
 
-| ![The review offers two detailed tools for **comparing** methods for motion planning for highway scenarios. Criteria for the generated motion include: `feasible`, `safe`, `optimal`, `usable`, `adaptive`, `efficient`, `progressive` and `interactive`. The authors stressed the importance of **spatiotemporal consideration** and emphasize that **highway motion-planning** is highly structured. [Source](https://www.researchgate.net/publication/333124691_A_Review_of_Motion_Planning_for_Highway_Autonomous_Driving).](media/2019_claussmann_6.PNG "The review offers two detailed tools for **comparing** methods for motion planning for highway scenarios. Criteria for the generated motion include: `feasible`, `safe`, `optimal`, `usable`, `adaptive`, `efficient`, `progressive` and `interactive`. The authors stressed the importance of **spatiotemporal consideration** and emphasize that **highway motion-planning** is highly structured. [Source](https://www.researchgate.net/publication/333124691_A_Review_of_Motion_Planning_for_Highway_Autonomous_Driving).")  |
+| ![The review offers two detailed tools for **comparing** methods for motion planning for highway scenarios. Criteria for the generated motion include: `feasible`, `safe`, `optimal`, `usable`, `adaptive`, `efficient`, `progressive` and `interactive`. The authors stressed the importance of **spatiotemporal consideration** and emphasize that **highway motion-planning** is highly structured. [Source](https://www.researchgate.net/publication/333124691_A_Review_of_Motion_Planning_for_Highway_Autonomous_Driving).](../media/2019_claussmann_6.PNG "The review offers two detailed tools for **comparing** methods for motion planning for highway scenarios. Criteria for the generated motion include: `feasible`, `safe`, `optimal`, `usable`, `adaptive`, `efficient`, `progressive` and `interactive`. The authors stressed the importance of **spatiotemporal consideration** and emphasize that **highway motion-planning** is highly structured. [Source](https://www.researchgate.net/publication/333124691_A_Review_of_Motion_Planning_for_Highway_Autonomous_Driving).")  |
 |:--:|
 | *The review offers two detailed tools for **comparing** methods for motion planning for highway scenarios. Criteria for the generated motion include: `feasible`, `safe`, `optimal`, `usable`, `adaptive`, `efficient`, `progressive` and `interactive`. The authors stressed the importance of **spatiotemporal consideration** and emphasize that **highway motion-planning** is highly structured. [Source](https://www.researchgate.net/publication/333124691_A_Review_of_Motion_Planning_for_Highway_Autonomous_Driving).* |
 
-| ![Contrary to `solve-algorithms` methods, `set-algorithm` methods require a **complementary algorithm** should be added to find the feasible motion. Depending on the importance of the `generation` (`iv`) and `deformation` (`v`) part, approaches are more or less **`reactive`** or **`predictive`**. Finally, based on their [work](https://www.researchgate.net/publication/321406071_A_study_on_al-based_approaches_for_high-level_decision_making_in_highway_autonomous_driving) on AI-based algorithms, the authors define four subfamilies to compare to human: `logic`, `heuristic`, `approximate reasoning`, and `human-like`. [Source](https://www.researchgate.net/publication/333124691_A_Review_of_Motion_Planning_for_Highway_Autonomous_Driving).](media/2019_claussmann_3.PNG "Contrary to `solve-algorithms` methods, `set-algorithm` methods require a **complementary algorithm** should be added to find the feasible motion. Depending on the importance of the `generation` (`iv`) and `deformation` (`v`) part, approaches are more or less **`reactive`** or **`predictive`**. Finally, based on their [work](https://www.researchgate.net/publication/321406071_A_study_on_al-based_approaches_for_high-level_decision_making_in_highway_autonomous_driving) on AI-based algorithms, the authors define four subfamilies to compare to human: `logic`, `heuristic`, `approximate reasoning`, and `human-like`. [Source](https://www.researchgate.net/publication/333124691_A_Review_of_Motion_Planning_for_Highway_Autonomous_Driving).")  |
+| ![Contrary to `solve-algorithms` methods, `set-algorithm` methods require a **complementary algorithm** should be added to find the feasible motion. Depending on the importance of the `generation` (`iv`) and `deformation` (`v`) part, approaches are more or less **`reactive`** or **`predictive`**. Finally, based on their [work](https://www.researchgate.net/publication/321406071_A_study_on_al-based_approaches_for_high-level_decision_making_in_highway_autonomous_driving) on AI-based algorithms, the authors define four subfamilies to compare to human: `logic`, `heuristic`, `approximate reasoning`, and `human-like`. [Source](https://www.researchgate.net/publication/333124691_A_Review_of_Motion_Planning_for_Highway_Autonomous_Driving).](../media/2019_claussmann_3.PNG "Contrary to `solve-algorithms` methods, `set-algorithm` methods require a **complementary algorithm** should be added to find the feasible motion. Depending on the importance of the `generation` (`iv`) and `deformation` (`v`) part, approaches are more or less **`reactive`** or **`predictive`**. Finally, based on their [work](https://www.researchgate.net/publication/321406071_A_study_on_al-based_approaches_for_high-level_decision_making_in_highway_autonomous_driving) on AI-based algorithms, the authors define four subfamilies to compare to human: `logic`, `heuristic`, `approximate reasoning`, and `human-like`. [Source](https://www.researchgate.net/publication/333124691_A_Review_of_Motion_Planning_for_Highway_Autonomous_Driving).")  |
 |:--:|
 | *Contrary to `solve-algorithms` methods, `set-algorithm` methods require a **complementary algorithm** should be added to find the feasible motion. Depending on the importance of the `generation` (`iv`) and `deformation` (`v`) part, approaches are more or less **`reactive`** or **`predictive`**. Finally, based on their [work](https://www.researchgate.net/publication/321406071_A_study_on_al-based_approaches_for_high-level_decision_making_in_highway_autonomous_driving) on AI-based algorithms, the authors define four subfamilies to compare to human: `logic`, `heuristic`, `approximate reasoning`, and `human-like`. [Source](https://www.researchgate.net/publication/333124691_A_Review_of_Motion_Planning_for_Highway_Autonomous_Driving).* |
 
-| ![The review also offers overviews for possible space configurations, i.e. the choices for decomposition of the evolution space (Sampling-Based Decomposition, Connected Cells Decomposition and Lattice Representation) as well as Path-finding algorithms (e.g. `Dijkstra`, `A*`, and `RRT`). _Attractive and Repulsive Forces_, _Parametric and Semi-Parametric Curves_, _Numerical Optimization_ and _Artificial Intelligence_ are also developed. [Source](https://www.researchgate.net/publication/333124691_A_Review_of_Motion_Planning_for_Highway_Autonomous_Driving).](media/2019_claussmann_4.PNG "The review also offers overviews for possible space configurations, i.e. the choices for decomposition of the evolution space (Sampling-Based Decomposition, Connected Cells Decomposition and Lattice Representation) as well as Path-finding algorithms (e.g. `Dijkstra`, `A*`, and `RRT`). _Attractive and Repulsive Forces_, _Parametric and Semi-Parametric Curves_, _Numerical Optimization_ and _Artificial Intelligence_ are also developed. [Source](https://www.researchgate.net/publication/333124691_A_Review_of_Motion_Planning_for_Highway_Autonomous_Driving).")  |
+| ![The review also offers overviews for possible space configurations, i.e. the choices for decomposition of the evolution space (Sampling-Based Decomposition, Connected Cells Decomposition and Lattice Representation) as well as Path-finding algorithms (e.g. `Dijkstra`, `A*`, and `RRT`). _Attractive and Repulsive Forces_, _Parametric and Semi-Parametric Curves_, _Numerical Optimization_ and _Artificial Intelligence_ are also developed. [Source](https://www.researchgate.net/publication/333124691_A_Review_of_Motion_Planning_for_Highway_Autonomous_Driving).](../media/2019_claussmann_4.PNG "The review also offers overviews for possible space configurations, i.e. the choices for decomposition of the evolution space (Sampling-Based Decomposition, Connected Cells Decomposition and Lattice Representation) as well as Path-finding algorithms (e.g. `Dijkstra`, `A*`, and `RRT`). _Attractive and Repulsive Forces_, _Parametric and Semi-Parametric Curves_, _Numerical Optimization_ and _Artificial Intelligence_ are also developed. [Source](https://www.researchgate.net/publication/333124691_A_Review_of_Motion_Planning_for_Highway_Autonomous_Driving).")  |
 |:--:|
 | *The review also offers overviews for possible **space configurations**, i.e. the choices for decomposition of the **evolution space** (`sampling-based decomposition`, `connected cells decomposition` and `lattice representation`) as well as **`path-finding algorithms`** (e.g. `Dijkstra`, `A*`, and `RRT`). `attractive and repulsive forces`, `parametric and semi-parametric curves`, `numerical optimization` and `artificial intelligence` are also developed. [Source](https://www.researchgate.net/publication/333124691_A_Review_of_Motion_Planning_for_Highway_Autonomous_Driving).* |
 
@@ -305,7 +305,7 @@ Authors: Claussmann, L., Revilloud, M., Gruyer, D., & Glaser, S.
 <details>
   <summary>Click to expand</summary>
 
-| ![__Challenges__ for **learning-based** control methods. [Source](http://arxiv.org/abs/1912.10773).](media/2019_kuutti_1.PNG "__Challenges__ for **learning-based** control methods. [Source](http://arxiv.org/abs/1912.10773).")  |
+| ![__Challenges__ for **learning-based** control methods. [Source](http://arxiv.org/abs/1912.10773).](../media/2019_kuutti_1.PNG "__Challenges__ for **learning-based** control methods. [Source](http://arxiv.org/abs/1912.10773).")  |
 |:--:|
 | *__Challenges__ for **learning-based** control methods. [Source](http://arxiv.org/abs/1912.10773).* |
 
@@ -332,7 +332,7 @@ Authors: Kuutti, S., Bowden, R., Jin, Y., Barber, P., & Fallah, S.
 <details>
   <summary>Click to expand</summary>
 
-| ![`mMP` refers to machine learning methods for longitudinal motion planning. [Source](https://arxiv.org/abs/1910.06070).](media/2019_zhou_1.PNG "`mMP` refers to machine learning methods for longitudinal motion planning. [Source](https://arxiv.org/abs/1910.06070).")  |
+| ![`mMP` refers to machine learning methods for longitudinal motion planning. [Source](https://arxiv.org/abs/1910.06070).](../media/2019_zhou_1.PNG "`mMP` refers to machine learning methods for longitudinal motion planning. [Source](https://arxiv.org/abs/1910.06070).")  |
 |:--:|
 | *`mMP` refers to machine learning methods for longitudinal motion planning. [Source](https://arxiv.org/abs/1910.06070).* |
 
@@ -372,19 +372,19 @@ Authors: Zhou, H., & Laval, J.
 
 Some figures:
 
-| ![The focus is on the `BP` module, together with its predecessor (`environment`) and its successor (`LP`) in a modular architecture. [Source](https://arxiv.org/abs/1908.07931).](media/2019_ilievski_5.PNG "The focus is on the `BP` module, together with its predecessor (`environment`) and its successor (`LP`) in a modular architecture. [Source](https://arxiv.org/abs/1908.07931).")  |
+| ![The focus is on the `BP` module, together with its predecessor (`environment`) and its successor (`LP`) in a modular architecture. [Source](https://arxiv.org/abs/1908.07931).](../media/2019_ilievski_5.PNG "The focus is on the `BP` module, together with its predecessor (`environment`) and its successor (`LP`) in a modular architecture. [Source](https://arxiv.org/abs/1908.07931).")  |
 |:--:|
 | *The focus is on the `BP` module, together with its predecessor (`environment`) and its successor (`LP`) in a modular architecture. [Source](https://arxiv.org/abs/1908.07931).* |
 
-| ![Classification for Question `1` - environment representation. A combination is possible. In black, my notes giving examples. [Source](https://arxiv.org/abs/1908.07931).](media/2019_ilievski_6.PNG "Classification for Question `1` - environment representation. A combination is possible. In black, my notes giving examples. [Source](https://arxiv.org/abs/1908.07931).")  |
+| ![Classification for Question `1` - environment representation. A combination is possible. In black, my notes giving examples. [Source](https://arxiv.org/abs/1908.07931).](../media/2019_ilievski_6.PNG "Classification for Question `1` - environment representation. A combination is possible. In black, my notes giving examples. [Source](https://arxiv.org/abs/1908.07931).")  |
 |:--:|
 | *Classification for Question `1` - environment representation. A combination is possible. In black, my notes giving examples. [Source](https://arxiv.org/abs/1908.07931).* |
 
-| ![Classification for Question `2` - on the architecture. [Source](https://arxiv.org/abs/1908.07931).](media/2019_ilievski_2.PNG "Classification for Question `2` - on the architecture. [Source](https://arxiv.org/abs/1908.07931).")  |
+| ![Classification for Question `2` - on the architecture. [Source](https://arxiv.org/abs/1908.07931).](../media/2019_ilievski_2.PNG "Classification for Question `2` - on the architecture. [Source](https://arxiv.org/abs/1908.07931).")  |
 |:--:|
 | *Classification for Question `2` - on the architecture. [Source](https://arxiv.org/abs/1908.07931).* |
 
-| ![Classification for Question `3` - on the decision logic representation. [Source](https://arxiv.org/abs/1908.07931).](media/2019_ilievski_1.PNG "Classification for Question `3` - on the decision logic representation. [Source](https://arxiv.org/abs/1908.07931).")  |
+| ![Classification for Question `3` - on the decision logic representation. [Source](https://arxiv.org/abs/1908.07931).](../media/2019_ilievski_1.PNG "Classification for Question `3` - on the decision logic representation. [Source](https://arxiv.org/abs/1908.07931).")  |
 |:--:|
 | *Classification for Question `3` - on the decision logic representation. [Source](https://arxiv.org/abs/1908.07931).* |
 
@@ -451,15 +451,15 @@ One quote about the _representation of decision logic_:
 
 Some figures:
 
-| ![Comparison and fusion of the **hierarchical** and **parallel** architectures. [Source](https://ri.cmu.edu/pub_files/2014/6/IV2014-Junqing-Final.pdf).](media/2014_wei_1.PNG "Comparison and fusion of the **hierarchical** and **parallel** architectures. [Source](https://ri.cmu.edu/pub_files/2014/6/IV2014-Junqing-Final.pdf).")  |
+| ![Comparison and fusion of the **hierarchical** and **parallel** architectures. [Source](https://ri.cmu.edu/pub_files/2014/6/IV2014-Junqing-Final.pdf).](../media/2014_wei_1.PNG "Comparison and fusion of the **hierarchical** and **parallel** architectures. [Source](https://ri.cmu.edu/pub_files/2014/6/IV2014-Junqing-Final.pdf).")  |
 |:--:|
 | *Comparison and fusion of the **hierarchical** and **parallel** architectures. [Source](https://ri.cmu.edu/pub_files/2014/6/IV2014-Junqing-Final.pdf).* |
 
-| ![The `PCB` algorithm implemented in the `BP` module. [Source](https://ri.cmu.edu/pub_files/2014/6/IV2014-Junqing-Final.pdf).](media/2014_wei_2.PNG "The `PCB` algorithm implemented in the `BP` module. [Source](https://ri.cmu.edu/pub_files/2014/6/IV2014-Junqing-Final.pdf).")  |
+| ![The `PCB` algorithm implemented in the `BP` module. [Source](https://ri.cmu.edu/pub_files/2014/6/IV2014-Junqing-Final.pdf).](../media/2014_wei_2.PNG "The `PCB` algorithm implemented in the `BP` module. [Source](https://ri.cmu.edu/pub_files/2014/6/IV2014-Junqing-Final.pdf).")  |
 |:--:|
 | *The `PCB` algorithm implemented in the `BP` module. [Source](https://ri.cmu.edu/pub_files/2014/6/IV2014-Junqing-Final.pdf).* |
 
-| ![Related work by (Xu, Pan, Wei, & Dolan, 2014) - Grey ellipses indicate the magnitude of the uncertainty of state. [Source](https://ri.cmu.edu/pub_files/2014/6/ICRA14_0863_Final.pdf).](media/2014_xu_1.PNG "Related work by (Xu, Pan, Wei, & Dolan, 2014) - Grey ellipses indicate the magnitude of the uncertainty of state. [Source](https://ri.cmu.edu/pub_files/2014/6/ICRA14_0863_Final.pdf).")  |
+| ![Related work by (Xu, Pan, Wei, & Dolan, 2014) - Grey ellipses indicate the magnitude of the uncertainty of state. [Source](https://ri.cmu.edu/pub_files/2014/6/ICRA14_0863_Final.pdf).](../media/2014_xu_1.PNG "Related work by (Xu, Pan, Wei, & Dolan, 2014) - Grey ellipses indicate the magnitude of the uncertainty of state. [Source](https://ri.cmu.edu/pub_files/2014/6/ICRA14_0863_Final.pdf).")  |
 |:--:|
 | *Related work by (Xu, Pan, Wei, & Dolan, 2014) - Grey ellipses indicate the magnitude of the uncertainty of state. [Source](https://ri.cmu.edu/pub_files/2014/6/ICRA14_0863_Final.pdf).* |
 

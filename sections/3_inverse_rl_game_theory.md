@@ -15,19 +15,19 @@
 <details>
   <summary>Click to expand</summary>
 
-| ![[Source](https://arxiv.org/abs/2008.01712).](media/2020_kalweit_2.PNG "[Source](https://arxiv.org/abs/2008.01712).")  |
+| ![[Source](https://arxiv.org/abs/2008.01712).](../media/2020_kalweit_2.PNG "[Source](https://arxiv.org/abs/2008.01712).")  |
 |:--:|
 | *Left: both the `reward` and `Q`-function are estimated based on demonstrations and a **set of constraints**. Right: Comparing the expert, the **unconstrained (blue) and constrained (green) imitating agents** as well as a `RL` agent trained to optimize the **true `MDP`** with constraints (yellow). The **`constrained imitation`** can keep high speed while ensuring **no constrain violation**. Not to mention that it can **converge faster** than the `RL` agent (yellow). [Source](https://arxiv.org/abs/2008.01712).* |
 
-| ![[Source](https://arxiv.org/abs/2008.01712).](media/2020_kalweit_3.PNG "[Source](https://arxiv.org/abs/2008.01712).")  |
+| ![[Source](https://arxiv.org/abs/2008.01712).](../media/2020_kalweit_3.PNG "[Source](https://arxiv.org/abs/2008.01712).")  |
 |:--:|
 | *Compared to existing `IRL` approaches, the proposed methods can **enforce additional constraints** that were **not part of the original demonstrations**. And it does not requires solving the  **`MDP` multiple times**. [Source](https://arxiv.org/abs/2008.01712).* |
 
-| ![[Source](https://arxiv.org/abs/2008.01712).](media/2020_kalweit_4.PNG "[Source](https://arxiv.org/abs/2008.01712).")  |
+| ![[Source](https://arxiv.org/abs/2008.01712).](../media/2020_kalweit_4.PNG "[Source](https://arxiv.org/abs/2008.01712).")  |
 |:--:|
 | *Derivation for the **model-based** case (Inverse Action-value Iteration): The `IRL` problem is transformed to solving a **system of linear equations**. ((`3`) reminds me the `law of total probability`). The demonstrations are assumed to come from an **expert following a stochastic policy with an underlying `Boltzmann` distribution** over optimal `Q`-values (which enables working with `log`). With this formulation, it is possible to calculate a matching `reward` function for the observed (optimal) behaviour **analytically in closed-form**. An extension based on **sampling** is proposed for **model-free** problems. [Source](https://arxiv.org/abs/2008.01712).* |
 
-| ![[Source](https://arxiv.org/abs/2008.01712).](media/2020_kalweit_1.gif "[Source](https://arxiv.org/abs/2008.01712).")  |
+| ![[Source](https://arxiv.org/abs/2008.01712).](../media/2020_kalweit_1.gif "[Source](https://arxiv.org/abs/2008.01712).")  |
 |:--:|
 | *While the **Expert** agent was not trained to include the `Keep Right` constraint (**US-highway** demonstrations), the **Deep Constrained Inverse Q-learning (`DCIQL`) agent** is satisfying the `Keep Right` (**German highway**) and `Safety` constraints while still imitating to overtake the other vehicles in an anticipatory manner. [Source](https://arxiv.org/abs/2008.01712).* |
 
@@ -120,19 +120,19 @@ Authors: Kalweit, G., Huegle, M., Werling, M., & Boedecker, J.
 <details>
   <summary>Click to expand</summary>
 
-| ![[Source](https://arxiv.org/abs/1905.00229).](media/2019_rosbach_1.PNG "[Source](https://arxiv.org/abs/1905.00229).")  |
+| ![[Source](https://arxiv.org/abs/1905.00229).](../media/2019_rosbach_1.PNG "[Source](https://arxiv.org/abs/1905.00229).")  |
 |:--:|
 | *About **`path integral IRL`** and how the **`partition function`** in the `MaxEnt-IRL` formulation is approximated via **sampling**. Note the need to integrate over **all possible trajectories** (`Π`) in the `partition function`. Besides, note the **transition model `M`** that produces the `features` but is also able to **generate the `next-state`**. Such a model-based **generation** is simple for **static scenes**, but can it work in **dynamic environments** (unknown system dynamics), where the **future is way more uncertain**? [Source](https://arxiv.org/abs/1905.00229).* |
 
-| ![[Source](https://arxiv.org/abs/1905.00229).](media/2019_rosbach_2.PNG "[Source](https://arxiv.org/abs/1905.00229).")  |
+| ![[Source](https://arxiv.org/abs/1905.00229).](../media/2019_rosbach_2.PNG "[Source](https://arxiv.org/abs/1905.00229).")  |
 |:--:|
 | *Top-left: **sampling-based** and 'general-purpose' (**non-hierarchical**) planner that **relies** on some **transition model**. Top-right: the **`features`** used and their learnt/hard-coded associated `weights`. It can be seen that the **weights are changing** depending on the **context** (`straight` / `curvy` road). Bottom: For every planning cycle, **a restricted set of demonstrations `ΠD`** is considered, which are **"geometrically" close** (c.f. `projection metric` that transfers the `actions` of a manual drive into the `state-action` space of the planning algorithm) to the **odometry record `ζ`** (not very clear to me). Also note the **`labelling` function** that assigns **categorical labels** to **transitions**, e.g., a label associated with `collision`. [Source](https://arxiv.org/abs/1905.00229).* |
 
-| ![[Source](https://arxiv.org/abs/2007.05798).](media/2020_rosbach_1.PNG "[Source](https://arxiv.org/abs/2007.05798).")  |
+| ![[Source](https://arxiv.org/abs/2007.05798).](../media/2020_rosbach_1.PNG "[Source](https://arxiv.org/abs/2007.05798).")  |
 |:--:|
 | *To ensure **temporally consistent** prediction, an analogy with the **temporal abstraction** of `HRL` is made. [Source](https://arxiv.org/abs/2007.05798).* |
 
-| ![[Source](https://arxiv.org/abs/2007.05798).](media/2020_rosbach_2.PNG "[Source](https://arxiv.org/abs/2007.05798).")  |
+| ![[Source](https://arxiv.org/abs/2007.05798).](../media/2020_rosbach_2.PNG "[Source](https://arxiv.org/abs/2007.05798).")  |
 |:--:|
 | *To **dynamically update** the `reward` function while ensuring **temporal consistency**, the deep `IRL` architecture is separated into a **`policy` attention** and a **`temporal` attention** mechanism. The first one **encodes** the **context** of a situation and should learns to **focus on collision-free policies** in the configuration space. It also helps for **dimension reduction**. The second one predicts a **mixture `reward` function** given a **history of `context` vectors**. [Source](https://arxiv.org/abs/2007.05798).* |
 
@@ -254,11 +254,11 @@ Authors: Rosbach, S., Li, X., Großjohann, S., Homoceanu, S., & Roth, S.
 <details>
   <summary>Click to expand</summary>
 
-| ![[Source](https://arxiv.org/abs/2006.13704).](media/2020_wu_1.PNG "[Source](https://arxiv.org/abs/2006.13704).")  |
+| ![[Source](https://arxiv.org/abs/2006.13704).](../media/2020_wu_1.PNG "[Source](https://arxiv.org/abs/2006.13704).")  |
 |:--:|
 | *The **intractable partition `Z` function** of `Max-Entropy` method is approximated by a **sum of sampled trajectories**. [Source](https://arxiv.org/abs/2006.13704).* |
 
-| ![[Source](https://arxiv.org/abs/2006.13704).](media/2020_wu_2.PNG "[Source](https://arxiv.org/abs/2006.13704).")  |
+| ![[Source](https://arxiv.org/abs/2006.13704).](../media/2020_wu_2.PNG "[Source](https://arxiv.org/abs/2006.13704).")  |
 |:--:|
 | *Left: Prior knowledge is injected to make the sampled trajectories **feasible**, hence **improving the efficiency** of the `IRL` method. Middle: Along with `speed-desired_speed`, `long-acc`, `lat-acc` and `long-jerk`, two **interactions `features`** are considered. Bottom-right: **Sample re-distribution** is performed since generated samples are not necessarily **uniformly distributed in the selected feature space**. Top-right: The learned weights indicate that **humans care more about longitudinal accelerations** in both non-interactive and interactive scenarios. [Source](https://arxiv.org/abs/2006.13704).* |
 
@@ -328,11 +328,11 @@ Authors: Wu, Z., Sun, L., Zhan, W., Yang, C., & Tomizuka, M.
 <details>
   <summary>Click to expand</summary>
 
-| ![[Source](https://ras.papercept.net/proceedings/ICRA20/0320.pdf).](media/2020_naumann_1.PNG "[Source](https://ras.papercept.net/proceedings/ICRA20/0320.pdf).")  |
+| ![[Source](https://ras.papercept.net/proceedings/ICRA20/0320.pdf).](../media/2020_naumann_1.PNG "[Source](https://ras.papercept.net/proceedings/ICRA20/0320.pdf).")  |
 |:--:|
 | *Left: Definition of the **`features`** retrieved from **trajectory demonstrations** and the **`evaluation function`**. Right: `max-Entropy IRL` enable only requires **locally optimal** demonstrations because the `gradient` and `Hessian` of the reward function is only considered in **proximity of the demonstration**. Note that the `features` are only based on the `states`, while the `actions` remain disregarded. And that their approach assumes that the **`cost` function** is parameterized as a **linear combination of cost terms**. [Source](https://ras.papercept.net/proceedings/ICRA20/0320.pdf).* |
 
-| ![[Source](https://ras.papercept.net/proceedings/ICRA20/0320.pdf).](media/2020_naumann_2.PNG "[Source](https://ras.papercept.net/proceedings/ICRA20/0320.pdf).")  |
+| ![[Source](https://ras.papercept.net/proceedings/ICRA20/0320.pdf).](../media/2020_naumann_2.PNG "[Source](https://ras.papercept.net/proceedings/ICRA20/0320.pdf).")  |
 |:--:|
 | *General **cost function structures** and commonly used **trajectory features**. Only one work considers `crossing` scenarios. To account for the `right of way` at intersections, the time that elapses between one vehicle leaving a conflict zone, i.e. an area where paths overlap, and another vehicle entering this zone, is considered: `tTZC` = `dsecond`/`vsecond`. Bottom: Due to the **similarity of the `variance`-`mean`-ratio** under different **`evaluation` functions**, the authors limit their experiments to the consideration of `sum[f(t)²]`, which is most used. [Source](https://ras.papercept.net/proceedings/ICRA20/0320.pdf).* |
 
@@ -385,11 +385,11 @@ Authors: Naumann, M., Sun, L., Zhan, W., & Tomizuka, M.
 <details>
   <summary>Click to expand</summary>
 
-| ![[Source](https://arxiv.org/abs/2006.06412).](media/2020_bhattacharyya_3.PNG "[Source](https://arxiv.org/abs/2006.06412).")  |
+| ![[Source](https://arxiv.org/abs/2006.06412).](../media/2020_bhattacharyya_3.PNG "[Source](https://arxiv.org/abs/2006.06412).")  |
 |:--:|
 | *Different variations of **Generative Adversarial Imitation Learning** (`GAIL`) are used to **model human drivers**. These **augmented `GAIL`-based models** capture many desirable properties of both **rule-based** (`IDM`+`MOBIL`) and **machine learning** (`BC` predicting single / multiple Gaussians) methods, while avoiding common pitfalls. [Source](https://arxiv.org/abs/2006.06412).* |
 
-| ![[Source](https://arxiv.org/abs/2006.06412).](media/2020_bhattacharyya_2.PNG "[Source](https://arxiv.org/abs/2006.06412).")  |
+| ![[Source](https://arxiv.org/abs/2006.06412).](../media/2020_bhattacharyya_2.PNG "[Source](https://arxiv.org/abs/2006.06412).")  |
 |:--:|
 | *In **Reward Augmented Imitation Learning (`RAIL`)**, the imitation learning agent receives a **second source of `reward` signals** which is **hard-coded** to discourage undesirable driving behaviours. The reward can be either **`binary`**, receiving penalty when the collision actually occurs, or **`smoothed`**, via **increasing penalties** as it approaches an **undesirable event**. This should address the **credit assignment problem** in `RL`. [Source](https://arxiv.org/abs/2006.06412).* |
 
@@ -522,15 +522,15 @@ Authors: Bhattacharyya, R., Wulfe, B., Phillips, D., Kuefler, A., Morton, J., Se
 <details>
   <summary>Click to expand</summary>
 
-| ![[Source](https://arxiv.org/abs/2006.04218).](media/2020_emuna_2.PNG "[Source](https://arxiv.org/abs/2006.04218).")  |
+| ![[Source](https://arxiv.org/abs/2006.04218).](../media/2020_emuna_2.PNG "[Source](https://arxiv.org/abs/2006.04218).")  |
 |:--:|
 | *Note that the `state` variables are **normalized** in [`0`, `1`] or [`-1`, `1`] and that the **previous `actions`** are part of the **`state`**. Finally, both the **previous** and the **current** `observations` (only the current one for the `scans`) are included in the `state`, in order to **appreciate the temporal evolution**. [Source](https://arxiv.org/abs/2006.04218).* |
 
-| ![[Source](https://arxiv.org/abs/2006.04218).](media/2020_emuna_3.PNG "[Source](https://arxiv.org/abs/2006.04218).")  |
+| ![[Source](https://arxiv.org/abs/2006.04218).](../media/2020_emuna_3.PNG "[Source](https://arxiv.org/abs/2006.04218).")  |
 |:--:|
 | *Left: `throttle` and `steering` actions are not predicted as **single scalars** but rather as **distributions**. In this case a **mixture of `3` Gaussian**, each of them parametrized by a `mean` and a `standard deviation`. **Weights** are also learnt. This enable modelling **multimodal distribution** and offers better **generalization** capabilities. Right: the `reward` function is designed to make the agent **imitate the expert driver's behaviour**. Therefore the differences in term of **mean `speed`** and **mean `track position`** between the **agent** and **expert** driver are penalized. The mean `speed` and `position` of the **expert** driver is obtained from the **learnt `GP` model**. It also contains a **non-learnable** part: penalties for `collision` and `action changes` are **independent of human driver observations**. [Source](https://arxiv.org/abs/2006.04218).* |
 
-| ![[Source](https://arxiv.org/abs/2006.04218).](media/2020_emuna_1.PNG "[Source](https://arxiv.org/abs/2006.04218).")  |
+| ![[Source](https://arxiv.org/abs/2006.04218).](../media/2020_emuna_1.PNG "[Source](https://arxiv.org/abs/2006.04218).")  |
 |:--:|
 | *Human **`speeds` and `lateral` positions** on the track are recorded and **modelled using a `GP` regression**. It is used to define the `human-like` behaviours in the **`reward`** function (instead of `IRL`) as well as for **comparison** during test. [Source](https://arxiv.org/abs/2006.04218).* |
 
@@ -568,7 +568,7 @@ Authors: Emuna, R., Borowsky, A., & Biess, A.
 <details>
   <summary>Click to expand</summary>
 
-| ![[Source](https://arxiv.org/abs/2005.11895).](media/2020_bouton_3.PNG "[Source](https://arxiv.org/abs/2005.11895).")  |
+| ![[Source](https://arxiv.org/abs/2005.11895).](../media/2020_bouton_3.PNG "[Source](https://arxiv.org/abs/2005.11895).")  |
 |:--:|
 | *`Curriculum learning`: the `RL` agent solves `MDP`s with **iteratively increasing complexity**. At each step of the **curriculum**, the behaviour of the cars in the environment is **sampled from the previously learnt `k-levels`**. Bottom left: **`3` or `4` iterations** seem to be enough and larger **reasoning levels** might not be needed for this merging task. [Source](https://arxiv.org/abs/2005.11895).* |
 
@@ -633,7 +633,7 @@ Authors: Bouton, M., Nakhaei, A., Isele, D., Fujimura, K., & Kochenderfer, M. J.
 <details>
   <summary>Click to expand</summary>
 
-| ![[Source](https://arxiv.org/abs/2003.11919).](media/2020_hart_1.PNG "[Source](https://arxiv.org/abs/2003.11919).")  |
+| ![[Source](https://arxiv.org/abs/2003.11919).](../media/2020_hart_1.PNG "[Source](https://arxiv.org/abs/2003.11919).")  |
 |:--:|
 | *The idea is to first `train` the agent interacting with **different driver models**. This should lead to a **more robust** policy. During `inference` the possible outcomes are **first evaluated**. If too many **predictions** result in collisions, a **non-learnt controller** takes over. Otherwise, the **learnt policy** is executed. [Source](https://arxiv.org/abs/2003.11919).* |
 
@@ -679,7 +679,7 @@ Authors: Hart, P., & Knoll, A.
 <details>
   <summary>Click to expand</summary>
 
-| ![[Source](https://www.researchgate.net/publication/339568981_Modeling_pedestrian-cyclist_interactions_in_shared_space_using_inverse_reinforcement_learning).](media/2020_alsaleh_1.PNG "[Source](https://www.researchgate.net/publication/339568981_Modeling_pedestrian-cyclist_interactions_in_shared_space_using_inverse_reinforcement_learning).")  |
+| ![[Source](https://www.researchgate.net/publication/339568981_Modeling_pedestrian-cyclist_interactions_in_shared_space_using_inverse_reinforcement_learning).](../media/2020_alsaleh_1.PNG "[Source](https://www.researchgate.net/publication/339568981_Modeling_pedestrian-cyclist_interactions_in_shared_space_using_inverse_reinforcement_learning).")  |
 |:--:|
 | *Left: The contribution of each `feature` in the **linear `reward` model** differs between the **Maximum Entropy** (`ME`) and the **Feature Matching** (`FM`) algorithms. The `FM` algorithm is **inconsistent across levels** and has a **higher `intercept to parameter weight ratio`** compared with the estimated weights using the `ME`. Besides, why does it penalize all lateral distances and all speeds in these `overtaking` scenarios? Right: good idea how to visualize `reward` function for `state` of **dimension `5`**. [Source](https://www.researchgate.net/publication/339568981_Modeling_pedestrian-cyclist_interactions_in_shared_space_using_inverse_reinforcement_learning).* |
 
@@ -754,11 +754,11 @@ Authors: Alsaleh, R., & Sayed, T.
 <details>
   <summary>Click to expand</summary>
 
-| ![[Source](https://www.researchgate.net/publication/337624367_Accelerated_Inverse_Reinforcement_Learning_with_Randomly_Pre-sampled_Policies_for_Autonomous_Driving_Reward_Design).](media/2019_xin_1.PNG "[Source](https://www.researchgate.net/publication/337624367_Accelerated_Inverse_Reinforcement_Learning_with_Randomly_Pre-sampled_Policies_for_Autonomous_Driving_Reward_Design).")  |
+| ![[Source](https://www.researchgate.net/publication/337624367_Accelerated_Inverse_Reinforcement_Learning_with_Randomly_Pre-sampled_Policies_for_Autonomous_Driving_Reward_Design).](../media/2019_xin_1.PNG "[Source](https://www.researchgate.net/publication/337624367_Accelerated_Inverse_Reinforcement_Learning_with_Randomly_Pre-sampled_Policies_for_Autonomous_Driving_Reward_Design).")  |
 |:--:|
 | *Instead of the **costly `RL` optimisation** step at each iteration of the **vanilla `IRL`**, the idea is to **randomly sample a massive of policies in advance** and then to **pick one** of them as the optimal policy. In case the **sampled policy set does not contain** the optimal policy, **exploration** of policy is introduced as well for supplement. [Source](https://www.researchgate.net/publication/337624367_Accelerated_Inverse_Reinforcement_Learning_with_Randomly_Pre-sampled_Policies_for_Autonomous_Driving_Reward_Design).* |
 
-| ![[Source](https://www.researchgate.net/publication/337624367_Accelerated_Inverse_Reinforcement_Learning_with_Randomly_Pre-sampled_Policies_for_Autonomous_Driving_Reward_Design).](media/2019_xin_2.PNG "[Source](https://www.researchgate.net/publication/337624367_Accelerated_Inverse_Reinforcement_Learning_with_Randomly_Pre-sampled_Policies_for_Autonomous_Driving_Reward_Design).")  |
+| ![[Source](https://www.researchgate.net/publication/337624367_Accelerated_Inverse_Reinforcement_Learning_with_Randomly_Pre-sampled_Policies_for_Autonomous_Driving_Reward_Design).](../media/2019_xin_2.PNG "[Source](https://www.researchgate.net/publication/337624367_Accelerated_Inverse_Reinforcement_Learning_with_Randomly_Pre-sampled_Policies_for_Autonomous_Driving_Reward_Design).")  |
 |:--:|
 | *The **approximation** used in [**Kuderer et al. (2015)**](http://ais.informatik.uni-freiburg.de/publications/papers/kuderer15icra.pdf) is applied here to compute the second term of gradient about the **expected feature values**. [Source](https://www.researchgate.net/publication/337624367_Accelerated_Inverse_Reinforcement_Learning_with_Randomly_Pre-sampled_Policies_for_Autonomous_Driving_Reward_Design).* |
 
@@ -814,7 +814,7 @@ Authors: Xin, L., Li, S. E., Wang, P., Cao, W., Nie, B., Chan, C., & Cheng, B.
 <details>
   <summary>Click to expand</summary>
 
-| ![[Source](https://arxiv.org/abs/1910.04586).](media/2019_sadat_1.PNG "[Source](https://arxiv.org/abs/1910.04586).")  |
+| ![[Source](https://arxiv.org/abs/1910.04586).](../media/2019_sadat_1.PNG "[Source](https://arxiv.org/abs/1910.04586).")  |
 |:--:|
 | *Both `behavioural planner` and `trajectory optimizer` share the same cost function, whose **weigth parameters are learnt from demonstration**. [Source](https://arxiv.org/abs/1910.04586).* |
 
@@ -872,7 +872,7 @@ Authors: Sadat, A., Ren, M., Pokrovsky, A., Lin, Y., Yumer, E., & Urtasun, R.
 
 Author: Wang, P., Liu, D., Chen, J., & Chan, C.-Y.
 
-| ![In Adversarial `IRL` (`AIRL`), the discriminator tries to distinguish learnt actions from demonstrated expert actions. Action masking is applied, removing some combinations that are not preferable, in order to reduce the **unnecessary exploration**. Finally, the reward function of the discriminator is extended with some manually-designed **semantic reward** to help the agent successfully complete the lane change and not to collide with other objects. [Source](https://arxiv.org/abs/1911.08044).](media/2019_wang_1.PNG "In Adversarial `IRL` (`AIRL`), the discriminator tries to distinguish learnt actions from demonstrated expert actions. Action masking is applied, removing some combinations that are not preferable, in order to reduce the **unnecessary exploration**. Finally, the reward function of the discriminator is extended with some manually-designed **semantic reward** to help the agent successfully complete the lane change and not to collide with other objects. [Source](https://arxiv.org/abs/1911.08044).")  |
+| ![In Adversarial `IRL` (`AIRL`), the discriminator tries to distinguish learnt actions from demonstrated expert actions. Action masking is applied, removing some combinations that are not preferable, in order to reduce the **unnecessary exploration**. Finally, the reward function of the discriminator is extended with some manually-designed **semantic reward** to help the agent successfully complete the lane change and not to collide with other objects. [Source](https://arxiv.org/abs/1911.08044).](../media/2019_wang_1.PNG "In Adversarial `IRL` (`AIRL`), the discriminator tries to distinguish learnt actions from demonstrated expert actions. Action masking is applied, removing some combinations that are not preferable, in order to reduce the **unnecessary exploration**. Finally, the reward function of the discriminator is extended with some manually-designed **semantic reward** to help the agent successfully complete the lane change and not to collide with other objects. [Source](https://arxiv.org/abs/1911.08044).")  |
 |:--:|
 | *In Adversarial `IRL` (`AIRL`), the **discriminator** tries to distinguish learnt actions from demonstrated expert actions. `Action-masking` is applied, removing some `action` combinations that are not preferable, in order to reduce the **unnecessary exploration**. Finally, the reward function of the discriminator is extended with some **manually-designed** **semantic reward** to help the agent successfully complete the lane change and not to collide with other objects. [Source](https://arxiv.org/abs/1911.08044).* |
 
@@ -911,11 +911,11 @@ Author: Wang, P., Liu, D., Chen, J., & Chan, C.-Y.
 
 Author: Hjaltason, B.
 
-| ![The `φ` are **distances read from the origin of a vision field** and are represented by red dotted lines. They take value in [`0`, `1`], where `φi` = `1` means the dotted line does not hit any object and `φi` = `0` means it hits an object at origin. In this case, **two objects are inside the front vision field**. Hence `φ1` = `0.4` and `φ2` = `0.6`.. [Source](https://kth.diva-portal.org/smash/get/diva2:1366887/FULLTEXT01.pdf).](media/2019_hjaltason_1.PNG "The `φ` are **distances read from the origin of a vision field** and are represented by red dotted lines. They take value in [`0`, `1`], where `φi` = `1` means the dotted line does not hit any object and `φi` = `0` means it hits an object at origin. In this case, **two objects are inside the front vision field**. Hence `φ1` = `0.4` and `φ2` = `0.6`.. [Source](https://kth.diva-portal.org/smash/get/diva2:1366887/FULLTEXT01.pdf).")  |
+| ![The `φ` are **distances read from the origin of a vision field** and are represented by red dotted lines. They take value in [`0`, `1`], where `φi` = `1` means the dotted line does not hit any object and `φi` = `0` means it hits an object at origin. In this case, **two objects are inside the front vision field**. Hence `φ1` = `0.4` and `φ2` = `0.6`.. [Source](https://kth.diva-portal.org/smash/get/diva2:1366887/FULLTEXT01.pdf).](../media/2019_hjaltason_1.PNG "The `φ` are **distances read from the origin of a vision field** and are represented by red dotted lines. They take value in [`0`, `1`], where `φi` = `1` means the dotted line does not hit any object and `φi` = `0` means it hits an object at origin. In this case, **two objects are inside the front vision field**. Hence `φ1` = `0.4` and `φ2` = `0.6`.. [Source](https://kth.diva-portal.org/smash/get/diva2:1366887/FULLTEXT01.pdf).")  |
 |:--:|
 | *About the **features**: The `φ` are **distances read from the origin of a vision field** and are represented by red dotted lines. They take value in [`0`, `1`], where `φi` = `1` means the dotted line does not hit any object and `φi` = `0` means it hits an object at origin. In this case, **two objects are inside the front vision field**. Hence `φ1` = `0.4` and `φ2` = `0.6`. [Source](https://kth.diva-portal.org/smash/get/diva2:1366887/FULLTEXT01.pdf).* |
 
-| ![Example of `max-margin` `IRL`. [Source](https://kth.diva-portal.org/smash/get/diva2:1366887/FULLTEXT01.pdf).](media/2019_hjaltason_2.PNG "Example of `max-margin` `IRL`. [Source](https://kth.diva-portal.org/smash/get/diva2:1366887/FULLTEXT01.pdf).")  |
+| ![Example of `max-margin` `IRL`. [Source](https://kth.diva-portal.org/smash/get/diva2:1366887/FULLTEXT01.pdf).](../media/2019_hjaltason_2.PNG "Example of `max-margin` `IRL`. [Source](https://kth.diva-portal.org/smash/get/diva2:1366887/FULLTEXT01.pdf).")  |
 |:--:|
 | *Example of **`max-margin`** `IRL`. [Source](https://kth.diva-portal.org/smash/get/diva2:1366887/FULLTEXT01.pdf).* |
 
@@ -944,11 +944,11 @@ Author: Hjaltason, B.
 
 Authors: Arora, S., & Doshi, P.
 
-| ![Trying to generalize and classify `IRL` methods. [Source](https://arxiv.org/abs/1806.06877).](media/2019_arora_1.PNG "Trying to generalize and classify `IRL` methods. [Source](https://arxiv.org/abs/1806.06877).")  |
+| ![Trying to generalize and classify `IRL` methods. [Source](https://arxiv.org/abs/1806.06877).](../media/2019_arora_1.PNG "Trying to generalize and classify `IRL` methods. [Source](https://arxiv.org/abs/1806.06877).")  |
 |:--:|
 | *Trying to generalize and classify `IRL` methods. [Source](https://arxiv.org/abs/1806.06877).* |
 
-| ![I learnt about **state visitation frequency**: `ψ`(`π`)(`s`) and the **feature count expectation**: `µ`(`π`)(`φ`). [Source](https://arxiv.org/abs/1806.06877).](media/2019_arora_3.PNG "I learnt about **state visitation frequency**: `ψ`(`π`)(`s`) and the **feature count expectation**: `µ`(`π`)(`φ`). [Source](https://arxiv.org/abs/1806.06877).")  |
+| ![I learnt about **state visitation frequency**: `ψ`(`π`)(`s`) and the **feature count expectation**: `µ`(`π`)(`φ`). [Source](https://arxiv.org/abs/1806.06877).](../media/2019_arora_3.PNG "I learnt about **state visitation frequency**: `ψ`(`π`)(`s`) and the **feature count expectation**: `µ`(`π`)(`φ`). [Source](https://arxiv.org/abs/1806.06877).")  |
 |:--:|
 | *I learnt about **state visitation frequency**: `ψ`(`π`)(`s`) and the **feature count expectation**: `µ`(`π`)(`φ`). [Source](https://arxiv.org/abs/1806.06877).* |
 
@@ -1038,7 +1038,7 @@ Authors: Arora, S., & Doshi, P.
 
 Author: Weiss, E.
 
-| ![The **assumption-free** reward function that uses a **simple polynomial** form based on `state` and `action` values at each time step does better at **minimizing both `safety` and `mobility` objectives**, even though it **does not incorporate human knowledge** of typical reward function structures. About **Pareto optimum**: at these points, it becomes impossible to improve in the minimization of **one objective** without **worsening** our minimization of the **other objective**). [Source](https://web.stanford.edu/class/aa228/reports/2018/final101.pdf).](media/2019_weiss_1.PNG "The **assumption-free** reward function that uses a **simple polynomial** form based on `state` and `action` values at each time step does better at **minimizing both `safety` and `mobility` objectives**, even though it **does not incorporate human knowledge** of typical reward function structures. About **Pareto optimum**: at these points, it becomes impossible to improve in the minimization of **one objective** without **worsening** our minimization of the **other objective**). [Source](https://web.stanford.edu/class/aa228/reports/2018/final101.pdf).")  |
+| ![The **assumption-free** reward function that uses a **simple polynomial** form based on `state` and `action` values at each time step does better at **minimizing both `safety` and `mobility` objectives**, even though it **does not incorporate human knowledge** of typical reward function structures. About **Pareto optimum**: at these points, it becomes impossible to improve in the minimization of **one objective** without **worsening** our minimization of the **other objective**). [Source](https://web.stanford.edu/class/aa228/reports/2018/final101.pdf).](../media/2019_weiss_1.PNG "The **assumption-free** reward function that uses a **simple polynomial** form based on `state` and `action` values at each time step does better at **minimizing both `safety` and `mobility` objectives**, even though it **does not incorporate human knowledge** of typical reward function structures. About **Pareto optimum**: at these points, it becomes impossible to improve in the minimization of **one objective** without **worsening** our minimization of the **other objective**). [Source](https://web.stanford.edu/class/aa228/reports/2018/final101.pdf).")  |
 |:--:|
 | *The **assumption-free** reward function that uses a **simple polynomial** form based on `state` and `action` values at each time step does better at **minimizing both `safety` and `mobility` objectives**, even though it **does not incorporate human knowledge** of typical reward function structures. About **Pareto optimum**: at these points, it becomes impossible to improve in the minimization of **one objective** without **worsening** our minimization of the **other objective**). [Source](https://web.stanford.edu/class/aa228/reports/2018/final101.pdf).* |
 
@@ -1109,11 +1109,11 @@ Authors: Tian, R., Li, N., Kolmanovsky, I., Yildiz, Y., & Girard, A.
 <details>
   <summary>Click to expand</summary>
 
-| ![In the **rule-based stochastic driver model** describing the other agents, `2` thresholds are introduced: The `reaction threshold`, sampled from the range {`−1.5m`, `0.4m`}, describes whether or not the **agent reacts to the ego car**. The `aggression threshold`, uniformly sampled {`−2.2`, `1.1m`}, describes **how the agent reacts**. [Source](https://arxiv.org/abs/1909.12914).](media/2019_isele_2.PNG "In the **rule-based stochastic driver model** describing the other agents, `2` thresholds are introduced: The `reaction threshold`, sampled from the range {`−1.5m`, `0.4m`}, describes whether or not the **agent reacts to the ego car**. The `aggression threshold`, uniformly sampled {`−2.2`, `1.1m`}, describes **how the agent reacts**. [Source](https://arxiv.org/abs/1909.12914).")  |
+| ![In the **rule-based stochastic driver model** describing the other agents, `2` thresholds are introduced: The `reaction threshold`, sampled from the range {`−1.5m`, `0.4m`}, describes whether or not the **agent reacts to the ego car**. The `aggression threshold`, uniformly sampled {`−2.2`, `1.1m`}, describes **how the agent reacts**. [Source](https://arxiv.org/abs/1909.12914).](../media/2019_isele_2.PNG "In the **rule-based stochastic driver model** describing the other agents, `2` thresholds are introduced: The `reaction threshold`, sampled from the range {`−1.5m`, `0.4m`}, describes whether or not the **agent reacts to the ego car**. The `aggression threshold`, uniformly sampled {`−2.2`, `1.1m`}, describes **how the agent reacts**. [Source](https://arxiv.org/abs/1909.12914).")  |
 |:--:|
 | *In the **rule-based stochastic driver model** describing the other agents, `2` thresholds are introduced: The `reaction threshold`, sampled from the range {`−1.5m`, `0.4m`}, describes whether or not the **agent reacts to the ego car**. The `aggression threshold`, uniformly sampled {`−2.2`, `1.1m`}, describes **how the agent reacts**. [Source](https://arxiv.org/abs/1909.12914).* |
 
-| ![Two **tree searches** are performed: The first step is to **identify a target merging gap** based on the probability of a **successful merge** for each of them. The second search involves **forward simulation** and **collision checking** for multiple ego and traffic intentions. In practice the author found that ''the **coarse tree** - i.e. with intention only - was sufficient for **long term planning** and **only one intention depth** needed to be considered for the fine-grained search''. This reduces this second tree to a **matrix game**. [Source](https://arxiv.org/abs/1909.12914).](media/2019_isele_1.PNG "Two **tree searches** are performed: The first step is to **identify a target merging gap** based on the probability of a **successful merge** for each of them. The second search involves **forward simulation** and **collision checking** for multiple ego and traffic intentions. In practice the author found that ''the **coarse tree** - i.e. with intention only - was sufficient for **long term planning** and **only one intention depth** needed to be considered for the fine-grained search''. This reduces this second tree to a **matrix game**. [Source](https://arxiv.org/abs/1909.12914).")  |
+| ![Two **tree searches** are performed: The first step is to **identify a target merging gap** based on the probability of a **successful merge** for each of them. The second search involves **forward simulation** and **collision checking** for multiple ego and traffic intentions. In practice the author found that ''the **coarse tree** - i.e. with intention only - was sufficient for **long term planning** and **only one intention depth** needed to be considered for the fine-grained search''. This reduces this second tree to a **matrix game**. [Source](https://arxiv.org/abs/1909.12914).](../media/2019_isele_1.PNG "Two **tree searches** are performed: The first step is to **identify a target merging gap** based on the probability of a **successful merge** for each of them. The second search involves **forward simulation** and **collision checking** for multiple ego and traffic intentions. In practice the author found that ''the **coarse tree** - i.e. with intention only - was sufficient for **long term planning** and **only one intention depth** needed to be considered for the fine-grained search''. This reduces this second tree to a **matrix game**. [Source](https://arxiv.org/abs/1909.12914).")  |
 |:--:|
 | *Two **tree searches** are performed: The first step is to **identify a target merging gap** based on the probability of a **successful merge** for each of them. The second search involves **forward simulation** and **collision checking** for multiple ego and traffic intentions. In practice the author found that ''the **coarse tree** - i.e. with intention only - was sufficient for **long term planning** and **only one intention depth** needed to be considered for the fine-grained search''. This reduces this second tree to a **matrix game**. [Source](https://arxiv.org/abs/1909.12914).* |
 
@@ -1168,7 +1168,7 @@ Author: Isele, D.
 <details>
   <summary>Click to expand</summary>
 
-| ![The agent maintain belief on the `k` parameter for other vehicles and updates it at each step. [Source](https://arxiv.org/abs/1902.09068).](media/2019_sankar_1.PNG "The agent maintain belief on the `k` parameter for other vehicles and updates it at each step. [Source](https://arxiv.org/abs/1902.09068).")  |
+| ![The agent maintain belief on the `k` parameter for other vehicles and updates it at each step. [Source](https://arxiv.org/abs/1902.09068).](../media/2019_sankar_1.PNG "The agent maintain belief on the `k` parameter for other vehicles and updates it at each step. [Source](https://arxiv.org/abs/1902.09068).")  |
 |:--:|
 | *The agent maintain belief on the `k` parameter for other vehicles and updates it at each step. [Source](https://arxiv.org/abs/1902.09068).* |
 
@@ -1258,11 +1258,11 @@ Author: Sierra Gonzalez, D.
 <details>
   <summary>Click to expand</summary>
 
-| ![[Source](https://arxiv.org/abs/1808.04913).](media/2018_fan_4.PNG "[Source](https://arxiv.org/abs/1808.04913).")  |
+| ![[Source](https://arxiv.org/abs/1808.04913).](../media/2018_fan_4.PNG "[Source](https://arxiv.org/abs/1808.04913).")  |
 |:--:|
 | *Two ideas of rank-based conditional `IRL` framework (`RC`-`IRL`): **`Conditional` comparison** (left) and **`Rank`-based learning** (middle - is it a `loss`? I think you want to maximize this term instead?). Right: Based on the idea of the **`maximum margin`**, the goal is to find the **direction** that clearly **separates** the **demonstrated trajectory** from **randomly generated ones**. Illustration of the benefits of using `RC` to prevent **`background shifting`**: Even if the optimal reward function direction is the **same under the two scenarios**, it may not be ideal to train them together because the **optimal direction** may be impacted by **overfitting the `background shifting`**. Instead, the idea of **conditioning on scenarios** can be viewed as a **pairwise comparison**, which can **remove the background differences**. [Source](https://arxiv.org/abs/1808.04913).* |
 
-| ![[Source](https://arxiv.org/abs/1808.04913).](media/2018_fan_5.PNG "[Source](https://arxiv.org/abs/1808.04913).")  |
+| ![[Source](https://arxiv.org/abs/1808.04913).](../media/2018_fan_5.PNG "[Source](https://arxiv.org/abs/1808.04913).")  |
 |:--:|
 | *The **human expert** trajectory and **randomly generated** sample trajectories are sent to a `SIAMESE` network in a **pair-wise** manner. Again, I do not understand very well. [Source](https://arxiv.org/abs/1808.04913).* |
 
@@ -1303,11 +1303,11 @@ Authors: Fan, H., Xia, Z., Liu, C., Chen, Y., & Kong, Q.
 <details>
   <summary>Click to expand</summary>
 
-| ![__Kernel functions__ are used on the **continuous** state space to obtain a **smooth reward function** using **linear function approximation**. [Source](https://authors.library.caltech.edu/92021/1/1729881418817162.pdf).](media/2018_gao_2.PNG "__Kernel functions__ are used on the **continuous** state space to obtain a **smooth reward function** using **linear function approximation**. [Source](https://authors.library.caltech.edu/92021/1/1729881418817162.pdf).")  |
+| ![__Kernel functions__ are used on the **continuous** state space to obtain a **smooth reward function** using **linear function approximation**. [Source](https://authors.library.caltech.edu/92021/1/1729881418817162.pdf).](../media/2018_gao_2.PNG "__Kernel functions__ are used on the **continuous** state space to obtain a **smooth reward function** using **linear function approximation**. [Source](https://authors.library.caltech.edu/92021/1/1729881418817162.pdf).")  |
 |:--:|
 | *__Kernel functions__ are used on the **continuous** state space to obtain a **smooth reward function** using **linear function approximation**. [Source](https://authors.library.caltech.edu/92021/1/1729881418817162.pdf).* |
 
-| ![As often, the __divergence metric__ - to measure the `gap` between one candidate and the expert - is the __expected value function__. Example of how to use **`2` `other candidate` policies**. I am still __confused__ that each of their decision is __based on a state seen by the expert__, i.e. they are not building their own full trajectory. [Source](https://authors.library.caltech.edu/92021/1/1729881418817162.pdf).](media/2018_gao_1.PNG "As often, the __divergence metric__ - to measure the `gap` between one candidate and the expert - is the __expected value function__. Example of how to use **`2` `other candidate` policies**. I am still __confused__ that each of their decision is __based on a state seen by the expert__, i.e. they are not building their own full trajectory. [Source](https://authors.library.caltech.edu/92021/1/1729881418817162.pdf).")  |
+| ![As often, the __divergence metric__ - to measure the `gap` between one candidate and the expert - is the __expected value function__. Example of how to use **`2` `other candidate` policies**. I am still __confused__ that each of their decision is __based on a state seen by the expert__, i.e. they are not building their own full trajectory. [Source](https://authors.library.caltech.edu/92021/1/1729881418817162.pdf).](../media/2018_gao_1.PNG "As often, the __divergence metric__ - to measure the `gap` between one candidate and the expert - is the __expected value function__. Example of how to use **`2` `other candidate` policies**. I am still __confused__ that each of their decision is __based on a state seen by the expert__, i.e. they are not building their own full trajectory. [Source](https://authors.library.caltech.edu/92021/1/1729881418817162.pdf).")  |
 |:--:|
 | *As often, the __divergence metric__ (to measure the `gap` between one candidate and the expert) is the __expected value function__ estimated on **sampled trajectories**. Example of how to use **`2` `other candidate` policies**. I am still __confused__ that each of their decision is __based on a state seen by the expert__, i.e. they are not building their own **full trajectory**. [Source](https://authors.library.caltech.edu/92021/1/1729881418817162.pdf).* |
 
@@ -1376,7 +1376,7 @@ Authors: Gao, H., Shi, G., Xie, G., & Cheng, B.
 <details>
   <summary>Click to expand</summary>
 
-| ![[Source](https://ieeexplore.ieee.org/document/8500448).](media/2018_he.PNG "[Source](https://ieeexplore.ieee.org/document/8500448).")  |
+| ![[Source](https://ieeexplore.ieee.org/document/8500448).](../media/2018_he.PNG "[Source](https://ieeexplore.ieee.org/document/8500448).")  |
 |:--:|
 | *[Source](https://ieeexplore.ieee.org/document/8500448).* |
 
@@ -1410,7 +1410,7 @@ Authors: He, X., Xu, D., Zhao, H., Moze, M., Aioun, F., & Franck, G.
 <details>
   <summary>Click to expand</summary>
 
-| ![[Source](http://ais.informatik.uni-freiburg.de/publications/papers/kuderer15icra.pdf).](media/2015_kuderer_1.PNG "[Source](http://ais.informatik.uni-freiburg.de/publications/papers/kuderer15icra.pdf).")  |
+| ![[Source](http://ais.informatik.uni-freiburg.de/publications/papers/kuderer15icra.pdf).](../media/2015_kuderer_1.PNG "[Source](http://ais.informatik.uni-freiburg.de/publications/papers/kuderer15icra.pdf).")  |
 |:--:|
 | *[Source](http://ais.informatik.uni-freiburg.de/publications/papers/kuderer15icra.pdf).* |
 

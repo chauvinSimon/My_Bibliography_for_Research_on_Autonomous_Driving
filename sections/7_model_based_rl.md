@@ -13,7 +13,7 @@
 <details>
   <summary>Click to expand</summary>
 
-| ![[Source](https://arxiv.org/abs/2005.03076).](media/2020_xu_1.PNG "[Source](https://arxiv.org/abs/2005.03076).")  |
+| ![[Source](https://arxiv.org/abs/2005.03076).](../media/2020_xu_1.PNG "[Source](https://arxiv.org/abs/2005.03076).")  |
 |:--:|
 | *Model-based `RL` with guided policy search (`GPS`). The `dynamics` model uses a Gaussian mixture model (`GMM`) with `20` mixtures as global prior. The `policy` model is updated via **dual gradient descent (`DGD`)**: it is a constrained optimization problem, where `KL divergence` constrains the magnitude of **policy updates** (since the **`dynamics` model is valid only `locally`**). I am confused by the inconsistency in terminology between **`LQR` / `LQG`**. The **augmented `cost` (`return` and `KL` term) of the Lagrangian** and its **derivatives** being computable, the authors claim that the trajectory optimization can be solved using **`LQG`**. But `LQR` in the figure. Since the optimization is done on an **expectation of `cumulative costs`**, I would say it is `LQG`. [Source](https://arxiv.org/abs/2005.03076).* |
 
@@ -105,15 +105,15 @@ Authors: Xu, Z., Chen, J., & Tomizuka
 <details>
   <summary>Click to expand</summary>
 
-| ![[Source](https://www.researchgate.net/publication/343242054_Model-based_Reinforcement_Learning_for_Time-optimal_Velocity_Control).](media/2020_hartmann_2.PNG "[Source](https://www.researchgate.net/publication/343242054_Model-based_Reinforcement_Learning_for_Time-optimal_Velocity_Control).")  |
+| ![[Source](https://www.researchgate.net/publication/343242054_Model-based_Reinforcement_Learning_for_Time-optimal_Velocity_Control).](../media/2020_hartmann_2.PNG "[Source](https://www.researchgate.net/publication/343242054_Model-based_Reinforcement_Learning_for_Time-optimal_Velocity_Control).")  |
 |:--:|
 | *Since the **underlying dynamic model of the vehicle** is complex, it is **learnt** with supervised learning. The learnt **transition** function is then used for `planning`. This improves the sampling efficiency compared to model-free `RL`. Note that instead of **directly predicting the next `state`**, the **neural network** predicts the **difference between the current state `s[t]` and the next state `s[t+1]`**. But no previous `action`s are considered (What about **physical latencies** and **"delayed action effect"**?). [Source](https://www.researchgate.net/publication/343242054_Model-based_Reinforcement_Learning_for_Time-optimal_Velocity_Control).* |
 
-| ![[Source](https://www.researchgate.net/publication/343242054_Model-based_Reinforcement_Learning_for_Time-optimal_Velocity_Control).](media/2020_hartmann_1.PNG "[Source](https://www.researchgate.net/publication/343242054_Model-based_Reinforcement_Learning_for_Time-optimal_Velocity_Control).")  |
+| ![[Source](https://www.researchgate.net/publication/343242054_Model-based_Reinforcement_Learning_for_Time-optimal_Velocity_Control).](../media/2020_hartmann_1.PNG "[Source](https://www.researchgate.net/publication/343242054_Model-based_Reinforcement_Learning_for_Time-optimal_Velocity_Control).")  |
 |:--:|
 | *The **Failure Prediction and Intervention Module (`FIM`)** uses an **analytical** model to determine the **potential instability** of a given `action`. Actions proposed by the `model-based RL` agent is overwritten if one of the **future predicted states** is prone to `roll-over`. This **maintains safety** also during the **beginning of the training process**, where the **learned model** may be inaccurate. [Source](https://www.researchgate.net/publication/343242054_Model-based_Reinforcement_Learning_for_Time-optimal_Velocity_Control).* |
 
-| ![[Source](https://www.youtube.com/watch?v=Ffo3SYonwPk).](media/2020_hartmann_1.gif "[Source](https://www.youtube.com/watch?v=Ffo3SYonwPk).")  |
+| ![[Source](https://www.youtube.com/watch?v=Ffo3SYonwPk).](../media/2020_hartmann_1.gif "[Source](https://www.youtube.com/watch?v=Ffo3SYonwPk).")  |
 |:--:|
 | *[Source](https://www.youtube.com/watch?v=Ffo3SYonwPk).* |
 
@@ -177,11 +177,11 @@ Authors: Hartmann, G., Shiller, Z., & Azaria, A.
 <details>
   <summary>Click to expand</summary>
 
-| ![[Source](https://cs.anu.edu.au/courses/CSPROJECTS/20S1/reports/u6646917_report.pdf).](media/2020_quan_2.PNG "[Source](https://cs.anu.edu.au/courses/CSPROJECTS/20S1/reports/u6646917_report.pdf).")  |
+| ![[Source](https://cs.anu.edu.au/courses/CSPROJECTS/20S1/reports/u6646917_report.pdf).](../media/2020_quan_2.PNG "[Source](https://cs.anu.edu.au/courses/CSPROJECTS/20S1/reports/u6646917_report.pdf).")  |
 |:--:|
 | *Top-left: The task is not to drive a car! But rather to find the **weather conditions** causing accidents (not clear to me). Right: `Model learning` is done **offline**. Once a good confidence in **prediction accuracy** of `PILCO GPs` is obtained, **online `planning`** is conducted by starting a new episode and building up a `ρUCT` at each `state`. Bottom-left: [`ρUCT`](https://arxiv.org/pdf/0909.0801.pdf) is a **best-first `MCTS`** technique that **iteratively constructs a search tree in memory**. The tree is composed of **two interleaved types of nodes**: **`decision` nodes** and **`chance` nodes**. These correspond to the **alternating `max` and `sum` operations** in the `expectimax` operation. Each `node` in the tree corresponds to a **history `h`**. If `h` ends with an `action`, it is a **chance node**; if `h` ends with an (`observation`-`reward`) pair, it is a **decision node**. Each `node` contains a statistical estimate of the future `reward`. [Source](https://cs.anu.edu.au/courses/CSPROJECTS/20S1/reports/u6646917_report.pdf).* |
 
-| ![[Source](https://cs.anu.edu.au/courses/CSPROJECTS/20S1/reports/u6646917_report.pdf).](media/2020_quan_1.PNG "[Source](https://cs.anu.edu.au/courses/CSPROJECTS/20S1/reports/u6646917_report.pdf).")  |
+| ![[Source](https://cs.anu.edu.au/courses/CSPROJECTS/20S1/reports/u6646917_report.pdf).](../media/2020_quan_1.PNG "[Source](https://cs.anu.edu.au/courses/CSPROJECTS/20S1/reports/u6646917_report.pdf).")  |
 |:--:|
 | *Inference in the **transition model**: given **`x`**=(`s`, `a`), the `mean` and `variance` of the posterior distribution `p`(`s'`, **`x`**) are computed and used in a **normal distribution** to **sample state transitions**. [Source](https://cs.anu.edu.au/courses/CSPROJECTS/20S1/reports/u6646917_report.pdf).* |
 
@@ -265,15 +265,15 @@ Author: Quan, K.
 <details>
   <summary>Click to expand</summary>
 
-| ![[Source](https://openreview.net/forum?id=HygQBn0cYm).](media/2019_canziani_2.PNG "[Source](https://openreview.net/forum?id=HygQBn0cYm).")  |
+| ![[Source](https://openreview.net/forum?id=HygQBn0cYm).](../media/2019_canziani_2.PNG "[Source](https://openreview.net/forum?id=HygQBn0cYm).")  |
 |:--:|
 | *Small-top-right: example when averaging the outcomes of dropping a pen, to show that **deterministic prediction** that **averages** over possible futures is not an option. Top: how the **`action`-conditional dynamics model** has its **latent variable sampled** during `training` and `inference`. Bottom: latent **dropout** to solve the **action insensitivity issue** if only sampling from the **learnt posterior distribution** (function of the true `next state`) during training. [Source](https://openreview.net/forum?id=HygQBn0cYm).* |
 
-| ![[Source](https://openreview.net/forum?id=HygQBn0cYm).](media/2019_canziani_1.PNG "[Source](https://openreview.net/forum?id=HygQBn0cYm).")  |
+| ![[Source](https://openreview.net/forum?id=HygQBn0cYm).](../media/2019_canziani_1.PNG "[Source](https://openreview.net/forum?id=HygQBn0cYm).")  |
 |:--:|
 | *The **world model** produces various possible futures, i.e. the `next-state`. From them, the `reward` is computed. This estimation is good on the training distribution. But depending on the net initialization, moving **out of the training distribution** leads to different results and **arbitrary predictions**. How to reduce this **disagreement** between the models? By **uncertainty regularization**: **multiple forward passes** are performed with **dropout**, and the **variance of the prediction** is computed. The uncertainty is **summarized into this scalar** and used as **regularization term when training the `policy`**. [Source](https://openreview.net/forum?id=HygQBn0cYm).* |
 
-| ![[Source](https://www.youtube.com/watch?v=X2s7gy3wIYw).](media/2019_canziani_1.gif "[Source](https://www.youtube.com/watch?v=X2s7gy3wIYw).")  |
+| ![[Source](https://www.youtube.com/watch?v=X2s7gy3wIYw).](../media/2019_canziani_1.gif "[Source](https://www.youtube.com/watch?v=X2s7gy3wIYw).")  |
 |:--:|
 | *The `latent variable` of the **predictive model** (`CVAE`) enables to **predict a multiple modal future**. Here `4` sequences of **`200` latent variables** were sampled. None of them repeats the actual future but show `4` different variants of the future. The **deterministic predictor** does not work: it **averages** over possible futures, producing **blurred predictions**. [Source](https://www.youtube.com/watch?v=X2s7gy3wIYw).* |
 
@@ -358,7 +358,7 @@ Authors: Henaff, M., LeCun, Y., & Canziani, A.
 <details>
   <summary>Click to expand</summary>
 
-| ![ The proposed algorithm **learns the cyclist’s behaviour** in **reaction** to the **advised `speed`**. It is used to make **prediction about the next state**, allowing for a **search** that help to plan the best next move of the cyclist **on-the-fly**. A **`look-up table`** is used to model `F`. [Source](https://ieeexplore.ieee.org/document/8916847).](media/2019_dabiri_1.PNG "The proposed algorithm **learns the cyclist’s behaviour** in **reaction** to the **advised `speed`**. It is used to make **prediction about the next state**, allowing for a **search** that help to plan the best next move of the cyclist **on-the-fly**. A **`look-up table`** is used to model `F`. [Source](https://ieeexplore.ieee.org/document/8916847).")  |
+| ![ The proposed algorithm **learns the cyclist’s behaviour** in **reaction** to the **advised `speed`**. It is used to make **prediction about the next state**, allowing for a **search** that help to plan the best next move of the cyclist **on-the-fly**. A **`look-up table`** is used to model `F`. [Source](https://ieeexplore.ieee.org/document/8916847).](../media/2019_dabiri_1.PNG "The proposed algorithm **learns the cyclist’s behaviour** in **reaction** to the **advised `speed`**. It is used to make **prediction about the next state**, allowing for a **search** that help to plan the best next move of the cyclist **on-the-fly**. A **`look-up table`** is used to model `F`. [Source](https://ieeexplore.ieee.org/document/8916847).")  |
 |:--:|
 | *The proposed algorithm **learns the cyclist’s behaviour** in **reaction** to the **advised `speed`**. It is used to make **prediction about the next state**, allowing for a **search** that help to plan the best next move of the cyclist **on-the-fly**. A **`look-up table`** is used to model `F`. [Source](https://ieeexplore.ieee.org/document/8916847).* |
 
@@ -418,11 +418,11 @@ Authors: Dabiri, A., Hegyi, A., & Hoogendoorn, S.
 <details>
   <summary>Click to expand</summary>
 
-| ![ Right: Procedure to learn the **hidden reward function**: Using an **offline-learnt `generative model`**, query trajectories are produced for each **acquisition function** (`AF`).  **Transitions** of these trajectories are **labelled by the user**. The reward model ensemble is retrained on the **updated training data** using maximum-likelihood estimation. [Source](https://arxiv.org/abs/1912.05652).](media/2019_reddy_1.PNG "Right: Procedure to learn the **hidden reward function**: Using an **offline-learnt `generative model`**, query trajectories are produced for each **acquisition function** (`AF`).  **Transitions** of these trajectories are **labelled by the user**. The reward model ensemble is retrained on the **updated training data** using maximum-likelihood estimation. [Source](https://arxiv.org/abs/1912.05652).")  |
+| ![ Right: Procedure to learn the **hidden reward function**: Using an **offline-learnt `generative model`**, query trajectories are produced for each **acquisition function** (`AF`).  **Transitions** of these trajectories are **labelled by the user**. The reward model ensemble is retrained on the **updated training data** using maximum-likelihood estimation. [Source](https://arxiv.org/abs/1912.05652).](../media/2019_reddy_1.PNG "Right: Procedure to learn the **hidden reward function**: Using an **offline-learnt `generative model`**, query trajectories are produced for each **acquisition function** (`AF`).  **Transitions** of these trajectories are **labelled by the user**. The reward model ensemble is retrained on the **updated training data** using maximum-likelihood estimation. [Source](https://arxiv.org/abs/1912.05652).")  |
 |:--:|
 | *Right: Procedure to learn the **hidden reward function**: Using an **offline-learnt `generative model`**, query trajectories are produced for each **acquisition function** (`AF`).  **Transitions** of these trajectories are **labelled by the user**. The reward model ensemble is retrained on the **updated training data** using maximum-likelihood estimation. [Source](https://arxiv.org/abs/1912.05652).* |
 
-| ![ Four acquisition functions: `Maximize predicted rewards` makes the car drive **fast** and **far**. `Maximize reward model uncertainty` makes the car drive **close to the border**. `Minimize predicted rewards` makes the car drives **off-road**. `Maximize the novelty of training data` makes the car **stay still** _(since most training examples show cars in motion)_. Animated figure [here](https://sites.google.com/berkeley.edu/request).](media/2019_reddy_2.PNG "Four acquisition functions: `Maximize predicted rewards` makes the car drive **fast** and **far**. `Maximize reward model uncertainty` makes the car drive **close to the border**. `Minimize predicted rewards` makes the car drives **off-road**. `Maximize the novelty of training data` makes the car **stay still** _(since most training examples show cars in motion)_. Animated figure [here](https://sites.google.com/berkeley.edu/request).")  |
+| ![ Four acquisition functions: `Maximize predicted rewards` makes the car drive **fast** and **far**. `Maximize reward model uncertainty` makes the car drive **close to the border**. `Minimize predicted rewards` makes the car drives **off-road**. `Maximize the novelty of training data` makes the car **stay still** _(since most training examples show cars in motion)_. Animated figure [here](https://sites.google.com/berkeley.edu/request).](../media/2019_reddy_2.PNG "Four acquisition functions: `Maximize predicted rewards` makes the car drive **fast** and **far**. `Maximize reward model uncertainty` makes the car drive **close to the border**. `Minimize predicted rewards` makes the car drives **off-road**. `Maximize the novelty of training data` makes the car **stay still** _(since most training examples show cars in motion)_. Animated figure [here](https://sites.google.com/berkeley.edu/request).")  |
 |:--:|
 | *Four acquisition functions: `Maximize predicted rewards` makes the car drive **fast** and **far**. `Maximize reward model uncertainty` makes the car drive **close to the border**. `Minimize predicted rewards` makes the car drives **off-road**. `Maximize the novelty of training data` makes the car **stay still** _(since most training examples show cars in motion)_. Animated figure [here](https://sites.google.com/berkeley.edu/request).* |
 
@@ -492,7 +492,7 @@ Authors: Reddy, S., Dragan, A. D., Levine, S., Legg, S., & Leike, J.
 <details>
   <summary>Click to expand</summary>
 
-| ![ `SPC`, inspired from `MPC`, is decomposed into one **feature extractor**, one **semantic and event predictor**, and a **guide for action selection**. [Source](https://github.com/ucbdrive/spc).](media/2019_pan_1.PNG "`SPC`, inspired from `MPC`, is decomposed into one **feature extractor**, one **semantic and event predictor**, and a **guide for action selection**. [Source](https://github.com/ucbdrive/spc).")  |
+| ![ `SPC`, inspired from `MPC`, is decomposed into one **feature extractor**, one **semantic and event predictor**, and a **guide for action selection**. [Source](https://github.com/ucbdrive/spc).](../media/2019_pan_1.PNG "`SPC`, inspired from `MPC`, is decomposed into one **feature extractor**, one **semantic and event predictor**, and a **guide for action selection**. [Source](https://github.com/ucbdrive/spc).")  |
 |:--:|
 | *__`SPC`__, inspired from **`MPC`**, is composed of one **semantic feature extractor**, one **semantic and event predictor**, and one **guide for action selection**. [Source](https://github.com/ucbdrive/spc).* |
 
@@ -552,7 +552,7 @@ Authors: Pan, X., Chen, X., Cai, Q., Canny, J., & Yu, F.
 
 One figure:
 
-| ![ The `perception` module, the `memory` or `prediction` module, and the `control` module. [Source](https://www.researchgate.net/publication/332912542_Vision-Based_Autonomous_Driving_A_Model_Learning_Approach).](media/2019_baheri_1.PNG "The `perception` module, the `memory` or `prediction` module, and the `control` module. [Source](https://www.researchgate.net/publication/332912542_Vision-Based_Autonomous_Driving_A_Model_Learning_Approach).")  |
+| ![ The `perception` module, the `memory` or `prediction` module, and the `control` module. [Source](https://www.researchgate.net/publication/332912542_Vision-Based_Autonomous_Driving_A_Model_Learning_Approach).](../media/2019_baheri_1.PNG "The `perception` module, the `memory` or `prediction` module, and the `control` module. [Source](https://www.researchgate.net/publication/332912542_Vision-Based_Autonomous_Driving_A_Model_Learning_Approach).")  |
 |:--:|
 | *The `perception` module, the `memory` or `prediction` module, and the `control` module. [Source](https://www.researchgate.net/publication/332912542_Vision-Based_Autonomous_Driving_A_Model_Learning_Approach).* |
 
@@ -604,11 +604,11 @@ Authors: Baheri, A., Kolmanovsky, I., Girard, A., Tseng, E., & Filev, D.
 
 Some figures:
 
-| ![ First __extract__ some variables - e.g. `curvature`, `desired speed`, `lateral offset`, `offset in heading` - from images using __supervised learning__ and then apply control learnt with __model-based `RL`__. [Source](https://link.springer.com/article/10.1007/s12652-019-01503-y).](media/2019_zhu_2.PNG "First __extract__ some variables - e.g. `curvature`, `desired speed`, `lateral offset`, `offset in heading` - from images using __supervised learning__ and then apply control learnt with __model-based `RL`__. [Source](https://link.springer.com/article/10.1007/s12652-019-01503-y).")  |
+| ![ First __extract__ some variables - e.g. `curvature`, `desired speed`, `lateral offset`, `offset in heading` - from images using __supervised learning__ and then apply control learnt with __model-based `RL`__. [Source](https://link.springer.com/article/10.1007/s12652-019-01503-y).](../media/2019_zhu_2.PNG "First __extract__ some variables - e.g. `curvature`, `desired speed`, `lateral offset`, `offset in heading` - from images using __supervised learning__ and then apply control learnt with __model-based `RL`__. [Source](https://link.springer.com/article/10.1007/s12652-019-01503-y).")  |
 |:--:|
 | *First __extract__ some variables - e.g. `curvature`, `desired speed`, `lateral offset`, `offset in heading` - from images using __supervised learning__ and then apply control learnt with __model-based `RL`__. [Source](https://link.springer.com/article/10.1007/s12652-019-01503-y).* |
 
-| ![ The __model-based__ `PILCO` algorithm is used to quickly learn to predict the __desired speed__. [Source](https://link.springer.com/article/10.1007/s12652-019-01503-y).](media/2019_zhu_1.PNG "The __model-based__ `PILCO` algorithm is used to quickly learn to predict the __desired speed__. [Source](https://link.springer.com/article/10.1007/s12652-019-01503-y).")  |
+| ![ The __model-based__ `PILCO` algorithm is used to quickly learn to predict the __desired speed__. [Source](https://link.springer.com/article/10.1007/s12652-019-01503-y).](../media/2019_zhu_1.PNG "The __model-based__ `PILCO` algorithm is used to quickly learn to predict the __desired speed__. [Source](https://link.springer.com/article/10.1007/s12652-019-01503-y).")  |
 |:--:|
 | *The __model-based__ `PILCO` algorithm is used to quickly learn to predict the __desired speed__. [Source](https://link.springer.com/article/10.1007/s12652-019-01503-y).* |
 

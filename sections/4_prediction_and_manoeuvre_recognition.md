@@ -13,7 +13,7 @@
 <details>
   <summary>Click to expand</summary>
 
-| ![[Source](https://arxiv.org/abs/2008.08294).](media/2020_zhao_1.PNG "[Source](https://arxiv.org/abs/2008.08294).")  |
+| ![[Source](https://arxiv.org/abs/2008.08294).](../media/2020_zhao_1.PNG "[Source](https://arxiv.org/abs/2008.08294).")  |
 |:--:|
 | *__`TNT`__ = **target**-driven trajectory prediction. The intuition is that the **uncertainty of future states** can be decomposed into two parts: the **`target` or `intent` uncertainty**, such as the decision between turning `left` and `right`; and the **`control` uncertainty**, such as the **fine-grained motion** required to perform a turn. Accordingly, the probabilistic distribution is decomposed by **conditioning on `targets`** and then **marginalizing over them**. [Source](https://arxiv.org/abs/2008.08294).* |
 
@@ -97,7 +97,7 @@ Authors: Zhao, H., Gao, J., Lan, T., Sun, C., Sapp, B., Varadarajan, B., Shen, Y
 <details>
   <summary>Click to expand</summary>
 
-| ![[Source](https://arxiv.org/abs/2006.08832).](media/2020_brown_1.PNG "[Source](https://arxiv.org/abs/2006.08832).")  |
+| ![[Source](https://arxiv.org/abs/2006.08832).](../media/2020_brown_1.PNG "[Source](https://arxiv.org/abs/2006.08832).")  |
 |:--:|
 | *Terminology: the problem is formulated as a **discrete-time multi-agent partially observable stochastic game** (`POSG`). In particular, the `internal state` can contain `agent’s navigational goals` or the `behavioural traits`. [Source](https://arxiv.org/abs/2006.08832).* |
 
@@ -198,7 +198,7 @@ Authors: Brown, K., Driggs-Campbell, K., & Kochenderfer, M. J.
 <details>
   <summary>Click to expand</summary>
 
-| ![[Source](https://arxiv.org/abs/2006.04767).](media/2020_boulton_1.PNG "[Source](https://arxiv.org/abs/2006.04767).")  |
+| ![[Source](https://arxiv.org/abs/2006.04767).](../media/2020_boulton_1.PNG "[Source](https://arxiv.org/abs/2006.04767).")  |
 |:--:|
 | *Top: The idea of `CoverNet` is to first **generate feasible future trajectories**, and then **classify** them. It uses the past `states` of all road users and a `HD map` to compute a **distribution** over a vehicle's possible future states. Bottom-left: the set of trajectories can be **reduced by considering the current `state` and the dynamics**: at `high speeds`, **sharp turns are not dynamically feasible** for instance. Bottom-right: the contribution here also deals with **"feasibility"**, i.e. tries to reduce the set using **domain knowledge**. A second `loss` is introduced to **penalize predictions that go `off-road`**. The first `loss` (`cross entropy` with closest prediction treated as ground truth) is also adapted: instead of a **`delta` distribution** over the **closest mode**, there is also **probability** assigned to near misses. [Source](https://arxiv.org/abs/2006.04767).* |
 
@@ -285,11 +285,11 @@ Authors: Boulton, F. A., Grigore, E. C., & Wolff, E. M.
 <details>
   <summary>Click to expand</summary>
 
-| ![[Source](https://arxiv.org/abs/2005.14711).](media/2020_liang_1.PNG "[Source](https://arxiv.org/abs/2005.14711).")  |
+| ![[Source](https://arxiv.org/abs/2005.14711).](../media/2020_liang_1.PNG "[Source](https://arxiv.org/abs/2005.14711).")  |
 |:--:|
 | *The authors propose to leverage **`tracking`** for the **joint `perception`+`prediction`** task. [Source](https://arxiv.org/abs/2005.14711).* |
 
-| ![[Source](https://arxiv.org/abs/2005.14711).](media/2020_liang_2.PNG "[Source](https://arxiv.org/abs/2005.14711).")  |
+| ![[Source](https://arxiv.org/abs/2005.14711).](../media/2020_liang_2.PNG "[Source](https://arxiv.org/abs/2005.14711).")  |
 |:--:|
 | *Top: One main idea is to make the `prediction` module directly reuse the scene context captured in the **`perception` features**, and also consider the **past object `tracks`**. Bottom: a second contribution is the use of a `LSTM` as a **sequence model** to learn the **object trajectory representation**. This encoding is jointly used for the `tracking` and `prediction` tasks. [Source](https://arxiv.org/abs/2005.14711).* |
 
@@ -343,11 +343,11 @@ Authors: Liang, M., Yang, B., Zeng, W., Chen, Y., Hu, R., Casas, S., & Urtasun, 
 <details>
   <summary>Click to expand</summary>
 
-| ![[Source](https://arxiv.org/abs/2005.04259).](media/2020_gao_1.gif "[Source](https://arxiv.org/abs/2005.04259).")  |
+| ![[Source](https://arxiv.org/abs/2005.04259).](../media/2020_gao_1.gif "[Source](https://arxiv.org/abs/2005.04259).")  |
 |:--:|
 | *Both `map features` and our `sensor input` can be **simplified into either a `point`, a `polygon`, or a `curve`**, which can be approximately represented as **polylines**, and eventually further split into vector fragments. The set of such vectors form a simplified **abstracted world** used to make prediction with **less computation** than **rasterized images** encoded with `ConvNets`. [Source](https://arxiv.org/abs/2005.04259).* |
 
-| ![[Source](https://arxiv.org/abs/2005.04259).](media/2020_gao_1.PNG "[Source](https://arxiv.org/abs/2005.04259).")  |
+| ![[Source](https://arxiv.org/abs/2005.04259).](../media/2020_gao_1.PNG "[Source](https://arxiv.org/abs/2005.04259).")  |
 |:--:|
 | *A **vectorized** representation of the scene is preferred to the combination (**rasterized** rendering + **`ConvNet`** encoding). A **global interaction graph** can be built from these **vectorized** elements, to model the **higher-order relationships** between entities. To further improve the prediction performance, a **supervision** auxiliary task is introduced. [Source](https://arxiv.org/abs/2005.04259).* |
 
@@ -435,7 +435,7 @@ Authors: Gao, J., Sun, C., Zhao, H., Shen, Y., Anguelov, D., Li, C., & Schmid, C
 <details>
   <summary>Click to expand</summary>
 
-| ![[Source](https://arxiv.org/abs/2005.02597).](media/2020_bhattacharyya_1.PNG "[Source](https://arxiv.org/abs/2005.02597).")  |
+| ![[Source](https://arxiv.org/abs/2005.02597).](../media/2020_bhattacharyya_1.PNG "[Source](https://arxiv.org/abs/2005.02597).")  |
 |:--:|
 | *The vanilla [IDM](https://arxiv.org/abs/cond-mat/0002177) is a **parametric rule-based car-following model** that balances two forces: the desire to achieve **free speed** if there were no vehicle in front, and the **need to maintain safe separation** with the vehicle in front. It outputs an **acceleration** that is guaranteed to be **collision free**. The **stochastic** version introduces a new model parameter `σ-IDM`. [Source](https://arxiv.org/abs/2005.02597).* |
 
@@ -492,11 +492,11 @@ Authors: Bhattacharyya, R., Senanayake, R., Brown, K., & Kochenderfer
 <details>
   <summary>Click to expand</summary>
 
-| ![[Source](https://arxiv.org/abs/2003.08744).](media/2020_buhet_1.PNG "[Source](https://arxiv.org/abs/2003.08744).")  |
+| ![[Source](https://arxiv.org/abs/2003.08744).](../media/2020_buhet_1.PNG "[Source](https://arxiv.org/abs/2003.08744).")  |
 |:--:|
 | *The architecture has two main sections: an **`encoder`** to synthesize information and the **`predictor`** where we exploit it. Note that `PLOP` does not use the **classic `RNN` decoder scheme** for trajectory generation, preferring a **single step** version which predicts the **coefficients of a polynomial function** instead of the **consecutive points**. Also note the **`navigation command`** that conditions the ego prediction. [Source](https://arxiv.org/abs/2003.08744).* |
 
-| ![[Source](https://arxiv.org/abs/2003.08744).](media/2020_buhet_2.PNG "[Source](https://arxiv.org/abs/2003.08744).")  |
+| ![[Source](https://arxiv.org/abs/2003.08744).](../media/2020_buhet_2.PNG "[Source](https://arxiv.org/abs/2003.08744).")  |
 |:--:|
 | *`PLOP` uses **multimodal sensor** data input: **`Lidar` and `camera`**. The map is accumulated over the **past `2s`**, so `20` frames. It produces a **multivariate gaussian mixture** for a **fixed number of `K`** possible trajectories over a **`4s` horizon**. **Uncertainty** and **variability** are handled by predicting vehicle trajectories as a **probabilistic Gaussian Mixture models**, constrained by a **polynomial** formulation. [Source](https://arxiv.org/abs/2003.08744).* |
 
@@ -573,15 +573,15 @@ Authors: Buhet, T., Wirbel, E., & Perrotton, X.
 <details>
   <summary>Click to expand</summary>
 
-| ![[Source](https://arxiv.org/abs/2003.06409).](media/2020_hu_1.PNG "[Source](https://arxiv.org/abs/2003.06409).")  |
+| ![[Source](https://arxiv.org/abs/2003.06409).](../media/2020_hu_1.PNG "[Source](https://arxiv.org/abs/2003.06409).")  |
 |:--:|
 | *One main **motivation** is to supply the **`Control`** module (e.g. policy learnt via `IL`) with a **representation** capable of **modelling probability of future events**. The `Dynamics` module produces such **spatio-temporal representation**, not directly from images but from learnt **scene features**. That embeddings, that are used by the `Control` in order to learn driving policy, can be explicitly decoded to future `semantic segmentation`, `depth`, and `optical flow`. Note that the **stochasticity of the future** is modelled with a conditional variational approach minimises the divergence between the **`present distribution`** (what could happen given what we have seen) and the **`future distribution`** (what we observe actually happens). During inference, **diverse futures** are generated by sampling from the `present distribution`. [Source](https://arxiv.org/abs/2003.06409).* |
 
-| ![[Source](https://wayve.ai/blog/predicting-the-future).](media/2020_hu_1.gif "[Source](https://wayve.ai/blog/predicting-the-future).")  |
+| ![[Source](https://wayve.ai/blog/predicting-the-future).](../media/2020_hu_1.gif "[Source](https://wayve.ai/blog/predicting-the-future).")  |
 |:--:|
 | *There are **many possible futures** approaching this four-way intersection. Using **`3` different noise vectors** makes the model imagine **different driving manoeuvres** at an intersection: `driving straight`, `turning left` or `turning right`. These samples predict `10` frames, or **`2` seconds** into the future. [Source](https://wayve.ai/blog/predicting-the-future).* |
 
-| ![[Source](https://www.youtube.com/watch?v=EwEfs2R4RIA).](media/2020_hu_2.gif "[Source](https://www.youtube.com/watch?v=EwEfs2R4RIA).")  |
+| ![[Source](https://www.youtube.com/watch?v=EwEfs2R4RIA).](../media/2020_hu_2.gif "[Source](https://www.youtube.com/watch?v=EwEfs2R4RIA).")  |
 |:--:|
 | *The **differential entropy** of the **present distribution**, characterizing **how unsure the model is about the future** is used. As we approach the intersection, it increases. [Source](https://www.youtube.com/watch?v=EwEfs2R4RIA).* |
 
@@ -681,15 +681,15 @@ Authors: Hu, A., Cotter, F., Mohan, N., Gurau, C., & Kendall, A.
 <details>
   <summary>Click to expand</summary>
 
-| ![[Source](https://www.researchgate.net/publication/339784634_Efficient_Behavior-aware_Control_of_Automated_Vehicles_at_Crosswalks_using_Minimal_Information_Pedestrian_Prediction_Model).](media/2020_jayaraman_3.PNG "[Source](https://www.researchgate.net/publication/339784634_Efficient_Behavior-aware_Control_of_Automated_Vehicles_at_Crosswalks_using_Minimal_Information_Pedestrian_Prediction_Model).")  |
+| ![[Source](https://www.researchgate.net/publication/339784634_Efficient_Behavior-aware_Control_of_Automated_Vehicles_at_Crosswalks_using_Minimal_Information_Pedestrian_Prediction_Model).](../media/2020_jayaraman_3.PNG "[Source](https://www.researchgate.net/publication/339784634_Efficient_Behavior-aware_Control_of_Automated_Vehicles_at_Crosswalks_using_Minimal_Information_Pedestrian_Prediction_Model).")  |
 |:--:|
 | *The **pedestrian crossing behaviour** is modelled as a **probabilistic hybrid automaton**. [Source](https://www.researchgate.net/publication/339784634_Efficient_Behavior-aware_Control_of_Automated_Vehicles_at_Crosswalks_using_Minimal_Information_Pedestrian_Prediction_Model).* |
 
-| ![[Source](https://www.researchgate.net/publication/339784634_Efficient_Behavior-aware_Control_of_Automated_Vehicles_at_Crosswalks_using_Minimal_Information_Pedestrian_Prediction_Model).](media/2020_jayaraman_2.PNG "[Source](https://www.researchgate.net/publication/339784634_Efficient_Behavior-aware_Control_of_Automated_Vehicles_at_Crosswalks_using_Minimal_Information_Pedestrian_Prediction_Model).")  |
+| ![[Source](https://www.researchgate.net/publication/339784634_Efficient_Behavior-aware_Control_of_Automated_Vehicles_at_Crosswalks_using_Minimal_Information_Pedestrian_Prediction_Model).](../media/2020_jayaraman_2.PNG "[Source](https://www.researchgate.net/publication/339784634_Efficient_Behavior-aware_Control_of_Automated_Vehicles_at_Crosswalks_using_Minimal_Information_Pedestrian_Prediction_Model).")  |
 |:--:|
 | *The **interaction** is captured inside a **gap-acceptance model**: the pedestrian evaluates the **available time gap to cross the street** and either **accept the gap** by starting to cross or **reject the gap by waiting** at the crosswalk. [Source](https://www.researchgate.net/publication/339784634_Efficient_Behavior-aware_Control_of_Automated_Vehicles_at_Crosswalks_using_Minimal_Information_Pedestrian_Prediction_Model).* |
 
-| ![[Source](https://www.researchgate.net/publication/339784634_Efficient_Behavior-aware_Control_of_Automated_Vehicles_at_Crosswalks_using_Minimal_Information_Pedestrian_Prediction_Model).](media/2020_jayaraman_1.PNG "[Source](https://www.researchgate.net/publication/339784634_Efficient_Behavior-aware_Control_of_Automated_Vehicles_at_Crosswalks_using_Minimal_Information_Pedestrian_Prediction_Model).")  |
+| ![[Source](https://www.researchgate.net/publication/339784634_Efficient_Behavior-aware_Control_of_Automated_Vehicles_at_Crosswalks_using_Minimal_Information_Pedestrian_Prediction_Model).](../media/2020_jayaraman_1.PNG "[Source](https://www.researchgate.net/publication/339784634_Efficient_Behavior-aware_Control_of_Automated_Vehicles_at_Crosswalks_using_Minimal_Information_Pedestrian_Prediction_Model).")  |
 |:--:|
 | *The **baseline controller** used for comparison is a **finite state machine** (`FSM`) with four states. Whenever a pedestrian **starts walking to cross the road**, the controller always tries to stop, either by `yielding` or through `hard stop`. [Source](https://www.researchgate.net/publication/339784634_Efficient_Behavior-aware_Control_of_Automated_Vehicles_at_Crosswalks_using_Minimal_Information_Pedestrian_Prediction_Model).* |
 
@@ -747,11 +747,11 @@ Authors: Jayaraman, S. K., Jr, L. P. R., Yang, X. J., Pradhan, A. K., & Tilbury,
 <details>
   <summary>Click to expand</summary>
 
-| ![[Source](https://arxiv.org/abs/1906.08945).](media/2019_hong_1.PNG "[Source](https://arxiv.org/abs/1906.08945).")  |
+| ![[Source](https://arxiv.org/abs/1906.08945).](../media/2019_hong_1.PNG "[Source](https://arxiv.org/abs/1906.08945).")  |
 |:--:|
 | *The idea is to **encode** a **history of `world states`** (both `static` and `dynamic`) and **semantic `map` information** in a unified, **top-down spatial `grid`**. This allows to use a deep **convolutional** architecture to **model entity dynamics**, **entity interactions**, and **scene context** jointly. The authors found that **temporal convolutions** achieved **better performance** and **significantly faster** training than an `RNN` structure. [Source](https://arxiv.org/abs/1906.08945).* |
 
-| ![[Source](https://arxiv.org/abs/1906.08945).](media/2019_hong_2.PNG "[Source](https://arxiv.org/abs/1906.08945).")  |
+| ![[Source](https://arxiv.org/abs/1906.08945).](../media/2019_hong_2.PNG "[Source](https://arxiv.org/abs/1906.08945).")  |
 |:--:|
 | *Three **`1-shot` models** are proposed. Top: **parametric** and **continuous**. Bottom: **non-parametric** and **discrete** (trajectories are here sampled for display from the `state` probabilities). [Source](https://arxiv.org/abs/1906.08945).* |
 
@@ -815,11 +815,11 @@ Authors: Hong, J., Sapp, B., & Philbin, J.
 <details>
   <summary>Click to expand</summary>
 
-| ![[Source](https://www.researchgate.net/publication/334591840_Learning_Interaction-Aware_Probabilistic_Driver_Behavior_Models_from_Urban_Scenarios).](media/2019_schulz_2.PNG "[Source](https://www.researchgate.net/publication/334591840_Learning_Interaction-Aware_Probabilistic_Driver_Behavior_Models_from_Urban_Scenarios).")  |
+| ![[Source](https://www.researchgate.net/publication/334591840_Learning_Interaction-Aware_Probabilistic_Driver_Behavior_Models_from_Urban_Scenarios).](../media/2019_schulz_2.PNG "[Source](https://www.researchgate.net/publication/334591840_Learning_Interaction-Aware_Probabilistic_Driver_Behavior_Models_from_Urban_Scenarios).")  |
 |:--:|
 | *The network produces an **`action` distribution** for the **next time-step**. The `features` are function of one selected **driver's `route intention`** (such as `turning left` or `right`) and the `map`. **Redundant features** can be **pruned** to reduce the complexity of the model: even with as few as **`5` features** (framed in blue), it is possible for the network to learn basic behaviour models that achieve lower losses than both baseline recurrent networks. [Source](https://www.researchgate.net/publication/334591840_Learning_Interaction-Aware_Probabilistic_Driver_Behavior_Models_from_Urban_Scenarios).* |
 
-| ![[Source](https://www.researchgate.net/publication/334591840_Learning_Interaction-Aware_Probabilistic_Driver_Behavior_Models_from_Urban_Scenarios).](media/2019_schulz_1.PNG "[Source](https://www.researchgate.net/publication/334591840_Learning_Interaction-Aware_Probabilistic_Driver_Behavior_Models_from_Urban_Scenarios).")  |
+| ![[Source](https://www.researchgate.net/publication/334591840_Learning_Interaction-Aware_Probabilistic_Driver_Behavior_Models_from_Urban_Scenarios).](../media/2019_schulz_1.PNG "[Source](https://www.researchgate.net/publication/334591840_Learning_Interaction-Aware_Probabilistic_Driver_Behavior_Models_from_Urban_Scenarios).")  |
 |:--:|
 | *Right: At each time step, the **confidence in the `action` changes**. Left: How to compute some **loss** from the **predicted `variance`** if the **ground-truth** is a **point-estimate**? The predicted distribution can be evaluated at ground-truth, forming a **likelihood**. The **negative-log-likelihood** becomes the objective to minimize. The network can output **high variance** if it is not sure. But a **regularization term** deters it from being too uncertain. [Source](https://www.researchgate.net/publication/334591840_Learning_Interaction-Aware_Probabilistic_Driver_Behavior_Models_from_Urban_Scenarios).* |
 
@@ -887,11 +887,11 @@ Authors: Schulz, J., Hubmann, C., Morin, N., Löchner, J., & Darius, B.
 <details>
   <summary>Click to expand</summary>
 
-| ![The idea is to learn a **latent representation** **`z`** that corresponds to the **true `action`**. The model can then perform **joint training** on the **two kinds of data**: it optimizes the **likelihood** of the **`interaction`** data, for which the **`action`s are available**, and **`observation`** data, for which the **`action`s are missing**. Hence the visual predictive model can **predict the next frame** `xt+1` conditioned on the **current frame** `xt` and **action learnt representation** `zt`. [Source](https://arxiv.org/abs/1912.12773).](media/2019_schmeckpeper_1.PNG "The idea is to learn a **latent representation** **`z`** that corresponds to the **true `action`**. The model can then perform **joint training** on the **two kinds of data**: it optimizes the **likelihood** of the **`interaction`** data, for which the **`action`s are available**, and **`observation`** data, for which the **`action`s are missing**. Hence the visual predictive model can **predict the next frame** `xt+1` conditioned on the **current frame** `xt` and **action learnt representation** `zt`. [Source](https://arxiv.org/abs/1912.12773).")  |
+| ![The idea is to learn a **latent representation** **`z`** that corresponds to the **true `action`**. The model can then perform **joint training** on the **two kinds of data**: it optimizes the **likelihood** of the **`interaction`** data, for which the **`action`s are available**, and **`observation`** data, for which the **`action`s are missing**. Hence the visual predictive model can **predict the next frame** `xt+1` conditioned on the **current frame** `xt` and **action learnt representation** `zt`. [Source](https://arxiv.org/abs/1912.12773).](../media/2019_schmeckpeper_1.PNG "The idea is to learn a **latent representation** **`z`** that corresponds to the **true `action`**. The model can then perform **joint training** on the **two kinds of data**: it optimizes the **likelihood** of the **`interaction`** data, for which the **`action`s are available**, and **`observation`** data, for which the **`action`s are missing**. Hence the visual predictive model can **predict the next frame** `xt+1` conditioned on the **current frame** `xt` and **action learnt representation** `zt`. [Source](https://arxiv.org/abs/1912.12773).")  |
 |:--:|
 | *The idea is to learn a **latent representation** **`z`** that corresponds to the **true `action`**. The model can then perform **joint training** on the **two kinds of data**: it optimizes the **likelihood** of the **`interaction`** data, for which the **`action`s are available**, and **`observation`** data, for which the **`action`s are missing**. Hence the visual predictive model can **predict the next frame** `xt+1` conditioned on the **current frame** `xt` and **action learnt representation** `zt`. [Source](https://arxiv.org/abs/1912.12773).* |
 
-| ![The visual prediction model is trained using two driving sets: **`action`-conditioned videos** from **Boston** and **`action`-free videos** from the **Singapore**. Frames from both subsets come from **[`BDD100K`](https://arxiv.org/abs/1805.04687)** or **[`nuScenes`](https://arxiv.org/abs/1903.11027)** datasets.. [Source](https://sites.google.com/view/lpmfoai).](media/2019_schmeckpeper_1.gif "The visual prediction model is trained using two driving sets: **`action`-conditioned videos** from **Boston** and **`action`-free videos** from the **Singapore**. Frames from both subsets come from **[`BDD100K`](https://arxiv.org/abs/1805.04687)** or **[`nuScenes`](https://arxiv.org/abs/1903.11027)** datasets.. [Source](https://sites.google.com/view/lpmfoai).")  |
+| ![The visual prediction model is trained using two driving sets: **`action`-conditioned videos** from **Boston** and **`action`-free videos** from the **Singapore**. Frames from both subsets come from **[`BDD100K`](https://arxiv.org/abs/1805.04687)** or **[`nuScenes`](https://arxiv.org/abs/1903.11027)** datasets.. [Source](https://sites.google.com/view/lpmfoai).](../media/2019_schmeckpeper_1.gif "The visual prediction model is trained using two driving sets: **`action`-conditioned videos** from **Boston** and **`action`-free videos** from the **Singapore**. Frames from both subsets come from **[`BDD100K`](https://arxiv.org/abs/1805.04687)** or **[`nuScenes`](https://arxiv.org/abs/1903.11027)** datasets.. [Source](https://sites.google.com/view/lpmfoai).")  |
 |:--:|
 | *The visual prediction model is trained using two driving sets: **`action`-conditioned videos** from **Boston** and **`action`-free videos** from the **Singapore**. Frames from both subsets come from **[`BDD100K`](https://arxiv.org/abs/1805.04687)** and **[`nuScenes`](https://arxiv.org/abs/1903.11027)** datasets. [Source](https://sites.google.com/view/lpmfoai).* |
 
@@ -942,15 +942,15 @@ Authors: Schmeckpeper, K., Xie, A., Rybkin, O., Tian, S., Daniilidis, K., Levine
 <details>
   <summary>Click to expand</summary>
 
-| ![The author propose **new classification** of behavioural prediction methods. Only **deep learning approaches** are considered and `physics`-based approaches are excluded. The criteria are about the **`input`**, **`ouput`** and **deep learning `method`**. [Source](https://arxiv.org/abs/1912.11676).](media/2019_mozaffari_1.PNG "The author propose **new classification** of behavioural prediction methods. Only **deep learning approaches** are considered and `physics`-based approaches are excluded. The criteria are about the **`input`**, **`ouput`** and **deep learning `method`**. [Source](https://arxiv.org/abs/1912.11676).")  |
+| ![The author propose **new classification** of behavioural prediction methods. Only **deep learning approaches** are considered and `physics`-based approaches are excluded. The criteria are about the **`input`**, **`ouput`** and **deep learning `method`**. [Source](https://arxiv.org/abs/1912.11676).](../media/2019_mozaffari_1.PNG "The author propose **new classification** of behavioural prediction methods. Only **deep learning approaches** are considered and `physics`-based approaches are excluded. The criteria are about the **`input`**, **`ouput`** and **deep learning `method`**. [Source](https://arxiv.org/abs/1912.11676).")  |
 |:--:|
 | *The author propose **new classification** of behavioural prediction methods. Only **deep learning approaches** are considered and `physics`-based approaches are excluded. The criteria are about the **`input`**, **`ouput`** and **deep learning `method`**. [Source](https://arxiv.org/abs/1912.11676).* |
 
-| ![First criterion is about the **input**: What is the prediction based on? Important is to capture **road structure** and **interactions** while staying **flexible** in the **representation** (e.g. describe different types of intersections and work with varying numbers of `target vehicles` and `surrounding vehicles`). **Partial observability** should be considered by design. [Source](https://arxiv.org/abs/1912.11676).](media/2019_mozaffari_2.PNG "First criterion is about the **input**: What is the prediction based on? Important is to capture **road structure** and **interactions** while staying **flexible** in the **representation** (e.g. describe different types of intersections and work with varying numbers of `target vehicles` and `surrounding vehicles`). **Partial observability** should be considered by design. [Source](https://arxiv.org/abs/1912.11676).")  |
+| ![First criterion is about the **input**: What is the prediction based on? Important is to capture **road structure** and **interactions** while staying **flexible** in the **representation** (e.g. describe different types of intersections and work with varying numbers of `target vehicles` and `surrounding vehicles`). **Partial observability** should be considered by design. [Source](https://arxiv.org/abs/1912.11676).](../media/2019_mozaffari_2.PNG "First criterion is about the **input**: What is the prediction based on? Important is to capture **road structure** and **interactions** while staying **flexible** in the **representation** (e.g. describe different types of intersections and work with varying numbers of `target vehicles` and `surrounding vehicles`). **Partial observability** should be considered by design. [Source](https://arxiv.org/abs/1912.11676).")  |
 |:--:|
 | *First criterion is about the **input**: What is the prediction based on? Important is to capture **road structure** and **interactions** while staying **flexible** in the **representation** (e.g. describe different types of intersections and work with varying numbers of `target vehicles` and `surrounding vehicles`). **Partial observability** should be considered by design. [Source](https://arxiv.org/abs/1912.11676).* |
 
-| ![Second criterion is about the **output**: What is predicted? Important is to propagate the uncertainty from the input and **consider multiple options** (**multi-modality**). Therefore to reason with **probabilities**. Bottom - why **`multi-modality`** is important. [Source](https://arxiv.org/abs/1912.11676).](media/2019_mozaffari_3.PNG "Second criterion is about the **output**: What is predicted? Important is to propagate the uncertainty from the input and **consider multiple options** (**multi-modality**). Therefore to reason with **probabilities**. Bottom - why **`multi-modality`** is important. [Source](https://arxiv.org/abs/1912.11676).")  |
+| ![Second criterion is about the **output**: What is predicted? Important is to propagate the uncertainty from the input and **consider multiple options** (**multi-modality**). Therefore to reason with **probabilities**. Bottom - why **`multi-modality`** is important. [Source](https://arxiv.org/abs/1912.11676).](../media/2019_mozaffari_3.PNG "Second criterion is about the **output**: What is predicted? Important is to propagate the uncertainty from the input and **consider multiple options** (**multi-modality**). Therefore to reason with **probabilities**. Bottom - why **`multi-modality`** is important. [Source](https://arxiv.org/abs/1912.11676).")  |
 |:--:|
 | *Second criterion is about the **output**: What is predicted? Important is to propagate the uncertainty from the input and **consider multiple options** (**multi-modality**). Therefore to reason with **probabilities**. Bottom - why **`multi-modality`** is important. [Source](https://arxiv.org/abs/1912.11676).* |
 
@@ -1020,11 +1020,11 @@ Authors: Mozaffari, S., Al-Jarrah, O. Y., Dianati, M., Jennings, P., & Mouzakiti
 <details>
   <summary>Click to expand</summary>
 
-| ![Two **multi-head** **`attention`** layers are used to account for **`social` interactions** between all vehicles. They are combined with `LSTM` layers to offer **joint**, **long-range** and **multi-modal** forecasts. [Source](https://arxiv.org/abs/1910.03650).](media/2019_mercat_2.PNG "Two **multi-head** **`attention`** layers are used to account for **`social` interactions** between all vehicles. They are combined with `LSTM` layers to offer **joint**, **long-range** and **multi-modal** forecasts. [Source](https://arxiv.org/abs/1910.03650).")  |
+| ![Two **multi-head** **`attention`** layers are used to account for **`social` interactions** between all vehicles. They are combined with `LSTM` layers to offer **joint**, **long-range** and **multi-modal** forecasts. [Source](https://arxiv.org/abs/1910.03650).](../media/2019_mercat_2.PNG "Two **multi-head** **`attention`** layers are used to account for **`social` interactions** between all vehicles. They are combined with `LSTM` layers to offer **joint**, **long-range** and **multi-modal** forecasts. [Source](https://arxiv.org/abs/1910.03650).")  |
 |:--:|
 | *Two **multi-head** **`attention`** layers are used to account for **`social` interactions** between all vehicles. They are combined with `LSTM` layers to offer **joint**, **long-range** and **multi-modal** forecasts. [Source](https://arxiv.org/abs/1910.03650).* |
 
-| ![[Source](https://arxiv.org/abs/1910.03650).](media/2019_mercat_1.PNG "[Source](https://arxiv.org/abs/1910.03650).")  |
+| ![[Source](https://arxiv.org/abs/1910.03650).](../media/2019_mercat_1.PNG "[Source](https://arxiv.org/abs/1910.03650).")  |
 |:--:|
 | *[Source](https://arxiv.org/abs/1910.03650).* |
 
@@ -1069,11 +1069,11 @@ Authors: Mercat, J., Gilles, T., Zoghby, N. El, Sandou, G., Beauvois, D., & Gil,
 <details>
   <summary>Click to expand</summary>
 
-| ![[Source](https://arxiv.org/abs/1910.05449v1).](media/2019_chai_1.PNG "[Source](https://arxiv.org/abs/1910.05449v1).")  |
+| ![[Source](https://arxiv.org/abs/1910.05449v1).](../media/2019_chai_1.PNG "[Source](https://arxiv.org/abs/1910.05449v1).")  |
 |:--:|
 | *[Source](https://arxiv.org/abs/1910.05449v1).* |
 
-| ![A **discrete set of intents** is modelled as a set of `K=3` **anchor trajectories**. Uncertainty is assumed to be **unimodal given `intent`** (here `3` intents are considered) while `control uncertainty` is modelled with a **Gaussian distribution** dependent on each waypoint state of an anchor trajectory. Such an example shows that modelling **multiple intents** is important. [Source](https://arxiv.org/abs/1910.05449v1).](media/2019_chai_2.PNG "A **discrete set of intents** is modelled as a set of `K=3` **anchor trajectories**. Uncertainty is assumed to be **unimodal given `intent`** (here `3` intents are considered) while `control uncertainty` is modelled with a **Gaussian distribution** dependent on each waypoint state of an anchor trajectory. Such an example shows that modelling **multiple intents** is important. [Source](https://arxiv.org/abs/1910.05449v1).")  |
+| ![A **discrete set of intents** is modelled as a set of `K=3` **anchor trajectories**. Uncertainty is assumed to be **unimodal given `intent`** (here `3` intents are considered) while `control uncertainty` is modelled with a **Gaussian distribution** dependent on each waypoint state of an anchor trajectory. Such an example shows that modelling **multiple intents** is important. [Source](https://arxiv.org/abs/1910.05449v1).](../media/2019_chai_2.PNG "A **discrete set of intents** is modelled as a set of `K=3` **anchor trajectories**. Uncertainty is assumed to be **unimodal given `intent`** (here `3` intents are considered) while `control uncertainty` is modelled with a **Gaussian distribution** dependent on each waypoint state of an anchor trajectory. Such an example shows that modelling **multiple intents** is important. [Source](https://arxiv.org/abs/1910.05449v1).")  |
 |:--:|
 | *A **discrete set of intents** is modelled as a set of `K=3` **anchor trajectories**. Uncertainty is assumed to be **unimodal given `intent`** (here `3` intents are considered) while `control uncertainty` is modelled with a **Gaussian distribution** dependent on each waypoint state of an anchor trajectory. Such an example shows that modelling **multiple intents** is important. [Source](https://arxiv.org/abs/1910.05449v1).* |
 
@@ -1125,11 +1125,11 @@ Authors: Chai, Y., Sapp, B., Bansal, M., & Anguelov, D.
 <details>
   <summary>Click to expand</summary>
 
-| ![The **Generator** predicts trajectories that are scored against **two criteria**: The **Discriminator** (as in `GAN`) for **`accuracy`** (i.e. consistent with the observed inputs) and the **Critic** (the generator acts as an **Actor**) for **`safety`**. The random noise vector variable `z` in the Generator can be sampled from `N`(`0`, `1`) to sample novel trajectories. [Source](https://arxiv.org/abs/1909.07707).](media/2019_van_der_heiden_1.PNG "The **Generator** predicts trajectories that are scored against **two criteria**: The **Discriminator** (as in `GAN`) for **`accuracy`** (i.e. consistent with the observed inputs) and the **Critic** (the generator acts as an **Actor**) for **`safety`**. The random noise vector variable `z` in the Generator can be sampled from `N`(`0`, `1`) to sample novel trajectories. [Source](https://arxiv.org/abs/1909.07707).")  |
+| ![The **Generator** predicts trajectories that are scored against **two criteria**: The **Discriminator** (as in `GAN`) for **`accuracy`** (i.e. consistent with the observed inputs) and the **Critic** (the generator acts as an **Actor**) for **`safety`**. The random noise vector variable `z` in the Generator can be sampled from `N`(`0`, `1`) to sample novel trajectories. [Source](https://arxiv.org/abs/1909.07707).](../media/2019_van_der_heiden_1.PNG "The **Generator** predicts trajectories that are scored against **two criteria**: The **Discriminator** (as in `GAN`) for **`accuracy`** (i.e. consistent with the observed inputs) and the **Critic** (the generator acts as an **Actor**) for **`safety`**. The random noise vector variable `z` in the Generator can be sampled from `N`(`0`, `1`) to sample novel trajectories. [Source](https://arxiv.org/abs/1909.07707).")  |
 |:--:|
 | *The **Generator** predicts trajectories that are scored against **two criteria**: The **Discriminator** (as in `GAN`) for **`accuracy`** (i.e. consistent with the observed inputs) and the **Critic** (the generator acts as an **Actor**) for **`safety`**. The random noise vector variable `z` in the Generator can be sampled from `N`(`0`, `1`) to sample novel trajectories. [Source](https://arxiv.org/abs/1909.07707).* |
 
-| ![Several features offered by the predictions of `SafeCritic`: **accuracy**, **diversity**, **attention** and **safety**. [Source](https://arxiv.org/abs/1909.07707).](media/2019_van_der_heiden_2.PNG "Several features offered by the predictions of `SafeCritic`: **accuracy**, **diversity**, **attention** and **safety**. [Source](https://arxiv.org/abs/1909.07707).")  |
+| ![Several features offered by the predictions of `SafeCritic`: **accuracy**, **diversity**, **attention** and **safety**. [Source](https://arxiv.org/abs/1909.07707).](../media/2019_van_der_heiden_2.PNG "Several features offered by the predictions of `SafeCritic`: **accuracy**, **diversity**, **attention** and **safety**. [Source](https://arxiv.org/abs/1909.07707).")  |
 |:--:|
 | *Several features offered by the predictions of `SafeCritic`: **accuracy**, **diversity**, **attention** and **safety**. [Source](https://arxiv.org/abs/1909.07707).* |
 
@@ -1176,7 +1176,7 @@ Authors: van der Heiden, T., Nagaraja, N. S., Weiss, C., & Gavves, E.
 
 One figure:
 
-| ![Classification of __motion models__ based on three increasingly abstract levels - adapted from (Lefèvre, S., Vasquez. D. & Laugier C. - 2014). [Source](https://arxiv.org/abs/1909.07707).](media/2019_leon_1.PNG " Classification of motion __motion models__ on three increasingly abstract levels - adapted from (Lefèvre, S., Vasquez. D. & Laugier C. - 2014). [Source](https://arxiv.org/abs/1909.07707).")  |
+| ![Classification of __motion models__ based on three increasingly abstract levels - adapted from (Lefèvre, S., Vasquez. D. & Laugier C. - 2014). [Source](https://arxiv.org/abs/1909.07707).](../media/2019_leon_1.PNG " Classification of motion __motion models__ on three increasingly abstract levels - adapted from (Lefèvre, S., Vasquez. D. & Laugier C. - 2014). [Source](https://arxiv.org/abs/1909.07707).")  |
 |:--:|
 | *Classification of __motion models__ based on three increasingly abstract levels - adapted from [(Lefèvre, S., Vasquez. D. & Laugier C. - 2014)](https://robomechjournal.springeropen.com/track/pdf/10.1186/s40648-014-0001-z). [Source](https://arxiv.org/abs/1909.07707).* |
 
@@ -1209,7 +1209,7 @@ Authors: Leon, F., & Gavrilescu, M.
 
 One figure:
 
-| ![The framework consists of four modules: _encoder module_, _interaction module_, _prediction module_ and _control module_. [Source](http://cpslab.snu.ac.kr/publications/papers/2019_iros_predstl.pdf).](media/2019_cho_1.PNG "The framework consists of four modules: _encoder module_, _interaction module_, _prediction module_ and _control module_. [Source](http://cpslab.snu.ac.kr/publications/papers/2019_iros_predstl.pdf).")  |
+| ![The framework consists of four modules: _encoder module_, _interaction module_, _prediction module_ and _control module_. [Source](http://cpslab.snu.ac.kr/publications/papers/2019_iros_predstl.pdf).](../media/2019_cho_1.PNG "The framework consists of four modules: _encoder module_, _interaction module_, _prediction module_ and _control module_. [Source](http://cpslab.snu.ac.kr/publications/papers/2019_iros_predstl.pdf).")  |
 |:--:|
 | *The framework consists of four modules: _encoder module_, _interaction module_, _prediction module_ and _control module_. [Source](http://cpslab.snu.ac.kr/publications/papers/2019_iros_predstl.pdf).* |
 
@@ -1250,7 +1250,7 @@ Authors: Cho, K., Ha, T., Lee, G., & Oh, S.
 
 One figure:
 
-| ![Both the **state space** and the **transition model** are adapted online, offering two features: **prediction** about the next state and **detection of unknown (i.e. `risky`) situations**. [Source](https://arxiv.org/abs/1908.10823).](media/2019_han_1.PNG "Both the **state space** and the **transition model** are adapted online, offering two features: **prediction** about the next state and **detection of unknown (i.e. `risky`) situations**. [Source](https://arxiv.org/abs/1908.10823).")  |
+| ![Both the **state space** and the **transition model** are adapted online, offering two features: **prediction** about the next state and **detection of unknown (i.e. `risky`) situations**. [Source](https://arxiv.org/abs/1908.10823).](../media/2019_han_1.PNG "Both the **state space** and the **transition model** are adapted online, offering two features: **prediction** about the next state and **detection of unknown (i.e. `risky`) situations**. [Source](https://arxiv.org/abs/1908.10823).")  |
 |:--:|
 | *Both the **state space** and the **transition model** are adapted online, offering two features: **prediction** about the next state and **detection of unknown (i.e. `risky`) situations**. [Source](https://arxiv.org/abs/1908.10823).* |
 
@@ -1288,7 +1288,7 @@ Authors: Han, T., Filev, D., & Ozguner, U.
 
 One figure:
 
-| ![[Source](https://arxiv.org/abs/1902.09068).](media/2019_lui.PNG "[Source](https://arxiv.org/abs/1902.09068).")  |
+| ![[Source](https://arxiv.org/abs/1902.09068).](../media/2019_lui.PNG "[Source](https://arxiv.org/abs/1902.09068).")  |
 |:--:|
 | *[Source](https://arxiv.org/abs/1902.09068).* |
 
@@ -1319,7 +1319,7 @@ Authors: Liu, S., Zheng, K., Member, S., Zhao, L., & Fan, P.
 
 One figure:
 
-| ![[Source](https://arxiv.org/abs/1904.02341).](media/2019_huang.PNG "[Source](https://arxiv.org/abs/1904.02341).")  |
+| ![[Source](https://arxiv.org/abs/1904.02341).](../media/2019_huang.PNG "[Source](https://arxiv.org/abs/1904.02341).")  |
 |:--:|
 | *[Source](https://arxiv.org/abs/1904.02341).* |
 
@@ -1431,11 +1431,11 @@ Related works:
 
 - Ren, Y., Elliott, S., Wang, Y., Yang, Y., & Zhang, W. [2019]. **"How Shall I Drive ? Interaction Modeling and Motion Planning towards Empathetic and Socially-Graceful Driving"** [[pdf](https://arxiv.org/abs/1901.10013)] [[code](https://github.com/scaperoth/carmachinelearning)]
 
-| ![[Source](https://arxiv.org/abs/1901.10013).](media/2019_ren_1.PNG "[Source](https://arxiv.org/abs/1901.10013).")  |
+| ![[Source](https://arxiv.org/abs/1901.10013).](../media/2019_ren_1.PNG "[Source](https://arxiv.org/abs/1901.10013).")  |
 |:--:|
 | *[Source](https://arxiv.org/abs/1901.10013).* |
 
-| ![[Source](https://arxiv.org/abs/1901.10013).](media/2019_ren_2.PNG "[Source](https://arxiv.org/abs/1901.10013).")  |
+| ![[Source](https://arxiv.org/abs/1901.10013).](../media/2019_ren_2.PNG "[Source](https://arxiv.org/abs/1901.10013).")  |
 |:--:|
 | *[Source](https://arxiv.org/abs/1901.10013).* |
 

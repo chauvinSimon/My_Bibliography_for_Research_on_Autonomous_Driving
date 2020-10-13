@@ -14,11 +14,11 @@
 <details>
   <summary>Click to expand</summary>
 
-| ![[Source](https://arxiv.org/abs/2008.07081).](media/2020_chen_5.PNG "[Source](https://arxiv.org/abs/2008.07081).")  |
+| ![[Source](https://arxiv.org/abs/2008.07081).](../media/2020_chen_5.PNG "[Source](https://arxiv.org/abs/2008.07081).")  |
 |:--:|
 | *Top: scenarios are generated to require **interaction-aware** decisions from the ego agent. Bottom: A **`driver-type` parameter** is introduced to learn a **single policy** that works **across different planning objectives**. It represents the **driving style** such as the **level of `aggressiveness`**. It affects the terms in the **`reward` function** in an **affine way**. [Source](https://arxiv.org/abs/2008.07081).* |
 
-| ![[Source](https://arxiv.org/abs/2008.07081).](media/2020_chen_6.PNG "[Source](https://arxiv.org/abs/2008.07081).")  |
+| ![[Source](https://arxiv.org/abs/2008.07081).](../media/2020_chen_6.PNG "[Source](https://arxiv.org/abs/2008.07081).")  |
 |:--:|
 | *The conditional parameter (**ego’s `driver-type`**) should **only affect the encoding of its own `state`**, not the `state` of the other agents. Therefore it injected **after the `observation` encoder**. `MIDAS` is compared to **[`DeepSet`](https://arxiv.org/abs/1909.13582)** and **[“Social Attention”](https://arxiv.org/abs/1911.12250)**. `SAB` stands for ''set-attention block'', `ISAB` for ''induced `SAB`'' and `PMA` for ''pooling by multi-head attention''. [Source](https://arxiv.org/abs/2008.07081).* |
 
@@ -105,7 +105,7 @@ Authors: Chen, X., & Chaudhari, P.
 <details>
   <summary>Click to expand</summary>
 
-| ![[Source](https://ieeexplore.ieee.org/document/9164410).](media/2020_zou_1.PNG "[Source](https://ieeexplore.ieee.org/document/9164410).")  |
+| ![[Source](https://ieeexplore.ieee.org/document/9164410).](../media/2020_zou_1.PNG "[Source](https://ieeexplore.ieee.org/document/9164410).")  |
 |:--:|
 | *A **small set of collected expert demonstrations** is used to train an **`IL` agent** while **pre-training the `DDPG`** (`offline RL`). Then, the `IL` agent is used to **generate new experiences**, stored in the **`M1` buffer**. The `RL` agent is then **trained `online`** ('self-learning') and the **generated experiences** are stored in **`M2`**. During this training phase, the **sampling from `M1` is progressively reduced**. The **decay of the `sampling ratio`** is automated based on the `return`. [Source](https://ieeexplore.ieee.org/document/9164410).* |
 
@@ -148,15 +148,15 @@ Authors: Zou, Q., Xiong, K., & Hou, Y.
 <details>
   <summary>Click to expand</summary>
 
-| ![[Source](https://arxiv.org/abs/2001.01377).](media/2020_cai_1.PNG "[Source](https://arxiv.org/abs/2001.01377).")  |
+| ![[Source](https://arxiv.org/abs/2001.01377).](../media/2020_cai_1.PNG "[Source](https://arxiv.org/abs/2001.01377).")  |
 |:--:|
 | *The goal is to control the vehicle to **follow a trajectory** at **high speed** (`>80 km/h`) and drift through manifold corners with **large side `slip angles`** (`>20°`), like a **professional racing driver**. The **slip angle `β`** is the angle between the **direction of the heading** and the **direction of speed vector**. The **desired heading angle** is determined by the **vector field guidance (`VFG`)**: it is close to the direction of the **reference trajectory** when the **lateral error** is small. [Source](https://arxiv.org/abs/2001.01377).* |
 
-| ![[Source](https://arxiv.org/abs/2001.01377).](media/2020_cai_2.PNG "[Source](https://arxiv.org/abs/2001.01377).")  |
+| ![[Source](https://arxiv.org/abs/2001.01377).](../media/2020_cai_2.PNG "[Source](https://arxiv.org/abs/2001.01377).")  |
 |:--:|
 | *Top-left: The **generalization** capability is tested by using cars with **different kinematics and dynamics**. Top-right: An **`action` smoothing** strategy is adopted for **stable control outputs**. Bottom: the `reward` function **penalized deviations** to **references `states`** in term of `distance`, `direction`, and `slip angle`. The **speed factor `v`** is used to stimulate the vehicle to **drive fast**: If `v` is smaller than `6 m/s`, the total reward is **decreased by half** as a **punishment**. [Source](https://arxiv.org/abs/2001.01377).* |
 
-| ![[Source](https://sites.google.com/view/autonomous-drifting-with-drl/).](media/2020_cai_1.gif "[Source](https://sites.google.com/view/autonomous-drifting-with-drl/).")  |
+| ![[Source](https://sites.google.com/view/autonomous-drifting-with-drl/).](../media/2020_cai_1.gif "[Source](https://sites.google.com/view/autonomous-drifting-with-drl/).")  |
 |:--:|
 | *The proposed `SAC`-based approach as well as the **three baselines** can **follow the reference trajectory**. However, `SAC` achieves a **much higher average velocity (`80 km/h`)** than the baselines. In addition, it is shown that the **`action smoothing` strategy** can improve the final performance by comparing `SAC-WOS` and `SAC`. Despite the `action smoothing`, the steering angles of `DDPG` is also shaky. Have a look at the **`steering` gauges**! [Source](https://sites.google.com/view/autonomous-drifting-with-drl/).* |
 
@@ -222,11 +222,11 @@ Authors: Cai, P., Mei, X., Tai, L., Sun, Y., & Liu, M.
 <details>
   <summary>Click to expand</summary>
 
-| ![[Source](https://www.sciencedirect.com/science/article/pii/S0952197620301858).](media/2020_wasala_1.PNG "[Source](https://www.sciencedirect.com/science/article/pii/S0952197620301858).")  |
+| ![[Source](https://www.sciencedirect.com/science/article/pii/S0952197620301858).](../media/2020_wasala_1.PNG "[Source](https://www.sciencedirect.com/science/article/pii/S0952197620301858).")  |
 |:--:|
 | *The task is to predict the `steering` commands to **follow the given trajectory** on a **race track**. Instead of **a `sum`**, a **`product` of three deviation terms** is proposed for the **multi-objective `reward`**. Not clear to me: which `WP` is considered for the `deviation` computation in the `reward`? [Source](https://www.sciencedirect.com/science/article/pii/S0952197620301858).* |
 
-| ![[Source](https://www.sciencedirect.com/science/article/pii/S0952197620301858).](media/2020_wasala_1.gif "[Source](https://www.sciencedirect.com/science/article/pii/S0952197620301858).")  |
+| ![[Source](https://www.sciencedirect.com/science/article/pii/S0952197620301858).](../media/2020_wasala_1.gif "[Source](https://www.sciencedirect.com/science/article/pii/S0952197620301858).")  |
 |:--:|
 | *Testing a vehicle with **different drive dynamics** on an **unseen track**. [Source](https://www.sciencedirect.com/science/article/pii/S0952197620301858).* |
 
@@ -322,7 +322,7 @@ Authors: Wasala, A., Byrne, D., Miesbauer, P., O’Hanlon, J., Heraty, P., & Bar
   - `7-` **Poor reproducibility**.
   - Other **references for `RL debugging`**:
     - **[Brilliant notes!](https://github.com/williamFalcon/DeepRLHacks)** on [Nuts and Bolts of Deep RL](https://www.youtube.com/watch?v=8EcdaCk9KaQ).
-    - [10 Steps and some tricks to set up neural reinforcement controllers](https://ml.informatik.uni-freiburg.de/former/_media/publications/12riedmillertricks.pdf).
+    - [10 Steps and some tricks to set up neural reinforcement controllers](https://ml.informatik.uni-freiburg.de/former/_../media/publications/12riedmillertricks.pdf).
     - [RL Debugging and Diagnostics | Stanford CS229](https://www.youtube.com/watch?v=pLhPQynL0tY) - mostly the first `20min`.
     - [Deep Reinforcement Learning Doesn't Work Yet](https://www.alexirpan.com/2018/02/14/rl-hard.html).
 
@@ -345,19 +345,19 @@ Authors: Wasala, A., Byrne, D., Miesbauer, P., O’Hanlon, J., Heraty, P., & Bar
 <details>
   <summary>Click to expand</summary>
 
-| ![[Source](https://arxiv.org/abs/2007.00178).](media/2020_cao_1.gif "[Source](https://arxiv.org/abs/2007.00178).")  |
+| ![[Source](https://arxiv.org/abs/2007.00178).](../media/2020_cao_1.gif "[Source](https://arxiv.org/abs/2007.00178).")  |
 |:--:|
 | *Illustration of **rapid phase transitions**: when **small changes in the critical `states`** – the ones we see in near-accident scenarios – **require dramatically different `actions`** of the autonomous car to stay safe.  [Source](https://arxiv.org/abs/2007.00178).* |
 
-| ![[Source](https://arxiv.org/abs/2007.00178).](media/2020_cao_1.PNG "[Source](https://arxiv.org/abs/2007.00178).")  |
+| ![[Source](https://arxiv.org/abs/2007.00178).](../media/2020_cao_1.PNG "[Source](https://arxiv.org/abs/2007.00178).")  |
 |:--:|
 | *I must say I am a bit disappointed by the `collision rate` results. The authors mention **`safety`** a lot, but their approaches **crash every third trial** on the `unprotected turn`. The too-conservative agent `TIMID` gets zero collision. Is it then fair to claim **''Almost as Safe as Timid''**? In such cases, what could be needed is an **uncertainty-aware** agent, e.g. `POMDP` with **information gathering behaviours**.  [Source](https://arxiv.org/abs/2007.00178).* |
 
-| ![[Source](https://arxiv.org/abs/2007.00178).](media/2020_cao_2.PNG "[Source](https://arxiv.org/abs/2007.00178).")  |
+| ![[Source](https://arxiv.org/abs/2007.00178).](../media/2020_cao_2.PNG "[Source](https://arxiv.org/abs/2007.00178).")  |
 |:--:|
 | *One of the five scenarios: In this `unprotected left turn`, a truck **occludes** the oncoming ado car. Bottom left: The **two primitive policies (`aggressive` and `timid`)** are first learnt by `imitation`. Then they are used to train a **high-level** policies with `RL`, to select **at each timestep `ts`** (larger that primitive timestep) **which primitive to follow**. Bottom right: While `AGGRESSIVE` achieves higher `completion rates` for the **low time limits**, it cannot improve further with the increasing limit with collisions. [Source](https://arxiv.org/abs/2007.00178).* |
 
-| ![[Source](https://arxiv.org/abs/2007.00178).](media/2020_cao_3.PNG "[Source](https://arxiv.org/abs/2007.00178).")  |
+| ![[Source](https://arxiv.org/abs/2007.00178).](../media/2020_cao_3.PNG "[Source](https://arxiv.org/abs/2007.00178).")  |
 |:--:|
 | *About **phase transition**: `H-REIL` usually chooses the `timid` policy at the areas that have a **collision risk** while staying `aggressive` at other locations when it is safe to do so. Baselines: `π-agg`, resp. `π-agg`, has been trained only on **`aggressive`**, resp. `timid`, **rule-based demonstrations** with `IL`. `π-IL` was trained on the **mixture** of both. A pity that **no pure `RL` baseline** is presented. [Source](https://arxiv.org/abs/2007.00178).* |
 
@@ -477,7 +477,7 @@ Authors: Cao, Z., Bıyık, E., Wang, W. Z., Raventos, A., Gaidon, A., Rosman, G.
 <details>
   <summary>Click to expand</summary>
 
-| ![[Source](https://mediatum.ub.tum.de/doc/1548735/256213.pdf).](media/2020_krasowski_1.PNG "[Source](https://mediatum.ub.tum.de/doc/1548735/256213.pdf).")  |
+| ![[Source](https://mediatum.ub.tum.de/doc/1548735/256213.pdf).](../media/2020_krasowski_1.PNG "[Source](https://mediatum.ub.tum.de/doc/1548735/256213.pdf).")  |
 |:--:|
 | *__`action` masking__ for **safety verification** using **set-based prediction** and sampling-based trajectory planning. Top-left: A **braking trajectory** with **maximum deceleration** is appended to the sampled trajectory. The ego vehicle never follows this `braking trajectory`, but it is utilized to **check** if the vehicle is in an **invariably safe `state`** at the end of its driving trajectory. [Source](https://mediatum.ub.tum.de/doc/1548735/256213.pdf).* |
 
@@ -546,7 +546,7 @@ according to **its prediction**. The limitation is that collisions still happen 
 <details>
   <summary>Click to expand</summary>
 
-| ![[Source](https://arxiv.org/abs/2007.01698).](media/2020_baheri_1.PNG "[Source](https://arxiv.org/abs/2007.01698).")  |
+| ![[Source](https://arxiv.org/abs/2007.01698).](../media/2020_baheri_1.PNG "[Source](https://arxiv.org/abs/2007.01698).")  |
 |:--:|
 | *Multimodal future trajectory predictions are incorporated into the **`learning` phase** of `RL` algorithm as a **model lookahead**: If **one of the future states of one of the possible trajectories** leads to a collision, then a penalty will be assigned to the reward function to prevent collision and to reinforce to **remember unsafe states**. Otherwise, the `reward` term **penalizes deviations** from the `desired speed`, `lane position`, and `safe longitudinal distance` to the lead traffic vehicle. [Source](https://arxiv.org/abs/2007.01698).* |
 
@@ -587,7 +587,7 @@ Author: Baheri, A.
 <details>
   <summary>Click to expand</summary>
 
-| ![[Source](https://arxiv.org/abs/2006.09786).](media/2020_hoel_3.PNG "[Source](https://arxiv.org/abs/2006.09786).")  |
+| ![[Source](https://arxiv.org/abs/2006.09786).](../media/2020_hoel_3.PNG "[Source](https://arxiv.org/abs/2006.09786).")  |
 |:--:|
 | *__Confidence__ of the recommended `actions` in a `DQN` are estimated using an **`ensemble` method**. Situation that are **outside of the training distribution** and **events rarely seen** while training can be detected. Middle: The `reward` associated to **non-terminated `state`s** is function of the **`jerk`** (comfort) and **scaled** so that its **accumulation until `timeout`** reaches `-1` if no `jerk` is applied. [Source](https://arxiv.org/abs/2006.09786).* |
 
@@ -631,7 +631,7 @@ Authors: Hoel, C.-J., Tram, T., & Sjöberg, J.
 <details>
   <summary>Click to expand</summary>
 
-| ![[Source](https://arxiv.org/ftp/arxiv/papers/2006/2006.05821.pdf).](media/2020_ozturk_1.PNG "[Source](https://arxiv.org/ftp/arxiv/papers/2006/2006.05821.pdf).")  |
+| ![[Source](https://arxiv.org/ftp/arxiv/papers/2006/2006.05821.pdf).](../media/2020_ozturk_1.PNG "[Source](https://arxiv.org/ftp/arxiv/papers/2006/2006.05821.pdf).")  |
 |:--:|
 | *The **trajectory generator** uses the `Social-GAN` architecture with a **`0.8s` horizon**. Bottom-right: `state` vector of the agent trained with **`Rainbow-DQN`**. Bottom-right: `reward` function: **`hard crash`** refers to **direct collisions** with other vehicles whereas the **`soft crash`** represents **dangerous approaches** (no precise detail). [Source](https://arxiv.org/ftp/arxiv/papers/2006/2006.05821.pdf).* |
 
@@ -670,19 +670,19 @@ Authors: Ozturk, A., Gunel, M. B., Dal, M., Yavas, U., & Ure, N. K.
 <details>
   <summary>Click to expand</summary>
 
-| ![[Source](https://arxiv.org/abs/2005.07023).](media/2020_capasso_2.PNG "[Source](https://arxiv.org/abs/2005.07023).")  |
+| ![[Source](https://arxiv.org/abs/2005.07023).](../media/2020_capasso_2.PNG "[Source](https://arxiv.org/abs/2005.07023).")  |
 |:--:|
 | *Environments for `training` (top) differ from those used for `validation` and `testing` (bottom): **Multi-environment System** consists in **four `training` roundabouts** in which vehicles are **trained simultaneously**, and a **`validation` environment** used to **select the best network parameters** based on the results obtained on such scenario. The **generalization performance** is eventually measured on a separate `test` environment. [Source](https://arxiv.org/abs/2005.07023).* |
 
-| ![[Source](https://arxiv.org/abs/2005.07023).](media/2020_capasso_1.PNG "[Source](https://arxiv.org/abs/2005.07023).")  |
+| ![[Source](https://arxiv.org/abs/2005.07023).](../media/2020_capasso_1.PNG "[Source](https://arxiv.org/abs/2005.07023).")  |
 |:--:|
 | *A sort of **conditional-learning** methods: an **`aggressiveness` level** is set as an input in the `state` and considered during the `reward` computation. More precisely: `α = (1−aggressiveness)`. During the `training` phase, `aggressiveness` assumes a random value from `0` to `1` kept fixed for the **whole episode**. Higher values of `aggressiveness` should encourage the actor to **increase the impatience**; consequently, **dangerous actions will be less penalized**. The authors note that values of `aggressiveness` sampled outside the training interval `[0, 1]` produce consistent consequences to the agent conduct, intensifying its behaviour even further. The **non-visual channel** can also be used to specify the **desired cruising speed**. [Source1](https://arxiv.org/abs/2005.07023) [Source2]((https://arxiv.org/abs/1903.01365)).* |
 
-| ![[Source]((https://drive.google.com/file/d/1iGc820O_qeBSrWHbwhPTiTyby_HupM-_/view)).](media/2020_capasso_2.gif "[Source]((https://drive.google.com/file/d/1iGc820O_qeBSrWHbwhPTiTyby_HupM-_/view)).")  |
+| ![[Source]((https://drive.google.com/file/d/1iGc820O_qeBSrWHbwhPTiTyby_HupM-_/view)).](../media/2020_capasso_2.gif "[Source]((https://drive.google.com/file/d/1iGc820O_qeBSrWHbwhPTiTyby_HupM-_/view)).")  |
 |:--:|
 | *The `active` agent decides **high-level actions**, i.e. when to enter the roundabout. It should interact with `passive` agents, that have been collectively trained in a **multi-agent fashion** and decide lower-level `speed`/`acceleration` actions. [Source]((https://drive.google.com/file/d/1iGc820O_qeBSrWHbwhPTiTyby_HupM-_/view)).* |
 
-| ![[Source]((https://drive.google.com/file/d/1X9Sy2Mru_SfWyid3-Va8Ftm1pXfk5w3o/view)).](media/2020_capasso_1.gif "[Source]((https://drive.google.com/file/d/1X9Sy2Mru_SfWyid3-Va8Ftm1pXfk5w3o/view)).")  |
+| ![[Source]((https://drive.google.com/file/d/1X9Sy2Mru_SfWyid3-Va8Ftm1pXfk5w3o/view)).](../media/2020_capasso_1.gif "[Source]((https://drive.google.com/file/d/1X9Sy2Mru_SfWyid3-Va8Ftm1pXfk5w3o/view)).")  |
 |:--:|
 | *[Source]((https://drive.google.com/file/d/1X9Sy2Mru_SfWyid3-Va8Ftm1pXfk5w3o/view)).* |
 
@@ -772,11 +772,11 @@ Authors: Capasso, A. P., Bacchiani, G., & Broggi, A.
 <details>
   <summary>Click to expand</summary>
 
-| ![[Source](https://arxiv.org/abs/2005.05441).](media/2020_chen_3.PNG "[Source](https://arxiv.org/abs/2005.05441).")  |
+| ![[Source](https://arxiv.org/abs/2005.05441).](../media/2020_chen_3.PNG "[Source](https://arxiv.org/abs/2005.05441).")  |
 |:--:|
 | *Real cars exhibit `action` delay. Standard delay-free `MDP`s can be augmented to **Delay-Aware `MDP` (`DA-MDP`)** by enriching the `observation` vector with the **sequence of previous `action`**. [Source1](https://arxiv.org/abs/2005.05441) [Source2](https://arxiv.org/abs/2005.05440).* |
 
-| ![[Source](https://arxiv.org/abs/2005.05441).](media/2020_chen_4.PNG "[Source](https://arxiv.org/abs/2005.05441).")  |
+| ![[Source](https://arxiv.org/abs/2005.05441).](../media/2020_chen_4.PNG "[Source](https://arxiv.org/abs/2005.05441).")  |
 |:--:|
 | *Combining **multi-agent** and **delay-awareness**. In the left-turn scenario, `agent`s decide the longitudinal **acceleration** based on the `observation` the **position** and **velocity** of other vehicles. They are positively rewarded if **all of them successfully finish** the left turn and penalized if any collision happens. Another cooperative task is tested: driving out of the parking lot. [Source](https://arxiv.org/abs/2005.05441).* |
 
@@ -845,7 +845,7 @@ Authors: Chen, B., Xu, M., Liu, Z., Li, L., & Zhao, D.
 <details>
   <summary>Click to expand</summary>
 
-| ![[Source](https://arxiv.org/abs/2005.01643).](media/2020_levine_1.PNG "[Source](https://arxiv.org/abs/2005.01643).")  |
+| ![[Source](https://arxiv.org/abs/2005.01643).](../media/2020_levine_1.PNG "[Source](https://arxiv.org/abs/2005.01643).")  |
 |:--:|
 | *__Offline__ reinforcement learning algorithms are reinforcement learning algorithms that **utilize previously collected data**, without additional **online** data collection. The term ''`fully off-policy`'' is sometimes used to indicate that **no additional online data collection** is performed. [Source](https://arxiv.org/abs/2005.01643).* |
 
@@ -889,7 +889,7 @@ Note: This **theoretical tutorial** could also have been part of sections on `mo
 <details>
   <summary>Click to expand</summary>
 
-| ![[Source](https://arxiv.org/abs/2005.00935).](media/2020_haydari_1.PNG "[Source](https://arxiv.org/abs/2005.00935).")  |
+| ![[Source](https://arxiv.org/abs/2005.00935).](../media/2020_haydari_1.PNG "[Source](https://arxiv.org/abs/2005.00935).")  |
 |:--:|
 | *The review focuses on **traffic signal control** (`TSC`) use-cases. Some `AD` applications are nonetheless shortly mentioned. [Source](https://arxiv.org/abs/2005.00935).* |
 
@@ -913,11 +913,11 @@ Authors: Haydari, A., & Yilmaz, Y.
 <details>
   <summary>Click to expand</summary>
 
-| ![[Source](https://arxiv.org/abs/2004.10439).](media/2020_hoel_1.PNG "[Source](https://arxiv.org/abs/2004.10439).")  |
+| ![[Source](https://arxiv.org/abs/2004.10439).](../media/2020_hoel_1.PNG "[Source](https://arxiv.org/abs/2004.10439).")  |
 |:--:|
 | *The main idea is to use an **ensemble of neural networks with additional randomized prior functions** (`RPF`) to **estimate the uncertainty of decisions**. Each member estimates `Q(s, a)` in a **sum `f + βp`**. Note that the **prior `p` nets** are initialized with random parameters `θˆk` that are **kept fixed**. [Source](https://arxiv.org/abs/2004.10439).* |
 
-| ![[Source](https://arxiv.org/abs/2004.10439).](media/2020_hoel_2.PNG "[Source](https://arxiv.org/abs/2004.10439).")  |
+| ![[Source](https://arxiv.org/abs/2004.10439).](../media/2020_hoel_2.PNG "[Source](https://arxiv.org/abs/2004.10439).")  |
 |:--:|
 | *Bottom: example of **situation outside of the training distribution**. Before seeing the other, the policy chooses to **maintain its current speed**. As soon as the stopped vehicle is seen, the **uncertainty `cv` becomes higher that the safety threshold**. The agent chooses then the **fallback action `brake hard`** early enough and manages to avoid a collision. The baseline DQN agent also brakes when it approaches the stopped vehicle, but **too late**. [Source](https://arxiv.org/abs/2004.10439).* |
 
@@ -1008,15 +1008,15 @@ Authors: Hoel, C.-J., Wolff, K., & Laine, L.
 <details>
   <summary>Click to expand</summary>
 
-| ![[Source](https://arxiv.org/abs/2004.04450).](media/2020_kamran_1.PNG "[Source](https://arxiv.org/abs/2004.04450).")  |
+| ![[Source](https://arxiv.org/abs/2004.04450).](../media/2020_kamran_1.PNG "[Source](https://arxiv.org/abs/2004.04450).")  |
 |:--:|
 | *The `state` considers the **topology** and include information about **occlusions**. A **`risk` estimate** is computed for each `state` using **manually engineered rules**: is it possible for the ego car to **safely stop/leave** the intersection? [Source](https://arxiv.org/abs/2004.04450).* |
 
-| ![[Source](https://arxiv.org/abs/2004.04450).](media/2020_kamran_2.PNG "[Source](https://arxiv.org/abs/2004.04450).")  |
+| ![[Source](https://arxiv.org/abs/2004.04450).](../media/2020_kamran_2.PNG "[Source](https://arxiv.org/abs/2004.04450).")  |
 |:--:|
 | *Centre-up: The main idea is to **punish risky situations** instead of **only collision failures**. Left: Other **interesting tricks** are detailed: To deal with a **variable number of vehicles**, to relax the **Markov assumption**, and to focus on the **most important** (**closest**) parts of the scene. Centre-down: Also, the intersection is described as a **region** (`start` and `end`), as opposed to just a **single crossing point**. [Source](https://arxiv.org/abs/2004.04450).* |
 
-| ![[Source](https://www.dropbox.com/s/vnrjl0pro1uqw8w/rl_occlusion.avi?dl=0).](media/2020_kamran_1.gif "[Source](https://www.dropbox.com/s/vnrjl0pro1uqw8w/rl_occlusion.avi?dl=0).")  |
+| ![[Source](https://www.dropbox.com/s/vnrjl0pro1uqw8w/rl_occlusion.avi?dl=0).](../media/2020_kamran_1.gif "[Source](https://www.dropbox.com/s/vnrjl0pro1uqw8w/rl_occlusion.avi?dl=0).")  |
 |:--:|
 | *[Source](https://www.dropbox.com/s/vnrjl0pro1uqw8w/rl_occlusion.avi?dl=0).* |
 
@@ -1088,15 +1088,15 @@ Authors: Kamran, D., Lopez, C. F., Lauer, M., & Stiller, C.
 <details>
   <summary>Click to expand</summary>
 
-| ![[Source](https://www.mit.edu/~amini/pubs/pdf/learning-in-simulation-vista.pdf).](media/2020_amini_2.PNG "[Source](https://www.mit.edu/~amini/pubs/pdf/learning-in-simulation-vista.pdf).")  |
+| ![[Source](https://www.mit.edu/~amini/pubs/pdf/learning-in-simulation-vista.pdf).](../media/2020_amini_2.PNG "[Source](https://www.mit.edu/~amini/pubs/pdf/learning-in-simulation-vista.pdf).")  |
 |:--:|
 | *Top left: one figure is better than many words. **New possible trajectories** are synthesized to learn virtual agent control policies. Bottom and right: robustness analysis compared to two baselines using a **model-based simulator** (`CARLA`): [**domain randomization**](https://arxiv.org/abs/1703.06907) and [**domain adaptation**](https://arxiv.org/abs/1812.03823) and one real-world [imitation learning](https://arxiv.org/abs/1604.07316) approach. **Interventions** marked as red dots. [Source](https://www.mit.edu/~amini/pubs/pdf/learning-in-simulation-vista.pdf).* |
 
-| ![[Source](https://www.mit.edu/~amini/pubs/pdf/learning-in-simulation-vista.pdf).](media/2020_amini_1.PNG "[Source](https://www.mit.edu/~amini/pubs/pdf/learning-in-simulation-vista.pdf).")  |
+| ![[Source](https://www.mit.edu/~amini/pubs/pdf/learning-in-simulation-vista.pdf).](../media/2020_amini_1.PNG "[Source](https://www.mit.edu/~amini/pubs/pdf/learning-in-simulation-vista.pdf).")  |
 |:--:|
 | *`VISTA` stands for **'Virtual Image Synthesis and Transformation for Autonomy'**. One main idea is to **synthesize perturbations** of the **ego-agent's position**, to learn to navigate a some worse-case scenarios before cruising down real streets. [Source](https://www.mit.edu/~amini/pubs/pdf/learning-in-simulation-vista.pdf).* |
 
-| ![[Source](https://www.youtube.com/watch?v=YgFlMnQmASw).](media/2020_amini_1.gif "[Source](https://www.youtube.com/watch?v=YgFlMnQmASw).")  |
+| ![[Source](https://www.youtube.com/watch?v=YgFlMnQmASw).](../media/2020_amini_1.gif "[Source](https://www.youtube.com/watch?v=YgFlMnQmASw).")  |
 |:--:|
 | *[Source](https://www.youtube.com/watch?v=YgFlMnQmASw).* |
 
@@ -1167,7 +1167,7 @@ Authors: Amini, A., Gilitschenski, I., Phillips, J., Moseyko, J., Banerjee, R., 
 <details>
   <summary>Click to expand</summary>
 
-| ![[Source](https://arxiv.org/abs/2003.09398).](media/2020_kalweit_1.PNG "[Source](https://arxiv.org/abs/2003.09398).")  |
+| ![[Source](https://arxiv.org/abs/2003.09398).](../media/2020_kalweit_1.PNG "[Source](https://arxiv.org/abs/2003.09398).")  |
 |:--:|
 | *Bottom-left: While learning the `Q function`, another quantity is estimated: `JπH` represents the **amount of constraint violations** within **horizon `H`** when following the current **policy `πk`**. It is used to **defined safe action sets** for action selection. This is one of the ideas of the **Multi Time-scale Constrained `DQN`** proposed to solve the **`constrained MDP`**. Bottom-right: example illustrating the **need of long-term predictions/considerations** for in **constrained MDP**. Here state `s6` is marked as unsafe and has to be avoided. The **one-step `action masking`** cannot guarantee **optimality**: at the point of decision it can only choose the path leading to `s10` with a non-optimal return of `+0.5`. [Source](https://arxiv.org/abs/2003.09398).* |
 
@@ -1236,15 +1236,15 @@ Authors: Kalweit, G., Huegle, M., Werling, M., & Boedecker, J.
 <details>
   <summary>Click to expand</summary>
 
-| ![[Source](https://arxiv.org/abs/2002.11883).](media/2020_nguyen_3.PNG "[Source](https://arxiv.org/abs/2002.11883).")  |
+| ![[Source](https://arxiv.org/abs/2002.11883).](../media/2020_nguyen_3.PNG "[Source](https://arxiv.org/abs/2002.11883).")  |
 |:--:|
 | *The `API` is based on three **core concepts**: `policy network`, `network configuration`, and `learner`. Besides, the `monitor` is used to manage **multiple learners** (if multi-threading is used) and collect any data from the learners during training while `factory` components can offer **higher abstraction**. No need to reinvent the wheel: **`Plugins` are gateways that extract learners** from **other libraries** such as `PyTorch`, `Tensorflow`, `Keras` and plug them into our proposed framework. [Source](https://arxiv.org/abs/2002.11883).* |
 
-| ![[Source](https://arxiv.org/abs/2002.11883).](media/2020_nguyen_1.PNG "[Source](https://arxiv.org/abs/2002.11883).")  |
+| ![[Source](https://arxiv.org/abs/2002.11883).](../media/2020_nguyen_1.PNG "[Source](https://arxiv.org/abs/2002.11883).")  |
 |:--:|
 | *[Source](https://arxiv.org/abs/2002.11883).* |
 
-| ![[Source](https://arxiv.org/abs/2002.11883).](media/2020_nguyen_2.PNG "[Source](https://arxiv.org/abs/2002.11883).")  |
+| ![[Source](https://arxiv.org/abs/2002.11883).](../media/2020_nguyen_2.PNG "[Source](https://arxiv.org/abs/2002.11883).")  |
 |:--:|
 | *[Source](https://arxiv.org/abs/2002.11883).* |
 
@@ -1282,11 +1282,11 @@ Authors: Nguyen, N. D., Nguyen, T. T., Nguyen, H., & Nahavandi, S.
 <details>
   <summary>Click to expand</summary>
 
-| ![[Source](https://jingk.wang/uploads/wjk3.pdf).](media/2020_wang_1.PNG "[Source](https://jingk.wang/uploads/wjk3.pdf).")  |
+| ![[Source](https://jingk.wang/uploads/wjk3.pdf).](../media/2020_wang_1.PNG "[Source](https://jingk.wang/uploads/wjk3.pdf).")  |
 |:--:|
 | *To achieve **transfer**, the authors develop a **sharable representation** for input sensory data **across simulation platforms** and **real-world environment**. Left: **static**. Right: **dynamic** information. [Source](https://jingk.wang/uploads/wjk3.pdf).* |
 
-| ![[Source](https://jingk.wang/uploads/wjk3.pdf).](media/2020_wang_2.PNG "[Source](https://jingk.wang/uploads/wjk3.pdf).")  |
+| ![[Source](https://jingk.wang/uploads/wjk3.pdf).](../media/2020_wang_2.PNG "[Source](https://jingk.wang/uploads/wjk3.pdf).")  |
 |:--:|
 | *Left - The `behaviour` layer makes a decision based on the current observation, e.g. `lane change`, while the **`motion planning`** layer yields the **trajectory** to complete this decision. More precisely, the output of the `PPO` actor-network is the **distribution over the `behaviour`s**. The `motion planner` is **conditioned over this high-level decision**. If you are also wondering: `traffic light state` and `speed limit` are represented probably since they are part of the **`road profile`** (static information) - surprising to limit a `3`-lanes highway at `30mps`? [Source](https://jingk.wang/uploads/wjk3.pdf).* |
 
@@ -1353,11 +1353,11 @@ Authors: Wang, J., Wang, Y., Zhang, D., Yang, Y., & Xiong, R.
 <details>
   <summary>Click to expand</summary>
 
-| ![[Source](https://arxiv.org/abs/2003.01303).](media/2020_wen_1.PNG "[Source](https://arxiv.org/abs/2003.01303).")  |
+| ![[Source](https://arxiv.org/abs/2003.01303).](../media/2020_wen_1.PNG "[Source](https://arxiv.org/abs/2003.01303).")  |
 |:--:|
 | *Risk-Actor-Critic: Similar to the **`critic`** which estimates the **expectation** of the `value function` (cumulated `reward`s), the **`risk` network** estimates the sum of coming **`risk` signals**, i.e. signals received when **moving to unsafe states**. In this case  `PCPO` considers this **`risk` function** and **bounds the expected risk** within **predefined hard constraints**. [Source](https://arxiv.org/abs/2003.01303).* |
 
-| ![[Source](https://arxiv.org/abs/2003.01303).](media/2020_wen_2.PNG "[Source](https://arxiv.org/abs/2003.01303).")  |
+| ![[Source](https://arxiv.org/abs/2003.01303).](../media/2020_wen_2.PNG "[Source](https://arxiv.org/abs/2003.01303).")  |
 |:--:|
 | *Note that what is wanted is **`approximate safety`** during the **TRAINING phase** - not just the **testing** one. `PCPO` is compared to `CPO` and `PPO`. All three methods can eventually learn a **safe lane-keeping policy**, however, the vehicle deviates from the lane multiple times **during the learning process** of the `PPO`. [Source](https://arxiv.org/abs/2003.01303).* |
 
@@ -1422,7 +1422,7 @@ Authors: Wen, L., Duan, J., Eben, Li, S., Xu, S., & Peng, H.
 <details>
   <summary>Click to expand</summary>
 
-| ![[Source](https://arxiv.org/abs/2002.00444).](media/2020_kiran_1.PNG "[Source](https://arxiv.org/abs/2002.00444).")  |
+| ![[Source](https://arxiv.org/abs/2002.00444).](../media/2020_kiran_1.PNG "[Source](https://arxiv.org/abs/2002.00444).")  |
 |:--:|
 | *[Source](https://arxiv.org/abs/2002.00444).* |
 
@@ -1471,11 +1471,11 @@ Authors: Ravi Kiran, B., Sobh, I., Talpaert, V., Mannion, P., Sallab, A. A. Al, 
 <details>
   <summary>Click to expand</summary>
 
-| ![The `RL` problem is formulated with a **probabilistic graphical model** (**`PGM`**). `zt` represents for the **latent state**, i.e. the hidden state. `xt` is the **observation** sensor inputs. `at` is the action. `Ot` denotes the **optimality variable**. The authors introduce a **`mask`** variable `mt` and learn its **probability of emission** conditioned on `z`. [Source](https://arxiv.org/abs/2001.08726).](media/2020_chen_1.PNG "The `RL` problem is formulated with a **probabilistic graphical model** (**`PGM`**). `zt` represents for the **latent state**, i.e. the hidden state. `xt` is the **observation** sensor inputs. `at` is the action. `Ot` denotes the **optimality variable**. The authors introduce a **`mask`** variable `mt` and learn its **probability of emission** conditioned on `z`. [Source](https://arxiv.org/abs/2001.08726).")  |
+| ![The `RL` problem is formulated with a **probabilistic graphical model** (**`PGM`**). `zt` represents for the **latent state**, i.e. the hidden state. `xt` is the **observation** sensor inputs. `at` is the action. `Ot` denotes the **optimality variable**. The authors introduce a **`mask`** variable `mt` and learn its **probability of emission** conditioned on `z`. [Source](https://arxiv.org/abs/2001.08726).](../media/2020_chen_1.PNG "The `RL` problem is formulated with a **probabilistic graphical model** (**`PGM`**). `zt` represents for the **latent state**, i.e. the hidden state. `xt` is the **observation** sensor inputs. `at` is the action. `Ot` denotes the **optimality variable**. The authors introduce a **`mask`** variable `mt` and learn its **probability of emission** conditioned on `z`. [Source](https://arxiv.org/abs/2001.08726).")  |
 |:--:|
 | *The `RL` problem is formulated with a **probabilistic graphical model** (**`PGM`**). `zt` represents for the **latent state**, i.e. the hidden state. `xt` is the **observation** sensor inputs. `at` is the action. `Ot` denotes the **optimality variable**. The authors introduce a **`mask`** variable `mt` and learn its **probability of emission** conditioned on `z`. [Source](https://arxiv.org/abs/2001.08726).* |
 
-| ![The `mask` is a _semantic_ representation of the scene, helpful for **interpretation of the `perception`** part (not for `decision`). The learnt **transition** function (from `z` to `z'` conditioned on `a`) can be used for **prediction**. [Source](https://arxiv.org/abs/2001.08726).](media/2020_chen_2.PNG "The `mask` is a _semantic_ representation of the scene, helpful for **interpretation of the `perception`** part (not for `decision`). The learnt **transition** function (from `z` to `z'` conditioned on `a`) can be used for **prediction**. [Source](https://arxiv.org/abs/2001.08726).")  |
+| ![The `mask` is a _semantic_ representation of the scene, helpful for **interpretation of the `perception`** part (not for `decision`). The learnt **transition** function (from `z` to `z'` conditioned on `a`) can be used for **prediction**. [Source](https://arxiv.org/abs/2001.08726).](../media/2020_chen_2.PNG "The `mask` is a _semantic_ representation of the scene, helpful for **interpretation of the `perception`** part (not for `decision`). The learnt **transition** function (from `z` to `z'` conditioned on `a`) can be used for **prediction**. [Source](https://arxiv.org/abs/2001.08726).")  |
 |:--:|
 | *The `mask` is a _semantic_ representation of the scene, helpful for **interpretation of the `perception`** part (not directly applicable to understand the `decision`). The learnt **transition** function (from `z` to `z'` conditioned on `a`) can be used for **prediction**. [Source](https://arxiv.org/abs/2001.08726).* |
 
@@ -1554,11 +1554,11 @@ Authors: Chen, J., Li, S. E., & Tomizuka, M.
 <details>
   <summary>Click to expand</summary>
 
-| ![[Source](https://arxiv.org/abs/1911.03618).](media/2019_tang_1.PNG "[Source](https://arxiv.org/abs/1911.03618).")  |
+| ![[Source](https://arxiv.org/abs/1911.03618).](../media/2019_tang_1.PNG "[Source](https://arxiv.org/abs/1911.03618).")  |
 |:--:|
 | *The **critic** predicts a **distribution of the expected `value function`** instead of a single scalar. Both the actor and critic take **risk-tolerance** `α` as input during **training**, which allows the learned policy to operate with **varying levels of risk** after training. Lower `α` values **improved robustness** dramatically. Top-right: the **uncertainty** can be quantified from the **variance** of the **`return` distribution**. [Source](https://arxiv.org/abs/1911.03618).* |
 
-| ![[Source](https://ieeexplore.ieee.org/abstract/document/8813791).](media/2019_bernhard_1.PNG "[Source](https://ieeexplore.ieee.org/abstract/document/8813791).")  |
+| ![[Source](https://ieeexplore.ieee.org/abstract/document/8813791).](../media/2019_bernhard_1.PNG "[Source](https://ieeexplore.ieee.org/abstract/document/8813791).")  |
 |:--:|
 | *A related work (Bernhard and Knoll 2019): Working with **distributions** instead of **mean expectation** can offer **uncertainty-aware** `action` selection. [Source](https://ieeexplore.ieee.org/abstract/document/8813791).* |
 
@@ -1611,7 +1611,7 @@ Authors: Tang, Y. C., Zhang, J., & Salakhutdinov, R.
 <details>
   <summary>Click to expand</summary>
 
-| ![[Source](https://arxiv.org/abs/1911.04400).](media/2020_rathi_1.PNG "[Source](https://arxiv.org/abs/1911.04400).")  |
+| ![[Source](https://arxiv.org/abs/1911.04400).](../media/2020_rathi_1.PNG "[Source](https://arxiv.org/abs/1911.04400).")  |
 |:--:|
 | *When a **model of the environment is available** (e.g. when the ball comes toward the ego paddle), `planning` is performed. Otherwise, a **model-free `RL` agent** is used. The `RL` agent maximizes the expected `return`, while **imitating the `MPC`** when it is used. This improves the **sampling efficiency**, while bringing some **guarantees**. [Source](https://arxiv.org/abs/1911.04400).* |
 
@@ -1667,11 +1667,11 @@ Authors: Rathi, M., Ferraro, P., & Russo, G.
 <details>
   <summary>Click to expand</summary>
 
-| ![In the reward function, the `time headway` term encourages the agent to **maintain a `headway` close to `2s`**, while the `headway-derivative` term rewards the agent for taking actions which **bring it closer** to the ideal headway. [Source](http://personal.ee.surrey.ac.uk/Personal/R.Bowden/publications/2019/Kuutti_ITSC2019pp.pdf).](media/2019_kuutti_2.PNG "In the reward function, the `time headway` term encourages the agent to **maintain a `headway` close to `2s`**, while the `headway-derivative` term rewards the agent for taking actions which **bring it closer** to the ideal headway. [Source](http://personal.ee.surrey.ac.uk/Personal/R.Bowden/publications/2019/Kuutti_ITSC2019pp.pdf).")  |
+| ![In the reward function, the `time headway` term encourages the agent to **maintain a `headway` close to `2s`**, while the `headway-derivative` term rewards the agent for taking actions which **bring it closer** to the ideal headway. [Source](http://personal.ee.surrey.ac.uk/Personal/R.Bowden/publications/2019/Kuutti_ITSC2019pp.pdf).](../media/2019_kuutti_2.PNG "In the reward function, the `time headway` term encourages the agent to **maintain a `headway` close to `2s`**, while the `headway-derivative` term rewards the agent for taking actions which **bring it closer** to the ideal headway. [Source](http://personal.ee.surrey.ac.uk/Personal/R.Bowden/publications/2019/Kuutti_ITSC2019pp.pdf).")  |
 |:--:|
 | *In the reward function, the `time headway` term encourages the agent to **maintain a `headway` close to `2s`**, while the `headway-derivative` term rewards the agent for taking actions which **bring it closer** to the ideal headway. [Source](http://personal.ee.surrey.ac.uk/Personal/R.Bowden/publications/2019/Kuutti_ITSC2019pp.pdf).* |
 
-| ![Using **recurrent units** in the actor net leads to a **smoother driving style** and maintains a closer headway to the `2s` target. [Source](http://personal.ee.surrey.ac.uk/Personal/R.Bowden/publications/2019/Kuutti_ITSC2019pp.pdf).](media/2019_kuutti_3.PNG "Using **recurrent units** in the actor net leads to a **smoother driving style** and maintains a closer headway to the `2s` target. [Source](http://personal.ee.surrey.ac.uk/Personal/R.Bowden/publications/2019/Kuutti_ITSC2019pp.pdf).")  |
+| ![Using **recurrent units** in the actor net leads to a **smoother driving style** and maintains a closer headway to the `2s` target. [Source](http://personal.ee.surrey.ac.uk/Personal/R.Bowden/publications/2019/Kuutti_ITSC2019pp.pdf).](../media/2019_kuutti_3.PNG "Using **recurrent units** in the actor net leads to a **smoother driving style** and maintains a closer headway to the `2s` target. [Source](http://personal.ee.surrey.ac.uk/Personal/R.Bowden/publications/2019/Kuutti_ITSC2019pp.pdf).")  |
 |:--:|
 | *Using **recurrent units** in the actor net leads to a **smoother driving style** and maintains a closer headway to the `2s` target. [Source](http://personal.ee.surrey.ac.uk/Personal/R.Bowden/publications/2019/Kuutti_ITSC2019pp.pdf).* |
 
@@ -1727,11 +1727,11 @@ Authors: Kuutti, S., Bowden, R., Joshi, H., Temple, R. De, & Fallah, S.
 <details>
   <summary>Click to expand</summary>
 
-| ![The high-level behavioural planner (`BP`) selects a `lane` while the underlying motion planner (`MoP`) select a `corridor`. [Source](https://ieeexplore.ieee.org/document/8916928/).](media/2019_rezaee_1.PNG "The high-level behavioural planner (`BP`) selects a `lane` while the underlying motion planner (`MoP`) select a `corridor`. [Source](https://ieeexplore.ieee.org/document/8916928/).")  |
+| ![The high-level behavioural planner (`BP`) selects a `lane` while the underlying motion planner (`MoP`) select a `corridor`. [Source](https://ieeexplore.ieee.org/document/8916928/).](../media/2019_rezaee_1.PNG "The high-level behavioural planner (`BP`) selects a `lane` while the underlying motion planner (`MoP`) select a `corridor`. [Source](https://ieeexplore.ieee.org/document/8916928/).")  |
 |:--:|
 | *The high-level behavioural planner (`BP`) selects a `lane` while the underlying motion planner (`MoP`) select a `corridor`. [Source](https://ieeexplore.ieee.org/document/8916928/).* |
 
-| ![The decision-making is **hierarchically divided** into three levels. The first two (`BP` and `MoP`) are **learning-based** while the last module that decides of low-level commands such as `throttle` and `steering` is left **rule-based** since it is car-specific. [Source](https://ieeexplore.ieee.org/document/8916928/).](media/2019_rezaee_2.PNG "The decision-making is **hierarchically divided** into three levels. The first two (`BP` and `MoP`) are **learning-based** while the last module that decides of low-level commands such as `throttle` and `steering` is left **rule-based** since it is car-specific. [Source](https://ieeexplore.ieee.org/document/8916928/).")  |
+| ![The decision-making is **hierarchically divided** into three levels. The first two (`BP` and `MoP`) are **learning-based** while the last module that decides of low-level commands such as `throttle` and `steering` is left **rule-based** since it is car-specific. [Source](https://ieeexplore.ieee.org/document/8916928/).](../media/2019_rezaee_2.PNG "The decision-making is **hierarchically divided** into three levels. The first two (`BP` and `MoP`) are **learning-based** while the last module that decides of low-level commands such as `throttle` and `steering` is left **rule-based** since it is car-specific. [Source](https://ieeexplore.ieee.org/document/8916928/).")  |
 |:--:|
 | *The decision-making is **hierarchically divided** into three levels. The first two (`BP` and `MoP`) are **learning-based**. The `keep-lane` and `switch-lane` tasks are achieved using a **shared `MoP` agent**. The last module that decides of low-level commands such as `throttle` and `steering` is left **rule-based** since it is car-specific. [Source](https://ieeexplore.ieee.org/document/8916928/).* |
 
@@ -1786,7 +1786,7 @@ Authors: Rezaee, K., Yadmellat, P., Nosrati, M. S., Abolfathi, E. A., Elmahgiubi
 <details>
   <summary>Click to expand</summary>
 
-| ![The communication of **navigation goals** at intersection is not done using **high-level commands** (c.f. `conditional RL`), but rather by giving the `PPO` agent a **list of predefined waypoints** to follow. [Source](https://ml4ad.github.io/files/papers/Learning%20to%20Drive%20using%20Waypoints.pdf).](media/2019_agarwal_1.PNG "The communication of **navigation goals** at intersection is not done using **high-level commands** (c.f. `conditional RL`), but rather by giving the `PPO` agent a **list of predefined waypoints** to follow. [Source](https://ml4ad.github.io/files/papers/Learning%20to%20Drive%20using%20Waypoints.pdf).")  |
+| ![The communication of **navigation goals** at intersection is not done using **high-level commands** (c.f. `conditional RL`), but rather by giving the `PPO` agent a **list of predefined waypoints** to follow. [Source](https://ml4ad.github.io/files/papers/Learning%20to%20Drive%20using%20Waypoints.pdf).](../media/2019_agarwal_1.PNG "The communication of **navigation goals** at intersection is not done using **high-level commands** (c.f. `conditional RL`), but rather by giving the `PPO` agent a **list of predefined waypoints** to follow. [Source](https://ml4ad.github.io/files/papers/Learning%20to%20Drive%20using%20Waypoints.pdf).")  |
 |:--:|
 | *The communication of **navigation goals** at intersection is not done using **high-level commands** (c.f. `conditional RL`), but rather by giving the `PPO` agent a **list of predefined waypoints** to follow. [Source](https://ml4ad.github.io/files/papers/Learning%20to%20Drive%20using%20Waypoints.pdf).* |
 
@@ -1818,11 +1818,11 @@ Authors: Agarwal, T., Arora, H., Parhar, T., Deshpande, S., & Schneider, J.
 <details>
   <summary>Click to expand</summary>
 
-| ![ Weights in the **encoding linear** are shared between all vehicles. Each **encoding** contains **individual features** and has size `dx`. For each **head in the stack**, different **linear projections** (`Lq`, `Lk`, `Lv`) are applied on them. Results of projections are `key` and `values` (plus a `query` for the ego-agent). Based on the **similarity** between the ego-query `q0` and the `key`s, an **attention matrix** is built. This matrix should **select a subset of vehicles** that are important, depending on the context. It is multiplied with the concatenation of the individual `values features`, and then passed to a **decoder** where results from all heads are combined. The output are the estimated `q-values`.. [Source](https://arxiv.org/abs/1911.12250).](media/2019_leurent_1.PNG " Weights in the **encoding linear** are shared between all vehicles. Each **encoding** contains **individual features** and has size `dx`. For each **head in the stack**, different **linear projections** (`Lq`, `Lk`, `Lv`) are applied on them. Results of projections are `key` and `values` (plus a `query` for the ego-agent). Based on the **similarity** between the ego-query `q0` and the `key`s, an **attention matrix** is built. This matrix should **select a subset of vehicles** that are important, depending on the context. It is multiplied with the concatenation of the individual `values features`, and then passed to a **decoder** where results from all heads are combined. The output are the estimated `q-values`. [Source](https://arxiv.org/abs/1911.12250).")  |
+| ![ Weights in the **encoding linear** are shared between all vehicles. Each **encoding** contains **individual features** and has size `dx`. For each **head in the stack**, different **linear projections** (`Lq`, `Lk`, `Lv`) are applied on them. Results of projections are `key` and `values` (plus a `query` for the ego-agent). Based on the **similarity** between the ego-query `q0` and the `key`s, an **attention matrix** is built. This matrix should **select a subset of vehicles** that are important, depending on the context. It is multiplied with the concatenation of the individual `values features`, and then passed to a **decoder** where results from all heads are combined. The output are the estimated `q-values`.. [Source](https://arxiv.org/abs/1911.12250).](../media/2019_leurent_1.PNG " Weights in the **encoding linear** are shared between all vehicles. Each **encoding** contains **individual features** and has size `dx`. For each **head in the stack**, different **linear projections** (`Lq`, `Lk`, `Lv`) are applied on them. Results of projections are `key` and `values` (plus a `query` for the ego-agent). Based on the **similarity** between the ego-query `q0` and the `key`s, an **attention matrix** is built. This matrix should **select a subset of vehicles** that are important, depending on the context. It is multiplied with the concatenation of the individual `values features`, and then passed to a **decoder** where results from all heads are combined. The output are the estimated `q-values`. [Source](https://arxiv.org/abs/1911.12250).")  |
 |:--:|
 | *Weights in the **encoding linear** are shared between all vehicles. Each **encoding** contains **individual features** and has size `dx`. For each **head in the stack**, different **linear projections** (`Lq`, `Lk`, `Lv`) are applied on them. Results of projections are `key` and `values` (plus a `query` for the ego-agent). Based on the **similarity** between the ego-query `q0` and the `key`s, an **attention matrix** is built. This matrix should **select a subset of vehicles** that are important, depending on the context. It is multiplied with the concatenation of the individual `values features`, and then passed to a **decoder** where results from all heads are combined. The output are the estimated `q-values`.. [Source](https://arxiv.org/abs/1911.12250).* |
 
-| ![ Example with a stack of **two heads**. Both direct their attention to **incoming vehicles** that are **likely to collide** with the ego-vehicle. Visualization of the **`attention matrix`**: The ego-vehicle is connected to every vehicle by a line whose width is proportional to the corresponding **attention weight**. The green head is only watching the vehicles coming **from the left**, while the blue head restricts itself to vehicles in the **front and right directions**.. [Source](https://arxiv.org/abs/1911.12250).](media/2019_leurent_2.PNG " Example with a stack of **two heads**. Both direct their attention to **incoming vehicles** that are **likely to collide** with the ego-vehicle. Visualization of the **`attention matrix`**: The ego-vehicle is connected to every vehicle by a line whose width is proportional to the corresponding **attention weight**. The green head is only watching the vehicles coming **from the left**, while the blue head restricts itself to vehicles in the **front and right directions**. [Source](https://arxiv.org/abs/1911.12250).")  |
+| ![ Example with a stack of **two heads**. Both direct their attention to **incoming vehicles** that are **likely to collide** with the ego-vehicle. Visualization of the **`attention matrix`**: The ego-vehicle is connected to every vehicle by a line whose width is proportional to the corresponding **attention weight**. The green head is only watching the vehicles coming **from the left**, while the blue head restricts itself to vehicles in the **front and right directions**.. [Source](https://arxiv.org/abs/1911.12250).](../media/2019_leurent_2.PNG " Example with a stack of **two heads**. Both direct their attention to **incoming vehicles** that are **likely to collide** with the ego-vehicle. Visualization of the **`attention matrix`**: The ego-vehicle is connected to every vehicle by a line whose width is proportional to the corresponding **attention weight**. The green head is only watching the vehicles coming **from the left**, while the blue head restricts itself to vehicles in the **front and right directions**. [Source](https://arxiv.org/abs/1911.12250).")  |
 |:--:|
 | *Example with a stack of **two heads**. Both direct their attention to **incoming vehicles** that are **likely to collide** with the ego-vehicle. Visualization of the **`attention matrix`**: The ego-vehicle is connected to every vehicle by a line whose width is proportional to the corresponding **attention weight**. The green head is only watching the vehicles coming **from the left**, while the blue head restricts itself to vehicles in the **front and right directions**.. [Source](https://arxiv.org/abs/1911.12250).* |
 
@@ -1862,11 +1862,11 @@ Authors: Leurent, E., & Mercat, J.
 <details>
   <summary>Click to expand</summary>
 
-| ![ An **encoder** is trained to predict **high-level information** (called **`affordances`**). The `RL` agent does not use directly them as input `state` but rather one layer before (hence **`implicit`** affordances). This **compact representation** offers benefits for **interpretability**, and for **training efficiency** (lighter to save in the replay buffer). A **command** {`follow lane`, turn `left`/`right`/`straight`, change lane `left`/`right`} for **direction at intersection** and **lane changes** is passed to the agent via a **conditional branch**. [Source](https://arxiv.org/abs/1911.10868).](media/2019_toromanoff_1.PNG " An **encoder** is trained to predict **high-level information** (called **`affordances`**). The `RL` agent does not use directly them as input `state` but rather one layer before (hence **`implicit`** affordances). This **compact representation** offers benefits for **interpretability**, and for **training efficiency** (lighter to save in the replay buffer). A **command** {`follow lane`, turn `left`/`right`/`straight`, change lane `left`/`right`} for **direction at intersection** and **lane changes** is passed to the agent via a **conditional branch**. [Source](https://arxiv.org/abs/1911.10868).")  |
+| ![ An **encoder** is trained to predict **high-level information** (called **`affordances`**). The `RL` agent does not use directly them as input `state` but rather one layer before (hence **`implicit`** affordances). This **compact representation** offers benefits for **interpretability**, and for **training efficiency** (lighter to save in the replay buffer). A **command** {`follow lane`, turn `left`/`right`/`straight`, change lane `left`/`right`} for **direction at intersection** and **lane changes** is passed to the agent via a **conditional branch**. [Source](https://arxiv.org/abs/1911.10868).](../media/2019_toromanoff_1.PNG " An **encoder** is trained to predict **high-level information** (called **`affordances`**). The `RL` agent does not use directly them as input `state` but rather one layer before (hence **`implicit`** affordances). This **compact representation** offers benefits for **interpretability**, and for **training efficiency** (lighter to save in the replay buffer). A **command** {`follow lane`, turn `left`/`right`/`straight`, change lane `left`/`right`} for **direction at intersection** and **lane changes** is passed to the agent via a **conditional branch**. [Source](https://arxiv.org/abs/1911.10868).")  |
 |:--:|
 | *An **encoder** is trained to predict **high-level information** (called **`affordances`**). The `RL` agent does not use directly them as input `state` but rather one layer before (hence **`implicit`** affordances). This **compact representation** offers benefits for **interpretability**, and for **training efficiency** (lighter to save in the replay buffer). A **command** {`follow lane`, turn `left`/`right`/`straight`, change lane `left`/`right`} for **direction at intersection** and **lane changes** is passed to the agent via a __conditional branch__. [Source](https://arxiv.org/abs/1911.10868).* |
 
-| ![ **Augmentation** is needed for robustness and generalization (to address the **distribution mismatch** - also in `IL`) (_left_). Here, the **camera is moved around** the autopilot. One main finding is the benefit of using **adaptive target speed** in the reward function (_right_). [Source](https://arxiv.org/abs/1911.10868).](media/2019_toromanoff_2.PNG " **Augmentation** is needed for robustness and generalization (to address the **distribution mismatch** - also in `IL`) (_left_). Here, the **camera is moved around** the autopilot. One main finding is the benefit of using **adaptive target speed** in the reward function (_right_). [Source](https://arxiv.org/abs/1911.10868).")  |
+| ![ **Augmentation** is needed for robustness and generalization (to address the **distribution mismatch** - also in `IL`) (_left_). Here, the **camera is moved around** the autopilot. One main finding is the benefit of using **adaptive target speed** in the reward function (_right_). [Source](https://arxiv.org/abs/1911.10868).](../media/2019_toromanoff_2.PNG " **Augmentation** is needed for robustness and generalization (to address the **distribution mismatch** - also in `IL`) (_left_). Here, the **camera is moved around** the autopilot. One main finding is the benefit of using **adaptive target speed** in the reward function (_right_). [Source](https://arxiv.org/abs/1911.10868).")  |
 |:--:|
 | *__Augmentation__ is needed for robustness and generalization (to address the **distribution mismatch** - also in `IL`) (_left_). Here, the **camera is moved around** the autopilot. One main finding is the benefit of using **adaptive target speed** in the reward function (_right_). [Source](https://arxiv.org/abs/1911.10868).* |
 
@@ -1932,11 +1932,11 @@ Authors: Toromanoff, M., Wirbel, E., & Moutarde, F.
 <details>
   <summary>Click to expand</summary>
 
-| ![ Driving is treated as a _task_ with **multiple sub-goals**. A _meta controller_ choose an **option** among **`STOP AT STOP-LINE`**, **`FOLLOW FRONT VEHICLE`**. Based on this **sub-goal**, a _low-level controller_ decides on the `THROTTLE` and `BRAKE` **action**. [Source](https://arxiv.org/abs/1911.03799).](media/2019_qiao_1.PNG "Driving is treated as a _task_ with **multiple sub-goals**. A _meta controller_ choose an **option** among **`STOP AT STOP-LINE`**, **`FOLLOW FRONT VEHICLE`**. Based on this **sub-goal**, a _low-level controller_ decides on the `THROTTLE` and `BRAKE` **action**: [Source](https://arxiv.org/abs/1911.03799).")  |
+| ![ Driving is treated as a _task_ with **multiple sub-goals**. A _meta controller_ choose an **option** among **`STOP AT STOP-LINE`**, **`FOLLOW FRONT VEHICLE`**. Based on this **sub-goal**, a _low-level controller_ decides on the `THROTTLE` and `BRAKE` **action**. [Source](https://arxiv.org/abs/1911.03799).](../media/2019_qiao_1.PNG "Driving is treated as a _task_ with **multiple sub-goals**. A _meta controller_ choose an **option** among **`STOP AT STOP-LINE`**, **`FOLLOW FRONT VEHICLE`**. Based on this **sub-goal**, a _low-level controller_ decides on the `THROTTLE` and `BRAKE` **action**: [Source](https://arxiv.org/abs/1911.03799).")  |
 |:--:|
 | *`Driving` is treated as a _task_ with **multiple sub-goals**. A `meta` controller choose an **option** among **`STOP AT STOP-LINE`**, **`FOLLOW FRONT VEHICLE`**. Based on this **sub-goal**, a `low-level` controller decides the `THROTTLE` and `BRAKE` **action**. [Source](https://arxiv.org/abs/1911.03799).* |
 
-| ![ The **`state`** is **shared** by the different hierarchical layers (`option` and `action`). An **attention model** extracts the relevant information for the current **`sub-goal`**. [Source](https://arxiv.org/abs/1911.03799).](media/2019_qiao_2.PNG "The **`state`** is **shared** by the different hierarchical layers (`option` and `action`). An **attention model** extracts the relevant information for the current **`sub-goal`**. [Source](https://arxiv.org/abs/1911.03799).")  |
+| ![ The **`state`** is **shared** by the different hierarchical layers (`option` and `action`). An **attention model** extracts the relevant information for the current **`sub-goal`**. [Source](https://arxiv.org/abs/1911.03799).](../media/2019_qiao_2.PNG "The **`state`** is **shared** by the different hierarchical layers (`option` and `action`). An **attention model** extracts the relevant information for the current **`sub-goal`**. [Source](https://arxiv.org/abs/1911.03799).")  |
 |:--:|
 | *The **`state`** is **shared** across different hierarchical layers (`option` and `action`). An **attention model** extracts the relevant information for the current **`sub-goal`**. [Source](https://arxiv.org/abs/1911.03799).* |
 
@@ -1992,11 +1992,11 @@ Authors: Qiao, Z., Tyree, Z., Mudalige, P., Schneider, J., & Dolan, J. M.
 <details>
   <summary>Click to expand</summary>
 
-| ![ `real2sim` experiment for `model-free RL` `end-to-end` (from **monocular camera** to low-level controls) **track following** using a **`1/18th` scale** car. [Source](https://arxiv.org/abs/1911.01562).](media/2019_balaji_2.PNG "`real2sim` experiment for `model-free RL` `end-to-end` (from **monocular camera** to low-level controls) **track following** using a **`1/18th` scale** car. [Source](https://arxiv.org/abs/1911.01562).")  |
+| ![ `real2sim` experiment for `model-free RL` `end-to-end` (from **monocular camera** to low-level controls) **track following** using a **`1/18th` scale** car. [Source](https://arxiv.org/abs/1911.01562).](../media/2019_balaji_2.PNG "`real2sim` experiment for `model-free RL` `end-to-end` (from **monocular camera** to low-level controls) **track following** using a **`1/18th` scale** car. [Source](https://arxiv.org/abs/1911.01562).")  |
 |:--:|
 | *`real2sim` experiment for `model-free RL` `end-to-end` (from **monocular camera** to low-level controls) **track following** using a **`1/18th` scale** car. [Source](https://arxiv.org/abs/1911.01562).* |
 
-| ![ Comparison of tools to perform **`RL` `sim2real`** applications. [Source](https://arxiv.org/abs/1911.01562).](media/2019_balaji_1.PNG "Comparison of tools to perform **`RL` `sim2real`** applications. [Source](https://arxiv.org/abs/1911.01562).")  |
+| ![ Comparison of tools to perform **`RL` `sim2real`** applications. [Source](https://arxiv.org/abs/1911.01562).](../media/2019_balaji_1.PNG "Comparison of tools to perform **`RL` `sim2real`** applications. [Source](https://arxiv.org/abs/1911.01562).")  |
 |:--:|
 | *Comparison of tools to perform **`RL` `sim2real`** applications. [Source](https://arxiv.org/abs/1911.01562).* |
 
@@ -2061,11 +2061,11 @@ Authors: Balaji, B., Mallya, S., Genc, S., Gupta, S., Dirac, L., Khare, V., Roy,
 <details>
   <summary>Click to expand</summary>
 
-| ![ Every time after the `RL` agent chooses an action, the **supervisor checks** whether this action is `safe` or not. It does that by **predicting** the trajectories of other cars using a **regret decision model**. [Source](https://arxiv.org/abs/1910.04803).](media/2019_chen_1.PNG "Every time after the `RL` agent chooses an action, the **supervisor checks** whether this action is `safe` or not. It does that by **predicting** the trajectories of other cars using a **regret decision model**. [Source](https://arxiv.org/abs/1910.04803).")  |
+| ![ Every time after the `RL` agent chooses an action, the **supervisor checks** whether this action is `safe` or not. It does that by **predicting** the trajectories of other cars using a **regret decision model**. [Source](https://arxiv.org/abs/1910.04803).](../media/2019_chen_1.PNG "Every time after the `RL` agent chooses an action, the **supervisor checks** whether this action is `safe` or not. It does that by **predicting** the trajectories of other cars using a **regret decision model**. [Source](https://arxiv.org/abs/1910.04803).")  |
 |:--:|
 | *Every time after the `RL` agent chooses an action, the **supervisor checks** whether this action is `safe` or not. It does that by **predicting** the trajectories of other cars using a **regret decision model**. [Source](https://arxiv.org/abs/1910.04803).* |
 
-| ![ The two actions (`keep lane` and `change lane`) have different **probabilities of occurrence**, and different **harms** (**costs**) (`I`) that can be formulated as utilities (`II`) expressed with physical variables (`III`). **Affordance indicators** are used in the **world representation**. [Source](https://arxiv.org/abs/1910.04803).](media/2019_chen_2.PNG "The two actions (`keep lane` and `change lane`) have different **probabilities of occurrence**, and different **harms** (**costs**) (`I`) that can be formulated as utilities (`II`) expressed with physical variables (`III`). **Affordance indicators** are used in the **world representation**. [Source](https://arxiv.org/abs/1910.04803).")  |
+| ![ The two actions (`keep lane` and `change lane`) have different **probabilities of occurrence**, and different **harms** (**costs**) (`I`) that can be formulated as utilities (`II`) expressed with physical variables (`III`). **Affordance indicators** are used in the **world representation**. [Source](https://arxiv.org/abs/1910.04803).](../media/2019_chen_2.PNG "The two actions (`keep lane` and `change lane`) have different **probabilities of occurrence**, and different **harms** (**costs**) (`I`) that can be formulated as utilities (`II`) expressed with physical variables (`III`). **Affordance indicators** are used in the **world representation**. [Source](https://arxiv.org/abs/1910.04803).")  |
 |:--:|
 | *The two actions (`keep lane` and `change lane`) have different **probabilities of occurrence**, and different **harms** (**costs**) (`I`) that can be formulated as **utilities** (`II`), expressed with **physical variables** (`III`). **Affordance indicators** are used in the **world representation**. [Source](https://arxiv.org/abs/1910.04803).* |
 
@@ -2124,11 +2124,11 @@ Authors: Chen, D., Jiang, L., Wang, Y., & Li, Z.
 <details>
   <summary>Click to expand</summary>
 
-| ![ The **confidence in the prediction** (left) is used as an **`uncertainty` estimate**. This estimate impacts the decision (`μ` = **`mean` of the steering action distribution**) of the agent. [Source](https://arxiv.org/abs/1910.09998).](media/2019_fan_2.PNG "The **confidence in the prediction** (left) is used as an **`uncertainty` estimate**. This estimate impacts the decision (`μ` = **`mean` of the steering action distribution**) of the agent. [Source](https://arxiv.org/abs/1910.09998).")  |
+| ![ The **confidence in the prediction** (left) is used as an **`uncertainty` estimate**. This estimate impacts the decision (`μ` = **`mean` of the steering action distribution**) of the agent. [Source](https://arxiv.org/abs/1910.09998).](../media/2019_fan_2.PNG "The **confidence in the prediction** (left) is used as an **`uncertainty` estimate**. This estimate impacts the decision (`μ` = **`mean` of the steering action distribution**) of the agent. [Source](https://arxiv.org/abs/1910.09998).")  |
 |:--:|
 | *The **confidence in the prediction** (left) is used as an **`uncertainty` estimate**. This estimate impacts the decision (`μ` = **`mean` of the steering action distribution**) of the agent. [Source](https://arxiv.org/abs/1910.09998).* |
 
-| ![ The `variance` of the steering action distribution (**`behavioural uncertainty`**) is not estimated by the agent itself, but rather built by a simple **mapping-function** from the **`environmental uncertainty`** estimated by the **prediction module**. [Source](https://arxiv.org/abs/1910.09998).](media/2019_fan_1.PNG "The `variance` of the steering action distribution (**`behavioural uncertainty`**) is not estimated by the agent itself, but rather built by a simple **mapping-function** from the **`environmental uncertainty`** estimated by the **prediction module**. [Source](https://arxiv.org/abs/1910.09998).")  |
+| ![ The `variance` of the steering action distribution (**`behavioural uncertainty`**) is not estimated by the agent itself, but rather built by a simple **mapping-function** from the **`environmental uncertainty`** estimated by the **prediction module**. [Source](https://arxiv.org/abs/1910.09998).](../media/2019_fan_1.PNG "The `variance` of the steering action distribution (**`behavioural uncertainty`**) is not estimated by the agent itself, but rather built by a simple **mapping-function** from the **`environmental uncertainty`** estimated by the **prediction module**. [Source](https://arxiv.org/abs/1910.09998).")  |
 |:--:|
 | *The `variance` of the steering action distribution (**`behavioural uncertainty`**) is not estimated by the agent itself, but rather built by a simple **mapping-function** from the **`environmental uncertainty`** estimated by the **prediction module**. [Source](https://arxiv.org/abs/1910.09998).* |
 
@@ -2196,11 +2196,11 @@ Authors: Fan, T., Long, P., Liu, W., Pan, J., Yang, R., & Manocha, D.
 <details>
   <summary>Click to expand</summary>
 
-| ![ The **`affordance indicator`** refers to the `MDP` `state`. It has length `20` and contains and represents the **spatio-temporal information** of the nearest traffic vehicles. The agent controls the **discrete acceleration** (`maintain`, `accelerate`, `brake`, and `hard brake`) and selects its **lane** (`keep lane`, `change to right`, and `change to left`). [Source](https://www.researchgate.net/publication/336591335_Deep_Q-Learning_with_Dynamically-Learned_Safety_Module_A_Case_Study_in_Autonomous_Driving).](media/2019_baheri_3.PNG "The **`affordance indicator`** refers to the `MDP` `state`. It has length `20` and contains and represents the **spatio-temporal information** of the nearest traffic vehicles. The agent controls the **discrete acceleration** (`maintain`, `accelerate`, `brake`, and `hard brake`) and selects its **lane** (`keep lane`, `change to right`, and `change to left`). [Source](https://www.researchgate.net/publication/336591335_Deep_Q-Learning_with_Dynamically-Learned_Safety_Module_A_Case_Study_in_Autonomous_Driving).")  |
+| ![ The **`affordance indicator`** refers to the `MDP` `state`. It has length `20` and contains and represents the **spatio-temporal information** of the nearest traffic vehicles. The agent controls the **discrete acceleration** (`maintain`, `accelerate`, `brake`, and `hard brake`) and selects its **lane** (`keep lane`, `change to right`, and `change to left`). [Source](https://www.researchgate.net/publication/336591335_Deep_Q-Learning_with_Dynamically-Learned_Safety_Module_A_Case_Study_in_Autonomous_Driving).](../media/2019_baheri_3.PNG "The **`affordance indicator`** refers to the `MDP` `state`. It has length `20` and contains and represents the **spatio-temporal information** of the nearest traffic vehicles. The agent controls the **discrete acceleration** (`maintain`, `accelerate`, `brake`, and `hard brake`) and selects its **lane** (`keep lane`, `change to right`, and `change to left`). [Source](https://www.researchgate.net/publication/336591335_Deep_Q-Learning_with_Dynamically-Learned_Safety_Module_A_Case_Study_in_Autonomous_Driving).")  |
 |:--:|
 | *The **`affordance indicator`** refers to the `MDP` `state`. It has length `20` and contains and represents the **spatio-temporal information** of the nearest traffic vehicles. The agent controls the **discrete acceleration** (`maintain`, `accelerate`, `brake`, and `hard brake`) and selects its **lane** (`keep lane`, `change to right`, and `change to left`). [Source](https://www.researchgate.net/publication/336591335_Deep_Q-Learning_with_Dynamically-Learned_Safety_Module_A_Case_Study_in_Autonomous_Driving).* |
 
-| ![ Two purposes: `1-` **Accelerates the learning process** without inhibiting meaningful exploration. `2-` Learn to **avoid accident-prone states**. Note that **collisions still occur**, but less often. [Source](https://www.researchgate.net/publication/336591335_Deep_Q-Learning_with_Dynamically-Learned_Safety_Module_A_Case_Study_in_Autonomous_Driving).](media/2019_baheri_2.PNG "Two purposes: `1-` **Accelerates the learning process** without inhibiting meaningful exploration. `2-` Learn to **avoid accident-prone states**. Note that **collisions still occur**, but less often. [Source](https://www.researchgate.net/publication/336591335_Deep_Q-Learning_with_Dynamically-Learned_Safety_Module_A_Case_Study_in_Autonomous_Driving).")  |
+| ![ Two purposes: `1-` **Accelerates the learning process** without inhibiting meaningful exploration. `2-` Learn to **avoid accident-prone states**. Note that **collisions still occur**, but less often. [Source](https://www.researchgate.net/publication/336591335_Deep_Q-Learning_with_Dynamically-Learned_Safety_Module_A_Case_Study_in_Autonomous_Driving).](../media/2019_baheri_2.PNG "Two purposes: `1-` **Accelerates the learning process** without inhibiting meaningful exploration. `2-` Learn to **avoid accident-prone states**. Note that **collisions still occur**, but less often. [Source](https://www.researchgate.net/publication/336591335_Deep_Q-Learning_with_Dynamically-Learned_Safety_Module_A_Case_Study_in_Autonomous_Driving).")  |
 |:--:|
 | *Two purposes: `1-` **Accelerates the learning process** without inhibiting meaningful exploration. `2-` Learn to **avoid accident-prone states**. Note that **collisions still occur**, but less often. [Source](https://www.researchgate.net/publication/336591335_Deep_Q-Learning_with_Dynamically-Learned_Safety_Module_A_Case_Study_in_Autonomous_Driving).* |
 
@@ -2253,11 +2253,11 @@ Authors: Baheri, A., Nageshrao, S., Kolmanovsky, I., Girard, A., Tseng, E., & Fi
 <details>
   <summary>Click to expand</summary>
 
-| ![Neural architecture of the policy function trained with `PPO`: the `RGB` image is concatenated with its **semantic segmentation**. Randomisation is performed to **prevent over-fitting** and **increase sampling-efficiency**. It is also worth mentioning the high-level navigation command that is provided to guide the agent when approaching intersections. [Source](https://deepsense.ai/wp-content/uploads/2019/06/Simulation-based-reinforcement-learning-for-autonomous-driving.pdf).](media/2019_galias_1.PNG "Neural architecture of the policy function trained with `PPO`: the `RGB` image is concatenated with its **semantic segmentation**. Randomisation is performed to **prevent over-fitting** and **increase sampling-efficiency**. It is also worth mentioning the high-level navigation command that is provided to guide the agent when approaching intersections. [Source](https://deepsense.ai/wp-content/uploads/2019/06/Simulation-based-reinforcement-learning-for-autonomous-driving.pdf).")  |
+| ![Neural architecture of the policy function trained with `PPO`: the `RGB` image is concatenated with its **semantic segmentation**. Randomisation is performed to **prevent over-fitting** and **increase sampling-efficiency**. It is also worth mentioning the high-level navigation command that is provided to guide the agent when approaching intersections. [Source](https://deepsense.ai/wp-content/uploads/2019/06/Simulation-based-reinforcement-learning-for-autonomous-driving.pdf).](../media/2019_galias_1.PNG "Neural architecture of the policy function trained with `PPO`: the `RGB` image is concatenated with its **semantic segmentation**. Randomisation is performed to **prevent over-fitting** and **increase sampling-efficiency**. It is also worth mentioning the high-level navigation command that is provided to guide the agent when approaching intersections. [Source](https://deepsense.ai/wp-content/uploads/2019/06/Simulation-based-reinforcement-learning-for-autonomous-driving.pdf).")  |
 |:--:|
 | *Neural architecture of the policy function trained with `PPO`: the `RGB` image is concatenated with its **semantic segmentation**. Randomisation is performed to **prevent over-fitting** and **increase sampling-efficiency**. It is also worth mentioning the high-level navigation command that is provided to guide the agent when approaching intersections. [Source](https://deepsense.ai/wp-content/uploads/2019/06/Simulation-based-reinforcement-learning-for-autonomous-driving.pdf).* |
 
-| ![Several option for producing the **`std`** of the **steering distribution**. Best results are achieved when the **policy outputs both `mean` and `std`**. The left screenshot illustrates that **`shaped rewards`** (as opposed to `sparse rewards` where rewards are only five at the goal state) can bias learning and lead to **un-intended behaviours**: to make the agent stay close to the centre line, the authors originally penalized the gap in `X`, `Y` but also `Z` coordinates. ''Due to technical reasons our list of lane-centre positions was actually placed **above the road in the `Z` axis**. This resulted in a policy that drives with **two right side wheels placed on a high curb**, so its **elevation is increased** and distance to the centre-line point above the ground is decreased''. [Source-1](https://deepsense.ai/wp-content/uploads/2019/06/Simulation-based-reinforcement-learning-for-autonomous-driving.pdf) [Source-2](https://www.youtube.com/watch?v=YCpFQuAAhqI).](media/2019_galias_2.PNG "Several option for producing the **`std`** of the **steering distribution**. Best results are achieved when the **policy outputs both `mean` and `std`**. The left screenshot illustrates that **`shaped rewards`** (as opposed to `sparse rewards` where rewards are only five at the goal state) can bias learning and lead to **un-intended behaviours**: to make the agent stay close to the centre line, the authors originally penalized the gap in `X`, `Y` but also `Z` coordinates. ''Due to technical reasons our list of lane-centre positions was actually placed **above the road in the `Z` axis**. This resulted in a policy that drives with **two right side wheels placed on a high curb**, so its **elevation is increased** and distance to the centre-line point above the ground is decreased''. [Source-1](https://deepsense.ai/wp-content/uploads/2019/06/Simulation-based-reinforcement-learning-for-autonomous-driving.pdf) [Source-2](https://www.youtube.com/watch?v=YCpFQuAAhqI).")  |
+| ![Several option for producing the **`std`** of the **steering distribution**. Best results are achieved when the **policy outputs both `mean` and `std`**. The left screenshot illustrates that **`shaped rewards`** (as opposed to `sparse rewards` where rewards are only five at the goal state) can bias learning and lead to **un-intended behaviours**: to make the agent stay close to the centre line, the authors originally penalized the gap in `X`, `Y` but also `Z` coordinates. ''Due to technical reasons our list of lane-centre positions was actually placed **above the road in the `Z` axis**. This resulted in a policy that drives with **two right side wheels placed on a high curb**, so its **elevation is increased** and distance to the centre-line point above the ground is decreased''. [Source-1](https://deepsense.ai/wp-content/uploads/2019/06/Simulation-based-reinforcement-learning-for-autonomous-driving.pdf) [Source-2](https://www.youtube.com/watch?v=YCpFQuAAhqI).](../media/2019_galias_2.PNG "Several option for producing the **`std`** of the **steering distribution**. Best results are achieved when the **policy outputs both `mean` and `std`**. The left screenshot illustrates that **`shaped rewards`** (as opposed to `sparse rewards` where rewards are only five at the goal state) can bias learning and lead to **un-intended behaviours**: to make the agent stay close to the centre line, the authors originally penalized the gap in `X`, `Y` but also `Z` coordinates. ''Due to technical reasons our list of lane-centre positions was actually placed **above the road in the `Z` axis**. This resulted in a policy that drives with **two right side wheels placed on a high curb**, so its **elevation is increased** and distance to the centre-line point above the ground is decreased''. [Source-1](https://deepsense.ai/wp-content/uploads/2019/06/Simulation-based-reinforcement-learning-for-autonomous-driving.pdf) [Source-2](https://www.youtube.com/watch?v=YCpFQuAAhqI).")  |
 |:--:|
 | *Several option for producing the **`std`** of the **steering distribution**. Best results are achieved when the **policy outputs both `mean` and `std`**. The left screenshot illustrates that **`shaped rewards`** (as opposed to `sparse rewards` where rewards are only five at the goal state) can bias learning and lead to **un-intended behaviours**: to make the agent stay close to the centre line, the authors originally penalized the gap in `X`, `Y` but also `Z` coordinates. ''Due to technical reasons our list of lane-centre positions was actually placed **above the road in the `Z` axis**. This resulted in a policy that drives with **two right side wheels placed on a high curb**, so its **elevation is increased** and distance to the centre-line point above the ground is decreased''. [Source-1](https://deepsense.ai/wp-content/uploads/2019/06/Simulation-based-reinforcement-learning-for-autonomous-driving.pdf) [Source-2](https://www.youtube.com/watch?v=YCpFQuAAhqI).* |
 
@@ -2321,7 +2321,7 @@ Authors: Galias, C., Jakubowski, A., Michalewski, H., Osinski, B., & Ziecina, P.
 
 Some figures:
 
-| ![In the proposed `DeepSet` approach, **embeddings** are first created depending on the object type (using `φ1` for vehicles and `φ2` for lanes), forming the `encoded scene`. They are _'merged'_ only in a **second stage** to create a **fixed vector representation**. `Deep Set` can be extended with `Graph Convolutional Networks` when combining the set of node features to **capture the relations** - _interaction_ - between vehicles. [Source](https://arxiv.org/abs/1909.13582).](media/2019_huegle_1.PNG "In the proposed `DeepSet` approach, **embeddings** are first created depending on the object type (using `φ1` for vehicles and `φ2` for lanes), forming the `encoded scene`. They are _'merged'_ only in a **second stage** to create a **fixed vector representation**. `Deep Set` can be extended with `Graph Convolutional Networks` when combining the set of node features to **capture the relations** - _interaction_ - between vehicles. [Source](https://arxiv.org/abs/1909.13582).")  |
+| ![In the proposed `DeepSet` approach, **embeddings** are first created depending on the object type (using `φ1` for vehicles and `φ2` for lanes), forming the `encoded scene`. They are _'merged'_ only in a **second stage** to create a **fixed vector representation**. `Deep Set` can be extended with `Graph Convolutional Networks` when combining the set of node features to **capture the relations** - _interaction_ - between vehicles. [Source](https://arxiv.org/abs/1909.13582).](../media/2019_huegle_1.PNG "In the proposed `DeepSet` approach, **embeddings** are first created depending on the object type (using `φ1` for vehicles and `φ2` for lanes), forming the `encoded scene`. They are _'merged'_ only in a **second stage** to create a **fixed vector representation**. `Deep Set` can be extended with `Graph Convolutional Networks` when combining the set of node features to **capture the relations** - _interaction_ - between vehicles. [Source](https://arxiv.org/abs/1909.13582).")  |
 |:--:|
 | *In the proposed `DeepSet` approach, **embeddings** are first created depending on the object type (using `φ1` for vehicles and `φ2` for lanes), forming the `encoded scene`. They are _'merged'_ only in a **second stage** to create a **fixed vector representation**. `Deep Set` can be extended with `Graph Convolutional Networks` when combining the set of node features to **capture the relations** - _interaction_ - between vehicles. [Source](https://arxiv.org/abs/1909.13582).* |
 
@@ -2370,15 +2370,15 @@ Authors: Huegle, M., Kalweit, B., Werling, M., & Boedecker, J.
 
 Some figures:
 
-| ![[Source](https://arxiv.org/abs/1909.06710).](media/2019_saxena_5.PNG "[Source](https://arxiv.org/abs/1909.06710).")  |
+| ![[Source](https://arxiv.org/abs/1909.06710).](../media/2019_saxena_5.PNG "[Source](https://arxiv.org/abs/1909.06710).")  |
 |:--:|
 | *[Source](https://arxiv.org/abs/1909.06710).* |
 
-| ![The __occupancy-grid-like observation space__ is divided into `4` channels, each containing `3` lanes. An _ego-vehicle_ specific __feature vector__ is also considered. The authors use **policy-gradient** Proximal Policy Optimisation - `PPO` - method and decided not to share parameters between the _actor_ and the _critic_. [Source](https://arxiv.org/abs/1909.06710).](media/2019_saxena_1.PNG "The __occupancy-grid-like observation space__ is divided into `4` channels, each containing `3` lanes. An _ego-vehicle_ specific __feature vector__ is also considered. The authors use **policy-gradient** Proximal Policy Optimisation - `PPO` - method and decided not to share parameters between the _actor_ and the _critic_. [Source](https://arxiv.org/abs/1909.06710).")  |
+| ![The __occupancy-grid-like observation space__ is divided into `4` channels, each containing `3` lanes. An _ego-vehicle_ specific __feature vector__ is also considered. The authors use **policy-gradient** Proximal Policy Optimisation - `PPO` - method and decided not to share parameters between the _actor_ and the _critic_. [Source](https://arxiv.org/abs/1909.06710).](../media/2019_saxena_1.PNG "The __occupancy-grid-like observation space__ is divided into `4` channels, each containing `3` lanes. An _ego-vehicle_ specific __feature vector__ is also considered. The authors use **policy-gradient** Proximal Policy Optimisation - `PPO` - method and decided not to share parameters between the _actor_ and the _critic_. [Source](https://arxiv.org/abs/1909.06710).")  |
 |:--:|
 | *The __occupancy-grid-like observation space__ is divided into `4` channels, each containing `3` lanes. An _ego-vehicle_ specific __feature vector__ is also considered. The authors use **policy-gradient** Proximal Policy Optimisation - `PPO` - method and decided not to share parameters between the _actor_ and the _critic_. [Source](https://arxiv.org/abs/1909.06710).* |
 
-| ![In [another work](https://arxiv.org/abs/1909.05665), the authors try to incorporate an __`RNN` as a prediction model__ into an __`MPC` controller__, leading to a _reliable_, _interpretable_, and _tunable_ framework which also contains a __data-driven model__ that captures __interactive motions__ between drivers. [Source](https://arxiv.org/abs/1909.05665).](media/2019_bae_1.PNG "In [another work](https://arxiv.org/abs/1909.05665), the authors try to incorporate an __`RNN` as a prediction model__ into an __`MPC` controller__, leading to a _reliable_, _interpretable_, and _tunable_ framework which also contains a __data-driven model__ that captures __interactive motions__ between drivers. [Source](https://arxiv.org/abs/1909.05665).")  |
+| ![In [another work](https://arxiv.org/abs/1909.05665), the authors try to incorporate an __`RNN` as a prediction model__ into an __`MPC` controller__, leading to a _reliable_, _interpretable_, and _tunable_ framework which also contains a __data-driven model__ that captures __interactive motions__ between drivers. [Source](https://arxiv.org/abs/1909.05665).](../media/2019_bae_1.PNG "In [another work](https://arxiv.org/abs/1909.05665), the authors try to incorporate an __`RNN` as a prediction model__ into an __`MPC` controller__, leading to a _reliable_, _interpretable_, and _tunable_ framework which also contains a __data-driven model__ that captures __interactive motions__ between drivers. [Source](https://arxiv.org/abs/1909.05665).")  |
 |:--:|
 | *In [another work](https://arxiv.org/abs/1909.05665), the authors try to incorporate an __`RNN` as a prediction model__ into an __`MPC` controller__, leading to a _reliable_, _interpretable_, and _tunable_ framework which also contains a __data-driven model__ that captures __interactive motions__ between drivers. [Source](https://arxiv.org/abs/1909.05665).* |
 
@@ -2425,11 +2425,11 @@ Authors: Saxena, D. M., Bae, S., Nakhaei, A., Fujimura, K., & Likhachev, M.
 
 Some figures:
 
-| ![Using recurrent units in a `DQN` and considering the action history. [Source](https://www.ri.cmu.edu/wp-content/uploads/2019/08/ri_report_20190810.pdf).](media/2019_khurana_2.PNG "Using recurrent units in a `DQN` and considering the action history. [Source](https://www.ri.cmu.edu/wp-content/uploads/2019/08/ri_report_20190810.pdf).")  |
+| ![Using recurrent units in a `DQN` and considering the action history. [Source](https://www.ri.cmu.edu/wp-content/uploads/2019/08/ri_report_20190810.pdf).](../media/2019_khurana_2.PNG "Using recurrent units in a `DQN` and considering the action history. [Source](https://www.ri.cmu.edu/wp-content/uploads/2019/08/ri_report_20190810.pdf).")  |
 |:--:|
 | *Using recurrent units in a `DQN` and considering the action history. [Source](https://www.ri.cmu.edu/wp-content/uploads/2019/08/ri_report_20190810.pdf).* |
 
-| ![`Hidden modes`: decomposing the __non-stationary__ environment into __multiple stationary environments__, where each `mode` is an `MDP` with __distinct dynamics__. [Source](https://www.ri.cmu.edu/wp-content/uploads/2019/08/ri_report_20190810.pdf).](media/2019_khurana_3.PNG "`Hidden modes`: decomposing the __non-stationary__ environment into __multiple stationary environments__, where each `mode` is an `MDP` with __distinct dynamics__. [Source](https://www.ri.cmu.edu/wp-content/uploads/2019/08/ri_report_20190810.pdf).")  |
+| ![`Hidden modes`: decomposing the __non-stationary__ environment into __multiple stationary environments__, where each `mode` is an `MDP` with __distinct dynamics__. [Source](https://www.ri.cmu.edu/wp-content/uploads/2019/08/ri_report_20190810.pdf).](../media/2019_khurana_3.PNG "`Hidden modes`: decomposing the __non-stationary__ environment into __multiple stationary environments__, where each `mode` is an `MDP` with __distinct dynamics__. [Source](https://www.ri.cmu.edu/wp-content/uploads/2019/08/ri_report_20190810.pdf).")  |
 |:--:|
 | *`Hidden modes` framework: decomposing the __non-stationary__ environment into __multiple stationary environments__, where each `mode` is an `MDP` with __distinct dynamics__. [Source](https://www.ri.cmu.edu/wp-content/uploads/2019/08/ri_report_20190810.pdf).* |
 
@@ -2511,11 +2511,11 @@ Authors: Hu, B., Li, J., Yang, J., Bai, H., Li, S., & Sun, Y.
 
 Two figures:
 
-| ![[Source Left](https://arxiv.org/abs/1908.00177) - [Source Right](https://pdfs.semanticscholar.org/fba5/6bac9a41b7baa2671355aa113462d2044fb7.pdf).](media/2019_tram_3.PNG "[Source Left](https://arxiv.org/abs/1908.00177) - [Source Right](https://pdfs.semanticscholar.org/fba5/6bac9a41b7baa2671355aa113462d2044fb7.pdf).")  |
+| ![[Source Left](https://arxiv.org/abs/1908.00177) - [Source Right](https://pdfs.semanticscholar.org/fba5/6bac9a41b7baa2671355aa113462d2044fb7.pdf).](../media/2019_tram_3.PNG "[Source Left](https://arxiv.org/abs/1908.00177) - [Source Right](https://pdfs.semanticscholar.org/fba5/6bac9a41b7baa2671355aa113462d2044fb7.pdf).")  |
 |:--:|
 | *Sort of feedback loop in the **hierarchical structure**: the **`MPC` notifies** via the `reward` signal if the decision is **feasible, safe and comfortable**. [Source Left](https://arxiv.org/abs/1908.00177) - [Source Right](https://pdfs.semanticscholar.org/fba5/6bac9a41b7baa2671355aa113462d2044fb7.pdf).* |
 
-| ![This work applies the **path-velocity decomposition** and focuses on the longitudinal control. **Three intentions** are considered: aggressive `take-way`, `cautious` (slows down without stopping), and passive `give-way`. [Source](https://arxiv.org/abs/1908.00177).](media/2019_tram_2.PNG "This work applies the **path-velocity decomposition** and focuses on the longitudinal control. **Three intentions** are considered: aggressive `take-way`, `cautious` (slows down without stopping), and passive `give-way`. [Source](https://arxiv.org/abs/1908.00177).")  |
+| ![This work applies the **path-velocity decomposition** and focuses on the longitudinal control. **Three intentions** are considered: aggressive `take-way`, `cautious` (slows down without stopping), and passive `give-way`. [Source](https://arxiv.org/abs/1908.00177).](../media/2019_tram_2.PNG "This work applies the **path-velocity decomposition** and focuses on the longitudinal control. **Three intentions** are considered: aggressive `take-way`, `cautious` (slows down without stopping), and passive `give-way`. [Source](https://arxiv.org/abs/1908.00177).")  |
 |:--:|
 | *This work applies the **path-velocity decomposition** and focuses on the longitudinal control. **Three intentions** are considered: aggressive `take-way`, `cautious` (slows down without stopping), and passive `give-way`. [Source](https://arxiv.org/abs/1908.00177).* |
 
@@ -2569,7 +2569,7 @@ Authors: Tram, T., Batkovic, I., Ali, M., & Sjöberg, J.
 
 One figure:
 
-| ![[Source](https://arxiv.org/abs/1906.11021).](media/2019_bouton.PNG "[Source](https://arxiv.org/abs/1906.11021).")  |
+| ![[Source](https://arxiv.org/abs/1906.11021).](../media/2019_bouton.PNG "[Source](https://arxiv.org/abs/1906.11021).")  |
 |:--:|
 | *[Source](https://arxiv.org/abs/1906.11021).* |
 
@@ -2611,7 +2611,7 @@ Authors: Bouton, M., Nakhaei, A., Fujimura, K., & Kochenderfer, M. J.
 
 One figure:
 
-| ![Note: the visibility of each agent is assumed to be `100m` in front and back, with `0.5m`/`cell` resolution, for both its current lane (`obs_cl`) and the other lane (`obs_ol`). [Source](https://arxiv.org/abs/1904.06025).](media/2019_hu.PNG "Note: the visibility of each agent is assumed to be `100m` in front and back, with `0.5m`/`cell` resolution, for both its current lane (`obs_cl`) and the other lane (`obs_ol`). [Source](https://arxiv.org/abs/1904.06025).")  |
+| ![Note: the visibility of each agent is assumed to be `100m` in front and back, with `0.5m`/`cell` resolution, for both its current lane (`obs_cl`) and the other lane (`obs_ol`). [Source](https://arxiv.org/abs/1904.06025).](../media/2019_hu.PNG "Note: the visibility of each agent is assumed to be `100m` in front and back, with `0.5m`/`cell` resolution, for both its current lane (`obs_cl`) and the other lane (`obs_ol`). [Source](https://arxiv.org/abs/1904.06025).")  |
 |:--:|
 | *Note: the visibility of each agent is assumed to be `100m` in front and back, with `0.5m`/`cell` resolution, for both its current lane (`obs_cl`) and the other lane (`obs_ol`). [Source](https://arxiv.org/abs/1904.06025).* |
 
@@ -2651,7 +2651,7 @@ Authors: Hu, Y., Nakhaei, A., Tomizuka, M., & Fujimura, K.
 
 One figure:
 
-| ![[Source](https://arxiv.org/abs/1903.01365).](media/2019_bacchiani.PNG "[Source](https://arxiv.org/abs/1903.01365).")  |
+| ![[Source](https://arxiv.org/abs/1903.01365).](../media/2019_bacchiani.PNG "[Source](https://arxiv.org/abs/1903.01365).")  |
 |:--:|
 | *[Source](https://arxiv.org/abs/1903.01365).* |
 
@@ -2687,7 +2687,7 @@ Authors: Bacchiani, G., Molinari, D., & Patander, M.
 
 - One diagram is better than 100 words:
 
-| ![By summing all the dynamic terms (one per surrounding vehicle), the input keeps a constant size. [Source](https://arxiv.org/abs/1907.10994).](media/2019_huegle.PNG "By summing all the dynamic terms (one per surrounding vehicle), the input keeps a constant size. [Source](https://arxiv.org/abs/1907.10994).")  |
+| ![By summing all the dynamic terms (one per surrounding vehicle), the input keeps a constant size. [Source](https://arxiv.org/abs/1907.10994).](../media/2019_huegle.PNG "By summing all the dynamic terms (one per surrounding vehicle), the input keeps a constant size. [Source](https://arxiv.org/abs/1907.10994).")  |
 |:--:|
 | *By summing all the dynamic terms (one per surrounding vehicle), the input keeps a constant size. [Source](https://arxiv.org/abs/1907.10994).* |
 
@@ -2724,7 +2724,7 @@ Authors: Huegle, M., Kalweit, G., Mirchevska, B., Werling, M., & Boedecker, J.
 
 - Some background:
 
-| ![`n`-step TD learning. [Source](http://www0.cs.ucl.ac.uk/staff/d.silver/web/Teaching.html).](media/2015_silver.PNG "`n`-step TD learning. [Source](http://www0.cs.ucl.ac.uk/staff/d.silver/web/Teaching.html).")  |
+| ![`n`-step TD learning. [Source](http://www0.cs.ucl.ac.uk/staff/d.silver/web/Teaching.html).](../media/2015_silver.PNG "`n`-step TD learning. [Source](http://www0.cs.ucl.ac.uk/staff/d.silver/web/Teaching.html).")  |
 |:--:|
 | *`n`-step TD learning. [Source](http://www0.cs.ucl.ac.uk/staff/d.silver/web/Teaching.html).* |
 
@@ -2772,7 +2772,7 @@ Authors: Jaâfra, Y., Laurent, J.-L., Deruyver, A., & Naceur, M. S.
 
 One figure:
 
-| ![[Source](http://mediatum.ub.tum.de/doc/1454224/712763187208.pdf).](media/2018_mirchevska_1.PNG "[Source](http://mediatum.ub.tum.de/doc/1454224/712763187208.pdf).")  |
+| ![[Source](http://mediatum.ub.tum.de/doc/1454224/712763187208.pdf).](../media/2018_mirchevska_1.PNG "[Source](http://mediatum.ub.tum.de/doc/1454224/712763187208.pdf).")  |
 |:--:|
 | *[Source](http://mediatum.ub.tum.de/doc/1454224/712763187208.pdf).* |
 
@@ -2803,11 +2803,11 @@ Authors: Mirchevska, B., Pek, C., Werling, M., Althoff, M., & Boedecker, J.
 <details>
   <summary>Click to expand</summary>
 
-| ![ The `prediction` module **masks** undesired actions at each time step. [Source](https://arxiv.org/abs/1910.00399).](media/2018_isele_1.PNG "The `prediction` module **masks** undesired actions at each time step. [Source](https://arxiv.org/abs/1910.00399).")  |
+| ![ The `prediction` module **masks** undesired actions at each time step. [Source](https://arxiv.org/abs/1910.00399).](../media/2018_isele_1.PNG "The `prediction` module **masks** undesired actions at each time step. [Source](https://arxiv.org/abs/1910.00399).")  |
 |:--:|
 | *The `prediction` module **masks** undesired actions at each time step. [Source](https://arxiv.org/abs/1910.00399).* |
 
-| ![ Here a related patent from the authors. [Source](https://patents.google.com/patent/US20190332110A1/en).](media/2018_isele_2.PNG "Here a related patent from the authors. [Source](https://patents.google.com/patent/US20190332110A1/en).")  |
+| ![ Here a related patent from the authors. [Source](https://patents.google.com/patent/US20190332110A1/en).](../media/2018_isele_2.PNG "Here a related patent from the authors. [Source](https://patents.google.com/patent/US20190332110A1/en).")  |
 |:--:|
 | *Here a related patent from the authors :lock: :wink:. [Source](https://patents.google.com/patent/US20190332110A1/en).* |
 
@@ -2856,7 +2856,7 @@ Authors: Isele, D., Nakhaei, A., Fujimura, K.
 <details>
   <summary>Click to expand</summary>
 
-| ![[Source](https://arxiv.org/abs/1711.10785).](media/2017_plessen_1.PNG "[Source](https://arxiv.org/abs/1711.10785).")  |
+| ![[Source](https://arxiv.org/abs/1711.10785).](../media/2017_plessen_1.PNG "[Source](https://arxiv.org/abs/1711.10785).")  |
 |:--:|
 | *[Source](https://arxiv.org/abs/1711.10785).* |
 

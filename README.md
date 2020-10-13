@@ -40,6 +40,6 @@ Looking forward your reading suggestions!
 
 ---
 
-| ![example_navigation](media/example_navigation.gif "")  |
+| ![example_navigation](../media/example_navigation.gif "")  |
 |:--:|
 |    |
