@@ -655,3 +655,133 @@ Authors: Zhu, Y., & Zhao, D.
   - > "The concept of PILCO is quite similar to explicit MPC algorithms, but MPC controllers are usually defined **piecewise affine**. For PILCO, control law can be represented in **any differentiable form**."
 
 </details>
+
+---
+
+**`"World Models"`**
+
+- **[** `2018` **]**
+**[[:memo:](https://arxiv.org/abs/1803.10122)]**
+**[[:memo:](https://worldmodels.github.io/)]**
+**[[:octocat:](https://github.com/hardmaru/WorldModelsExperiments)]**
+**[[🎞️](https://worldmodels.github.io/)]**
+**[** :mortar_board: `Swiss AI Lab, IDSIA` **]**
+**[** :car: `NNAISENSE`, `Google Brain` **]**
+
+- **[** _`VAE`, `world model`, `mixture density nets`, `evolutionary algorithm`, `game exploit`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://arxiv.org/abs/1803.10122).](../media/2018_ha_1.PNG "[Source](https://arxiv.org/abs/1803.10122).")  |
+|:--:|
+| *The **`world model` (`V`+`M`)** is trained separately from the **`policy` (`C`)** to predict the **next latent variable** of the `VAE` (!not the `image` itself!) given the current `action`. The `policy` is then trained by **interacting with the 'real' environment**: each image is **encoded**, and the agent received the **corresponding latent variable `z`** together with the hidden variable of a `RNN` that captures the **temporal evolution** and **makes predictions**. The authors show that it is even possible to train this `policy` in the **learnt model** only. With the advantage that **it can easily be made more challenging** to **increase robustness**, by **adding noise** to the `transition` model. [Source](https://arxiv.org/abs/1803.10122).* |
+
+| ![[Source](https://worldmodels.github.io/).](../media/2018_ha_1.gif "[Source](https://worldmodels.github.io/).")  |
+|:--:|
+| *__Car Racing__ environment. The `steering` action has a range from `-1` to `1`, the `acceleration` from `0` to `1`, and the `brake` from `0` to `1`. [Source](https://worldmodels.github.io/).* |
+
+| ![[Source](https://worldmodels.github.io/).](../media/2018_ha_2.gif "[Source](https://worldmodels.github.io/).")  |
+|:--:|
+| *The image is **compressed in the encoder of the `VAE`**. A **latent vector `z`** is **sampled** from the estimated `mean` and `variance` parameters of the **prior Gaussian**. Here `z` contains **`32` features**. One can test see the **influence** of some of them, by observing how vectors are **decoded** by the `VAE`. And also see how **random vectors** are decoded. [Source](https://worldmodels.github.io/).* |
+
+Authors: Ha, D., & Schmidhuber, J.
+
+- Motivations.
+  - `1-` Address issues faced by model-free `RL`: **`sampling efficiency`** and **`credit assignment`**.
+    - In complex tasks, it would be important to have **large networks**, e.g. `RNN`.
+    - But this is limited by the **`credit assignment` problem**.
+    - Here the solution is to keep the **`policy` very small**, and give it **features of larger models** that were **trained separately**.
+    - > "A small `controller` lets the training algorithm focus on the `credit assignment` problem on a **small search space**, while not sacrificing **capacity and expressiveness** via the larger `world model`."
+  - `2-` Getting rid of the **real environment** and `sim-to-real` transfer.
+    - > "Can we train our agent to **learn inside of its own dream**, and **transfer this `policy`** back to the actual environment?"
+    - > "Running **computationally intensive game engines** require using **heavy compute resources** for rendering the game states into image frames, or **calculating physics** not immediately relevant to the game. We may not want to **waste cycles** training an agent in the actual environment, but instead train the agent as many times as we want **inside its simulated environment**."
+
+  - `3-` Model **long term** dynamics observed from **high dimensional visual data**: `64x64` images.
+
+- _How to deal with these sequences of_ **_raw pixel frames_**_?_
+  - > "Learning a model of the dynamics from a **compressed latent space** enable `RL` algorithms to be much more data efficient."
+  - The authors invite readers to watched **[Finn’s lecture](https://www.youtube.com/watch?v=iC2a7M9voYU)** on **Model-Based `RL`**.
+
+- Three modules to learn, "inspired by our own **cognitive system**".
+  - `1-` **Vision (`V`)**.
+    - **Spatial** representation: **_compress what it sees_**.
+    - **Variational Auto Encoder (`VAE`)**.
+      - Each image frame is compressed into a **small latent vector `z`**, of **size `32`**.
+      - The latent vector `z` is sampled from the **Gaussian prior `N`(`µ`,`σI`)** where `µ` and `σI` are learnt.
+  - `2-` **Memory (`M`)**.
+    - Temporal representation: **make predictions** about future latent variable, `p`(`z`), based on **historical information**.
+      - > The `M` model serves as a predictive model of the **future `z` vectors** that **`V` is expected to produce**.
+      - One alternative could be to **stack frames**.
+    - A **`RNN`** is used, combined with a **`Mixture Density Network`** to model **non-deterministic outcomes**.
+  - `3-` **Controller (`C`)**: the `policy`.
+    - The decision-making component that **decides what `actions`** to take based only on the **representations created** by its `vision` and `memory` components.
+    - `C` is a **simple single layer linear** model that maps the **latent variable `z`(`t`)** and **the hidden state of the `RNN` `h`(`t`)** directly to **action `a`(`t`)** at each time step.
+  - This structure is based on [`Learning to Think`](https://arxiv.org/abs/1511.09249) (Schmidhuber, 2015).
+    - > "A unifying framework for building a `RNN`-based general problem solver that can learn a `world model` of its environment and also learn to **reason about the future** using this model."
+
+- For `M`: _How to deal with the stochasticity of the `transition` model?_
+  - > "Because many complex environments are **stochastic** in nature, we train our `RNN` to **output a probability density function `p`(`z`)** instead of a **deterministic prediction of `z`**."
+  - `p`(`z`) is approximated as a **mixture of Gaussian distribution**.
+  - Therefore a **Mixture Density Network combined with a `RNN` (`MDN-RNN`)**.
+
+- For `C`: _What input for the `policy`?_
+  - Features extracted from the `world model` (`V` + `M`):
+    - Only `z` (latent variable of the `VAE`): **wobbly and unstable**.
+      - > "The representation `z`(`t`) provided by our `V` model only captures a representation at a moment in time and **does not have much predictive power**."
+    - `z` and `h` (hidden state of the `RNN`): more stable.
+      - > "Combining `z`(`t`) with `h`(`t`) gives our controller `C` a good representation of both the **current observation**, and **what to expect in the future**."
+    - No rollout is needed (as opposed to `MCTS` for instance).
+      - > "The agent **does not need to plan ahead** and **roll out hypothetical scenarios** of the future. Since `h`(`t`) contain information about the **probability distribution of the future**, the agent can just **query the `RNN` instinctively** to guide its action decisions. Like the baseball player discussed earlier, the agent can **instinctively predict** when and where to navigate in the heat of the moment."
+
+- Dimensions:
+  - `1-` `world model` (`V`+`M`): **large**.
+    - The goal is to learn a **compact `spatial` and `temporal` representation**.
+    - > "While it is the role of the `Vision` model to **compress what the agent sees** at each time frame, we also want to **compress what happens over time.**"
+  - `2-` `policy`: **small**.
+    - > "We deliberately make **`C` as simple and small as possible**, and **trained separately** from `V` and `M`, so that most of our agent’s complexity resides in the **world model** (`V` and `M`)."
+    - Also because of the **`credit assignment` problem**.
+    - Optimization algorithm: **Covariance-Matrix Adaptation Evolution Strategy (`CMA-ES`)** (evolutionary algorithm) since there are **a mere `867` parameters** inside the **linear controller model**.
+    - Trained on single machine with multiple `CPU` cores, since `ES` is also **easy to parallelize**.
+    - The `fitness` value for the agent is the **average `cumulative reward`** of `16` random rollouts (`16` seeds).
+
+- Training `V`:
+  - `1-` `10,000` rollouts are collected (with a random agent) from the real environment.
+    - (`action`, `observation`) pairs are recorded.
+  - `2-` The `VAE` is trained to encode each frame into **low dimensional latent vector `z`**.
+    - By minimizing the difference between a given frame and the **reconstructed version of the frame** produced by the decoder from the **latent** representation `z`.
+
+- Training `M`:
+  - Only once `V` has been trained.
+    - > "In principle, we can train **both models together** in an end-to-end manner, although we found that training **each separately** is more practical, and also achieves satisfactory results."
+  - The `MDN-RNN` is trained to model `P`(`zt+1` | `at`,`zt`,`ht`) as a **mixture of Gaussians**.
+
+- _How to deal with more complex tasks?_
+  - For **simple environments**, using a **random policy** to collect demonstrations may be enough to **capture the dynamic**.
+  - One could use the **learnt `policy`** to **collect new samples** and **iterate**.
+
+- _How to deal with the_ **_imperfections_** _of the_ **_generated environments_**_?_
+  - Risk of **cheating the `world model`**.
+    - > "Because our world model is only an **approximate probabilistic model** of the environment, it will occasionally generate trajectories that **do not follow the laws governing** the actual environment. [...] Our world model will be **exploitable by the controller**, even if in the actual environment such exploits do not exist."
+  - By **adding noise** to the **predictions** of the learnt model, i.e. **favouring robustness**.
+    - > "We train an agent’s controller inside of a **`noisier` and more `uncertain` version** of its generated environment, and demonstrate that this approach helps prevent our agent from **taking advantage of the imperfections** of its internal `world model`."
+  - This **temperature parameter `τ`** can be adjusted when **sampling** `z` to control **model uncertainty**.
+    - It controls the **tradeoff** between `realism` and `exploitability`.
+  - Another solution: using **`Bayesian` models** to **estimate the uncertainty**, as in [`PILCO`](https://mlg.eng.cam.ac.uk/pub/pdf/DeiRas11.pdf).
+    - > "Using data collected from the environment, `PILCO` uses a **Gaussian process (`GP`)** model to learn the **system dynamics**, and then uses this model to **sample many trajectories** in order to train a controller to perform a desired task."
+
+- Benefits of **substituting** the actual environment with the **learnt `world model`**.
+  - > "In this simulation, **we do not need the `V` model** to **encode any real pixel frames** during the **hallucination process**, so our agent will therefore only train **entirely in a latent space environment**."
+  - By **increasing the `uncertainty`**, the dream environment **becomes more difficult** compared to the actual environment.
+    - > "Unlike the actual game environment, however, we note that it is possible to **add extra `uncertainty`** into the virtual environment, thus making the **game more challenging** in the dream environment."
+
+- Limitations:
+  - `1-` Limited **memory capacity** of the `NN` model.
+    - > "While the human brain can hold **decades and even centuries of memories** to some resolution, our neural networks trained with back-propagation have more limited capacity and suffer from issues such as **catastrophic forgetting**."
+  - `2-` `V` is trained **independently of the `reward` signals**. Hence it may encode parts of the observations that **are not relevant to a task**.
+    - > "After all, **unsupervised learning** cannot, by definition, know what will be useful for the task at hand."
+    - > "By training together with an `M` that **predicts rewards**, the **`VAE` may learn to focus on task-relevant areas of the image**, but the tradeoff here is that we may not be able to reuse the `VAE` effectively **for new tasks without retraining**."
+
+</details>
+
+---
