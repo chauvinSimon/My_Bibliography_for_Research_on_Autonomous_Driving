@@ -2,6 +2,31 @@
 
 ---
 
+**`"Deep Reinforcement Learning and Transportation Research: A Comprehensive Review"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://arxiv.org/abs/2010.06187)]**
+**[** :mortar_board: `University of Illinois` **]**
+
+- **[** _`review`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://arxiv.org/abs/2010.06187).](../media/2020_farazi_1.PNG "[Source](https://arxiv.org/abs/2010.06187).")  |
+|:--:|
+| *Most approaches are used for **low-level control** in specific tasks. Instead of predicting the **actuator commands such as `throttle`**, most are **predicting the `acceleration`** which should be easier to **transfer** from the simulator to a **real car** that has **different dynamics and capabilities**. [Source](https://arxiv.org/abs/2010.06187).* |
+
+Authors: Farazi, N. P., Ahamed, T., Barua, L., & Zou, B.
+
+- In short:
+  - Review of some of the latest papers on **model-free `RL`** for several applications such as autonomous driving and traffic management e.g. `signal` and `route` control.
+  - No mention of the **`safety` limitations**, which is one of the major problems of **model-free** methods.
+
+</details>
+
+---
+
 **`"MIDAS: Multi-agent Interaction-aware Decision-making with Adaptive Strategies for Urban Autonomous Navigation"`**
 
 - **[** `2020` **]**
