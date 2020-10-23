@@ -1567,6 +1567,91 @@ Authors: Chen, J., Li, S. E., & Tomizuka, M.
 
 ---
 
+**`"Hierarchical Reinforcement Learning for Decision Making of Self-Driving Cars without Reliance on Labeled Driving Data"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://arxiv.org/abs/2001.09816)]**
+**[** :mortar_board: `Tsinghua University` **]**
+
+- **[** _`hierarchical RL`, `async parallel training`, `actuator command increments`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://arxiv.org/abs/2001.09816).](../media/2020_duan_1.PNG "[Source](https://arxiv.org/abs/2001.09816).")  |
+|:--:|
+| *__Hierarchical-`RL`__ with **async parallel** training is applied to improve the **training efficiency** and the **final performance**. It can be seen as a **`temporal` / `action` abstraction**, although here both **`high` and `low` levels** work at the **same frequency**. The **`master` policy** is trained once all the `sub-policies` have been trained. Note that only **`4` surrounding cars** are considered. [Source](https://arxiv.org/abs/2001.09816).* |
+
+| ![[Source](https://arxiv.org/abs/2001.09816).](../media/2020_duan_2.PNG "[Source](https://arxiv.org/abs/2001.09816).")  |
+|:--:|
+| *Each sub-policy (`manoeuvre` policies) has its **specific `state` representation** since not all information is relevant for each sub-task. The **`lateral` and `longitudinal` actions are decoupled** only for the `drive-in-lane` sub-policy. **Noise** is added to the `state` to form the `observation` used by the agent, to improve **robustness**. [Source](https://arxiv.org/abs/2001.09816).* |
+
+Authors: Duan, J., Li, S. E., Cheng, B., Luo, Y., & Li, K.
+
+- Motivations:
+  - `1-` Perform the **full `vertical` + `horizontal` decision-making stack** with `RL`.
+    - `RL` as opposed to `behavioural cloning`. Hence the title **_"without reliance on labeled driving data_**.
+    - > [`vertical`] "Current works of `RL` only focus on **`low-level` motion control** lacer. It is hard to solve driving tasks that require many **sequential decisions or complex solutions** without considering the `high-level` maneuver."
+    - [`horizontal`] The control should be done in both the `lateral` and `longitudinal` directions.
+    - One idea could be to use a **single policy**, but that may be **hard to train**, since it should learn both **`low-level` drive controls** together with **`high level` strategic decisions**.
+      - > "The **single-learner** `RL` fails to learn suitable policies in these two cases because the **`state` dimension is relatively high**. Therefore, `lane-change` maneuver requires **more exploration** and is **more complicated** than `driving-in-lane` maneuver, which is **too hard for single car-learner**."
+  - `2-` Improve the **training efficiency** and **final performance** of a `RL` agent on **a complex task**.
+    - Here the complexity comes, among others, from the **long horizon** of the sequential problem.
+  - `3-` Focus on two-lane highway driving.
+    - _It would be interesting to extend the idea to urban intersections._
+  - Main ingredients:
+    - `action` abstraction: **hierarchical `RL`**.
+    - Training **multiple agents** in **parallel**: **asynchronous parallel `RL` (`APRL`)**
+
+- Architecture:
+  - `1-` `master` policy.
+    - The **high-level** manoeuvre selection.
+  - `2-` `manoeuvre` policies.
+    - The **low-level** motion control.
+    - Input: The `state` representation **differs for each sub-policy**.
+    - Output: Actuator commands.
+      - Each policy contains a `steer` policy network (`SP-Net`) and an `accelerate` policy network (`AP-Net`). They can be coupled or not.
+
+- _What manoeuvres?_
+  - `1-` `driving-in-lane`.
+    - > "It is a combination of many behaviors including `lane keeping`, `car following` and `free driving`."
+    - In this case, the **two `state`, `rewards` and `actions` are independent**: `path-speed` decomposition.
+  - `2-` `left lane change`.
+  - `3-` `right lane change`.
+
+- `action masking` in the `master` policy.
+  - Not **all manoeuvres are available** in every `state` throughout driving.
+    - E.g., the `left-lane-change` manoeuvre is **only available in the right lane**.
+  - > "Thus, we **predesignate a list of available maneuvers** via the observations at each step. Taking an **unavailable maneuver** is considered an **error**. The self-driving car **should filter its maneuver choices** to make sure that only legal maneuvers can be selected."
+
+- `action` space for the `manoeuvre` policies.
+  - > "Previous `RL` studies on autonomous vehicle decision making usually take the `front wheel angle` and `acceleration` as the policy outputs. This is **unreasonable because the physical limits** of the **actuators** are not considered."
+  - > "To prevent **large discontinuity of the control commands**, the outputs of maneuver policy `SP-Net` and `AP-Net` are `front wheel angle` **increment** and `acceleration` **increment** respectively."
+
+- _Which level is trained first?_
+  - `1-` Each **sub-policy** is first trained. Each having their **specific `state` representation**.
+  - `2-` Then, the **`master` policy** is learned to choose the maneuver policy to be executed in the current `state`.
+    - > "The results of **asynchronous parallel reinforcement learners** (`APRL`) show that the **`master` policy converges much more quickly** than the **`maneuver` policies**."
+
+- Robustness.
+  - **Gaussian noise** is added to some **`state` variables** before it is observed by the car-learner.
+  - > "We assume that the **noise** of all `states` in **practical application** is **`M` times the noise used in the training**, so the real sensing noise obeys `U`(`−M ∗ Nmax`, `M ∗ Nmax`). To assess the sensitivity of the `H-RL` algorithm to **`state` noise**, we fix the parameters of previously trained `master` policy and `maneuver` policies and assess these policies for different `M`. [...] The policy is less affected by noise when `M ≤ 7`."
+
+- Nets.
+  - **`32` asynchronous parallel** car-learners.
+  - `n-step` return with `n=10`.
+    - "Back-propagation after **`n=10` forward steps** by explicitly computing `10-step` returns."
+  - `ELU` activation for hidden layers.
+  - Only `FC` layers.
+
+- _Do the two level operate at same frequency?_
+  - Apparently yes: "the **system frequency is `40Hz`**".
+  - _How to deal then with_ **_changing objectives_** _coming from the `master` policy?_
+
+</details>
+
+---
+
 **`"Worst Cases Policy Gradients"`**
 
 - **[** `2019` **]**
