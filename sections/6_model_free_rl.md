@@ -2,6 +2,88 @@
 
 ---
 
+**`"Deep Surrogate Q-Learning for Autonomous Driving"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://arxiv.org/abs/2010.11278)]**
+**[** :mortar_board: `University of Freiburg` **]**
+**[** :car: `BMW` **]**
+
+- **[** _`offline RL`, `sampling efficiency`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://arxiv.org/abs/2010.11278).](../media/2020_huegle_1.PNG "[Source](https://arxiv.org/abs/2010.11278).")  |
+|:--:|
+| *The goal is to **reduce the required driving `time`** to **collect** a certain number of **`lane-changes`**. The idea is to **estimate the `q-values`** not only for the ego car, but **also for the surrounding ones**. Assuming it is possible to infer which `action` each car was performing, this results in **many (`s`, `a`, `r`, `s'`) transitions** collected at each time step. The **replay buffer** hence can be filled way **faster** compared to considering only **ego-transitions**. [Source](https://arxiv.org/abs/2010.11278).* |
+
+| ![[Source](https://arxiv.org/abs/2005.01643).](../media/2020_levine_1.PNG "[Source](https://arxiv.org/abs/2005.01643).")  |
+|:--:|
+| *From another paper: Illustration of the difference between `online` (`on-policy`), `off-policy` and **`offline`** `RL`. The later resembles **supervised learning** where **data collection** is easier. It therefore hold a huge potential for application were **`interactions` with the `environment`** are **expensive or dangerous**. [Source](https://arxiv.org/abs/2005.01643).* |
+
+Authors: Huegle, M., Kalweit, G., Werling, M., & Boedecker, J.
+
+- Main motivation:
+  - **Interaction efficiency**: limit the **costly interactions** with the environment.
+    - The goal is to **reduce the required `driving time`** to collect a certain number of **lane-changes**
+  - Application: learn to make **high-level** decisions on the **highway**.
+- Main idea:
+  - **Leverage the `transitions` of surrounding observed cars**, instead of only considering the ego-agent's `transitions`.
+    - Hence not only **`off-policy`**: transitions are collected with policies possibly different from the current one.
+    - But also **`offline RL`**: forget about `exploration` and `interactions` and utilize previously **collected offline data**.
+
+- Main hypotheses:
+  - The agent can detect or **infer `actions`** of its surrounding cars.
+  - All cars are assumed to have the **same action space** as the agent or `actions` that are **mappable to the agent's `action` space**.
+  - No assumption about the `reward function` of other cars. Here, only the **ego `reward function`** is used to evaluate the (`s`, `a`, `s'`) transitions.
+  - > "This is in contrast to the **multi-agent `RL`** setting, where the long-term `return` of all agents involved is **optimized together**."
+
+- **`action` space** and **decision `period`**.
+  - About `keep lane`, `left lane-change`, and `right lane-change`.
+  - **Step size of `2s`**.
+    - Hence not about **`safety`**. Rather about about efficiency and **long-term planning** capability.
+    - > "**Collision avoidance** and maintaining safe distance in longitudinal direction are controlled by an **integrated `safety` module**."
+    - > "**`acceleration`** is handled by a **low-level execution layer** with model-based control of acceleration to guarantee comfort and `safety`."
+  - > "Additionally, we filter a **time span of `5s` before and after** all lane changes in the dataset with a **step size of `2s`**, leading to a consecutive chain of **`5` time-steps**."
+
+- About **`offline` `RL`**:
+  - **Recordings** are easier:
+    - > [**static** sensors] "This **drastically simplifies data-collection**, since such a **`transition` set** could be collected by setting up a camera on top of a **bridge above a highway**."
+    - > [sensors on a driving **test vehicle**] "In this setting, a policy can even be **learned without performing any lane-changes** with the **test vehicle** itself."
+  - Promising for **`sim-to-real`**:
+    - > "If it was possible to simply train policies with **previously collected data**, it would likely be **unnecessary in many cases to manually design high-fidelity simulators** for simulation-to-real-world transfer.
+  - _What about `exploration`, `distributional shift` and `optimality`?_
+
+- _Why "surrogate"?_
+  - Because **other drivers** are used as surrogates, i.e. **they replace the ego-agent** to learn the ego-agent's `value function`.
+
+- _How to deal with a_ **_variable-sized_** _input vehicles list and be_ **_permutation-independent_**_?_
+  - Idea of `PointNet`, here called `DeepSet`: use an **aggregator**, for instance `pooling`.
+
+- _How to_ **_estimate multiple `action-values` at once_**_?_
+  - As opposed to multiple `**individual forward-passes** per sample.
+  - In parallel _(if the hardware enables it!)_.
+  - Extend the **`DeepSet`-like architecture** which already computes `Ψ`(`scene[t]`), the **representation of the scene**. This `Ψ` is needed here to estimate each `q-value`.
+
+- _How to estimate the `q-value` of a (`s`, `a`) pair for a given (e.g. ego) agent?_
+  - `1-` The **car-`state`** is concatenated with the **representation of the scene** `Ψ`.
+  - `2-` This then goes through a **`Q` module**, here fully-connected net.
+
+- _How to_ **_sample experiences_** from the replay buffer_?_
+  - **Uniform** sampling is an option.
+    - But as for **Prioritized Experience Replay** for `DQN`, one may prefer to **sample "interesting" cases**.
+    - But one should be careful with the **induced distribution** (c.f. **importance sampling** in `PER`)
+  - Here: the more **complex the scene**, the more `q-values` are estimated, the more **efficient the sampling**.
+    - > "We propose a **sample distribution** dependent on the **_complexity of the scene_**, i.e. the **number of vehicles**."
+    - Therefore called **Scene-centric Experience Replay (`SCER`)**.
+  - About the resulting distribution.
+    - > "`Scene-centric Experience Replay` via a **permutation-equivariant** architecture leads to a **more consistent gradient**, since the **`TD`-errors are normalized** w.r.t. all predictions for the **different positions** in the scene while keeping the **`i.i.d.` assumption of stochastic gradient descent** by sampling uniformly from the replay buffer."
+
+</details>
+
+---
+
 **`"Deep Reinforcement Learning and Transportation Research: A Comprehensive Review"`**
 
 - **[** `2020` **]**
