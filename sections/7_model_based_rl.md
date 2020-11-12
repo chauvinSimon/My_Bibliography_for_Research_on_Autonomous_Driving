@@ -252,6 +252,86 @@ Author: Quan, K.
 
 ---
 
+**`"Safe Policy search using Gaussian process models"`**
+
+- **[** `2019` **]**
+**[[:memo:](https://arxiv.org/abs/1712.05556)]**
+**[** :mortar_board: `Oxford` **]**
+
+- **[** _`PILCO`, `probabilistic safety guarantees`, `adaptive tuning`, `chance constrained`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://arxiv.org/abs/1712.05556).](../media/2019_polymenakos_1.png "[Source](https://arxiv.org/abs/1712.05556).")  |
+|:--:|
+| *A **set of `safe states`** is defined. An **analytically-computed** quantity **`Q`** estimates the **probability** of the system to **stay in these `safe states`** during its `trajectory`. **Two usages** are made of `Q`. First it is made part of the **`objective` function**, together with the `expected return`. Second, a **constraint** is defined: `Q` must be be **higher than some threshold `ϵ`**. If not, the `policy` is prevented from being implemented into the **physical system**. If the `policy` is deemed `unsafe`, the importance of `safety` over `performance` is increased in the `objective` function and the optimization is repeated. This **automated procedure** is called **adaptive tuning**. [Source](https://arxiv.org/abs/1712.05556).* |
+
+Authors: Polymenakos, K., Abate, A., & Roberts, S.
+
+- Motivations:
+  - `1-` Target applications on **physical** systems.
+    - **Data-efficiency** and **safety** are essential.
+    - **Model-free `RL`** is therefore not an option, despite its **flexibility**.
+  - `2-` **No predefined `dynamics` model**, which would inhibit learning:
+    - ... either by **lack of flexibility**,
+    - ... or by introducing **model bias**.
+    - Therefore `planning` (with fixed models) is not an option. Model-based `RL` is preferred.
+    - > "We want to construct a **model from scratch**, from the **data collected** during training, allowing us to efficiently tune a controller."
+    - > "We address the **lack of flexibility** by using a **non-parametric model** which can in principle be as flexible as needed. **Model bias** is also addressed, by using a model that explicitly accounts for **uncertainty** in its outputs. That way, even when the model’s predictions are wrong, the model should provide them along with a suitably **high uncertainty estimation**."
+  - `3-` Automate the **tuning of parameters** for **trade-off between `efficiency` and `safety`** and enforce the learnt `policy` to be `safe` before using it (_`safety check` step_).
+
+- About the **`safety` constraint**:
+  - A **set of `safe states`** is defined.
+    - The **probability** of the system to **stay in `safe states`** during its `trajectory` is noted **`Qπ`(`θ`)**, for a policy parametrized by `θ`.
+    - It estimates the **`risk`**.
+  - The **constraint** is defined as:
+    - "`Qπ`(`θ`) must be **higher than some threshold `ϵ`**."
+  - > "These constraints are **defined a priori** and we require them to be respected, **even during training**."
+
+- Model-based `RL` with **Gaussian processes (`GP`)**.
+  - A **Gaussian process model** is trained to capture the **system `dynamics`**, i.e. **`transition` model**, based on the [`PILCO`](https://mlg.eng.cam.ac.uk/pub/pdf/DeiRas11.pdf) framework.
+  - Compared to other **_policy gradient methods_**, gradients in `PILCO` are **not _numerically approximated_** from the sampled trajectories, but **_analytically_ calculated** given the `GP` model.
+  - Output of the model:
+    - Not the `next_state` itself. Rather its difference to the input `state`.
+    - > "Modelling the **difference in consecutive `states`** is preferable to modelling the `states` themselves for practical reasons, such as the fact that the common **zero-mean prior** of the `GP` is more intuitively natural."
+  - **Kernels** for the `covariance` of the `GP`:
+    - > "The **`squared exponential` kernel** choice reflects our expectation that the function we are modelling (the system `dynamics`) is **smooth**, with similar parts of the `state` space, along with similar inputs, to lead to similar `next states`."
+  - > "The kernel function’s hyper-parameters, namely the `signal variance`, `length scales`, and `noise variance`, are chosen through **_[evidence maximization](http://mlg.eng.cam.ac.uk/pub/pdf/RasWil06.pdf)_**."
+
+- Once the `dynamics` model is learnt, the **`policy`'s performance** and its **`risk`** can be **evaluated**.
+  - > "For any parameter value `θ`, we can produce a **sequence** of **`mean` and `variance` predictions** for the `states` the system is going to be in the **next `T` time steps**."
+  - This prediction is used to estimate:
+    - `1-` The `reward` that would be **accumulated** by implementing the `policy`, starting from an initial `state`.
+    - `2-` The **probability of violating the `safe state space` constraints**. _See figure._
+
+- _Once the `risk` associated to a `policy` is estimated, what to do with it?_
+  - The probability for the system to **respect/violate the constraints** during an episode has a **dual role**:
+  - `1-` In the (`policy evaluation` + `policy improvement`) iterations:
+    - `Qπ(θ)` is a component of the **`objective` function**, along with the **expected `return`**.
+    - > "The `objective` function, capturing both **safety** and **performance** is (a **risk-sensitive** criterion according to [`16`]) is defined as: `Jπ(θ)` = `Rπ(θ)` + `ξ`*`Qπ(θ)`."
+
+  - `2-` **Safety check step** for **deployment**:
+    - High `risk` policies are **preventing** from being applied to the **physical system**.
+    - > "Even during **training**, only policies that are **deemed `safe`** are implemented on the real system, minimizing the risk of **catastrophic failure**."
+
+- _What if the `policy` is estimated as `unsafe`?_
+  - It can **neither be deployed**, nor be used to **collect further samples for training**.
+  - In this case, the **objective is changed**, **increasing the importance of `safety` over `performance`**, and a new optimization and performed.
+    - > "This **adaptive tuning** of the hyperparameter `ξ` guarantees that **only safe policies** (according to the current `GP` model of the system dynamics) are implemented, while mitigating the need for a **good initial value of `ξ`**. Indeed, using this scheme, we have observed that a good strategy is to start with a relatively **high initial value, focusing on `safety`**, which leads to safer policies that are allowed to interact with the system, gathering more data and a more accurate model, and steadily discovering high performing policies as `ξ` decreases."
+
+- _`Policy improvement`: how to perform the optimization?_
+  - > "The gradients are often estimated **stochastically** in the `policy gradient` literature. However we do not have to resort to **_stochastic_ estimation**, which is a major advantage of using **(differentiable) models** in general and `GP` models in particular."
+  - The **probability of collision `Qπ`(`θ`)**, on the other hand, is a product of the **probabilities of collision** at every time step **`q`(`xt`)**.
+
+- Benchmark:
+  - Comparisons are made with a `policy` trained on a `MDP` where **`penalties`** (negative `reward`) discourage **visiting unsafe `states`**.
+  - > "In that case, instead of calculating a **probability of being in an unsafe `state`**, the system receives an (additive) `penalty` for getting to unsafe `states`."
+
+</details>
+
+---
+
 **`"Model-predictive policy learning with uncertainty regularization for driving in dense traffic"`**
 
 - **[** `2019` **]**
