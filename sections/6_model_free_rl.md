@@ -3079,3 +3079,155 @@ Author: Plessen, M. G.
     - It seems sounds. But this would indicate that the **"Markov property"** in the MDP formulation does not hold.
 
 </details>
+
+---
+
+**`"A Comprehensive Survey on Safe Reinforcement Learning"`**
+
+- **[** `2015` **]**
+**[[:memo:](https://jmlr.org/papers/v16/garcia15a.html)]**
+**[** :mortar_board: `University Carlos III of Madrid` **]**
+
+- **[** _`optimization criteria`, `safe exploration/exploitation`, `risk sensitivity`, `teacher advice`, `model uncertainty`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://jmlr.org/papers/v16/garcia15a.html).](../media/2015_garcia_1.png "[Source](https://jmlr.org/papers/v16/garcia15a.html).")  |
+|:--:|
+| *Note: `S/a` means that the method is applied to domains with **continuous or large `state` space** and **discrete and small `action` space**. [Source](https://jmlr.org/papers/v16/garcia15a.html).* |
+
+| ![[Source](https://jmlr.org/papers/v16/garcia15a.html).](../media/2015_garcia_2.png "[Source](https://jmlr.org/papers/v16/garcia15a.html).")  |
+|:--:|
+| *[Source](https://jmlr.org/papers/v16/garcia15a.html).* |
+
+Authors: Garcia, J., & Fernandez, F.
+
+- Personal notes:
+  - While reading, try to classify these two commonly-used approaches in **`AD`**:
+    - Add a **high penalty** for **unsafe `states`**.
+    - Apply **rule-based logics** to **mask** **unsafe `actions`**.
+  - When trying to design a `RL` agent, ask the questions:
+    - What **`objective`** should be **optimized**?
+    - How to **quantify / detect `risk`**?
+
+- Remaining open questions for me:
+  - Are there **safety guarantees**?
+  - How to avoid **overly conservative** behaviours?
+  - What about `POMDP`s?
+  - How to deal with large continuous `states` such as **images**?
+  - Can **"teach advice"** also be used during **deployment**? E.g. `action-masking`.
+  - How **"solvers"** differ from those used for _unconstrained_ problems?
+
+- Definition:
+  - > "`Safe RL` can be defined as the process of learning policies that **maximize the expectation of the return** in problems in which it is important to **ensure reasonable system performance** and/or **respect `safety constraints`** during the **`learning` and/or `deployment`** processes."
+  - For `AD`, `RL` agents are probably trained in **a simulator**. Therefore:
+    - `training`: Crashes can happen.
+    - `deployment`: **No crash** should happen!
+      - > "If the goal is to obtain a **`safe` `policy` at the end**, without worrying about the number of **dangerous or undesirable situations** that occur during the `learning` process, then the **`exploratory` strategy** used to learn this `policy` is not so relevant from a `safety` point of view."
+
+- Although most approaches are **model-free** `RL`, ideas and challenges for **model-based `RL`** are also mentioned.
+  - > "Having such a [learnt] model is a useful entity for `Safe RL`: it allows the agent to **predict the consequences** of `actions` before they are taken, allowing the agent to **generate virtual experience**." [_but how to make sure the learnt model is correct?_]
+  - How to **_safely_ explore** the relevant parts of the `state`/`action` spaces to build up a **sufficiently accurate dynamics** model from which derive a good policy?
+    - For instance by learning the **`dynamics` model** from **teacher `safe` demonstrations**.
+    - But what when the agent sees a `state` it as never encountered? I.e. `covariate shift`.
+
+- Two big classes:
+  - `1-` Modify the **optimality criterion** with some **_`safety` term_**
+    - For instance by including the **probability of visiting _error_ `states`**.
+    - > [Issue] "The transformation of the **optimization criterion** produces a **distortion in the `action values`** and the **true long term utility of the `actions` are lost**."
+    - > [Issue] "It is difficult to find an optimization objective which **correctly models our intuition of `risk` awareness**. In `Section 3.1`, most of the approaches are updated based on a **conservative criterion** and the resulting policy tends to be **overly pessimistic**."
+  - `2-` Modify the **exploration process** to **avoid risk situations** through:
+    - ... Either the incorporation of **external knowledge**,
+    - ... or the guidance of a **risk metric**.
+    - This is especially important when `safety` is required during `training`.
+      - > "The use of **random exploration** would require an **undesirable `state`** to be visited before it can be labelled as **undesirable**."
+    - **Rule-based approaches** can be **used in parallel**. E.g. `action-masking`.
+  - Interesting idea: **combine both families!**
+
+- About the concept of **`risk`**:
+  - A `policy` optimal for the _vanilla_ `MDP`, i.e. **maximizing the `expected return`**, is said **"`risk`-neutral"**.
+  - The authors associate `risk` to the **uncertainty** of the environment, i.e. its **stochastic nature**.
+    - > "A **robust `MDP`** deals with **uncertainties in parameters**; that is, some of the parameters, namely, **`transition` probabilities**, of the `MDP` are not known exactly."
+    - E.g. based on the **variance of the return** or its **worst possible outcome**.
+    - E.g. based on the **level of knowledge** of a particular state, or on the difference between the highest and lowest `Q-values`.
+    - For me, they more express the **_confidence_ of an agent**.
+      - But an agent can be wrong, being 100% sure that a bad action is good.
+    - I would have rather expected the `risk` to be related to the **_probability for something bad to happen in the future_** if `a` is taken in `s`.
+      - This can for instance rely on some notion of **`reachibility`** and some **partition of `state` space** into:
+      - A `safe` sub-space.
+      - A `unsafe` sub-space.
+  - Distinction for **`risk` detection**:
+    - `1-` **Immediate** risk: if based of the **current `state`**, it may be **too late to react**.
+    - `2-` **Long-term** risk: some **risk function**, `ρπ`(`s`), ensures the selection of `safe` `actions`, preventing **long-term risk situations** once the `risk` function is correctly approximated.
+  - How to estimate `risk` when **starting from scratch**?
+    - > "**Teacher advice** techniques can be used to **incorporate prior knowledge**, thus mitigating the effects of **immediate `risk` situations** until the **`risk function`** is correctly approximated."
+  - Not clear to me, is how the agent can learn this `risk function`.
+    - > "The mechanism for **`risk` detection** should be **automatic** and **not based on the intuition of a human teacher**."
+
+- Class `1`: what for **extended optimization criteria**?
+  - `1-` Maximize the **worst-case `return`**.
+    - Here, the goal is to deal with **`uncertainties`**:
+      - ... Either the **inherent uncertainty** related to the **stochastic nature** of the system,
+      - ... And/or the **parameter uncertainty** related to some of the parameters of the `MDP` are **not known exactly** (c.f. model-based `RL`).
+    - It can lead to **over-conservative** behaviours.
+
+  - `2-` Maximize an **objective function** that includes a **`risk` term** `ω`.
+    - For instance the linear combination `Eπ(R) − β*ω`, or the **exponential utility function**: `log[Eπ(exp[βR])] / β`.
+      - Where `ω` could also reflect the **probability** of entering into an **error `state`**.
+    - The **"risk sensitivity"** scalar parameter `β` allows the **desired level of `risk`** to be controlled.
+      - `β=0` implies **`risk` neutrality**.
+    - The `risk` `ω` is often associated with the `variance` of the `return`.
+      - > "Higher `variance` implies **more instability** and, hence, more `risk`."
+      - But there are **several limitations** when using the `return variance` as a **measure of `risk`**.
+    - But for `AD` it does not make much sense to describe `risk` by the `variance` of the `return`. Think of the **tails of the distribution**.
+
+  - `3-` Maximize the `expected return`, **under some constraints**.
+    - It puts constraints on the `policy` space.
+    - > "We want to **maximize the expectation of the `return`** while keeping other types of **`expected utilities` lower than some given bounds**."
+    - **_Soft_** or **_hard_ constraints**?
+      - > "The previous constraint is a **hard constraint** that cannot be violated, but other approaches allow a **certain admissible `chance` of constraint violation**. This **`chance`-constraint** metric, `P(E(R) ≥ α) ≥ (1 − ε)`)." [_Here the `constraint` is on the `return`, but could be on the `probability of collision`_]
+      - Leading to **`chance`-constrained** `MDP`s.
+
+- Class `2.1`: How the **`exploration` process** can be modified by **including prior knowledge** of the task?
+  - `1-` Provide **initial** knowledge, used to **_bootstrap_ the learning algorithm**.
+    - To obtain for instance an **initial `value function`**.
+    - Or perform **transfer learning**, i.e. using a **`policy` trained on a similar task**.
+    - > "The learning algorithm is **exposed to the most relevant regions** of the `state` and `action` spaces from the earliest steps of the learning process, thereby **eliminating the time needed in random `exploration`** for the discovery of these regions."
+    - > [limitation] "The `exploration` process following the **initial training phase** can result in visiting new `states` for which the agent has no information on **how to act**."
+
+  - `2-` Derive a **policy** from a finite **set of demonstrations**.
+    - > "All (`state`-`action`) trajectories seen so far are used to **learn a model from the system’s `dynamics`**. For this model, a (near-)optimal `policy` is to be found using any `RL` algorithm."
+    - It relates to
+      - **off-line `RL`**
+      - **model-based `RL`**.
+      - **Learning from Demonstration (`LfD`)**, with **inverse `RL`** and **behavioural cloning**.
+    - _How the agent should act when it encounters a `state` for which no demonstration exists?_
+      - See "teacher advice" techniques below. Basically it needs some **life-long mentoring**.
+
+  - `3-` Provide **teach advice**, e.g., **`safe` `actions`**.
+    - > [Motivation] "However, while furnishing the agent with **initial knowledge** helps to mitigate the problems associated with **random exploration**, this initialization alone is not sufficient to prevent the **undesirable situations** that arise in the **subsequent explorations** undertaken to improve learner ability. An additional mechanism is necessary to **guide this subsequent exploration process** in such a way that the agent may be kept far away from **catastrophic `states`**."
+    - It generally includes four main steps:
+      - `(i)` **Request** or **receive** the "advise".
+        - Either the agent can **explicitly ask** for help. As a "joker" / **"ask for help"** approach. Using some **confidence parameter** to detect risky situations, e.g. when all `actions` have similar `Q-values`.
+        - Or the teacher **can interrupt** the agent learning execution at any point, e.g. to **prevent catastrophic situations**. Close to `action masking`.
+      - `(ii)` Convert advice into a **usable form**.
+        - The teacher does not necessary use the **same input** as the agent.
+        - For instance for simple `action masking`, knowing about the **distance to the leading vehicle** can be enough to impose `braking` when driving too close.
+        - In [(Bouton et al., 2019)](https://arxiv.org/abs/1904.07189) a **probabilistic model checker** is  derived **prior** to learning a `policy`.
+          - It computes the **probability of reaching the goal safely** for each (`state`, `action`) pair.
+          - And is subsequently **queried to mask actions**.
+          - Issue: require **discrete states** and **full knowledge of the `dynamics`**.
+      - `(iii)` Integrate the reformulated _advice_ into the **agent’s knowledge base**.
+      - `(iv)` Judge the **value of advice**.
+        - > "The teacher is giving advice on `policies` rather than `Q-values`, which is a more natural way for **humans to present advice** _(e.g., when the nearest taker is at least `8` meters, holding the ball is preferred to passing it)_."
+    
+    - It assumes the **availability of a teacher** for the learning agent, which is **not necessary an expert** in the task.
+      - Following the advice of the teacher can lead the learner to **promising parts of the `state` space**, which also helps for **safe exploration**.
+    - It does not modify the `objective`.
+      - > "The `Safe RL` algorithm should incorporate a **mechanism to detect and react to immediate `risk`** by manifesting different risk attitudes, while **leaving the optimization criterion untouched**."
+
+- Class `2.2`: How to do **risk-directed exploration**?
+  - For instance the agent can be encouraged to **seek controllable regions** of the environment.
+
+</details>
