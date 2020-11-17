@@ -2,6 +2,54 @@
 
 ---
 
+**`"Combining reinforcement learning with rule-based controllers for transparent and general decision-making in autonomous driving"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://www.researchgate.net/publication/342387197_Combining_reinforcement_learning_with_rule-based_controllers_for_transparent_and_general_decision-making_in_autonomous_driving)]**
+**[** :mortar_board: `Politecnico di Milano` **]**
+
+- **[** _`parametrized model`, `scene decomposition`, `rule-based`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://www.researchgate.net/publication/342387197_Combining_reinforcement_learning_with_rule-based_controllers_for_transparent_and_general_decision-making_in_autonomous_driving).](../media/2020_likmeta_1.png "[Source](https://www.researchgate.net/publication/342387197_Combining_reinforcement_learning_with_rule-based_controllers_for_transparent_and_general_decision-making_in_autonomous_driving).")  |
+|:--:|
+| *The **thresholds** of a non-differentiable **rule-based policy** are optimized using `RL`. Therefore the name `policy gradient with parameter-based exploration`. Somehow similar to **decision-trees**. How to **constrain `θ2` < `θ3`** for instance? I do not know. Bottom-right: **scene decomposition** to handle a **varying number** of surrounding cars. [Source](https://www.researchgate.net/publication/342387197_Combining_reinforcement_learning_with_rule-based_controllers_for_transparent_and_general_decision-making_in_autonomous_driving).* |
+
+Authors: Likmeta, A., Metelli, A. M., Tirinzoni, A., Giol, R., Restelli, M., Romano, D., & Restelli, M.
+
+- Main motivation:
+  - `1-` Keep the interpretability of **handcrafted rule-based controllers** ...
+  - `2-` ... but avoid the **biased** and **difficult manual tuning** of its parameters.
+
+- Main idea:
+  - Instead of **_manually_ tuned**, parameters of the **rule-based controller** are **_learnt_**.
+    - The objective of the learning is to maximize the `expected return`, produced by the rule-based policy.
+  - **Impose the structure** of the **policy**, leaving some of its **parameters**, such as **threshold values**, as degrees of freedom.
+    - > "**Exploration** is moved at the **`parameter` level**".
+  - Different **parameters** are sampled from a **differentiable function**, for instance a Gaussian distribution.
+    - A **search** is performed based on `reward` signals.
+  - Example: learn the scalar parameter `θ` for the **rule** "if `f`(`x`) `>` `θ` then take `action-1`, else take `action-2`." Where `f` can be non-differentiable.
+  - Note that the choice of the **parameters is independent of the input `state`**!
+
+- About `safety`.
+  - A **safety checker** indicates if a **(`state`, `action`) pair is _dangerous_** or not:
+  - _"Can we avoid a crash if you chose this `action` while the_ **_leader brakes_** _during the next time step?"_
+  - This is used to **mask dangerous `actions`** and provide `reward` signals to the **_parameter tuner_**.
+
+- _How to be_ **_independent_** _of the_ **_number of surrounding vehicles_** _and their permutations?_
+  - Canonical **scene decomposition**:
+    - `0-` The controller is trained to cope with **one vehicle**.
+    - `1-` For each vehicle, compute the `action`.
+    - `2-` Aggregate, here select the **most conservative `action`**, i.e. the **lowest `acceleration`**.
+  - The time complexity is **linear** with the number of vehicle.
+    - I guess it would be relevant to consider the **closest vehicles** first.
+
+</details>
+
+---
+
 **`"Deep Surrogate Q-Learning for Autonomous Driving"`**
 
 - **[** `2020` **]**
