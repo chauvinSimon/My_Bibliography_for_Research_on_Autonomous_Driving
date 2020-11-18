@@ -3229,6 +3229,171 @@ Author: Plessen, M. G.
 
 ---
 
+**`"Deep Learning of Robotic Tasks without a Simulator using Strong and Weak Human Supervision"`**
+
+- **[** `2016` **]**
+**[[:memo:](https://arxiv.org/abs/1612.01086)]**
+**[[🎞️](https://www.youtube.com/watch?v=Km_Q3r2Uxbc)]**
+**[** :mortar_board: `Israel Institute of Technology` **]**
+
+- **[** _`IL initialization`, `BC`, `reward induction`, `safe RL`, `action masking`, `supervision`, `end-to-end`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://arxiv.org/abs/1612.01086).](../media/2016_hilleli_2.png "[Source](https://arxiv.org/abs/1612.01086).")  |
+|:--:|
+| *Top-left: Stage `3` learns to **regress the `reward` function** demonstrated by the supervisor. The goal being to drive on the **second lane only**. This **dense signals** are used during Stage `5` for `RL`. Note that defining a `reward` signal with e.g. `distances from the roadsides` or `angle with respect to the road` is impossible without explicit image processing, since no **access to the internal state** of a simulator is possible. Right and bottom: In Stage `4` a **`risk` function** is **regressed**. It is used to **limit the exploration** of the `RL` agent to reduce the **number of accidents** mostly in the initial stage. This **accelerate its training**. [Source](https://arxiv.org/abs/1612.01086).* |
+
+| ![[Source](https://arxiv.org/abs/1612.01086).](../media/2016_hilleli_1.png "[Source](https://arxiv.org/abs/1612.01086).")  |
+|:--:|
+| *__Initializing the `RL`__ `Q-`net with some layers of a __learnt `BC` policy net__ significantly accelerates the `RL` training. It extends the **imitation** strategy to **previously unseen areas** of the `state` space, without loosing time exploring unrelevant parts. In addition, a learnt **`risk` function** is used to **mask dangerous `actions`**, which also speed up the training. Finally, a **`reward` function is learnt from demonstrations**. Bottom-left: Impact of the **`reward` signal's quality** on the agent’s overall performance during the `RL` stage: the **`reward` model `R-0.2-lane` was trained with only `20%`** of the dataset. It struggles to correctly **generalize the human instructor's knowledge to unseen `states`**. [Source](https://arxiv.org/abs/1612.01086).* |
+
+| ![[Source](https://www.youtube.com/watch?v=Km_Q3r2Uxbc).](../media/2016_hilleli_1.gif "[Source](https://www.youtube.com/watch?v=Km_Q3r2Uxbc).")  |
+|:--:|
+| *The task is to drive in a **designated lane only** (the **second lane** from the right). The `acceleration` is controlled by an external module with a **`50km/h` target**. [Source](https://www.youtube.com/watch?v=Km_Q3r2Uxbc).* |
+
+Authors: Hilleli, B., & El-Yaniv, R.
+
+- Main motivations:
+  - `1-` `end-to-end`: perform a complex task, using only **raw visual signals**.
+    - No image processing or other hand-crafted features.
+  - `2-` Train robotic agents:
+    - ... in the absence of **realistic simulator** for **real-world environments**.
+    - ... but where some **(human) instructor** can offer some king of **"weak" supervision**.
+    - > "The proposed method enables in principle the creation of an **agent capable of performing tasks** that the **instructor cannot perform herself**."
+  - `3-` **Accelerate `RL` learning** and reach better performance.
+    - Done by considering **`safety` during training**.
+    - > "The integration of the **safety module** into the `RL` allows us to improve the **agent’s exploration** of the `state` space and speed up the learning, thus avoiding the pitfalls of **random exploration policies** such as e-greedy, where the agent **wastes a lot of time on unimportant regions of the `state` space** that the optimal policy would never have encountered."
+    - Note: **No safety guarantee** is provided for **deployment**.
+  - `4-` Assume **no access to the internal state of the simulator**.
+    - One can only access **raw images**.
+    - It is impossible to query other information such as **exact `position` / `speed`** to compute some `reward` function for instance.
+
+- Main idea:
+  - Deploy `RL` after a `IL` stage.
+  - It compensates for the **noisy demonstrations** and extends the imitation strategy to **previously unseen areas** of the `state` space.
+  - > "**Initializing the `Q`-network’s parameters** with those **learned in the `IL` stage** increased the **learning rate** at the beginning of the `RL`, and significantly reduced the number of **critical driving mistakes** made by the agent (compared to **randomly initializing** the `Q`-network)."
+
+- About `RL` / `BC`:
+  - `RL` alone is limited.
+    - Constructing an **accurate simulator** is extremely difficult.
+    - > [**`reward` shaping** is hard] "The **handcrafting of a `reward` function** can be a complicated task, requiring experience and a fair amount of specific **domain knowledge**."
+  - `IL` alone is limited.
+    - Mainly by the **quality** and **diversity** of the observed demonstration.
+
+- About the task:
+  - Simulator: [Assetto Corsa](https://www.assettocorsa.net/)
+  - Task: **steer** the race car.
+    - The `acceleration` is controlled by an **external module** that ensures `50km/h`.
+    - The agent must drive in a the **second lane** only.
+  - Metrics: **accumulated average `reward`**.
+    - > "Without a **natural performance evaluation measure** for driving skills and **without access to the internal state** of the game, our performance evaluation procedure was based on the **accumulated average `reward`** achieved by the agent."
+    - It reminds me [Goodhart's law](https://en.wikipedia.org/wiki/Goodhart%27s_law):
+      - > **_"When a measure becomes a target, it ceases to be a good measure."_**
+    - No **safety metrics**?
+      - At least counting the **off-lane situations** would have been interesting.
+  - `state` = a **stack** of `RGB` front view **images**.
+    - > "In all our experiments, each input instance consisted of **two sequential images** with a **`0.5`-second gap** between them."
+    - > "Pixels corresponding to the **speed indicator** were set to **zero** in order to guarantee that the agent doesn’t use the **speed information** during the learning process."
+  - `action`
+    - **steering commands** of `left`/`right` using **keyboard keys**.
+  - `dt`
+    - > "The agent must always act under **`70 ms` latency** (from the time the image is captured to the time the corresponding **steering key is pressed**). During this gap, **the previous key continues to be pressed** until a new one is received. This added difficulty can be avoided when using a simulator."
+
+- _How do humans learn to drive a car or a bike?_
+  - `1-` **Observe driving scenes**.
+    - Try to **extract relevant information** required to successfully perform the task.
+    - > "The **unsupervised learning phase** starts long before her formal driving lessons, and typically includes great **many hours** where the student **observes driving scenes** while sitting as a passive passenger in a car driven by her parents during her childhood."
+  - `2-` Observe (and can copy) **_how_ other drivers drives**.
+  - `3-` Improve **under supervision** and learn to evaluate **which situation is _good_ or _bad_**.
+    - > "While the student is performing the task, the instructor **provides real-time feedback** and the student improves performance by **both optimizing a `policy`** as well as **learning the `feedback` function** itself."
+  - `4-` Improve **without supervision**.
+    - > "The student continues to teach herself (**without the instructor**), using both the `reward` function **previously induced by the instructor** and future `reward` signals from the environment."
+    - Probably the **horn of surroundings cars** can serve as additional `reward` signals.
+
+- Inspired from this, the presented framework consists of **five** elements:
+- **Phase `1`**: **unsupervised feature learning**.
+  - Goal: learn an informative **low-dimensional representations** of the raw image.
+  - **External (high level) features** could be added to **accelerate the learning**.
+    - For instance **_road boundaries_** are relevant to the driving task and can be _easily_ extracted from the images.
+    - > "Such **engineered features** that are based on **domain expertise** should definitely be used whenever they exist to expedite learning and/or improve the final performance."
+
+- **Phase `2`** supervised `IL`: `BC`.
+  - Leverage: the low-dimensional representation `F0(s)` learnt at phase `1`.
+  - Human work: **`70,000` samples**, equivalent to **`2` hours of human driving**, are collected.
+  - `1-` The **first goal** is to generate an **initial agent policy** `π0` capable of **operating in the environment without too much risk**.
+  - `2-` The **second goal** is to improve the **low-dimensional feature representation** (learned in the previous **unsupervised** stage) and generate a **revised representation `F1(s)`**, which is more relevant/informative for the task.
+
+- **Phase `3`** **supervised `reward` induction**.
+  - Leverage: low-dim representation learnt from previous states.
+    - > "The `reward` function is not learned from the **raw states** visited by the learner, but from some assumed to be known, **low-dimensional feature representation** of them."
+  - **Human work**:
+    - Drive the car while **intentionally alternating** between:
+      - **edge conditions** (i.e., driving on, or even outside road boundaries)
+      - **safe** driving.
+    - Label raw image pixels with {`bad`, `good`}.
+      - It will correspond to {`-1`, `+1`} `reward` signals.
+  - Task:
+    - A net `Sθ` maps a game `state` into a real number in the range [`−1`, `+1`].
+    - > "Corresponding to the **amount of `risk` in that `state`**, where the value `+1` is assigned to the **safest possible `state`** and the value `−1` is assigned to the **riskiest possible `state`**."
+  - Motivation:
+    - Train subsequent `RL` faster.
+    - > "Since we don’t have **access to the internal state** of a simulator, defining a `reward` signal using the `state` parameters of the car (_distances from the roadsides_, _angle with respect to the road_, etc.) is impossible without explicit image processing."
+    - These **dense** `reward` signals make a `RL` problem easier to learn.
+  - Idea:
+    - > "It receives an image and outputs a number in the range [`−1`, `1`] that indicates the **instantaneous reward** of being in that `state`. We call this method **_"`reward` induction"_** since the `reward` function is **_induced_ (in a `SL` manner)** from a finite set of **labeled examples** obtained from a human instructor. This method is related to a technique known as **_`reward` shaping_**, where an additional `reward` signal is used to **guide the learning agent**."
+  - Note: the **supervisor does not indicates what `action` should be done**.
+    - Rather she estimates **whether each `state` is desirable or not**, which should be **easier**.
+    - Therefore the agent should be able to realize a task that the supervisor can't achieve.
+
+- **Phase `4`** supervised **safety module** construction.
+  - **`safety module` = `safety function` + `safe policy`**
+  - **Human work**:
+    - Demonstrate `safe`/`unsafe` actions.
+    - Label each `state` as {`safe`, `unsafe`}.
+  - Motivation: **learn subsequent `RL` faster**, by reducing the **number of accidents** mostly in the initial stage.
+  - Task:
+    - Learn a **"safe" `policy`** via `BC`. Already done in **stage `2`**.
+    - Learn a **safety network** to classify the `state` space into two classes: {`safe`, `unsafe`}. Same architecture as the `reward` net.
+  - How is the `safety module` used?
+    - Two main approaches for integrating the **safety concept** into the `RL` algorithms:
+      - `1-` Transforming the **optimization criteria** to include a notion of `risk` (e.g., `variance of return`, `worst-outcome`).
+      - `2-` Modifying the **agent’s exploration process** while utilizing **prior knowledge** of the task to **avoid risky `states`**.
+    - Here the **second** case. A sort of `action masking`:
+      - > "During the `RL` training, if the **safety network** labels the current `state` as `unsafe`, the control is **taken from the agent** and given to a **pre-trained `safe` policy** until the agent is out of danger."
+
+- **Phase `5`** `RL`.
+  - Leverage: learnt `BC` policy, learnt `reward` function, learnt `safety module`.
+  - Motivation:
+    - Improve that `BC` policy that may suffer from **distributional shift**, i.e. it does not **how to react** to `states` it has never seen.
+  - > "We also note that stages `3` and `5` can be **iteratively repeated several times** to improve final performance."
+
+- About **`BC` initialization**: _How to use the_ **_initialized policy net_** _`Pθ`?_
+  - On the one hand, this `IL` net contains **informative state representation**.
+  - On the other, the `Q`-net `Qθ` net should output **`action`-values**.
+  - Architecture and initialization:
+    - > "We trained a `Q`-network, denoted by `Qθ`, that has the **same architecture** as `Pθ` except for the final **soft-max nonlinearity**, which was removed. The `Q`-network’s parameters were **initialized from those of the policy network** except for the **final layer’s parameters**, which were initialized from a uniform distribution [`−0.001`, `+0.001`].
+  - Two stages:
+    - `1-` **Policy evaluation**.
+      - `Pθ` is driving.
+      - Only the **last two fully-connected layers of `Qθ`** are updated.
+      - > "This step can be viewed as **learning a critic** (and more precisely, only the **last two layers of the critic’s network**) to estimate an `action-value` function while **fixing the acting policy**."
+    - `2-` `RL` is started using **`Qθ`**.
+      - **All of its parameters** can be **updated**.
+
+- Limitations:
+  - Multiple **manual demonstration and labelling** tasks are required:
+    - Demonstrate **good behaviours**.
+    - Demonstrate **dangerous and recovery manoeuvres**.
+    - Classify `safe`/`unsafe` situations.
+  - No surrounding cars.
+  - No `throttle`/`brake` control.
+
+</details>
+
+---
+
 **`"A Comprehensive Survey on Safe Reinforcement Learning"`**
 
 - **[** `2015` **]**
