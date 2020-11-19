@@ -2,6 +2,113 @@
 
 ---
 
+**`"Safe Trajectory Planning Using Reinforcement Learning for Self Driving"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://arxiv.org/abs/2011.04702)]**
+**[** :mortar_board: `Texas University`, `Carnegie Mellon University` **]**
+
+- **[** _`high-level decision making`, `action masking`, `prediction-based safety checks`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://arxiv.org/abs/2011.04702).](../media/2020_coad_1.png "[Source](https://arxiv.org/abs/2011.04702).")  |
+|:--:|
+| *The road is **flatten and divided in slices** called `junction`s. For each `junction` the agent should decide the **changes in `speed` and in `lateral position`**, compared to the previous `junction`. From this, a **sequence of waypoints** can be computed. And a `PID` controller converts this `trajectory` into **low-level commands**. A **safety module** assumes all **obstacle are static** and defines **collision-free `states`**. If the proposed `trajectory` always stays closed to **"safe" `states`**, it is implemented. Otherwise, its **projections on the `safe` space** is chosen (not necessary feasible). [Source](https://arxiv.org/abs/2011.04702).* |
+
+Authors: Coad, J., Qiao, Z., & Dolan, J. M.
+
+- Main motivation:
+  - `1-` Apply **`safety` checks** on decisions produced by a `RL` agent before applying them to the car.
+  - `2-` **Anticipate.** Predict / detect `unsafe` situations **in advance**.
+    - **Safety checkers** must be perform on a **long horizon**.
+    - Using **_low level_ controls** as `action` and evaluating **one** (not a _sequence_) of them would lead to a **too "reactive"** approach.
+      - Because it may be **too late to react**.
+      - > "Revoking the next `steer` or `throttle` if it is deemed that such an `action` would take the car into an **`unsafe` `state`**, would not work, since the car is often **travelling at speeds that cannot be instantaneously stopped or diverted**."
+      - > "In addition, `controls` must be **generated at a high and consistent frequency**; and thus the system is **brittle to any unexpected system latency**."
+    - **_Predictive_ checks** on **high-level** level, such as a **desired `trajectory`**, must be preferred.
+      - > "Because we are **planning seconds into the future**, we can detect potential traffic violations, kinematic violations and collisions with obstacles **far before they happen and account for them**."
+
+- Main idea: `X-to-mid` instead of `X-to-end`.
+  - A **`trajectory` is proposed**
+  - It is then fed to a **`PID` controller** to generate the vehicle **`steering` and `throttle`/`break`**.
+  - > "By using **trajectory planning** instead of **direct control**, we can apply higher level safety systems to restrict the `RL`-generated trajectory if it is seen to take the car **into an unsafe `state`**, such as off the road or into an obstacle."
+
+- **Hierarchical decision making**: Should `behavioural planning` and `trajectory planning` be performed together?
+  - Some **non-learnt approaches** (e.g. [`Focus`](https://ri.cmu.edu/pub_files/2013/6/IV2013-Tianyu.pdf) and [`Hierarchical`](https://www.researchgate.net/publication/322202031_Hierarchical_Trajectory_Planning_of_an_Autonomous_Car_Based_on_the_Integration_of_a_Sampling_and_an_Optimization_Method)) separate them into **two steps**:
+    - `1-` **_Low-fidelity_ grid search**: perform an **exhaustive search over all possible discrete paths** to choose an optimal **_behavioural_ `trajectory`**.
+      - > "They call it a **_behavioral_ `trajectory`** because the `path` and `velocity` profile chosen are greatly influenced by environmental factors such as obstacles, regulatory elements and road geometry and thus require **behavioral choices**."
+    - `2-` **Non-convex numerical path optimization** to produce the final `trajectory`.
+    - > "[Issue] We could be constraining ourselves to a **local minimum** by choosing a **behavioral trajectory** is only optimal in the **discrete space**."
+  - The proposed `RL` agent **combine** them.
+    - Its **forward pass** produces trajectory faster than when using an **exhaustive search** and **numerical optimization**.
+    - > "One **exhaustive search** in the relatively small `action` space we used takes an average of `7.9 ms`, while querying for the next trajectory from the **`RL` policy takes `0.87 ms`**, making `RL` nearly a **magnitude faster**."
+
+- A `trajectory` is a sequence that contains both **spatial** and **_temporal_** information.
+  - > "The goal of **`trajectory` planning** is to find a **sequence** of `states` Q = <`q1`, `q2`, ... `qn`> where `qi` = (`x.i`,`y.i`, `speed.i`)."
+  - How about the **"temporal" information**? What is the **time gap** between **two consecutive `qi`**?
+    - I.e. how much time do I have to transition from (`x1`, `y1`, `speed1`) to (`x2`, `y2`, `speed2`)?
+    - Is that time gap constant?
+    - How to represent a _"stay stopped"_ decision?
+    - Does the trajectory (sequence) has constant size?
+
+- About the `MDP`.
+  - Important: The road is **"linearised"** and **divided into cells**.
+    - Its **longitudinal discretization** results in **slices** called **`layers`**.
+  - `state` (also used by the **safety module** to define `safe` / `unsafe` `states`):
+    - `S`: **static** occupancy grid.
+    - `O`: `speed` regulatory grid.
+    - Ego-`lateral position`, relative to the middle lane.
+    - Ego-`speed`.
+  - Continuous `action` space:
+    - For each **"`layer`"**, two quantities are predicted:
+      - `1-` The **`lateral` change** between layer `j−1` and `j`.
+      - `2-` The **`velocity` change** between layer `j−1` and `j`.
+      - It says for each layer how the `speed` and the `lateral position` will change. A **sequence of waypoints** can be **derived from it**.
+      - > "We compare to the **_discretized_ exhaustive search** method and see that we obtain a **smoother behavioral path** with less drastic turns. We see that the `RL` results in a **smoother** and **more efficient** path."
+    - > "The `action` space is of size `2H` where `H` is the number of **layers** we are planning through, spaced out by some **distance `L` between the layers** in curvilinear space."
+      - What is the value of `H`?
+    - Again, how to represent a _"I am at speed=0 and want to stay there and wait"_, e.g. at a red traffic light. Information about the next layers are irrelevant?
+
+  - `reward`
+    - A combination of `speed error`, `acceleration`, `jerk`, `extra distance`, `curvature`, `lane crossing`, `centripetal acceleration`.
+    - > "Additionally, a **success** is given a `reward` of `10`, a **failure** is given a **reward** of `-20` and each step is given a `reward` of `+1`." [_how is a "success" defined?_]
+
+  - `dt`? What **duration between two decisions?**
+    - It needs to be **able to react**.
+    - But trajectories must be **consistent**.
+
+  - **Performance metrics**: `mean step reward`, `max acceleration`, `max jerk`, `mean extra distance`, `max curvature`, `max centrip. acc.`.
+  - What **simulator** to train? What scenarios?
+
+- About the **safety checker**.
+  - First, define a **set of `unsafe` `states`**.
+    - Apparently it is defined here based on the:
+      - `1-` The **occupancy grid** (presence of obstacles): to avoid collisions.
+      - `2-` The **centripetal `acceleration`**: for comfort and **kinematics constraints**.
+  - How to accept / reject the proposed `action`, here a `trajectory`?
+    - One could check if **none of the (`x`, `y`, `speed`)** of the `trajectory` are colliding in the _predicted future_ occupancy grids. And also ensure **comfort and feasibility** of the `transitions`.
+    - Here, another approach:
+      - `1-` Find the `safe` space.
+        - _How do they predict what positions will be "safe" in the future? By assuming_ **_static_** environments_.
+      - `2-` The trajectory is **projected onto the `safe` space**. This form a **second `trajectory`** which is `safe` (_but not necessary `feasible`_).
+      - `3-` The residuals, i.e. **distances between corresponding points**, are measured.
+      - `4-` If the **maximum gap** is **below some threshold**, i.e. if the proposed trajectory **always stays always close to the `safe` space**, it is accepted.
+  - What to do if the proposed `trajectory` is rejected?
+    - The **second `trajectory`** (projection onto the `safe` space) is chosen.
+      - _But, as mentioned, this may not be feasible from a kinematics/dynamics point of view?_
+  - Need for a **prediction module**:
+    - These forward roll-outs used to evaluate the `risk` rely on **predictions**: how will the scene evolve.
+    - Limitation: **dynamics objects (e.g. cars) are ignored** here.
+
+- Interesting: Which **low-level `action`** to **limit oscillatory behaviours**?
+  - > "In [`Driving in dense traffic with model-free reinforcement learning`](https://arxiv.org/abs/1909.06710), the authors use an `RL` agent to control the **derivative of `acceleration` and `steer`**, which is `jerk` and `steering rate`. They claim this **increases the comfort** of the ride by reducing **oscillatory and jerky behavior**."
+
+</details>
+
+---
+
 **`"Combining reinforcement learning with rule-based controllers for transparent and general decision-making in autonomous driving"`**
 
 - **[** `2020` **]**
