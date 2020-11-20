@@ -2,10 +2,98 @@
 
 ---
 
+**`"Trajectory Planning for Autonomous Vehicles Using Hierarchical Reinforcement Learning"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://arxiv.org/abs/2011.04752)]**
+**[[:memo:](https://drive.google.com/file/d/1pDCZ0m88wmWMdypofKG2NjsS7_SuisRQ/view)]**
+**[[🎞️](https://www.youtube.com/watch?v=oEHyt5NocD8)]**
+**[[🎞️](https://www.youtube.com/watch?v=Jyp_yxkufcI)]**
+**[** :mortar_board: `Hong Kong Polytechnic University,`, `Carnegie Mellon University` **]**
+**[** :car: [`Argo AI`](https://labs.ri.cmu.edu/argo-ai-center/) **]**
+
+- **[** _`HRL`, `PID`, `LSTM`_ **]**
+
+<details>
+<summary>Click to expand</summary>
+
+| ![[Source](https://arxiv.org/abs/2011.04752).](../media/2020_ben_naveed_2.png "[Source](https://arxiv.org/abs/2011.04752).") |
+|:--:|
+| *What I do not understand: the idea of `HRL` is to enable  **temporal / `action` abstraction**, i.e. produce a high-level decision such as `change-lane` at a **low-frequency** and then rely and **wait** for a low-level policy to compute the `WPs` at a **higher-frequency**. But here, **both levels are queried at each time-step**? What is the difference with a "flat" net that would **directly choose between one of these `6` predefined trajectories**, especially if **no temporal abstraction** is performed? Apart from that, note in the algorithm that the **replay buffer** is initially filled with experiences collected by running a **rule-based controller**. [Source](https://arxiv.org/abs/2011.04752).* |
+
+| ![[Source](https://arxiv.org/abs/2011.04752).](../media/2020_ben_naveed_1.gif "[Source](https://arxiv.org/abs/2011.04752).") |
+|:--:|
+| *[Source](https://arxiv.org/abs/2011.04752).* |
+
+Authors: Ben Naveed, K., Qiao, Z., & Dolan, J. M.
+
+- Main motivations:
+- `1-` Improve **convergence rate** and yield **better performances**.
+  - One difficulty of `AD` is to learn a model able to **deal with multiple sub-goals**, such as **different manoeuvres**.
+    - > "`HRL` helps **divide the task** of autonomous vehicle driving into `sub-goals` [...] It allows the [low-level] policies learned to be **_reused_** for any other scenario."
+    - The idea it to enforce the `Q`-net to produce **an intermediate `sub-goal`** that **conditions the rest** of the net.
+  - More generally, **Hierarchical `RL`** reduces the complexity by **abstracting `actions`**.
+- `2-` Ensure **smoothness** and **stability** (avoid lane invasion).
+  - The idea is to predict some kind of `trajectory`, instead of **low-level commands** such as `throttle`, `steering` and `brake`.
+  - A **`PID` controller** is then used to implement and track the produced `trajectory`.
+- `3-` Ensure **robustness** wrt. **noisy observations**.
+  - Some `LSTM` layers are added to both **high-level** `options` and **low-level** `trajectory` networks.
+  - `LSTM` takes longer to train. Therefore, if no noise is added at test time, **models without `LSTM` perform better**.
+
+- **Hierarchical `MDP`**.
+  - `state`
+    - `state` = `14` parameters describing cars' `speeds`, `lane-ids` and the `gaps` between them, **normalized with some `safe distances`**.
+    - Both `Q`-nets take a so-called `history` as input: a **stack of `3` `state`s**.
+  
+  - `action`: `2`x`3` = **`6` possibilities**:
+    - Binary **high-level `options`**: {`keep lane`, `change lane`}.
+    - For each `option`, `3` **discrete** low-level "`trajectory` choices":
+      - For `sub-goal`=`keep lane`:
+        - Follow the lane for a "long" distance. _At constant speed?_
+        - Follow the lane for a "short" distance. _What about the speed? Does that mean it is completed faster than the previous choice?_
+        - Slow down.
+      - For `sub-goal`=`change lane`:
+        - Three `speed profiles` are possible.
+      - From the selected `option` and `trajectory` choice, a **target `speed`** and a **final `waypoint`** are derived and passed to the `PID` controller.
+    - That means that the **meaning of the output** of the low-level net depends on the `sub-goal`.
+      - What is the difference with a "flat" net that would **directly choose between one of these `6` predefined trajectories**, especially if **no temporal abstraction** is performed?
+  - `reward`
+    - Similar to [`"Hierarchical Reinforcement Learning Method for Autonomous Vehicle Behavior Planning"`](https://arxiv.org/abs/1911.03799)] by same team.
+    - > "The ego-car gets penalized **separately** for choosing the wrong **high-level `option`** or choosing the wrong **low-level `trajectory` choice**."
+    - **`high-level` options**.
+      - No detailed? Or maybe the final `success` / `failure` and the `per-step penalties`.
+    - **`low-level` trajectory** choices are penalized for:
+      - **Collisions**.
+        - Allegedly because that means the **chosen trajectory** does not **complete its `sub-goal`**.
+        - _Ok, but what if the sub-goal is not applicable? E.g. the high-level `option` is to `change lane`, but the target lane is occupied._
+      - **Risk**, based on **safety distances**.
+        - I see it as a way to **anticipate collisions**, which helps for _credit assignment_.
+      - **Inefficiency**, i.e. for **conservative** choices that were not required.
+        - For `sub-goal`=`lane change`: the `wait` choice gets penalized if it is selected unnecessarily.
+        - For `sub-goal`=`keep lane`: if not obstacle is detected, a **longer trajectory** should be planned.
+      - In a way, **`action` are penalized** if they do not **match the "expected" `action`**.
+        - What is then the difference with rule-based approaches such as `slot`-based methods?
+  - About `dt`?
+    - Carla is run at **`30` fps** (said in paper) or at **`10` fps** (said in the video).
+      - _But at which frequencies decisions are made? Is some kind of consistency enforced over time?_
+    - Do both level work at the **same frequency**?
+      - It would not make any sense since the goal of `HRL` is to **offer temporal abstraction** by **abstracting `action`s**.
+      - > "`Q1` generates the `sub-goal` `g` for the following steps and a controller `Q2` outputs the `action` a based on the `sub-goal` selected **until the next `sub-goal` is generated** by the meta-controller." [That mean the **high-level** policy can **interrupt** the **low-level** one? Isn't is rather "until the **`sub-goal` is considered as completed** (_success_ / _failed_)" instead? _I am confused here_]
+
+    - Do low-level `action`s have same durations?
+      - I think no. For `sub-goal`=`keep lane`, the point is that the **low-level** can decide to follow the lane for **only a "short" distance**, i.e. apply the sub-goal but come back quickly to ask for the **high-level** to make a new decision.
+      - This mechanism seems beneficial in cases of **uncertainty** or where it is important to be **able to react quickly**.
+
+</details>
+
+---
+
 **`"Safe Trajectory Planning Using Reinforcement Learning for Self Driving"`**
 
 - **[** `2020` **]**
 **[[:memo:](https://arxiv.org/abs/2011.04702)]**
+**[[:memo:](https://drive.google.com/file/d/1R4T1SbaBhal0TA2Rc5j7ELnnsy9MyNWq/view)]**
+**[[🎞️](https://www.youtube.com/watch?v=YRd7r5Z2bx4)]**
 **[** :mortar_board: `Texas University`, `Carnegie Mellon University` **]**
 
 - **[** _`high-level decision making`, `action masking`, `prediction-based safety checks`_ **]**
