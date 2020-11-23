@@ -2,6 +2,164 @@
 
 ---
 
+**`"Reinforcement Learning for Autonomous Driving with Latent State Inference and Spatial-Temporal Relationships"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://arxiv.org/abs/2011.04251)]**
+**[** :mortar_board: `Stanford University`, `Berkeley` **]**
+**[** :car: `Honda` **]**
+
+- **[** _`privileged learning`, `latent variable inference`, `auxiliary task`, `POMDP`, `driver model`, `interaction modelling`, `influence-passing`, `GNN`, `LSTM`_ **]**
+
+<details>
+<summary>Click to expand</summary>
+
+| ![[Source](https://arxiv.org/abs/2011.04251).](../media/2020_ma_1.png "[Source](https://arxiv.org/abs/2011.04251).") |
+|:--:|
+| *When deciding to estimate the latent `aggressiveness` variable as an **auxiliary task**, two **design choices** arise: `1-` Is it beneficial to **share layers** (shared encoder) between the `policy` net and the `classification` net? `2-` Are **losses** from two tasks somehow **coupled**, e.g. by **some weighted sum**? The authors answer twice 'no' and show the benefit of a **separated inference** for this particular task. In the coupled versions, the **auxiliary task** does not really help, acting as a **distractor**. [Source](https://arxiv.org/abs/2011.04251).* |
+
+| ![[Source](https://arxiv.org/abs/2011.04251).](../media/2020_ma_2.png "[Source](https://arxiv.org/abs/2011.04251).") |
+|:--:|
+| *Top-left: the `T-intersection` task. Bottom: in the **latent state inference**, the **`LSTM` parameters are shared** for **all the vehicles** except the ego vehicle. The output of the `LSTM` is then used as the **initial embedding** for the corresponding **vehicle `node`** in the `Gt`. The **`node` embeddings** are then updated by several layers of **[`GraphSage`](https://arxiv.org/abs/1706.02216) convolution**. Left: modelling the so-called `influence passing` between different vehicles through `GNN` offers **interpretability**: the auxiliary latent inference gives information about **how the policy infers** the latent states of surrounding vehicles. Right: How the **performance of a trained agent degrades** when the conditions vary. [Source](https://arxiv.org/abs/2011.04251).* |
+
+Authors: Ma, X., Li, J., Kochenderfer, M. J., Isele, D., & Fujimura, K.
+
+- Can we draw some **parallels** with **[`"Learning by Cheating"`](https://arxiv.org/abs/1912.12294)**?
+  - **Privileged learning**: Both leverage access to information that are **not seen by the agent**.
+  - Both **split the task** into **`2` stages**, which makes the **initial task easier**, while offering interpretability.
+    - `"Learning by Cheating"`: **`"learn to see"` / `"learn to act"`**.
+    - Here: **`"learn to infer hidden driving style"` / `"learn to act"`**.
+
+- Main motivations:
+  - `1-` Improve the **efficiency** of model-free `RL` when the **`state` is not fully observable**.
+    - The idea is to **extract/estimate** this **hidden useful information** (separately) to help the **primary `RL` task**.
+      - > "Inferring the **latent state** of traffic participants would extract **useful information** that an **unassisted learning system** would otherwise miss."
+      - Thus the concept of "**latent state inference** as an **_auxiliary task_**".
+    - It works when some `state` variables are **hidden to the agent** but can be **retrieved from the simulator**.
+    - Examples of **latent states** include `intention` or `driving style` parameters.
+      - Therefore close to topics such as **driver modelling** and **`intent` recognition**.
+      - And their knowledge would be precious, since different values could **predict drastically different outcomes**.
+      - > "The `conservative` drivers would **yield** to the ego driver if they intercept laterally or the ego vehicle is approaching the lane center with a speed larger than `0.5m`, while the `aggressive` driver would **ignore the ego vehicle**."
+  - `2-` Interpretability.
+    - The **estimated aggressiveness** forwarded to the agent can **explain its reaction**.
+    - > "The **graph representation** used by the `STGSage` also gives additional interpretability on the influence **passing structure** inside the network."
+  - `3-` **Robustness** against **distribution shift**.
+    - One idea is to train with **`observation` and `transition` noise**. The separation of the auxiliary task is also beneficial.
+
+- Main ideas:
+  - `1-` **Explicitly infer** the **latent state**.
+    - **Main (strong) assumption**:
+      - The **true latent states** of the surrounding drivers **are known at `training` time**. 
+    - This enables **supervised learning**: learn to estimate the **non-observable parts** of the `state` to help the `RL` agent.
+  - `2-` Encode **spatial-temporal relationships**.
+    - > "By combining the **latent inference** with **relational modelling**, we propose a `RL` framework that explicitly learns to **infer the latent states** of surrounding drivers using **graph neural networks**."
+
+- `POMDP`
+  - `state`
+    - For each driver:
+      - **Physical** part: `position` and `speed`.
+      - **Latent** part: **`driving style`** in {`CONSERVATIVE`, `AGGRESSIVE`}.
+  - `observation`
+    - Only the **physical part** of the `state`.
+    - The agent must estimate the **latent `driving style` variables**.
+      - > "The goal of the auxiliary **latent inference** is to learn P(`zi.t` | `o.1:t`), where `o.1:t` is the ego agent’s **historical `observation`** up to time `t`."
+      - One **non-learning-based option** could be to perform **max-likelihood inference** using the `IDM` model.
+  - `action`
+    - **Target `speed`** in {`0m/s`, `0.5m/s`, `3m/s`}, implemented by some **low level `PD` controller**.
+    - > "It also has a **safety checker** that performs an **emergency break** if the ego vehicle is too close to other vehicles."
+    - No `steering` decision: the ego-path is pre-defined.
+  - `reward`
+    - Penalize collisions
+    - Reward `speed` and merge completion.
+  - `dt`
+    - `0.1 s`
+  - `observation` model
+    - A **small observation noise** is added to the observation on the **physical state** of each surrounding vehicle.
+    - It comes from a zero-mean Gaussian. _But what is the standard deviation?_
+  - `transition` model
+    - An **`IDM` model** with decides the `acceleration` of other cars.
+    - The **desired `speed`** is set to `3 m/s`.
+    - But the `desired front gap` is function of the **aggressiveness hidden parameter**.
+      - > "**Conservative** drivers vary their `desired front gap` uniformly between `0.5` to `0.8` of the original gap, where the **aggressive** driver varies between `0.4` to `0.7`."
+        - Note the **distributions are overlapping**!
+    - > "The actual `acceleration` of the surrounding vehicles are also influenced by a **Gaussian noise** with a standard deviation of `0.1 m/s²`."
+  - Policy optimization: `PPO`, with [RLkit](https://github.com/vitchyr/rlkit).
+
+- **Auxiliary tasks**: how to learn both **`RL` task** and **supervised latent state inference**?
+  - `1-` **Coupled inference** = {`shared encoder`} + {`shared update`}:
+    - `shared encoder` = **two heads** (`policy` and `driving style`s predictions) based on some **shared encoder**.
+    - `shared update`:
+      - > [Baseline `1`] "Besides the **shared encoder**, the losses from two tasks are also **coupled by a weighted sum** and the entire network is trained with the **policy optimization optimizer.**"
+      - In this baseline, the **weight** of the **supervised learning loss** is `0.1`.
+  - `2-` **Shared inference** = {`shared encoder`} + {`independent update`}:
+    - `independent update`:
+      - > [Baseline `2`] "An **encoder is shared** between the `policy` network and `latent inference` network, but the two tasks are trained with **separate losses** and **optimizers**."
+  - `3-` **Separated inference** - **_minimal_** coupling (_here_):
+    - > "In this work, we treat the policy and the latent inference as **two separated modules**. The **`latent inference` network** learns the mapping from the **historical **observations**** to the **latent distribution**, i.e. `Pφ`(`zi.t` | `o.1:t`)."
+    
+    - Benefit `1`: The **`privileged` learning** makes the `RL` task **easier** during training. Hence **speed up**.
+      - > "Feeding the **ground truth** latent state at exploration time **helps the policy** find the trajectory leading to the task goal. This is especially important when the task is difficult and the **reward is sparse**."
+    - Benefit `2`: It removes the need to **weight losses contributions** when computing **gradients**.
+      - > "By using a **separate network** for each task, we minimize the **mutual influence of the `gradients`** from different tasks because such mutual influence could be harmful as shown in our experiments."
+      - > "The effect of the **feature shaping** from the auxiliary task is **not always helping**, which is likely due to the **distraction caused by the multiple loss sources** so that the **gradient estimates** on both tasks are **biased**. Such **distraction** is minimized in the **_separated_** structure."
+    - Benefit `3`: **Flexibility** in **network design**.
+      - The separation allows **different choices for network structures** in different modules.
+      - The experiments show that an `LSTM` network is more suitable for the `RL` task, but a `GNN` is more suitable for **latent inference**:
+        - > "The **latent inference** is **more decentralized** where the network needs to focus on the **local interactions** of each surrounding vehicle with its neighbors. Such local interactions have a **shared structure** which are better captured by the **graph representation** and **convolutions**."
+        - > "On the contrary, the `RL` task is more **centralized** on the **ego vehicle**. In this case, the `LSTM` structure provides **more flexibility on focusing on the ego-relevant features**."
+
+- How to **model `interaction`** when **encoding driving scenes**?
+  - About **graph representations**:
+    - > "The **shared dependence** of different traffic participants can be **formalized as a graph** with each car represented as a node."
+    - Graph (`Gt`):
+      - `nodes`: **vehicles** in the scene.
+      - `edges`: **direct influence** between vehicles-
+    - > "The drivers are only **directly influenced** by the **closest vehicles in its lane** as well as the ego vehicle which is trying to merge. The ego vehicle is consider to be **influenced by all vehicles** to make the optimal long-term plan."
+  - About **graphical nets**:
+    - > "`GNNs` are a type of deep learning model that is directly applied to **graph structures**. They naturally incorporate **relational inductive bias** into learning-based models."
+  - About **`influence-passing`**:
+    - > "As drivers are **influenced by their surrounding vehicles**, different traffic participants may **_directly_ or _indirectly_ impact** other drivers. For example, in highway driving, the ego driver is more directly influenced by **neighboring vehicles**, while vehicles farther away influence the ego driver indirectly **through chains of influence that propagate** to the neighbors. Such **`influence-passing`** forms a **graph representation** of the traffic scenario, where each `node` represents a traffic participant and each `edge` represents a **direct influence**. With the recent development of **graph neural networks (`GNN`)**, we are able to **model such relational information** contained in **graphs** efficiently."
+
+- What for **graph convolutional layers** to process the **spatial-temporal (`ST`) graph**?
+  - The authors test different **convolutional layers** in the **latent inference network**:
+    - [`GraphSAGE`](https://arxiv.org/abs/1706.02216) (`STGSage`).
+    - [`GAT`](https://arxiv.org/abs/1710.10903) (`STGAT`).
+    - [`GCN`](https://arxiv.org/abs/1609.02907) (`STGCN`).
+  - > "The **latent inference accuracy** from the `STGSage` is significantly higher than that of `STGCN` and `STGAT`."
+  - About `STGSage`:
+    - > "We adopt a three layer network architecture similar as **[`STGAT`](https://openaccess.thecvf.com/content_ICCV_2019/papers/Huang_STGAT_Modeling_Spatial-Temporal_Interactions_for_Human_Trajectory_Prediction_ICCV_2019_paper.pdf)** [:octocat:](https://github.com/huang-xx/STGAT) to process both the **spatial relational information** in [_the graph_] `Gt` and the **temporal information** in `o1:t`."
+    - > "We propose `STGSage`, a **spatial-temporal `GNN`** structure, which efficiently learn the **spatial interactions** as well as the **temporal progressions** of different traffic participants."
+    - > "By concatenating the **self `node` embedding** with the **aggregated neighbour embedding**, the **`GraphSage` convolution** is able to **flexibly distinguish** the self `node` embedding from its neighbors in the embedding update."
+
+- **Auxiliary inference**:
+  - Cannot `RL` infer **hidden parameters** on its own?
+    - > "While most `RL` methods **implicitly learn the latent states through returns**, we show that learning this explicitly will improve the **efficiency** and **interpretability** of the learning."
+    - > "As the **divergence** between the two **`desired gap` distributions** is small, it is very difficult for a reinforcement learner to **infer the intentions** of the driver **implicitly**."
+
+  - Can the **primary task** also help the **auxiliary one**?
+    - Allegedly, yes:
+      - > "**Mutual benefits** of the **coupling** with **relational modelling**."
+      - > "Graph nets **improve latent inference in the auxiliary task**."
+      - _Not clear to me. I thought the `GNN` are used for the auxiliary task only?_
+
+  - Non model-free-`RL` approaches:
+    - Planning requires a **`transition` model**.
+      - > "While a `POMDP` solver is able to consider the **uncertainty in the intention inference**, it is **computationally expensive**."
+    - > "[Morton and Kochenderfer](https://arxiv.org/pdf/1704.05566) investigates the **simultaneous learning of the latent space** and **the vehicle control** through **`imitation learning`**."
+
+- Robustness to **distribution shift**: **how the trained agent** performs when:
+  - `1-` ... the **distribution** of the **hidden variables** varies?
+    - At **training time**: `P`(`CONSERVATIVE`) = `0.5`.
+    - > "As `P`(`CONSERVATIVE`) becomes smaller, more drivers in the main lane are **likely to be aggressive**, and the difficulty for making a **successful right turn** increases."
+  - `2-` ... the `front gap sample interval` varies?
+    - It indicates the **interval length** of the **uniform distribution** where the surrounding driver samples its **desired front gap**.
+    - The `mean` of the distribution is kept the same.
+    - At training time: `interval length` = `0.3`.
+
+</details>
+
+---
+
 **`"Trajectory Planning for Autonomous Vehicles Using Hierarchical Reinforcement Learning"`**
 
 - **[** `2020` **]**
@@ -9,7 +167,7 @@
 **[[:memo:](https://drive.google.com/file/d/1pDCZ0m88wmWMdypofKG2NjsS7_SuisRQ/view)]**
 **[[🎞️](https://www.youtube.com/watch?v=oEHyt5NocD8)]**
 **[[🎞️](https://www.youtube.com/watch?v=Jyp_yxkufcI)]**
-**[** :mortar_board: `Hong Kong Polytechnic University,`, `Carnegie Mellon University` **]**
+**[** :mortar_board: `Hong Kong Polytechnic University`, `Carnegie Mellon University` **]**
 **[** :car: [`Argo AI`](https://labs.ri.cmu.edu/argo-ai-center/) **]**
 
 - **[** _`HRL`, `PID`, `LSTM`_ **]**
@@ -21,9 +179,9 @@
 |:--:|
 | *What I do not understand: the idea of `HRL` is to enable  **temporal / `action` abstraction**, i.e. produce a high-level decision such as `change-lane` at a **low-frequency** and then rely and **wait** for a low-level policy to compute the `WPs` at a **higher-frequency**. But here, **both levels are queried at each time-step**? What is the difference with a "flat" net that would **directly choose between one of these `6` predefined trajectories**, especially if **no temporal abstraction** is performed? Apart from that, note in the algorithm that the **replay buffer** is initially filled with experiences collected by running a **rule-based controller**. [Source](https://arxiv.org/abs/2011.04752).* |
 
-| ![[Source](https://arxiv.org/abs/2011.04752).](../media/2020_ben_naveed_1.gif "[Source](https://arxiv.org/abs/2011.04752).") |
+| ![[Source](https://www.youtube.com/watch?v=oEHyt5NocD8).](../media/2020_ben_naveed_1.gif "[Source](https://www.youtube.com/watch?v=oEHyt5NocD8).") |
 |:--:|
-| *[Source](https://arxiv.org/abs/2011.04752).* |
+| *[Source](https://www.youtube.com/watch?v=oEHyt5NocD8).* |
 
 Authors: Ben Naveed, K., Qiao, Z., & Dolan, J. M.
 
