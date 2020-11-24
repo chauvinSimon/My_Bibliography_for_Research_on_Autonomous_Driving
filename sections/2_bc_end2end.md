@@ -2,6 +2,107 @@
 
 ---
 
+**`"Learning Scalable Self-Driving Policies for Generic Traffic Scenarios"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://arxiv.org/abs/2011.06775)]**
+**[[🎞️](https://sites.google.com/view/dignet-self-driving/)]**
+**[** :mortar_board: `Hong Kong University` **]**
+
+- **[** _`BEV`, `VAE`, `GAT`, `close-loop evaluation`, `generalization`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://arxiv.org/abs/2011.06775).](../media/2020_cai_1.png "[Source](https://arxiv.org/abs/2011.06775).")  |
+|:--:|
+| *The core idea is to **encode the `BEV` with `VAE`**. And then incorporate this **latent vector** with **`state` vectors** (e.g., locations and speeds) into `GNNs` to model the **complex interactions** among road agents. The resulting `state` is finally fed to a **`policy` net** that **clones demonstrations** and produce **high-level commands** (**target `speed`** `vT` and **course angle `θT`**) implemented by a `PID` controller. [Source](https://arxiv.org/abs/2011.06775).* |
+
+| ![[Source](https://sites.google.com/view/dignet-self-driving/).](../media/2020_cai_2.gif "[Source](https://sites.google.com/view/dignet-self-driving/).")  |
+|:--:|
+| *[Source](https://sites.google.com/view/dignet-self-driving/).* |
+
+Authors: Cai, P., Wang, H., Sun, Y., & Liu, M.
+
+- Motivations:
+  - `1-` Derive a `policy` that can **generalize** to **multiple scenarios**.
+    - As opposed to most works that address **one particular scenario** such as `T-intersections`.
+      - A **state machine** could aggregate individual the **scattered cases**.
+      - > "Current learning models have not been well designed for **scalable** self-driving in a **uniform setup**."
+    - > "We propose a **graph-based** deep network to achieve **unified and scalable** self-driving in **diverse dynamic environments**."
+  - `2-` Obey traffic rules such as **speed limits** and **traffic lights**.
+    - As opposed to works that **neglect the environmental structures**.
+      - > "... which is not that important for indoor robot navigation in restricted areas, but is **non-negligible** for outdoor self-driving problems where **traffic rules** should be strictly obeyed."
+  - `3-` **Open-loop** evaluation of `BC` is not always a good indicator.
+    - > "As reported in [`ChauffeurNet`](https://arxiv.org/abs/1812.03079) and [`Exploring the limitations of behavior cloning for autonomous driving`](https://arxiv.org/abs/1904.08980), the **offline evaluation** of driving models may **not reflect the real driving performance**."
+    - For instance, a `MLP`-based model has smaller or similar prediction errors than `GNN`-based methods, but its **closed-loop performance is much worse**.
+    - > "We conduct `19,200` episodes to thoroughly evaluate `8` driving models (over `7,500` km)."
+
+- Key idea: **`mid-to-mid` behavioural cloning**.
+  - The **driving scene** is encoded as a semantic `BEV`, as in [`ChauffeurNet`](https://arxiv.org/abs/1812.03079).
+  - Benefits of a `BEV`:
+    - `1-` Can cope with **arbitrary number of objects**.
+    - `2-` Can include environmental **structures**, such as **drivable area** and **lane markings**.
+      - > "Very helpful because it provides valuable **structural priors** on the **motion** of surrounding road agents. For example, vehicles normally **drive on lanes** rather than on sidewalks. Another benefit is that vehicles need to drive according to **traffic rules**, such as not crossing solid lane markings."
+    - `3-` `sim-2-real`: there is **no domain difference** between the simulation and real world, thus the **policy transfer** problem can be alleviated.
+  
+  - Output:
+    - > "we adopt a **mid-level** output representation indicating the **target `speed`** `vT` and **course angle `θT`** rather than **direct vehicle control** commands (e.g., `steering` and `throttle`)."
+    - `1-` First, the `policy` **regresses two scalars**:
+      - `κv` in [`0`, `1`]
+      - `κc` in [`−1`, `1`]
+    - `2-` Then the **target control values** can be computed:
+      - `vT` = `vlim` × `κv`
+      - `θT` = `90◦` × `κc`
+
+- Should the `BEV` be **used directly as an input** for the "cloner" net?
+  - **No, it is too big!**
+    - > "Such **high-dimensionality** makes it not only hard to learn good policies in **data scarce tasks**, but also suffer from **over-fitting problems**. Therefore, a **lower-dimensional embedding** for the multi-channel `BEV` input is needed for us to train a high-performance driving policy."
+  - Rather some **compressed** version of it.
+    - A variational autoencoder (`VAE`) is trained to:
+    - `1-` **Reconstruct** the input `BEV`.
+    - `2-` Make sure that the **latent space** is **regular** enough with a standard normal distribution `N`(`0`, `I`).
+
+- **Input** of the **cloning `policy`**. A fusion of:
+  - `1-` Processed (`MLP`) **`ego-route`**.
+    - > "The **first waypoint** is the **closest waypoint** in `Gf` to the **current vehicle location**, and the distance of every two adjacent points is **`0.4` m**."
+    - > "Note the **redundancy of route information** in `G` and `BEV` is meaningful, where the `state` vector here provides **more specific waypoint locations** for the vehicle to follow, while the **`route` mask of `BEV`** can indicate if there are **any obstacles on conflicting lanes** of planned routes, as well as encode traffic light information."
+  - `2-` Processed (`MLP`) **ego-motion** vector `m`:
+    - Current **control command** (`steering`, `throttle` and `brake`).
+    - `speed limit`.
+    - Difference between this `speed limit` and the current `speed`.
+    - **Cross track error** and `heading angle` error.
+    - Two binary indicators that indicate whether the **neighbouring line** is **crossable** (a `broken` line) or not (`solid` line).
+  - `3-` Processed (`MLP`) graph (two `GAT` layers) fed with:
+    - The **context embedding**, i.e. the **`BEV` encoded by the `VAE`**.
+    - Processed (`MLP`) **`node` information** for each vehicle:
+      - `location`, distance to the ego-vehicle, `yaw` angle, `velocity`, `acceleration` and `size`.
+    - > "We are interested in the result `ho1` of the **first `node`**, which represents the **influence on the ego-vehicle**."
+
+- `BC` task:
+  - Dataset: `260` episodes = `7.6` hours = **`150` km**.
+  - **`L1` loss** in terms of `vT` and `θT`.
+    - _Weighting between the two?_
+
+- About **graph convolutional networks (`GCN`s)**:
+  - > "They generalize the **`2D` convolution on grids to graph-structured** data. When training a `GCN`, a **fixed adjacency matrix** is commonly adopted to **aggregate feature information** of neighboring `nodes`."
+  - > "Graph attention network ([`GAT`](https://arxiv.org/abs/1710.10903)) is a `GCN` variant which **aggregates node information** with **weights learned in a self-attention mechanism**. Such adaptiveness of `GAT` makes it more effective than `GCN` in graph representation learning."
+  - `GAT` is used here to model the **interaction** among road agents during driving, which is composed of **multiple graph layers**.
+
+- To sum up: ingredients of `DiGNet` (**_"driving in graphs"_**):
+  - `1-` Semantic bird’s-eye view (`BEV`) images to **model road topologies** and **traffic rules**.
+    - **`7` channels** of `80`×`140`:
+      - HD map: `drivable area` and lane markings (`solid` and `broken` lines).
+      - `ego-route`.
+      - Objects: `ego-vehicle`, other `vehicles` and `pedestrians`.
+      - _No `traffic light`?_
+  - `2-` Variational auto-encoder (`VAE`) to **extract** effective and interpretable environmental features.
+  - `3-` **Graph attention** networks (`GAT`) to **model the complex interactions** among traffic agents.
+
+</details>
+
+---
+
 **`"Driving Through Ghosts: Behavioral Cloning with False Positives"`**
 
 - **[** `2020` **]**
