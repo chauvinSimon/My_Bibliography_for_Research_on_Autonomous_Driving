@@ -2,6 +2,80 @@
 
 ---
 
+**`"PILOT: Planning by Imitation Learning and Optimisation"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://arxiv.org/abs/2011.00509)]**
+**[** :mortar_board: `University of Oxford`, `University of Edinburgh` **]**
+**[** :car: `FiveAI` **]**
+
+- **[** _`optimisation-based planner`, `coords transform`, `DAgger`, `runtime`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://arxiv.org/abs/2011.00509).](../media/2020_pulver_1.png "[Source](https://arxiv.org/abs/2011.00509).")  |
+|:--:|
+| *Main idea: speed-up a **two-stage motion planner** by replacing the **first expensive optimisation** by a **net trained to imitate it**. Therefore the name `PILOT` = `Planning by Imitation Learning and Optimisation`. Note the use of `transform` and `inverse transform` to solve the problem in the **`reference path`-based coordinate frame**. [Source](https://arxiv.org/abs/2011.00509).* |
+
+Authors: Pulver, H., Eiras, F., Carozza, L., Hawasly, M., Albrecht, S., & Ramamoorthy, S.
+
+- Previous **_non-learning_-based** work:
+  - `An Optimization-based Motion Planner for Safe Autonomous Driving` by [(Eiras et al., 2020)](https://openreview.net/pdf?id=s4nJ5EZy_N1) [🎞️](https://sites.google.com/view/safe-planning/).
+
+  - **Motion planning** problem solved in **two stages**:
+    - `1-` Solve a **linearised version**.
+      - **Mixed-Integer Linear Programming (`MILP`)** approximation, solved with [`Gurobi`](https://www.gurobi.com/).
+      - > "Considering a **linear dynamical system** `xk` = `F∆t`(`xk`, `uk`) under a **non-holonomic vehicle model** and **mixed-integer collision avoidance constraints**."
+      - > "Instead of the **quadratic terms**, the `cost` function is approximated by the `| · |` operator."
+    - `2-` Use this first solution to **initialized** a second **non-linear optimizer**.
+      - **Nonlinear Programming (`NLP`)** formulation solved with [`IPOPT`](https://coin-or.github.io/Ipopt/).
+      - > "This second optimisation stage ensures that the output trajectory is **smooth** and **feasible**, while maintaining **safety** guarantees."
+    - > "We show that **initializing the `NLP` stage with the `MILP` solution** leads to better convergence, lower costs, and outperforms a state-of-the-art **Nonlinear Model Predictive Control (`NMPC`)** baseline in both progress and comfort metrics."
+
+- Motivations:
+  - `1-` The **`MILP` initialization** is **time-consuming**.
+    - The idea is to perform **imitation learning offline** to **imitate this expensive-to-run optimisation-based planner**.
+    - > "`PILOT` shows a clear advantage in **runtime efficiency** (saving of `∼78%` and `84%` respectively) with no significant deterioration in solution quality (drop of `∼3%` and `4%` respectively)."
+
+  - `2-` Still guarantee the satisfaction of requirements of **safety** and **comfort**.
+    - I.e. **keep the `NLP`** as a **second stage**.
+    - > "A **constrained optimisation stage** ensures, **online**, that the output is feasible and conforms to various constraints related to road rules, safety and passenger comfort."
+      - _What if the proposal of the "cloner" is bad?_
+    - > "Most of them suggest **`end-to-end` learning approaches** that do not include an **optimisation stage at runtime** which has the potential to create **suboptimal solutions** if the network yields a poor result."
+  - Both stages share the same objective.
+    - > "To **guarantee the safety** of the output of the system we employ an **efficient** optimisation step that uses the **same objective function** as the **expert** but benefits form the network output as a **warm-start**."
+
+- About `safety`: The authors mention the **diversity of possible definitions**:
+  - `1-` Maintaining the autonomous system inside a **safe subset** of possible future `states`.
+  - `2-` Preventing the system from **breaking domain-specific constraints**.
+  - `3-` Exhibiting behaviours that **"_match_"** the **safe behaviour** of an expert.
+
+- About `behavioural cloning`:
+  - In-the-loop **Dataset Aggregation** (`DAgger`).
+  - The **expert** planner can be the expensive `MILP` or the **`CARLA` `autopilot`** can be queried (**no human expert**).
+  - The expert is **not better-informed**.
+
+- `input`
+  - `1-` `BEV` including the **ego vehicle**, other **road users** and the relevant features of the **static** layout.
+    - > "Similar to the input representation in previous works, e.g. `ChauffeurNet`, with the exception that in our case the **static layout information is repeated on all channels**."
+  - `2-` `route` plan as a **`reference path`**.
+    - _In case of multiple lane, e.g. highways, what is the reference? The rightmost lane?_
+  - `3-` **Predicted traces** for all road users, provided by a prediction module.
+  - The world `state`, together with `predictions`, are **projected** into a **`reference path`-based coordinate frame**.
+  - > "[_Hybrid aggregation_] Additional information of the planning problem that is not visualised in the top-down images (such as the `initial speed` of the ego vehicle) is **appended as scalar inputs**, along with the **flattened `CNN`** output, to the **first dense layer** of the network."
+
+- `output`
+  - A **trajectory `ρ`** in the **`reference path` coordinate frame**.
+    - It is then **transformed back** to the **global coordinate frame** by the inverse transform.
+    - > [`smoothing`] "To **enforce smoothness** in the output, an alternative is to train the network to **produce parameters of a smooth function family** over time which can then be sampled to obtain `ρ`."
+  - _What about the time duration between two positions?_
+  - _How do they get the expert’s time-stamped positions from `CARLA`? The autopilot only produces one-step `action`, no `WPs` sequences._
+
+</details>
+
+---
+
 **`"Learning Scalable Self-Driving Policies for Generic Traffic Scenarios"`**
 
 - **[** `2020` **]**
@@ -9,7 +83,7 @@
 **[[🎞️](https://sites.google.com/view/dignet-self-driving/)]**
 **[** :mortar_board: `Hong Kong University` **]**
 
-- **[** _`BEV`, `VAE`, `GAT`, `close-loop evaluation`, `generalization`, [`carla`](http://carla.org/)_ **]**
+- **[** _`BEV`, `VAE`, `GAT`, `close-loop evaluation`, `generalization`, [`CARLA`](http://carla.org/)_ **]**
 
 <details>
   <summary>Click to expand</summary>
