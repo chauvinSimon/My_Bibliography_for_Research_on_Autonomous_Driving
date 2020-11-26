@@ -9,7 +9,7 @@
 **[[🎞️](https://sites.google.com/view/dignet-self-driving/)]**
 **[** :mortar_board: `Hong Kong University` **]**
 
-- **[** _`BEV`, `VAE`, `GAT`, `close-loop evaluation`, `generalization`_ **]**
+- **[** _`BEV`, `VAE`, `GAT`, `close-loop evaluation`, `generalization`, [`carla`](http://carla.org/)_ **]**
 
 <details>
   <summary>Click to expand</summary>

@@ -2,6 +2,103 @@
 
 ---
 
+**`"Deep Latent Competition : Learning to Race Using Visual Control Policies in Latent Space"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://www.gilitschenski.org/igor/publications/202011-corl-deep_latent_competition/corl20-deep_latent_competition.pdf)]**
+**[[:octocat:](https://github.com/igilitschenski/multi_car_racing)]**
+**[[🎞️](https://sites.google.com/view/deep-latent-competition)]**
+**[** :mortar_board: `MIT` **]**
+**[** :car: `Toyota` **]**
+
+- **[** _`MARL`, `world models`, `self-play`, `imagination`, `latent space`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://sites.google.com/view/deep-latent-competition).](../media/2020_schwarting_1.gif "[Source](https://sites.google.com/view/deep-latent-competition).")  |
+|:--:|
+| *Contrary to original **[`world model`](https://arxiv.org/abs/1803.10122)** where a **single agent** races alone, here **two cars compete against each other**. The authors show that **considering interactions** and trying to **infer the opponent's `actions`** are essential. Ignoring the competitor may be **easier to train**, but shows **limited performances**. One good strategy consists in driving as fast as possible, while trying to **hinder the other**, i.e. **adversarial** behaviours. [Source](https://sites.google.com/view/deep-latent-competition).* |
+
+| ![[Source](https://www.gilitschenski.org/igor/publications/202011-corl-deep_latent_competition/corl20-deep_latent_competition.pdf).](../media/2020_schwarting_1.png "[Source](https://www.gilitschenski.org/igor/publications/202011-corl-deep_latent_competition/corl20-deep_latent_competition.pdf).")  |
+|:--:|
+| *The idea is to **learn a `world model`** from ground truth data, based on which behaviour is refined through **imagined `self-play`**. Note that `self-play` is performed **in the learnt LATENT space**. Therefore the name **'_Deep Latent Competition_' (`DLC`)**. [Source](https://www.gilitschenski.org/igor/publications/202011-corl-deep_latent_competition/corl20-deep_latent_competition.pdf).* |
+
+Authors: Schwarting, W., Seyde, T., Gilitschenski, I., Liebenwein, L., Sander, R., Karaman, S., & Rus, D.
+
+- Motivations:
+  - `0-` Extend the **model-based** work **[`world model`](https://arxiv.org/abs/1803.10122)** where a **single agent** races alone, to a **`2`-player competition**.
+  - `1-` Solve the following challenges:
+    - **High-dimensional `observations`** such as images.
+    - Multi-Agent `RL` (`MARL`), i.e. **interactions** must be considered.
+    - **No prior knowledge** about the **environment** is assumed.
+    - **Partial observability** of other agents: their **`actions` are unknown**.
+    - Competition, with potentially **adversarial** interactions.
+  - `2-` "Racing".
+    - Agents **share the same goal**: cross the finish line first. They are **opponents**: if `A` looses, `B` wins.
+    - On the contrary, normal driving drivers have **different intentions** and must **avoid collisions** while **abiding to traffic rules**.
+
+- About the `Env`:
+  - [`MultiCarRacing-v0`](https://github.com/igilitschenski/multi_car_racing/): a novel **multi-agent** racing environment for learning competitive **visual control policies**.
+  - It extends the **`Gym` task [`CarRacing-v0`](https://gym.openai.com/envs/CarRacing-v0/)**.
+  - > "**Collision dynamics** allow for **elaborate interaction strategies** during the race: **pushing other agents off the track**, blocking overtaking attempts, or turning an opponent sideways via a `PIT` maneuver."
+
+- Main idea of **_Deep Latent Competition_ (`DLC`)**:
+  - Why _"Latent Competition"_?
+    - The idea is to gain _competitiveness_ from **imagined `self-play`** in a **learned** multi-agent **_latent_ `world model`**.
+    - > "Our approach learns a **`world model`** for **imagining competitive behavior** in **_latent_-space**."
+    - > "The `DLC` agent can **imagine interaction sequences** in the **compact _latent_ space** based on a multi-agent `world model` that combines a **joint `transition` function** with **opponent viewpoint prediction**."
+  - > [Benefits] "**Imagined `self-play`** reduces **costly sample generation** in the real world, while the **_latent_ representation** enables planning to **scale** gracefully with `observation` dimensionality."
+
+- **Model-based `RL`** consists of `3` tasks, iteratively repeated:
+  - `1-` **Model learning**: base on previous experience of **all agents**, two functions are learnt:
+    - `(i)` The **joint `dynamics`**:
+      - It includes **predictions** of other **agents' behaviour**.
+      - How the world will evolve, conditioned on **own** and **expected opponent `actions`**.
+      - It enables each agent to **imagine the outcome** of games without requiring additional real-world experience. Hence **_`self-play`_**.
+      - This `transition` model is represented by a **recurrent state space model (`RSSM`)**.
+    - `(ii)` The `reward` function.
+      - With a **dense** net.
+      - > "We **incentivize competition** by discounting `rewards` based on **visitation order**: the first agent to visit a track tile is rewarded with `+1000/N`, while the second agent receives `+500/N` (on an `N`-tile track)."
+    - Note that reasoning and competition are not performed in **image space**. Rather in the **learnt _latent_ space**.
+      - > "In order to **discover latent spaces** that not only offer **compact representations** of environment states but further **facilitate prediction** of associated trajectory performance."
+      - Encoder: `CNN`
+      - Observation model: **transposed `CNN`**
+
+  - `2-` Behaviour optimization = `policy improvement`.
+    - The agents interact with their adversaries **through imagined `self-play`**: no necessity for execution in the real world.
+    - `policy` and `value` functions are learnt models through **policy iteration** on **imagined model rollouts**.
+ 
+  - `3-` Environment **interaction** = `policy evaluation` + `experience collection`.
+    - > "Each agent only has access to **their own `observation`-`action` history** and performance indirectly depends on **how well the states of opponents are being estimated**."
+    - Note: what `observation-action` histories can been seen by the ego-agent?
+      - Training: those of **all agents**.
+      - Deployment **only their individual**.
+
+- Ablation study - it highlights the **importance** of:
+  - `1-` The **learned observer**, i.e. **opponent viewpoint prediction**.
+    - > "The first [_baseline_] is **`joint transition`**, which **propagates ground truth _latent_ `states` of both agents** and allows for assessing performance of the `observer`."
+    - It is able to **acquire _general racing_ skills** faster. But, after `200` races **`joint transition`** methods have learned to _compete_ more effectively through **imagined `self-play`**.
+      - > "The `individual transition` baseline can not leverage this effect, as agent `actions` do not affect opponents `states` during **imagined rollouts** and `self-play` may only occur in the real world."
+  - `2-` The **joint `transition` model**.
+    - > "The second [_baseline_] is **`individual transition`**, which **propagates ground truth _latent_ `states` _individually_** and highlights the added value of a **_joint_** `transition` model."
+    - > "Optimizing competitive behaviors through imagined `self-play` based on **these _joint_ predictions** yields an agent that performs superior to an agent that **propagates ground truth `observations` separately**."
+
+- About **consistency** in **imagined `self-play`**:
+  - The learned `transition` model **propagates all agents’ _latent_ `states` jointly**.
+  - > "To facilitate efficient `self-play` in a learned `world model`, we require all agent states to **be jointly propagated** in a consistent manner."
+  - > "We observe the benefit of **recursively estimating `states`** in **`agent 1`’s reconstruction** of **`agent 2`’s viewpoint**."
+  - > "The **joint `transition` model** helps keeping **predictions consistent**, as it allows for **information exchange** between both agents’ **latent `states`** during forward propagation."
+
+- Still open questions for me:
+  - Who controls the other agent? Is the **same model used for both cars**? Probably yes.
+  - How to deal with **multi-modal predictions** and **multi-model believes** about the other `actions`'?
+
+</details>
+
+---
+
+
 **`"Guided Policy Search Model-based Reinforcement Learning for Urban Autonomous Driving"`**
 
 - **[** `2020` **]**
