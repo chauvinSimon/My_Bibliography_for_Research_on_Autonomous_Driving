@@ -2,6 +2,97 @@
 
 ---
 
+**`"Imitation Learning for Autonomous Highway Merging with Safety Guarantees"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://webthesis.biblio.polito.it/16024/1/tesi.pdf)]**
+**[[:octocat:](https://github.com/edales3/safe-BC)]**
+**[** :mortar_board: `Politecnico di Torino` **]**
+
+- **[** _`BC`, `rule-based masking`, [`NGSIM`](https://github.com/sisl/ngsim_env)_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://webthesis.biblio.polito.it/16024/1/tesi.pdf).](../media/2020_d_alessandro_1.png "[Source](https://webthesis.biblio.polito.it/16024/1/tesi.pdf).")  |
+|:--:|
+| *The learnt **`BC` `policy`** is implemented, except if the ego-car drives **too close to another car** (deemed as `unsafe` situation). In this case a **rule-based 'safe' `policy`** takes over. [Source](https://webthesis.biblio.polito.it/16024/1/tesi.pdf).* |
+
+| ![[Source](https://github.com/edales3/safe-BC).](../media/2020_d_alessandro_1.gif "[Source](https://github.com/edales3/safe-BC).")  |
+|:--:|
+| *__Dark__ blue = **learnt** cars. **Light** blue = cars from the **dataset**. Note there is **no cooperation** because of **open-loop** testing: the other traffic participants **do no react** to ego `actions`. [Source](https://github.com/edales3/safe-BC).* |
+
+Author: D’Alessandro, E.
+
+- A **Master Thesis**.
+
+- Motivations:
+  - `1-` Ensure some **`safety` constraints** while **imitating an expert**.
+    - Imitating a **_safe_ expert** cannot be enough.
+    - **Safety** must be **enforced** as an **external factor**.
+  - `2-` Master thesis - Explain concepts:
+    - `RL`, `BC`, max-margin `IRL`, max-entropy `IRL`, `GAIL`.
+    - **`state-action` visitation distribution** (`occupancy measure`) `µ`(`π`, `d0`).
+    - Bellman **flow constraints**.
+    - **Linear Programming**.
+      - > "It is also possible to formulate a `MDP` problem as a **linear programming problem** [`primal`] that can be translated in its **`dual` formulation**."
+    - **Linear Programming Apprenticeship Learning** (`LPAL`)
+      - > The key idea is to find, among all the **feasible occupancy measures** in the **feasibility set `K`**, the one whose `policy` has the relative `value` function that is the closest as possible to the **expert’s `value` function**."
+
+- Main idea:
+  - A **rule-based `policy`** **takes over** at test time if the **current `state` is deemed "unsafe"**.
+  - It prevents the **visitation of `unsafe` `states`** and limits the risk of **cascading errors**.
+    > "When an **`unsafe` situation** arises and the **cascading error issue** is more likely to lead the agent to **catastrophic scenarios**, those `actions` are modified so that to assist the agent in its **recovery towards `safe` `states`**."
+
+- `MDP`: which **`horizon`** for a `ramp merging`?
+  - [`no`] **Infinite horizon**: it **never ends**, e.g. controlling the traffic at the intersection.
+    - Merging **ends (`success`/`fail`) at some point**.
+  - [`no`] **Finite horizon**: the time horizon `T` is finite, **fixed and predetermined**.
+    - Merging can be **quickly done** or **can take longer**.
+    - The **terminal time** is **unknown** before running the `policy`.
+  - [`yes`] **Episodic**: the **time window** cannot be predefined, but it only extends over a **finite number of steps** until some terminal `state` is reached.
+
+- Why `BC`?
+  - Advantages:
+    - `1-` Here, the **`transition` model** of the environment is **unknown**.
+      - > "... unlike other methods such as `distribution matching`, (`LPAL`) and every form of `IRL` that involves **solving a forward `RL` as inner loop**."
+    - `2-` Extremely **simple** and **efficient** since it mainly consists in applying **supervised learning** to a set of expert’s trajectories.
+    - `3-` It completely skips the **`reward` function recovery** step, that carries the **ambiguity problem**.
+  - Drawbacks:
+    - `1-` A **large** and **exhaustively** set of **demonstrations** is required.
+    - `2-` **Cascading errors** that may lead the agent to a `state` never encountered by the expert, i.e. no demonstration is available **to recover**.
+
+- Env:
+  - Based on `NGSIM` dataset.
+  - `state`: ?
+    - From the [code](https://github.com/edales3/safe-BC/blob/master/BC/BC.py), the net expects a **vector of size `10`**. Describing relative `position` and `speed` to the **leader** and to the **yielder**.
+  - `action`: A pair of (`d_to_left`, `d_forward`) of **displacements**.
+  - **Open-loop**:
+    - `position`, `speed` and `acceleration` of other cars **are kept unchanged**.
+    - I.e. they consider the original **real car** that is now **replaced** by the ego-agent.
+    - Therefore no **interaction** or **reaction** of the other vehicles.
+    - > "To compensate for the **lack of cooperation**, the **`NGSIM` dataset** could be used **only for training**, while implementing a **lane following algorithm** to control the surrounding cars. It would generate an adjustable traffic situation, where all the vehicles **react** to the presence of the merging cars."
+  - `dt` - What is the **duration** between two decisions?
+
+- About the **"safe" `policy`**:
+  - It **takes over** when the **distance** to a surrounding car is below a certain threshold.
+  - Depending **where** this closest car is, relative to ego:
+    - `right`: impossible since ego is on the merging ramp.
+    - `left`:
+      - If the **gap is very small**: the vehicle is **driven away** from the left lane.
+      - Otherwise: the manoeuvre is **not aborted but paused** preventing the car from further moving laterally.
+    - `in front`: slow down.
+    - `behind`: speed up.
+
+- Results:
+  - **`35` disengagements** for `280` merging manoeuvres: activation rate of **`12.5%`**.
+  - No accident, but **over-conservative**:
+    - > "`3` of the `280` cases result in a `failed` merging, meaning that the car does not manage to **merge before the off-ramp**."
+
+</details>
+
+---
+
 **`"PILOT: Planning by Imitation Learning and Optimisation"`**
 
 - **[** `2020` **]**
