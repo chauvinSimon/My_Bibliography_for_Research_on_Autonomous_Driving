@@ -2,6 +2,54 @@
 
 ---
 
+**`"Combining Reinforcement Learning with Model Predictive Control for On-Ramp Merging"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://arxiv.org/abs/2011.08484)]**
+**[** :mortar_board: `University of Illinois` **]**
+**[** :car: [`Xmotors.ai`](https://en.wikipedia.org/wiki/XPeng) **]**
+
+- **[** _`prediction model`_ **]**
+
+<details>
+<summary>Click to expand</summary>
+
+| ![[Source](https://arxiv.org/abs/2011.08484).](../media/2020_lubars_1.png "[Source](https://arxiv.org/abs/2011.08484).") |
+|:--:|
+| *Bottom-left: the `MPC` solver performs a **search** over the discretized the `S-T` space. Right: (disappointing?) results for the proposed combined approach. As for the on-distribution evaluation, the combined `RL`-`MPC` agent is **outperformed by the `RL` agent** in terms of `efficiency` and `comfort`. In addition it is not able to **avoid crashes** in some **out-of-distribution** traffic **scenarios** (different **traffic densities** and **traffic speeds**). [Source](https://arxiv.org/abs/2011.08484).* |
+
+Authors: Lubars, J., Gupta, H., Raja, A., Srikant, R., Li, L., & Wu, X.
+
+- Main motivation:
+  - Combine `MPC` with model-free `RL`.
+  - Limitation of model-free `RL`: lack of **safety guarantees** and interpretability.
+  - Limitation of `MPC`: **imperfect predictive model**.
+    - > "`DDPG` can implicitly learn how to best **interact** with other drivers, **without an explicit model** for their behavior."
+
+- Main idea:
+  - **Mask `RL` actions** based on some **safety checker that considers `prediction`**, as opposed checks on **single steps**.
+  - And use a `MPC`-based planner as **"`safe`" fallback policy**.
+    - > [About the solver] "The **resolution** of the lattice is `0.3` seconds in time and **`0.05` meters** in distance, and planning was done over a **horizon of `5` seconds** and `150` meters."
+    - Examples of `weights` in `cost function` for `MPC`: `w1` = `10,000,000` for getting **within an unsafe distance** of an obstacle, while `w3` = `0.5` for the difference from the `desired speed`.
+      - Therefore no _hard_ safety constraint.
+  - The **key question**: what for **_`transition model`_**?
+    - Despite parameter tuning, the `ST` solver (used for `MPC`) cannot achieve the level of efficiency or comfort of the `RL`-agent. Due to **imperfect model**.
+
+- How to derive a **`RL` _PLAN_**? And how to evaluate if it is `safe`?
+  - > "While our `ST` solver naturally produces **a trajectory** for the ego car, the `RL` agent **only produces an `action` `u0` = `µ`(`x0`)** for the given `observation`. In order to **predict a longer trajectory**, we use our **prediction model `fˆ`** from the `ST` solver to **“roll out”** a longer trajectory."
+  - What for `model`?
+    - A ["simple" model](https://github.com/jlubars/RL-MPC-LaneMerging/blob/8c2be68b22d8ae71e83970483f276400c6e9b085/prediction.py#L46) that ignores interactions:
+      - > "These predictions are made **independently** of the **ego vehicle’s planned trajectory**."
+  - **Safety** of a trajectory is evaluated based on:
+    - `1-` ... some **minimum distance `dmin`** (`=5m`).
+      - > "In the presence of **imperfect prediction models**, tuning the value of `dmin` can provide a trade off between `safety` and `performance`."
+    - `2-` ... the final `state`.
+      - The **`ST` solver** (used for `MPC`) is run from the **latest `state` in the `RL` trajectory**.
+      - If it **cannot find a safe way to proceed**, the planned sequence of `RL` `actions` is deemed **unsafe**.
+
+</details>
+
+---
 **`"Reinforcement Learning for Autonomous Driving with Latent State Inference and Spatial-Temporal Relationships"`**
 
 - **[** `2020` **]**
