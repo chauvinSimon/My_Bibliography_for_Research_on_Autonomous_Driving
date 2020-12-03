@@ -1,5 +1,41 @@
 # `Prediction` and `Manoeuvre Recognition`
 
+- Questions when developing a **predictor**:
+  - Which **application**?
+    - _Who?_ `pedestrians` or `vehicles`?
+    - _Where?_ `highway` or `urban`?
+  - Scenarios: **generic** or **specific**?
+    - E.g. address **all types of intersections**, or only one specific `T`-intersection?
+  - Which prediction **horizon**?
+    - Usually `physics`-based for **short term** and `goal`-based for **longer horizons**.
+  - **Frequency** of `observation`s?
+    - Maybe need to consider a **sequence** of `observation`s.
+  - How much **robustness** is needed?
+    - Ability to **generalize** / **transfer** well in new environments?
+  - **Uncertainty**: how to model **_multi-modal_ futures distributions**?
+    - Uncertainty comes from the **stochastic nature** of human motion and the non-perfect **perception**.
+    - Be careful with **mode-collapse**.
+  - **Context**-aware: which information to consider?
+    - About the `target agent`, the `static` and the `dynamic` environment.
+    - Consider/ignore other agents?
+      - How to model **interactions**?
+    - Consider/ignore `map` / `road` structure?
+      - Is a `map` available?
+  - How many **obstacles**?
+    - How to represent them?
+    - Can it scale?
+  - How much **expert / prior knowledge** to inject? What can be learnt?
+    - E.g. the **dynamics** of moving agents.
+    - Modern techniques make extensive use of `ML` in order to **better estimate context-dependent patterns** in real-data.
+    - What dataset available?
+  - How much **computational cost** is constrained?
+  - How to obtain a **trajectory**, i.e. a **sequence** of positions?
+    - **One-shot** feed-forward: **directly** predicts a **time sequence**.
+    - Roll-outs: repeat **one-step** prediction with the **forward propagation** of the model.
+      - But this requires a **`transition` function**.
+  - What `metrics` and test set for **evaluation**?
+    - If possible comparable with other works.
+
 ---
 
 **`"TNT: Target-driveN Trajectory Prediction"`**
@@ -730,6 +766,269 @@ Authors: Jayaraman, S. K., Jr, L. P. R., Yang, X. J., Pradhan, A. K., & Tilbury,
     - > "The **Boolean variable `InCW`**, denotes the pedestrian’s crossing activity: `InCW=1` from the time the pedestrian **started moving laterally** to cross until they completely crossed the `AV` lane, and `InCW=0` otherwise."
     - That means the baseline controller **does not react** at all to "non-crossing" cases since it never sees the pedestrian crossing laterally.
   - > "It can be seen that the **`B-MPC` is more aggressive, efficient, and comfortable** than the baseline as observed through the **higher average velocity**, lower average acceleration effort, and lower average jerk respectively."
+
+</details>
+
+---
+
+**`"Human Motion Trajectory Prediction: A Survey"`**
+
+- **[** `2019` **]**
+**[[:memo:](https://arxiv.org/abs/1905.06113)]**
+**[** :mortar_board: `Örebro University`, `CMU`, `TU Delft` **]**
+**[** :car: `Bosch` **]**
+
+- **[** _`survey`, `physics-based`, `pattern-based`, `planning-based`, `manoeuvre recognition`, `goal-informed`, `context-aware`, `contextual cues`, `social force`_ **]**
+
+<details>
+<summary>Click to expand</summary>
+
+| ![[Source](https://arxiv.org/abs/1905.06113).](../media/2019_rudenko_3.png "[Source](https://arxiv.org/abs/1905.06113).") |
+|:--:|
+| *The focus is on **human** motion prediction: not on **cars**. Approaches differ in the way they **represent**, parametrize, (learn) and solve the task. Modelling approaches can be divided into **three families**: `physics`-based, `pattern`-based, `planning`-based. [Source](https://arxiv.org/abs/1905.06113).* |
+
+| ![[Source](https://arxiv.org/abs/1905.06113).](../media/2019_rudenko_2.png "[Source](https://arxiv.org/abs/1905.06113).") |
+|:--:|
+| *What information to consider? All modelling approaches can be extended with so-called **contextual cues** of the **target agent**, `static` and `dynamic` environment. [Source](https://arxiv.org/abs/1905.06113).* |
+
+| ![[Source](https://arxiv.org/abs/1905.06113).](../media/2019_rudenko_1.png "[Source](https://arxiv.org/abs/1905.06113).") |
+|:--:|
+| *Some **motion trajectories** datasets. Mainly for **pedestrians**. [Source](https://arxiv.org/abs/1905.06113).* |
+
+Authors: Rudenko, A., Palmieri, L., Herman, M., Kitani, K. M., Gavrila, D. M., & Arras, K. O.
+
+- About **`pedestrian`** (_not `vehicle`_) **motion prediction** in `AD`:
+  - > "Most works consider the scenario of the **laterally crossing pedestrian**, dealing with the question what the latter will do at the **curbside**: `start walking`, `continue walking`, or `stop walking`."
+  - > "It is difficult to **compare the experimental results**, as the **datasets are varying** (different `timings` of same scenario, different `sensors`, different `metrics`)."
+
+- Prediction **methods** can be classified in three large categories:
+  - `1-` **`physics`-based**: **reactive** `sense`-`predict`.
+  - `2-` **`pattern`-based**: `sense`-**`learn`**-`predict`.
+  - `3-` **`planning`-based**: `sense`-**`reason`**-`predict`.
+    - Agents **reason about `intentions`** and possible **ways to the `goal`**.
+
+  - These categories do not form a **partition**. Example of **combinations**:
+    - `planning`-based using `physics`-based **`transition` functions**.
+    - `physics`-based methods **tuned** with **learned parameters**.
+    - `planning`-based approaches using `IRL` (`learning` methods) to recover the hidden `reward` function.
+    - In general, `combinations` hold a great potential, e.g. use **disagreements** to detect **uncertainty**.
+
+- `1-` **`Physics`-based** methods.
+  - Suitable in those situations where:
+    - The **effect** of other agents or the static environment **can be modelled** as **`forces` acting** upon an agent.
+    - The **agent's motion `dynamics`** can be **modelled by an _explicit_ `transition`** function.
+  - Limitations:
+    - They might not **capture well the complexity** of the real world.
+    - Mainly valid for **short prediction** horizons.
+    - Potential burden of **parameter tuning**.
+  - Advantages:
+    - Applicability **across multiple domains** under mild conditions.
+      > "`physics`-based approaches can be readily applied **across multiple environments**, without the need for **training datasets** (some data for **parameter estimation** is useful, though)."
+    - **Interpretability**.
+    - Usually **simple** and fast approximate inference.
+
+  - Idea:
+    - > "Motion is predicted by **forward simulating** a set of **_explicitly defined_ `dynamics` equations** that follow a **`physics` inspired model**."
+    - In **`1`-step ahead** predictions with **first-order `Markov`** assumption:
+      - A **`transition` function** (or `dynamics` model) **`f`** is defined. With some `dt`.
+      - `next_state` = `f`(`state`, `action`) + `noise`.
+      - The task is to estimate (`sense`) `state` and `action`. Inference is made from various **estimated or observed `cues`**.
+      - Extension to consider not just the **current `state`** (first-order `Markov`), but an **history of `states`**:
+        - > "The early work by `Zhu (1991)` uses an **autoregressive moving average model** as `transition` function of a **Hidden Markov Model (`HMM`)** to predict **occupancy probabilities** of moving obstacles **over multiple time steps** with applications to predictive planning."
+    - **What to do with this `f`?**
+      - Use it alone: `CA`, `CV`.
+      - **Recursive Bayesian filters**, e.g. `Kalman` filters.
+      - **Multiple-model** algorithms.
+
+  - Sub-classes: are **_multiple_** `dynamics` motion models considered, or **only _one_**?
+  - `1-1.` **Single** model.
+    - `kinematic` vs `dynamic` models.
+      - Are **forces** that **govern the motion** of other agents considered?
+      - Rarely. They are **not directly observable** from sensory data. And `dynamics` models can be very complex.
+    - Examples:
+      - `CV`, `CA`, **Curvilinear motion** and **Coordinated turn** model (`CT`) (assumes **constant `turn rate`** and `speed` with white noise linear and white noise turn `acceleration`).
+    - Miscellaneous:
+      - > "The **`bicycle model`** is an often used as an **approximation** to model the **vehicle dynamics** [_rather '`kinematics`' I would have said_]."
+      - **Parameters** (e.g. for `IDM`) can be learnt / estimated on-line.
+
+    - _How to improve them and achieve_ **_longer horizons_**_?_ By considering the `static` and `dynamic` environment.
+      - `1-` Consider **`map` information**.
+        - Simply said: **Roads are structured**. Cars try to **stay on the road**. Considering the **free / drivable space** as **constraints** is therefore beneficial, e.g. to focus on **high-probability regions**.
+        Examples:
+          - Formalize **relevant _traffic rules_**, e.g. pedestrian crossing permission on the green light, as additional **motion _constraints_**.
+          - > "When there are **several possible turns** at a `node`, i.e. at bifurcations, predictions are **propagated** along all outgoing `edges`."
+          - **Reachability**-based models.
+
+      - `2-` Consider local **interactions** between multiple agents.
+        - **Social force** models. E.g. **potential field** model.
+        - **Intelligent Driver Model** (`IDM`) and [`MOBIL`](https://mtreiber.de/publications/MOBIL_TRB.pdf).
+        - **Group** motion models: detecting and considering groups of people who walk together.
+
+  - `1-2.` **Multi**-model: the question is _"how to_ **_combine_** _individual models?"_
+    - > "Complex agent motion is **poorly described** by a **single dynamical model `f`**. Although the incorporation of **`map`** information and influences from **multiple agents** render such approaches more flexible, they remain inherently limited."
+    - Idea:
+      - Define (`1`) and **fuse** (`2`) different **prototypical `motion modes`**, each described by a different **dynamic regime `f`**.
+       - Example of `modes`: `CA`, `CV`, `turning`, `crossing` or `stopping` (for pedestrians).
+
+    - **_Hybrid_ estimation** and **Multi-Model (`MM`)** methods.
+      - Why _"hybrid"_?
+        - > "`MM` methods maintain a **hybrid** system `state` `ξ` = (`x`, `s`) that augments the **continuous valued `x`** by a **discrete-valued `modal` state `s`**."
+      - Motion `modes` are **not observable**. **Uncertainty** must be considered. **Believes** must be maintained.
+      - Ingredients:
+        - `1-` A **`model` set**. Fixed or on-line adaptive.
+        - `2-` A strategy to deal with the **_discrete_-valued uncertainties**, for example, **model sequences** under a **Markov** or semi-Markov assumption. 
+        - `3-` A **recursive estimation scheme** to deal with the _continuous_ valued components **conditioned on the model**.
+        - `4-` A mechanism to **generate the overall best estimate** from a fusion or selection of the individual filter.
+
+      - **_Interactive_ multiple model** filters (`IMM`).
+        - _"Interactive"_ because `context`-based **interactions** are considered.
+        - > "The [`IMM`-filter](https://onlinelibrary.wiley.com/doi/book/10.1002/0471221279) is a computationally efficient and in many cases well performing **suboptimal estimation** algorithm for **Markovian switching systems**. Basically it consists of `3` major steps:"
+          - `interaction` (mixing): Compute an estimate of the `state` with respect to all `N` `transition` models and from these estimates computes `N` mixed inputs.
+          - `filtering`: E.g. standard `KF` for each model.
+          - `combination`: A **weighted combination** of updated `state` estimates produced by all the filters.
+        - E.g. switching between `CV`, constant position (`CP`) and coordinated turn (`CT`).
+        - Model `transitions` can be controlled by an **intention recognition** system.
+        - `IMM` [can also be used](https://arxiv.org/pdf/1704.04322.pdf) as a **belief updater** in `POMDP`s.
+          - It takes as input a `belief state` and an `observation` and returns the updated `belief state`.
+          - E.g. to estimate whether the car is following a `CV` or a `CA` model.
+
+    - Other **hybrid** approaches: **stochastic `Reachability` analysis**.
+      - > "Model agents as **hybrid systems (with multiple `modes`)** and infer agents' future motions by computing **stochastic reachable sets**."
+
+    - **Non-hybrid**: **Dynamic Bayesian networks (`DBN`)**.
+      - Why is it said "_non-hybrid_"? _Not clear to me_
+        - Because it does not focus on the **joint (`manoeuvre`, `physical state`) estimation**?
+        - As I understand, it is used to infer **unobserved variables** such as `intentions`, `manoeuvre`, or **awareness** of an oncoming vehicle (head orientation).
+      - > [Example of `DBN`-based **multi-model**] "Coupling a **set of dynamic systems** (i.e. a bank of Kalman filters (`KF`)) with an `HMM`, which is a special case of the `DBNs`."
+      - > "Infer human future behaviors, a set of `macro-actions` described by a set of `KFs`, based on measured dynamic quantities (i.e. `acceleration`, `torque`)."
+
+- `2-` **`Pattern`**-based methods.
+  - Idea:
+    - **Learn motion `patterns`** from data of **observed agent trajectories**.
+    - > "Many `pattern`-based methods **treat agents as particles**, placed in the field of **_learned_ `transitions`**, dictating the direction of future motion."
+
+  - `Supervised` or `unsupervised`? _Not clear to me. Maybe both are possible._
+    - It could be `supervised`: instead of manually define (`physics`-based) `x` = `x` + `v`*`dt`, one could **regress** it.
+      - **Function approximators** are fit to data: `NN`, `HMM`, `GP`s.
+    - It could be `unsupervised`: **manoeuvre recognition** using **clustering** methods on canonical scenarios.
+
+  - Advantages:
+    - Ability to **discover statistical behavioural patterns**: `dynamics` functions are not hand-crafted, but rather **approximated** from training data.
+  - Limitations:
+    - Require **training data**.
+    - **Generalization** capability of the learned model: whether it can be **transferred** to a different site, especially if the **`map` topology changes**.
+    - > "`Pattern`-based approaches tend to be used in **non-`safety` critical** applications, where **explainability is less of an issue** and where the environment is **spatially constrained**."
+
+  - Two categories. Depending if the **function approximator** makes **temporal factorization** of the `dynamics`:
+  - `2-1.` **Sequential** methods.
+    - Idea: Learn **conditional models over time** and **_recursively_** apply **learned `transition` functions** for inference.
+    - Comparison with many **`physics`-based** approaches:
+      - Similarity: they learn a **one-step** predictor `s`.`t+1` = `f`(`s`.`t−n:t`, `a.t`).
+        - `transition` functions of sequential models have **Markovian property**.
+        - > "In order to predict a **sequence of `state` transitions** (i.e. a trajectory), **consecutive one-step predictions** are made to **compose** a single long-term trajectory."
+      - Difference: the function, often **non-parametric**, is **learned** from statistical `observations`, and its parameters **cannot be directly interpreted**.
+
+    - Sub-categories, depending on the **`time`-input and `space` range**:
+      - `2-1.1` **Local spatial** `transition` patterns.
+        - Learning **_local_** motion patterns, such as **probabilities of `transitions` between cells** on a grid-map.
+      - `2-1.2` **Location-independent** behavioural patterns.
+        - > "Unlike the **_local_ transition** patterns, which are learned and applied for prediction only in a **particular environment**, **_location-independent_** patterns are used for predicting transitions of an agent in **the _general_ free space**."
+      - `2-1.3` **Higher-order `Markov`** models.
+        - Neural networks for **time series** prediction.
+          - Assuming **higher-order Markov property**.
+          - > "Such **time series**-based models are making a natural transition between the **first-order `Markovian`** methods (e.g. **_local_ transition** patterns) and **non-sequential** techniques (e.g. **`clustering`-based**)."
+        - `LSTM`s are very popular.
+          - **`Social`-`LSTM`**, with its **`social pooling` layer**, learns to predict **joint location-independent transitions** in continuous spaces.
+          - > "Since humans are influenced by nearby people, `LSTMs` are connected in the **social pooling system**, **sharing information** from the hidden state of the `LSTMs` with the **neighbouring pedestrians**."
+
+  - `2-2.` **Not-sequential** methods.
+    - Idea:
+      - **Directly** learn a set of **_full_ motion patterns** from data or a **distribution over _trajectories_**.
+      - No **temporal factorization** of the `dynamics`, as opposed to **sequential** models (i.e. Markov assumption).
+      - > "Specifying **causal constraints**, e.g. `Markovian` assumptions for the **sequential** models or particular functional form for the `physics`-based methods, might be **too restrictive** or require a very large learning dataset."
+    - Mainly **unsupervised** with **clustering**-based methods.
+      - E.g. with `GPs` or mixture models as **cluster centroids** representation.
+      - **Global structure** can be imposed on top of a **sequential model**:
+        - > [Example] "Cluster recorded trajectories of humans into **global motion patterns** using the expectation maximization (`EM`) algorithm and build an **`HMM` model for each cluster**. For prediction, the method compares the observed track with the learned motion patterns, and reasons about **which patterns best explain it**. **Uncertainty** is handled by probabilistic mixing of the **most likely patterns**."
+
+- `3-` **`Planning`**-based methods
+  - Idea:
+    - **`Goal`-informed** predictions: reason on **motion `intent`** of **rational** agents.
+    - `1-` **Explicitly reason** about the agent’s long-term **motion `goals`**.
+    - `2-` Compute **`policies`** or **path hypotheses** that enable the agent to **reach these `goals`**.
+    - They are intrinsically `map`- and `obstacle`-aware.
+    - Requirements:
+      - They work well when **`goals`** are **explicitly defined**.
+        - > "Most `planning`-based methods rely on a **given set of `goals`**, which makes them unusable or imprecise in a situation where **no `goals` are known beforehand**, or the number of possible `goals` is too high."
+      - They often need a **`map` of the environment**.
+        - **Potential `goals`** (e.g. exits on a roundabout) in the environment are often used as **prior knowledge**.
+
+    - > "They tend to generate **better long-term predictions** than the `physics`-based techniques and **generalize to new environments** better than the `pattern`-based approaches."
+
+  - They solve **_sequential_** decision making problem:
+    - > "Much of the work use **objective functions** that minimizes some notion of the **total `cost` of a sequence** of `actions` (motions), and **not just the `cost` of one `action`** in isolation."
+
+  - Two categories: _Is the `cost` function pre-defined?_
+  - `3-1.` "yes": **Forward** planning.
+    - **Explicit assumption** regarding the **optimality criteria**.
+    - `3-1.1` Motion and **path planning** methods for one **single** observed agent.
+      - Use **optimal motion** and **path planning** techniques with a **hand-crafted `cost`-function**.
+      - Examples of **classical planning** algorithms: `Dijkstra`, **Fast Marching Method (`FMM`)**, optimal **sampling-based** motion planners, **`value` iteration**.
+
+      - Improvement: **multi-modality**.
+        - _We do not know where the observed pedestrian wants to go._
+        - Idea: account for **several goals** in the environment.
+        - E.g. **Bayesian framework** that exploits the set of **path hypotheses** to estimate the **intended destination**.
+          - Hypotheses can be generated from a **Probabilistic Roadmap** (`PRM`).
+
+    - `3-1.2` **Multi-agent** forward planning.
+      - Idea: **consider `interactions`** between agents in the scene.
+      - E.g. Combine **global planning** (to goals) and **local collision avoidance**.
+      - E.g. **cooperative** planning. Consider a **joint `state`-space** that includes all agents.
+
+  - `3-2.` "no": **Inverse planning** methods.
+    - Idea:
+      - **Estimate the `reward` function** or **`action` model** (`policy`) from observed trajectories.
+    - `3-2.1` **Single-agent** inverse planning.
+      - **Inverse optimal control** = `IRL`.
+      - > [`MaxEnt IRL`] "Humans are assumed to be **near-optimal decision makers** with **stochastic policies**, learned from observations, which are used to predict motion as a **probability distribution** over trajectories."
+
+    - `3-2.2` Directly extract a **`policy`** from the data.
+      - **No `reward` function** is explicitly learnt.
+      - `GAIL`: A discriminator tries to distinguish between **observations from experts** and generated ones.
+
+      - Deep **generative** techniques, e.g. **[`PRECOG`](https://arxiv.org/abs/1905.01296)** and [`R2P2`](http://openaccess.thecvf.com/content_ECCV_2018/papers/Nicholas_Rhinehart_R2P2_A_ReparameteRized_ECCV_2018_paper.pdf).
+      - > "Differently from `GAIL`, the `deep generative technique` by Rhinehart et al. (2018) adopts a fully differentiable model, which is easy to train without the need of an **expensive policy gradient search**."
+
+    - `3-2.3` **Multi-agent** inverse planning.
+      - In addition to being **rational**, here, agents are assumed to be (somehow) **cooperative**.
+      - > [`DESIRE`](https://arxiv.org/abs/1704.04394) "The method reasons on **multi-modal** future trajectories accounting for **agent interactions**, scene semantics and expected reward function, learned using a **sampling-based `IRL`** scheme. [...] The `RNN` architecture allows **incorporation of past trajectory** into the inference process, which improves prediction accuracy compared to the standard `IRL`-based techniques."
+
+- About **input contextual cues** = factors that **influence pedestrian motion**.
+  - `1-` Describing the **target agent**.
+    - [History of recent] `position` and `velocity`.
+    - Class in {`pedestrian`, `cyclist`}.
+    - `attention` and `awareness` of the robot's presence.
+    - > "Considering the `head orientation` or full articulated pose of the person may bring valuable insights on the target agent’s **immediate `intentions`** or their **`awareness` of the environment**."
+    - How to deal represent uncertainty? `position`s may come with ellipses denoting uncertainty. How to integrate it?
+
+  - `2-` Describing the **surrounding `dynamic` agents**.
+    - **Interaction-`unaware`**: simple `physics`-based method, e.g. `CV`, `CA` models.
+    - **`Individual`**-aware:
+      - `physics`-based methods with **social forces** or similar **local interaction** models.
+      - Many deep learning methods explicitly model interacting entities. E.g. **[`social pooling` layers](http://cvgl.stanford.edu/papers/CVPR16_Social_LSTM.pdf)**.
+      - Learning **`joint` motion patterns** is a considerably harder task.
+        - > "Most existing **socially-aware** methods still assume that all observed people are **behaving similarly** and that their motion can be predicted by **the _same_ model** and with the **_same_ features**."
+        - > "Most available approaches **assume `cooperative` behavior**, while real humans might rather optimize **personal `goals`** instead of **_joint_ strategies**. In such cases, **game-theoretic** approaches are possibly better suited for modeling human behavior."
+
+    - **`Group`**-aware:
+      - Capable of implicitly learning **intra- and inter-group coherence** behaviours.
+
+  - `3-` Describing the **static environment**.
+    - > "Humans adapt their behaviors according **not only to the movements of the other agents** but also to the **environment’s shape and structure**, making extensive use of its **topology** to reason on the possible paths to reach the long-term goal."
+    - > "Due to the **high level of structure** in the environment, methods in autonomous driving scenarios **extensively use available `semantic` information**, such as **street layout** and **traffic rules** or current state of the **traffic lights**."
+    - (static) `obstacle`-aware and **`map`-aware** methods.
+      - Mainly with **occupancy grid maps**. Also **`semantic`** maps.
 
 </details>
 

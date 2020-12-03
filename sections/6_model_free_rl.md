@@ -50,6 +50,7 @@ Authors: Lubars, J., Gupta, H., Raja, A., Srikant, R., Li, L., & Wu, X.
 </details>
 
 ---
+
 **`"Reinforcement Learning for Autonomous Driving with Latent State Inference and Spatial-Temporal Relationships"`**
 
 - **[** `2020` **]**

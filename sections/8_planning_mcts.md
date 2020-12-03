@@ -2343,7 +2343,7 @@ Author: Wei L.
 
 - About the **`POMDP` formulation**:
   - The episode is not **episodic** but continuous: there is no termination `state` such as _"exit of intersection"_ in other approaches.
-    - That makes this method very **general**, addressing `junctions`, `leader-following` and `round-about` scenarios with a **single `POMDP` formulation**.
+    - That makes this method very **general**, addressing `junctions`, `leader-following` and `roundabout` scenarios with a **single `POMDP` formulation**.
     - _What is the discount rate?_
   - `state`:
     - It contains:
