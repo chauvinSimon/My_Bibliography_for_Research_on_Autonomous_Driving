@@ -2,6 +2,127 @@
 
 ---
 
+**`"Receding Horizon Motion Planning for Automated Lane Change and Merge Using Monte Carlo Tree Search and Level-K Game Theory"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://ieeexplore.ieee.org/document/9147369)]**
+**[[🎞️](https://cecas.clemson.edu/~avahidi/wp-content/uploads/2020/07/shahab_ACC2020.mp4)]**
+**[** :mortar_board: `Clemson University` **]**
+
+- **[** _`mcts`, `k-level`, `interaction-aware`, `trajectory prediction`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://ieeexplore.ieee.org/document/9147369).](../media/2020_karimi_1.png "[Source](https://ieeexplore.ieee.org/document/9147369).")  |
+|:--:|
+| *Tests were performed on a laptop (`2.6GHz` CPU and `8GB` RAM), implemented in `C`. Could these **quantitative** results be predicted? It is complex: A **`level-0` agent** always performs `500` `MCTS` iterations, **independently of the number of other cars**. Even if the **`state` (`node`) size increases** with the number of vehicles, one single `MCTS` policy is obtained in **`28ms`**. A `level-1` agent must perform **one `MCTS` for itself** and `n` for the `n` surrounding `level-0` cars. Hence `#1(n)=1+n` Here the second row is a little bit better than **linear**, mainly due to **multi-threading**. A **`level-2` agent** must perform **one `MCTS` for itself** and **`n` for the `n` surrounding cars**, assumed `level-1`, which **consider it as `level-0`**. Hence: `#2(n)`=`1+n.#1(n)` = `1+(n+1)²`. For change, **multi-threading** helps. [Source](https://ieeexplore.ieee.org/document/9147369).* |
+
+| ![[Source](https://cecas.clemson.edu/~avahidi/wp-content/uploads/2020/07/shahab_ACC2020.mp4).](../media/2020_karimi_1.gif "[Source](https://cecas.clemson.edu/~avahidi/wp-content/uploads/2020/07/shahab_ACC2020.mp4).")  |
+|:--:|
+| *Testing `4` agents of `level-1`. Some stopped cars see to drive backwards at some point. Maybe the **transition `v` = `v` + `dt`.`acc` was not clipped** ;) [Source](https://cecas.clemson.edu/~avahidi/wp-content/uploads/2020/07/shahab_ACC2020.mp4).* |
+
+Authors: Karimi, S., & Vahidi, A.
+
+- Related works, by a group of the university of Michigan:
+  - [`Game Theoretic Modeling of Vehicle Interactions at Unsignalized Intersections and Application to Autonomous Vehicle Control`](https://ieeexplore.ieee.org/document/8430842).
+  - [`Game-theoretic Modeling of Traffic in Unsignalized Intersection Network for Autonomous Vehicle Control Verification and Validation`](https://arxiv.org/abs/1910.07141).
+
+- Motivation:
+  - Considering **interactions** between vehicles when `planning`.
+    - > "**`merging`** and **`lane changing`** maneuvers resemble a game where two or more **players interact** with each other."
+  - Main idea:
+    - **Predict the `trajectory`** of the neighbouring vehicles.
+      - Based on their assumed **"depth of strategizing"**.
+    - Use this **predicted `trajectory`** for `planning`: at each time step in the future, the ego agent "know" what the non-ego parts of the state will be. It reduces to the traditional obstacle avoidance with dynamic obstacles.
+  - One personal idea:
+    - It would be better if one could **predict the `policy`** instead of the `trajectory`.
+    - The **future would not be written** in advance, i.e. `positions` of surrounding cars would not be known for each **depth level**.
+    - Instead, **reactions to ego `actions`** could be obtained by querying the `policies`. In other words, the `transition` function used to build the `nodes` would be **dynamically constructed** based on predicted `policies`.
+
+- **`level-k`** framework from the **cognitive hierarchy** theory.
+  - > "Each path planner assumes a **lower level of sophistication** for each interacting driver and employs `MCTS` to predict and evaluates their **probable sequence of actions** over the horizon."
+  - `level-0`: a **naive agent** that plays **non-strategically**.
+    - `level-0` vehicles execute their `MCTS` under the assumption that **all surrounding objects** and **agents are _stationary_**.
+  - `level-1`: predict the sequence of `actions` of surrounding cars, assuming they follow the **`level-0` reasoning**.
+  - `level-2`: follow the same pattern assuming all the interacting vehicles are `level-1`.
+  - > "**Human beings** are rarely capable of **depth of reasoning beyond `level-2`**."
+
+  - Is `k-level` theory adapted to autonomous driving?
+    - It seems made for **competitive tasks**, where the goal is to **beat the others**.
+    - For instance, `level-1` is too shy and `level-2` takes advantage of that.
+
+- **`MCTS` planner**.
+  - Default `policy`: **random action selection**.
+  - Discount factor = `0.8`.
+  - `∆t` = `0.25 s`.
+  - `horizon` = `m` = **`12` steps** = **`3s`**.
+    - Problem: Number of `policies` to evaluate in **brute force**:
+      - `#π-level-0` = `#action`^`m`.
+      - `#π-level-1` = `#action`^`m` + `#others`.`#π-level-0`.
+      - `#π-level-2` = `#action`^`m` + `#others`.`#π-level-1`.
+    - Solution: `MCTS` as a **heuristic** mechanism for **policy search**.
+  - **Number of iterations** of each `MCTS`: `500`.
+  - Questions:
+    - Can the `tree` be reused?
+      - Yes, if the ***`transition` model** is **deterministic**. Because then we are sure to land in one of the explored `node` of **`depth`=`1`** at the next time step. The **corresponding subtree** can be used, e.g. its (`N`, `R`) values that **guide the search**.
+    - Could `policies` be derived **offline** instead?
+      - I think no. Because the **`state` space is continuous**.
+    - What happens for a **`level-2` `ego` agent** surrounded by **`1` other car**?
+      - To perform its own `MCTS`, the `ego` agent must first **derive a `trajectory` for the `other`**.
+      - The `other` is surrounded by one car: the **`ego` one**.
+      - **The `ego` assumes it is considered by the `other` car as a `level-0` agent**.
+      - Therefore **three `MCTS`** are performed.
+
+- `MDP` formulation.
+  - `state`:
+    - Each **car** described by {`position`, `speed`, `orientation`}.
+    - The **size of the `state` increases linearly** with the number of surrounded cars.
+    - It is kept **continuous** (making _offline_ planning hard).
+
+  - `action`:
+    - **Semantic `actions`** are mapped to (`a`, `ω`) control inputs.
+    - **Discrete*** `action` space: a combinations of:
+      - {`maintain`, low/mid/high `brake`/`accelerate`}.
+      - {`steer` low/high left/right}.
+    - **Control** commands:
+      - `yaw rate` in `+/-` {`0`, `π/4`, `π/2`} `rad/s`.
+      - `acceleration` in `+/-` {`0`, `1.5`, `2.5`, `3.5`, `5.0`} `m/s²`.
+  - `transition` function: **simple kinematic** model.
+  - `reward`: **only _positive_ terms**. Weighted.
+    - E.g. **"returns `1` if (...) after the executed `action` else `0`"**:
+      - Avoid **collisions**: (...) = if the agent does not collide with any other object/agent.
+      - Avoid **risk** = Keep **safety gaps**: (...) = if the specified **safe boundary** of the agent **does not overlap** with any other agent’s.
+      - Stay on **road**: (...) = if the agent’s body does not overlap with the **off-road region**.
+      - Stay in **lane**: (...) = if the agent **remains between highway’s dashed lane markers**.
+      - Drive close to **desired speed**. If not, `0`.
+      - Drive forward: the heading along the longitudinal direction. If not, `0`.
+      - Avoid over-conservatism: `0` if the vehicle decelerates in absence of nearby traffic.
+
+    - Not clear to me:
+      - Each term is in [`0`, `1`]. But how are they **weighted**?
+      - What about **terminations**?
+        - Can it recover from `off-road` or `collisions`?
+        - What if the random policy leads to a `collisions`?
+          - I think it should stop rolling out and get a penalty.
+      - Why **no negative terms**?
+        - Here the task is **episodic**.
+        - Negative `rewards` encourage to reach a **terminal state** as quickly as possible to avoid **accumulating penalties**.
+        - Positive `rewards` encourage to keep going to **accumulate** rewards and **avoid terminals** unless they yield very high `reward` (i.e. terminal state yields more single step reward than the **discounted expected reward of continuing the episode**).
+
+- Evaluations.
+  - `safety`: poor results:
+    - Metrics: A ratio of:
+      - total number of **collision avoidance** events.
+      - total number of **interactions** between vehicles with the corresponding levels.
+    - _Probably due to the_ **_non-negative `reward`_** _for colliding?_
+  - `efficiency`:
+    - > "`level-1` agents mostly **yield in their interactions** and `level-2` agents **performed aggressive maneuvers** as they are capable of predicting the **cautious behavior of `level-1`** agents."
+
+</details>
+
+---
+
 **`"Deep Inverse Q-learning with Constraints"`**
 
 - **[** `2020` **]**
