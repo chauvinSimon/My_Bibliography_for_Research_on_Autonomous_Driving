@@ -1,5 +1,37 @@
 ## `Inverse Reinforcement Learning` `Inverse Optimal Control` and `Game Theory`
 
+- My notes:
+  - How to perform a **tree search** with a **discrete `state` space** and a **continuous `transition` function**?
+  - Basic example:
+    - `state` = {`speed`}. Quantized with resolution of `x` `m/s`.
+    - `action` = {`full-gas`, `full-break`} on the pedals.
+    - `transition` function: `s_next` = `f`(`s`, `a`, `dt`), where `f` may be complicated.
+    - `reward` function: `r`(`s`) = `-` |`s.speed` - `target_speed`| / `target_speed`.
+  - Actually this is a problem for `offline` **value iteration**. Where you want to **cast a continuous `state` to one bin**.
+    - Here, `online`. So we start at the **current node**. And navigation in the tree is only based on the `action` set, which is **discrete** and **finite**.
+      - If `transition` model is perfect, then we expect to **reach explored nodes** at depth-`1`. And we can **recycle the tree**.
+
+  - `MCTS` compared to `MPC`:
+    - Similarities:
+      - Same problem definition: sequential decision making.
+      - A **Receding horizon control** approach (as opposed to `LQR`):
+        - Future events can be anticipated (as opposed to `PID`).
+        - Only the first `action` of the best **`action` sequence** found is implemented.
+      - **Online**. And a solution is computed at each time-step.
+      - Both rely on dynamic models of the process. This `transition` function can be non-linear.
+
+    - Differences:
+      - `MCTS` uses a **search tree**. `MPC` can use any optimizer.
+      - `MCTS` works in **discrete `action` spaces**.
+      - `MPC` can handle **hard constraints**.
+      - The cost function of `MPC` seems more specific: it tries to reach a target value, e.g. temperature, while considering the cost/constraints of taking certain actions.
+
+  - Idea: how to **combine `planning` and `prediction`**?
+    - I think `planning` should be done in a **receding horizon manner**.
+    - Predicting `trajectories` only is not good. It **ignores the reaction** of the other cars which are **assume to ignore the ego**.
+    - What would be ideal is to **predict their policy**, i.e. having a **model of them that we could query**. Then, in the search, we query how they would react to ego-actions.
+
+
 ---
 
 **`"Receding Horizon Motion Planning for Automated Lane Change and Merge Using Monte Carlo Tree Search and Level-K Game Theory"`**

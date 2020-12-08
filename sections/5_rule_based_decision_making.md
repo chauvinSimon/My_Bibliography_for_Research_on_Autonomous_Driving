@@ -2,6 +2,86 @@
 
 ---
 
+**`"An Autonomous Driving Framework for Long-term Decision-making and Short-term Trajectory Planning on Frenet Space"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://arxiv.org/abs/2011.13099)]**
+**[[:octocat:](https://github.com/MajidMoghadam2006/frenet-trajectory-planning-framework)]**
+**[** :mortar_board: `University of California` **]**
+
+- **[** _`behavioural planner`, `hierarchy`, `safety supervisor`, `IDM`, `MOBIL`, `Frenet frame`, `lattices`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://arxiv.org/abs/2011.13099).](../media/2020_moghadam_2.png "[Source](https://arxiv.org/abs/2011.13099).")  |
+|:--:|
+| *__Hierarchical structure__: the `BP` decides to **change lane or not** based on a **state machine**. This **short term goal**, together with a `desired speed`, are processed by the **local planner** (`LP`) which generates a `trajectory`. This `trajectory` is tracked by a **low-level controller** using two `PID`s. On the top, a **supervisor** runs at **higher frequency**. It can **quickly react** and **overwrite the goals set by `BP`**. [Source](https://arxiv.org/abs/2011.13099)* |
+
+| ![[Source](https://arxiv.org/abs/2011.13099).](../media/2020_moghadam_1.png "[Source](https://arxiv.org/abs/2011.13099).")  |
+|:--:|
+| *The **driving style** can be **adjusted** with **`2` parameters**: the desired **gap with `leader`** when in `StayOnLane` and the desired **gap with `follower`** when `ChangeLane`. [Source](https://arxiv.org/abs/2011.13099)* |
+
+Authors: Moghadam, M., & Elkaim, G. H.
+
+- Motivation:
+  - `1-` Modularity and hierarchy.
+    - By nature, modules run at **different frequencies**.
+  - `2-` Enable different **driving styles**.
+    - Here **{`agile`, `moderate`, `conservative`} styles** with different values for **two parameters**:
+    - `1-` **`Politeness`** factor in `MOBIL` which influence tailgating, i.e. **gap with the following car**.
+    - `2-` `Safe time headway` in `IDM`, i.e. **gap with the leading car**.
+  - Task: **Highway** driving.
+
+- **Four levels** (from `bottom` to `top`):
+- `1-` `Trajectory following` + `Drive` and `steer` control.
+  - Task: **stabilize** the vehicle dynamics while tracking the **commanded `trajectory`**.
+  - Input: a **spatiotemporal `trajectory`**: `τ` = { (`s`(`t`), `d`(`t`)) ∈ `R²` `t` ∈ [`0`, `T`] }.
+  - Output: `steering` and `drive` commands.
+  - How:
+    - Points (`x`, `y`, `speed`) are sampled from the `trajectory`.
+    - Two `PID` controllers are then used to **track the desired `speed` and `WP`s**.
+    - For `lateral` control: A **[`two-point`](https://www.researchgate.net/publication/8038369_A_two-point_visual_control_model_of_steering)** control model.
+
+- `2-` `Trajectory planning`. Also called **"Local Planner" (`LP`)**.
+  - Task: produce a **safe, feasible** and **optimal `trajectory`** to meet the **defined short-term goal**.
+    - > "The planner translates the commanded **`maneuver modes`**, such as `LaneChangeRight` and `StayOnTheLane`, along with the **`desired speed`** to optimal **trajectories** in a variable **time-horizon window**."
+  - Input: a **`target speed`** and a **`manoeuvre mode`** in {`LaneChangeRight`, `LaneChangeLeft`, `StayOnTheLane`}.
+  - Output: **spatiotemporal `trajectory`**.
+    - It consists of **two polynomials of time**, concerning `lateral` and `longitudinal` movements.
+  - **`Frenet` frame**.
+    - > "Transferring the calculations to **`Frenet` space** makes the driving behavior **invariant to the road curvatures and road slopes** in `3` dimensions, which improves the **optimization computations** significantly and simplifies the **`cost` function** manipulation."
+  - Optimization: **generate `lattices`** + evaluate + pick the best one.
+    - > "Six constraints for `d(t)` and five for `s(t)`, which makes them form **quintic (`r = 5`)** and **quartic (`k = 4`)** **polynomials**, respectively."
+    - > [**`3` degrees of freedom**] "Since `t0` and `Ti−1` are **known values** at each time-step, producing **lattices** boils down to identifying terminal manifolds: **arrival time `tf`**, **lateral position `df`**, and **speed `vf`**. The set `T` is produced by **varying these `3` unknowns** within the feasible ranges."
+    - Surrounding cars are assumed to **maintain their speeds**.
+    - > [After filtering based on **hard constraints**] "The **remaining trajectory candidates** are examined in terms of `velocity` and `acceleration` that are `safe`, dynamically `feasible`, and `legally` allowed."
+
+  - What if `BP` decisions are found to be **non-applicable**?
+    - `LP` can overwrite `BP`.
+    - > "Similar to **target `lane`**, the `speed` commanded by the `IDM` can also **be overwritten by the `LP`** before being sent to low- level controller."
+
+- `3-` **Behavioural planner (`BP`)**.
+  - Task: decide **high-level short-term goals**.
+  - Input: scene description. Probably a list of <`pos`, `speed`, `heading`>.
+  - Output: a `target speed` and a **`manoeuvre mode`**.
+  - `IDM` and `MOBIL` models used for:
+    - The `transitions` of the **state machine**.
+    - The computation of the `target speed`.
+    - > "The ego vehicle **stays in the current lane** with a **desired speed computed by `IDM`** module until `MOBIL` algorithm decides on **a lane change**."
+
+- `4-` **`Safety` Supervisor**.
+  - Task: **monitor decisions** and **react quickly** to `risky` situations.
+    - > "The **supervisor** sends a **recalculation command** to the modules if an **unpredicted situation** appears during the path following."
+  - **Frequency**: **higher that `BP` and `LP`**.
+    - > [Need to be able to **react**] "The surrounding human/autonomous drivers may perform **unexpected maneuvers** that jeopardize the safety of the generated trajectory."
+  - To avoid forward collisions: use a **second `IDM`** with **more conservative parameters** than `BP`.
+    - > "If `TTC` violates the **safety threshold**, `IDM2` raises the **safety violation flag**, and the supervisor calls the `LP` to **recalculate the trajectory** based on the current situation."
+
+</details>
+
+---
+
 **`"Formalizing Traffic Rules for Machine Interpretability"`**
 
 - **[** `2020` **]**
@@ -82,7 +162,7 @@ Authors: Van, N. D., Sualeh, M., Kim, D., & Kim, G. W.
 - **[** `2019` **]**
 **[[:memo:](http://www.alonsomora.com/docs/19-andersen-t-iv.pdf)]**
 **[[🎞️](https://www.youtube.com/watch?v=qCcrjBfSKOU)]**
-**[** :mortar_board: `National University of Singapore, Delft University, MIT` **]**
+**[** :mortar_board: `National University of Singapore`, `Delft University`, `MIT` **]**
 - **[** _`FSM`, `occlusion`, `partial observability`_  **]**
 
 <details>
