@@ -2,6 +2,72 @@
 
 ---
 
+**`"An End-to-end Deep Reinforcement Learning Approach for the Long-term Short-term Planning on the Frenet Space"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://arxiv.org/abs/2011.13098)]**
+**[[:octocat:](https://github.com/MajidMoghadam2006/RL-frenet-trajectory-planning-in-CARLA)]**
+**[** :mortar_board: `University of California`, `Istanbul Technical University` **]**
+
+- **[** _`highway`, `mid-to-mid`, `CARLA`_ **]**
+
+<details>
+<summary>Click to expand</summary>
+
+| ![[Source](https://arxiv.org/abs/2011.13098).](../media/2020_moghadam_4.png "[Source](https://arxiv.org/abs/2011.13098).") |
+|:--:|
+| *Left: actually, this is **not `end-to-end`** since the agent does not receive **raw images** and does not control **low-level actuators**. Rather `mid-to-mid`. Middle: the `reward` function penalizes `speed deviations`, **considering if a lane change was 'beneficial'**. Right: take-away: `RL` can bring **efficiency** (higher speed) but lacks **safety**. [Source](https://arxiv.org/abs/2011.13098).* |
+
+| ![[Source](https://arxiv.org/abs/2011.13098).](../media/2020_moghadam_3.png "[Source](https://arxiv.org/abs/2011.13098).") |
+|:--:|
+| *For feature extraction, **two different `1D` convolution layers** are used separately. One for **ego states**, (represented w.r.t a **fixed** reference point) and one for **surrounding vehicles’ states** (**relative to the ego vehicle**). [Source](https://arxiv.org/abs/2011.13098).* |
+
+Authors: Moghadam, M., Alizadeh, A., Tekin, E., & Elkaim, G. H.
+
+- Main motivation:
+  - Compare `mid-to-mid` `RL` to [**classical modular rule-based** architectures](https://arxiv.org/abs/2011.13099) on **highway** scenarios.
+  - Conclusion: `RL` can be **more efficient** but **less safe**.
+
+-  Baseline:
+  - C.f. `"An Autonomous Driving Framework for Long-term Decision-making and Short-term Trajectory Planning on Frenet Space"` by the same authors in the section [**Rule-based Decision Making**](sections/5_rule_based_decision_making.md).
+  - **Hierarchical layers**:
+    - `BP` decides about **lane changes** (discrete) and **target speeds** based on `IDM` and `MOBIL`.
+    - `LP` generates a **_continuous_ spline** in the **Frenet space** to implement `BP`'s decisions.
+
+- `action`:
+  - **Do not predict _low-level_ commands.** Rather produce a **trajectory**. Hence `x-to-mid`.
+  - > [Elegant parametrization] "A **polynomial trajectory**, aka **a lattice**, can be characterized using **three continuous values**: `vf`, `df`, and `tf` [`speed`, `lateral position`, and `arrival time`]."
+  - Each value is in the [`−1`, `1`] range.
+  - > "Exploring **various regions in the `action` space** is equivalent to **examining different splines** in the **driving corridors**."
+  - `Delta-t`?
+
+- `state`.
+  - About `ego`:
+    - `lat-position` (lane), `speed`.
+    - I do not see the point of considering its **`longitudinal` position** for this **highway** task.
+      - > "The **`longitudinal` position** of the ego is normalized w.r.t. its **initial position** and the total **track length TL**."
+      - **Highway driving** is a **continuous task**. Thus there cannot be any notion of **"progress" toward a "goal position"**.
+
+  - About `others`:
+    - `position` and `speed` relative to the ego.
+    - `N=14` slots available.
+    - > "If a **region is unoccupied**, the corresponding value in the **input tensor get `−1`**." [One could also have used additional **flags** instead.]
+
+  - **Temporal** dimension: describe the **trajectories**.
+    - Stack of past `30` `state`s.
+    - > "We use **convolution operation along time channel** to extract the encoded **time-series features** from the past trajectories."
+
+- `reward`
+  - **Coarse**-grain: large penalties for **`collisions`** and **`off-road`**.
+  - **Fine**-grain: deviation to the `target speed`, conditioned on the **`speed gain`** brought by the **lane change**.
+  - The **ego-`longitudinal` position** is not considered. No reward for longitudinal `progress`, no penalty for `timeout`.
+    - _Again, I do see the point of considering this information in the `state`._
+
+
+</details>
+
+---
+
 **`"Combining Reinforcement Learning with Model Predictive Control for On-Ramp Merging"`**
 
 - **[** `2020` **]**
