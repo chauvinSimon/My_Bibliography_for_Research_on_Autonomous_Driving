@@ -101,6 +101,8 @@ Authors: Vermaelen, J., Dinh, H. T., & Holvoet, T.
   - Example:
     - Maximize the **probability** of **_"`p`(`collision`) stays below `0.01`"_**.
 
+</details>
+
 ---
 
 **`"Vehicle Control with Prediction Model Based Monte-Carlo Tree Search"`**
