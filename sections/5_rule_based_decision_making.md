@@ -1,5 +1,86 @@
 # `Rule-based` `Decision Making`
 
+------
+
+**`"Motion Control for Mobile Robot Navigation Using Machine Learning: a Survey"`**
+
+- **[** `2020` **]**
+**[[:memo:](https://arxiv.org/abs/2011.13112)]**
+**[** :mortar_board: `University of Texas` **]**
+**[** :car: `US Army Research Laboratory` **]**
+
+- **[** _`survey`, `classical planning`, `learning-based planning`, `hybrid`, `parameter tuning`, `engineering efforts`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://arxiv.org/abs/2011.13112).](../media/2020_xiao_1.png "[Source](https://arxiv.org/abs/2011.13112).")  |
+|:--:|
+| *Within the **navigation stack**, `learning-based` approaches can replace (`1`) the **entire** navigation stack (`end-to-end`), (`2`) navigation **subsystems** (either `global` or `local`), and (`3`) **individual components** (e.g. planner parameters, world representation). The authors **advocate** to use `ML` at the **subsystem** or **component** level. And to forget about `end-to-end`: the **red cross** shows that no `end-to-end` approach outperforms `classical` systems. Last but not least: `ML` looks promising for **social navigation** and **reactive local planning**. [Source](https://arxiv.org/abs/2011.13112)* |
+
+Authors: Xiao, X., Liu, B., Warnell, G., & Stone, P.
+
+- Motivation:
+  - Compare between the **`classical` planners** and emerging **`learning-based` paradigms** for `planning` (`navigation` and `motion control`).
+
+- Some interesting conclusions:
+
+- Scope:
+  - Most learning-based works **focus on `end-to-end`** approaches.
+    - Because **appealing aspects**, e.g. they should be able to **avoid cascading errors** such as errors in the `global` representation **being propagated** to the `local` planning level.
+    - Nevertheless **limitations**, e.g. they lack of proven **reliable applicability** in **real-world** scenarios.
+
+  - When focusing on **subsystems**, most address the **`local` rather than the `global` planning**.
+    - Because it is easier to generalize to a **close `local` goal or `local` segment** from a global path than an **unseen, faraway `global` goal**.
+
+- Performance:
+  - **Very few `learning`-based approaches actually improve upon `classical` techniques**.
+    - More **"proofs of concepts"**: the research community initially focused on answering the question of **_whether or not_ navigation was even possible** with learning approaches.
+
+  - **`Safety`** is overlooked by `ML`.
+    - > "Only `11` out of the `72` surveyed papers describe navigation systems that can provide some form of safety assurance, and each of these does so using a **component from a `classical` system**."
+
+  - `end-to-end`: one third of the approaches surveyed **lacks** the ability to **navigate to user-defined goals**.
+    - > "It is very difficult for a learned model to **generalize to arbitrarily defined _goals_**, which is not seen in its training data. Not being able to see **similar goal configurations** during training makes it hard to generalize to arbitrarily specified goals."
+    - All of the **non-`end-to-end`** approaches surveyed **can do that**.
+
+  - `end-to-end`: `Explainability` is overlooked.
+    - > "**None** of the `43` `end-to-end` approaches surveyed even attempted to maintain any notion of **explainability**."
+
+- **Improvements**:
+  - Can learning approaches enable **new navigation capabilities** that are difficult to achieve with classical techniques?
+    - Yes, e.g. **social navigation**.
+
+  - Are learning approaches really getting **rid of the extensive human engineering** (e.g., filtering, designing, modelling, tuning, etc.)? E.g. for **manual parameter tuning**.
+    - Not so clear!
+    - The **"learning burden"** (high demand on training data, hyperparameter search) cannot always be automated and is **insufficiently acknowledged**.
+    - > "We found that the literature on learning-based navigation did little to **explicitly acknowledge** or characterize the very real costs of **hyperparameter search** and **training overhead**."
+
+- Main recommendation: **Combine** the two paradigms.
+  - Forget about `end-to-end`.
+    - > "The current best practice is to use `ML` at the **subsystem** or **component** level."
+    - In other words: **do not replace a "classical" component that already works**. Rather:
+      - Replace **small "classical" components** which suffer from limitations: e.g. **parameter tuning**, **social interaction** modelling.
+      - **Extend** them: e.g. they are currently not able to **continuously adapt** their parameters from experiences collected during deployment.
+
+  - Example:
+    - Learning modules to **adapt to new environments**.
+      - E.g. **dynamically changing** parameters.
+    - Classical components to ensure that the **system obeys hard `safety`** constraints.
+  - Example:
+    - `ML` to **tune the parameters** of a classical system. E.g. by **trial and error**.
+  - Example:
+    - Continuous (**lifelong**) learning: `ML` to improve based on **real deployment experience**
+      - Risk: **catastrophic forgetting**.
+  - Example:
+    - `ML` for the **_reactive_ `local` planning** level.
+    - These **_reactive_ behaviours** are difficult to **model** using **rule-based symbolic reasoning**, but are ripe for **learning from experience**.
+    - Analogy to human navigation:
+      - > "Humans typically perform **high-level deliberation** to come up with **long-range plans**, such as how to get from a house or apartment to a local park, but navigation becomes much **more _reactive_** at the **local level** when needing to **respond to immediate** situations, such as avoiding a running dog or moving through extremely complex or tight spaces."
+    - Especially: **social behaviours**.
+
+</details>
+
 ---
 
 **`"An Autonomous Driving Framework for Long-term Decision-making and Short-term Trajectory Planning on Frenet Space"`**
