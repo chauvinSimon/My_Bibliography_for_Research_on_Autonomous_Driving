@@ -2141,6 +2141,129 @@ Authors: Fan, H., Zhu, F., Liu, C., Zhang, L., Zhuang, L., Li, D., Zhu, W., Hu, 
 
 ---
 
+**`"Neural network modeling for steering control of an autonomous vehicle"`**
+
+- **[** `2017` **]**
+**[[:memo:](https://asco.lcsr.jhu.edu/wp-content/uploads/2018/10/neural_network_modeling_steering_control.pdf)]**
+**[** :mortar_board: `Johns Hopkins University`**]**
+**[**:car: `zoox`**]**
+
+- **[** _`model-based`, `transition function`, `parameter identification`, `residual learning`, `physics function`, `steering system`, `power steering software`, `RNN`_ **]**
+
+<details>
+  <summary>Click to expand</summary>
+
+| ![[Source](https://asco.lcsr.jhu.edu/wp-content/uploads/2018/10/neural_network_modeling_steering_control.pdf).](../media/2017_garimella_1.png "[Source](https://asco.lcsr.jhu.edu/wp-content/uploads/2018/10/neural_network_modeling_steering_control.pdf).")  |
+|:--:|
+| *The **low-level controller** must compute a `steering_torque` to **track a reference {`steering_angle`, `steering_rate`} sequence**. Using a **`PID` alone** leads to poor performances. The idea is to augment it with a so-called **'feed-forward steering torque'**, estimated by different methods. [Source](https://asco.lcsr.jhu.edu/wp-content/uploads/2018/10/neural_network_modeling_steering_control.pdf).* |
+
+| ![[Source](https://asco.lcsr.jhu.edu/wp-content/uploads/2018/10/neural_network_modeling_steering_control.pdf).](../media/2017_garimella_2.png "[Source](https://asco.lcsr.jhu.edu/wp-content/uploads/2018/10/neural_network_modeling_steering_control.pdf).")  |
+|:--:|
+| *Main idea: learn the **'`steering_torque` -> `steering_angle`' `transition` model** and use it inside **`MPC`** to **track** a reference trajectory. The `RNN` does **not predict this mapping from scratch**. Rather focus on the **residual dynamics** not modeled by a **physics function**, capturing the effects of **road-tire interactions**, **power steering** logic, and **steering system dynamics**. [Source](https://asco.lcsr.jhu.edu/wp-content/uploads/2018/10/neural_network_modeling_steering_control.pdf).* |
+
+Authors: Garimella, G., Funke, J., Wang, C., & Kobilarov, M.
+
+- In short: **Low-level control** performed with planning, where the **`transition` function** is learnt.
+
+- Motivations:
+  - `1-` **Steering actuator dynamics** are difficult to model due to the integrated **proprietary power steering control** module.
+  - `2-` For **safety** and **interpretability** reasons, prefer a **multi-layered** model-based approach, as opposed to `end-to-end`.
+  - `3-` Tracking the `steering_angle` by controlling the steering torque is **hard for a single `PID`**.
+    - The idea is to **augment the command** with a **_steering torque_** that can be computed in different ways.
+    - > "The goal of introducing the **_feedforward steering torque_** is to improve the **system response** and reduce tracking error **without increasing `PID` gains**."
+
+- **Layered** architecture:
+  - `1-` Some decision-making module computes a **reference path** to follow.
+  - `2-` This **desired path** is converted to some reference **"steering trajectory"** (sequence of {`steering_angle`, `steering_rate`}) by a `MPC`.
+  - `3-` This desired **"steering trajectory"** is tracked by a `PID` by commanding the `steering torque`.
+    - The idea is to augment the `PID` with some **_feed-forward steering_ torque** model.
+
+- Several models to compute the **_feed-forward steering torque_**.
+  - All performed **online**.
+  - Output: _feed-forward steering_ torque. To support the `PID`.
+  - Input: a reference `steering angle` and `forward velocity`.
+  - `0-` No additional torque (just `PID`).
+    - Bad. Because of **larger errors** the **integrator** performs much of the tracking task.
+    - It is **limited by the _time delays_** inherent in the system.
+  - `1-` Lookup table.
+    - Marginal improvement, since the maneuvers are **highly dynamic**.
+  - `2-` Inverting some **"first principles model"**.
+    - Best that look-up but cannot model the **road-wheel interactions** correctly at **low velocities**.
+    - > "This is likely because at **lower velocities**, the power steering system provides larger assist, and that effect is **difficult to model directly** without knowing the underlying **power steering software algorithm**."
+  - `3-` Solving a **N-MPC** problem.
+    - But for that a `transition` function is required.
+    - Solution: this function is **learnt** (offline).
+
+- How to model the **steering dynamics**?
+  - `state`: `x`
+    - steering angle `δ`.
+    - steering rate `δ˙`.
+    - lateral velocity `vy`.
+    - yaw rate `φ`.
+  - `command`: `u`
+    - applied steering torque `τs`.
+    - longitudinal speed `vx`.
+  - Discrete-time `model`: nonlinear **function `f`**
+    - `xt+1` = `f`(`xt`, `ut`)
+    - `f` can be derived:
+      - `1-` From a **"first principles"** approach.
+      - `2-` Using a **non-parametric** model such as a neural network.
+
+- `1-` Baseline: `f` derived from **first principles**, i.e. from **theory**.
+  - `torque` = (`moment of inertia`).(`angular acceleration`)
+  - Here, the **steering `torque`** is a **composition** of:
+    - **Coulomb friction** from the steering rack.
+    - **Jacking torque** due to camber angle.
+    - **Damping** caused by rigid body dynamics.
+    - **Self-aligning** torque: produced due to tire deformation when the steering wheel moves against the tire thread.
+      - At **small slip angles**, it is proportional to the **lateral force** applied to the front tire.
+    - **Power steering torque**.
+      - Its **logic** is unknown: **proprietary software**.
+  - The **power steering** torque is modeled as:
+    - `g`(`τs`, `vx`).`τs`
+    - `τs` = torque sensor input.
+    - `g` = function parametrized by `5` parameters.
+  - A lot of **unknown parameters**:
+    - `vx` and the `φ` are propagated using the **bicycle model**.
+    - The **lateral force** applied to the front tire is estimated by a **tire model**.
+    - From here, the `4` weights and the `5` parameters of function `g` are missing.
+      - They are learnt with **least-squares regression**.
+
+- `2-` `RNN`: `f` as a **non-parametric** model:
+  - Main idea: augment the `RNN` model with a **physics function** block and predict **residuals**.
+    - It improves the **gradient flow** of the network.
+    - > "The neural network layers predict the **residual dynamics** not modeled by the **physics function**."
+    - Example of **residuals** captured by the net: the effects of **road-tire interactions**, **power steering logic**, and **steering system dynamics**.
+  - Composed of several units of "neural network **blocks**" **stacked in time**.
+    - Each **"block"** is divided into:
+      - A known **physics function**:
+        - `δ`  = `δ` + `k1`.`δ´`
+        - `δ˙` = 0.
+        - `φ˙` = `vx`.**tan**(`k2`.`δ`) with `k2` the inverse of the wheelbase of the car.
+        - `vy` = 0.
+      - A stack of `N=2` **FC layers**.
+  - Input: previous output + new command (`δ`, `δ'`).
+  - Loss:
+    - > "The state deviations are weighed using a **diagonal matrix `P`** to enforce a uniform scale across the deviations. The matrix `P` is usually chosen as the **inverse covariance of the sensor measurements**."
+  - About the initialization:
+    - **Divergence** is noticed for **random initialization** of parameters. Especially when **propagating the dynamics** recursively.
+    - The optimization is thus performed in two stages:
+      - `1-` **Learn `1`-step predictions** only.
+      - `2-` Optimize over the **entire trajectory** segment.
+  - Training:
+    - `20,000` trajectory segments with a **`0.5`-second horizon**.
+    - Mini-batch gradient descent with a batch size of `200` samples.
+    - Ablation study: The addition of a **second layer** along with **physics function** improves the performance of prediction significantly.
+  - What is done with this **learnt `transition` model**? Used in `MPC` to track.
+    - The `MPC` derives the **optimal trajectory `τ∗`** at each time step.
+    - Only **one element** is used, together with the `PID`:
+      - Either the **first one** (classical `MPC`)
+      - Or some **future stamped** steering torque if there are **delays** in sending the torque command.
+
+</details>
+
+---
+
 **`"On Monte Carlo Tree Search and Reinforcement Learning"`**
 
 - **[** `2017` **]**
